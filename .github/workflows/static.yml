@@ -22,6 +22,7 @@ jobs:
         with:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /.github/scripts/
             /index.html
             /move-saves.html
             /library.html
@@ -80,6 +81,8 @@ jobs:
           cp files/load/webretro/cores/mupen64plus_next_libretro.js files/load/webretro/cores/mupen64plus_next_libretro.wasm site/files/load/webretro/cores/
           cp -R files/games/fnae files/games/basketbros-io files/games/2048 files/games/wordle files/games/hexgl files/games/hextris files/games/moto-x3m files/games/tiny-fishing site/files/games/
           touch site/.nojekyll
+      - name: Prepare pinned Angry Birds runtime
+        run: python3 .github/scripts/prepare-angry-birds.py site/files/games/angry-birds-2/Build
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

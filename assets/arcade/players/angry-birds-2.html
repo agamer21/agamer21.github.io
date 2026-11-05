@@ -208,7 +208,7 @@
             get withCredentials() { return this.isMocked ? false : this.xhr.withCredentials; }
             set withCredentials(v) { if (!this.isMocked) this.xhr.withCredentials = v; }
         };
-        const baseUrl = "https://raw.githubusercontent.com/naotomori1/angrybirds2/6ba66b34c4505754d8b6b30582939a72e8d04243/";
+        const baseUrl = "/files/games/angry-birds-2/";
         const filesConfig = [
             { name: "angry.data.unityweb", parts: 6 },
             { name: "angry.wasm.code.unityweb", parts: 2 },
@@ -276,7 +276,7 @@
             URL.revokeObjectURL(scriptUrl);
             window.unityInstance = UnityLoader.instantiate("unityContainer", baseUrl + "Build/angry.json", {onProgress:(instance,progress)=>{document.getElementById('loadingText').textContent="Starting game... " + Math.round(progress*100) + "%";if(progress===1)document.getElementById('loadingContainer').style.display='none'}});
         }).catch(error=>{
-            document.getElementById('loadingText').textContent="Could not download " + error.message + ". Check that raw.githubusercontent.com is allowed, then reload to retry.";
+            document.getElementById('loadingText').textContent="Could not download " + error.message + ". Reload to retry.";
             document.querySelector('.spinner').style.display='none';
             console.error(error);
         });
