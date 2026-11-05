@@ -215,25 +215,45 @@
             { name: "angry.wasm.framework.unityweb", parts: 1 },
             { name: "angry.json", parts: 1 }
         ];
-        let totalFiles = 0;
+        const totalFiles = filesConfig.reduce((sum, config) => sum + config.parts, 0);
         let loadedFiles = 0;
-        let fetchPromises = filesConfig.map(config => {
-            let partPromises = [];
-            for (let i = 0; i < config.parts; i++) {
-                let partName = config.parts > 1 ? config.name + i.toString().padStart(2, '0') : config.name;
-                totalFiles++;
-                partPromises.push(
-                    fetch(baseUrl + "Build/" + partName)
-                        .then(res => { if (!res.ok) throw new Error("Game file HTTP " + res.status); return res.arrayBuffer(); })
-                        .then(buf => {
-                            loadedFiles++;
-                            let p = Math.floor((loadedFiles / totalFiles) * 100);
-                            document.getElementById('loadingText').innerText = "Loading... " + p + "%";
-                            return new Uint8Array(buf);
-                        })
-                );
+        async function fetchGameFile(name) {
+            for (let attempt = 1; attempt <= 3; attempt++) {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 90000);
+                try {
+                    const response = await fetch(baseUrl + "Build/" + name, {signal: controller.signal});
+                    if (!response.ok) throw new Error("HTTP " + response.status);
+                    const data = await response.arrayBuffer();
+                    if (!data.byteLength) throw new Error("Empty download");
+                    return data;
+                } catch (error) {
+                    if (attempt === 3) throw new Error(name + ": " + (error.name === 'AbortError' ? 'download timed out' : error.message));
+                    document.getElementById('loadingText').textContent = "Retrying " + name + " (" + attempt + "/2)...";
+                    await new Promise(resolve => setTimeout(resolve, attempt * 1000));
+                } finally {
+                    clearTimeout(timeout);
+                }
             }
-            return Promise.all(partPromises).then(arrays => {
+        }
+        async function preloadGameFiles() {
+          // Process one file group at a time, with at most three parts in flight.
+          for (const config of filesConfig) {
+            const arrays = new Array(config.parts);
+            let nextPart = 0;
+            async function worker() {
+              while (nextPart < config.parts) {
+                const i = nextPart++;
+                const partName = config.parts > 1 ? config.name + i.toString().padStart(2, '0') : config.name;
+                arrays[i] = new Uint8Array(await fetchGameFile(partName));
+                loadedFiles++;
+                document.getElementById('loadingText').textContent = "Loading... " + Math.floor(loadedFiles / totalFiles * 100) + "%";
+              }
+            }
+            // Let active workers finish before displaying a terminal error.
+            const results = await Promise.allSettled(Array.from({length: Math.min(3, config.parts)}, worker));
+            const failure = results.find(result => result.status === 'rejected');
+            if (failure) throw failure.reason;
                 if (arrays.length === 1) {
                     preloadedFiles[config.name] = arrays[0];
                 } else {
@@ -246,17 +266,20 @@
                     }
                     preloadedFiles[config.name] = merged;
                 }
-            });
-        });
-        Promise.all(fetchPromises).then(async () => {
-            const response = await fetch(baseUrl + "Build/UnityLoader.js");
-            if (!response.ok) throw new Error("Unity loader HTTP " + response.status);
-            const scriptUrl = URL.createObjectURL(new Blob([await response.text()], {type:"application/javascript"}));
+          }
+        }
+        preloadGameFiles().then(async () => {
+            const loader = await fetchGameFile("UnityLoader.js");
+            const scriptUrl = URL.createObjectURL(new Blob([loader], {type:"application/javascript"}));
             const script = document.createElement('script');
             await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=()=>reject(new Error("Unity loader unavailable"));script.src=scriptUrl;document.body.appendChild(script)});
             URL.revokeObjectURL(scriptUrl);
             window.unityInstance = UnityLoader.instantiate("unityContainer", baseUrl + "Build/angry.json", {onProgress:(instance,progress)=>{document.getElementById('loadingText').textContent="Starting game... " + Math.round(progress*100) + "%";if(progress===1)document.getElementById('loadingContainer').style.display='none'}});
-        }).catch(error=>{document.getElementById('loadingText').textContent="Game files could not load. Reload to try again.";console.error(error)});
+        }).catch(error=>{
+            document.getElementById('loadingText').textContent="Could not download " + error.message + ". Check that raw.githubusercontent.com is allowed, then reload to retry.";
+            document.querySelector('.spinner').style.display='none';
+            console.error(error);
+        });
     </script>
 </body>
 
