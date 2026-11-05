@@ -83,6 +83,8 @@ jobs:
           touch site/.nojekyll
       - name: Prepare pinned Angry Birds runtime
         run: python3 .github/scripts/prepare-angry-birds.py site/files/games/angry-birds-2/Build
+      - name: Include shared online counter
+        run: python3 .github/scripts/add-presence.py site
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

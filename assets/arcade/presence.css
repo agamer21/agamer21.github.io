@@ -1,0 +1,5 @@
+.arcade-online{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font:500 12px/1.25 system-ui,sans-serif;color:inherit;border:1px solid currentColor;border-color:color-mix(in srgb,currentColor 22%,transparent);border-radius:999px;padding:7px 10px;opacity:.85}
+.arcade-online::before{content:"";width:6px;height:6px;border-radius:50%;background:#90959e;flex:none}
+.arcade-online[data-connected="true"]::before{background:#5ed58b;box-shadow:0 0 7px #5ed58b55}
+.arcade-online-floating{position:fixed;top:10px;right:12px;z-index:1000;background:#111b;backdrop-filter:blur(8px);color:#fff}
+@media(max-width:600px){.header-actions{flex-wrap:wrap;justify-content:flex-end}.arcade-online{font-size:11px;padding:6px 8px}.player-header{flex-wrap:wrap}.arcade-online-floating{top:6px;right:6px}}
