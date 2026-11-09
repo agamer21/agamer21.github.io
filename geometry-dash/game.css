@@ -92,3 +92,6 @@ footer { margin-top: 16px; font-size: .75rem; }
 .side-link-dialog form, .side-link-dialog label { display: grid; gap: 8px; }
 .side-link-dialog h2, .side-link-dialog p { margin: 0; }
 .side-link-dialog input { width: 100%; padding: 8px; font: inherit; }
+
+.player-tools .resource-download { padding: 9px 15px; border: 1px solid #7095b8; border-radius: 8px; background: #17334d; color: inherit; font-weight: 750; }
+.player-tools .resource-download:hover { background: #22496c; text-decoration: none; }

@@ -175,3 +175,7 @@ Both Geometry Dash pages have fullscreen and an editable side link saved in brow
 ### Geometry Dash ZIP import
 
 The preview accepts a local ZIP of the Steam Resources folder as well as the folder itself. It reads the ZIP directory, validates and extracts only the expected game files, and reuses the existing browser cache. The ZIP stays on the user's device.
+
+### Geometry Dash release link
+
+The preview has a permanent Download Resources control beside the fullscreen button. It opens the existing arcade-downloads GitHub release page. The player accepts ZIPs selected locally by the visitor.
