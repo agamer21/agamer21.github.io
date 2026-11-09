@@ -41,8 +41,10 @@
         background: #050505;
       }
       canvas {
-        width: 100vw;
-        height: 100vh;
+        width: 960px;
+        height: 720px;
+        max-width: 98vw;
+        max-height: 96vh;
         outline: none;
       }
     </style>
@@ -88,8 +90,10 @@
         },
         canvas: (function() {
           var canvas = document.getElementById('canvas');
-          canvas.width = window.innerWidth; // Todo: how to do this from c++
-          canvas.height = window.innerHeight;
+          canvas.width = 960;
+          canvas.height = 720;
+          canvas.style.width = canvas.width + 'px';
+          canvas.style.height = canvas.height + 'px';
           canvas.addEventListener("webglcontextlost", function(e) {
             alert('WebGL context lost. You will need to reload the page.');
             e.preventDefault();
