@@ -13,6 +13,25 @@ const change = document.querySelector("#change");
 const status = document.querySelector("#status");
 const game = document.querySelector("#game");
 const dataPath = "https://cdn.emulatorjs.org/nightly/data/";
+const maxWholeFileRead = 0x7fffffff;
+
+// Chromium rejects a single Blob read above 2 GiB. EmulatorJS still needs one buffer.
+async function readLargeGame(file) {
+  try {
+    const bytes = new Uint8Array(file.size);
+    const chunkSize = 32 * 1024 * 1024;
+    for (let offset = 0; offset < file.size; offset += chunkSize) {
+      const chunk = await file.slice(offset, offset + chunkSize).arrayBuffer();
+      bytes.set(new Uint8Array(chunk), offset);
+      status.textContent = `Reading game file… ${Math.floor(100 * Math.min(file.size, offset + chunkSize) / file.size)}%`;
+    }
+    status.textContent = "Starting the 3DS emulator…";
+    return bytes.buffer;
+  } catch (error) {
+    status.textContent = "This browser could not read the game file. Try closing other tabs or using a smaller dump.";
+    throw error;
+  }
+}
 
 async function preparePlayer() {
   if (crossOriginIsolated && typeof SharedArrayBuffer === "function") {
@@ -35,12 +54,15 @@ async function preparePlayer() {
 rom.addEventListener("change", () => {
   const file = rom.files[0];
   if (!file) return;
-  if (!file.size || !/\.(cci|3ds|cxi)$/i.test(file.name)) {
-    status.textContent = "Choose a nonempty, decrypted .cci, .3ds, or .cxi game file.";
+  if (!file.size || !/\.(cci|3ds|cxi|zcxi)$/i.test(file.name)) {
+    status.textContent = "Choose a nonempty, decrypted .cci, .3ds, .cxi, or .zcxi game file.";
     rom.value = "";
     return;
   }
   const gameFile = /\.3ds$/i.test(file.name) ? new File([file], file.name.replace(/\.3ds$/i, ".cci")) : file;
+  if (gameFile.size > maxWholeFileRead) {
+    gameFile.arrayBuffer = () => readLargeGame(gameFile);
+  }
   chooser.hidden = true;
   game.hidden = false;
   change.hidden = false;
