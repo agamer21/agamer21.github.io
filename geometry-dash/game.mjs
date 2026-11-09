@@ -1,3 +1,4 @@
+import { readResourceZip } from './resource-zip.mjs';
 import { extraButtons, localResources, menuButtons } from './menu.mjs';
 import { levels, playable, readProfile, recallResources, rememberResources, saveProfile, saveRun, skins, unlockScore } from './library.mjs';
 import { createRun, decodeLevel, nearby, parseLevel, STEP, stepRun } from './engine.mjs';
@@ -13,6 +14,8 @@ const message = get('message');
 const start = get('start');
 const choose = get('choose');
 const files = get('files');
+const zipInput = get('resource-zip');
+const chooseZip = get('choose-zip');
 const mute = get('mute');
 const status = get('status');
 const progress = get('progress');
@@ -96,7 +99,7 @@ const resourceNames = new Set([...commonFiles, ...menuFiles, 'menuloop.mp3', ...
 
 function requireFile(paths, path) {
   const file = paths.get(path.toLowerCase());
-  if (!file) throw new Error('Missing ' + path + '. Choose the Resources folder inside Geometry Dash.');
+  if (!file) throw new Error('Missing ' + path + '. Choose a ZIP of your Steam Resources folder or the folder itself.');
   return file;
 }
 
@@ -149,16 +152,16 @@ async function selectLevel(entry) {
   }
 }
 
-files.addEventListener('change', async () => {
-  if (!files.files.length) return;
-  const paths = new Map();
-  for (const file of files.files) {
-    const path = file.webkitRelativePath.replace(/^[^/]+\//, '').toLowerCase();
-    if (resourceNames.has(path)) paths.set(path, file);
-  }
-  choose.disabled = true;
-  status.textContent = 'Reading resources locally?';
+function setImportBusy(busy) {
+  choose.disabled = busy;
+  chooseZip.disabled = busy;
+}
+
+async function importResources(read) {
+  setImportBusy(true);
+  status.textContent = 'Reading resources locally...';
   try {
+    const paths = await read();
     await loadResources(paths);
     libraryNotice = 'Resources saved in this browser.';
     try {
@@ -170,13 +173,29 @@ files.addEventListener('change', async () => {
   } catch (error) {
     status.textContent = error.message;
   } finally {
-    choose.disabled = false;
+    setImportBusy(false);
     files.value = '';
+    zipInput.value = '';
   }
+}
+
+files.addEventListener('change', () => {
+  if (!files.files.length) return;
+  importResources(() => {
+    const paths = new Map();
+    for (const file of files.files) {
+      const path = file.webkitRelativePath.replace(/^[^/]+\//, '').toLowerCase();
+      if (resourceNames.has(path)) paths.set(path, file);
+    }
+    return paths;
+  });
+});
+zipInput.addEventListener('change', () => {
+  if (zipInput.files.length) importResources(() => readResourceZip(zipInput.files[0], resourceNames));
 });
 
 async function restoreLibrary() {
-  choose.disabled = true;
+  setImportBusy(true);
   try {
     const bundled = await localResources(resourceNames);
     if (bundled) {
@@ -193,9 +212,9 @@ async function restoreLibrary() {
     libraryNotice = 'Using the resources saved in this browser.';
     showMenu();
   } catch {
-    status.textContent = 'Saved resources could not be restored. Choose the Steam Resources folder again.';
+    status.textContent = 'Saved resources could not be restored. Choose your Steam Resources ZIP or folder again.';
   } finally {
-    choose.disabled = false;
+    setImportBusy(false);
   }
 }
 
@@ -216,6 +235,7 @@ function show(next, heading, text) {
   start.hidden = menu || next === 'import';
   start.textContent = next === 'paused' ? 'Resume' : next === 'dead' || next === 'complete' ? 'Try again' : 'Play level';
   choose.hidden = local || next !== 'import' && next !== 'menu';
+  chooseZip.hidden = choose.hidden;
   levelsButton.hidden = next !== 'levels' && next !== 'icons';
   iconsButton.hidden = levelsButton.hidden;
   home.hidden = next === 'import' || next === 'menu';
@@ -468,6 +488,7 @@ function pause() {
 start.addEventListener('click', begin);
 pauseButton.addEventListener('click', pause);
 choose.addEventListener('click', () => files.click());
+chooseZip.addEventListener('click', () => zipInput.click());
 mute.addEventListener('click', () => {
   audio.muted = !audio.muted;
   mute.textContent = audio.muted ? 'Sound off' : 'Sound on';

@@ -171,3 +171,7 @@ The Geometry Dash player links to /geometry-dash/official.html, where RobTop's o
 Experimental games appear only inside the Experimental tab after the existing confirmation. The regular views and genre selector exclude them.
 
 Both Geometry Dash pages have fullscreen and an editable side link saved in browser storage. The Steam-file preview adds restart and level selection to the pause menu, next-level navigation on completion, and a trail plus crash and clear effects. The effects setting honors reduced-motion preferences. The official demo's menus and effects are provided by RobTop.
+
+### Geometry Dash ZIP import
+
+The preview accepts a local ZIP of the Steam Resources folder as well as the folder itself. It reads the ZIP directory, validates and extracts only the expected game files, and reuses the existing browser cache. The ZIP stays on the user's device.
