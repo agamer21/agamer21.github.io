@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nintendo 3DS | AG Arcade</title>
+  <link rel="icon" href="/assets/arcade/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/arcade/arcade.css">
+  <style>
+    main { width: min(960px, calc(100% - 2rem)); margin: 1.5rem auto; }
+    label { display: block; font-weight: 700; margin-bottom: .5rem; }
+    input { max-width: 100%; font: inherit; }
+    #game:not([hidden]) { width: 100%; height: clamp(330px, 66dvh, 740px); background: #101013; }
+  </style>
+  <script type="module" src="./player.js"></script>
+</head>
+<body class="player-page">
+  <header class="player-header">
+    <a href="/#games">&larr; AG Arcade</a>
+    <h1 id="title">Nintendo 3DS</h1>
+    <button type="button" id="change" hidden>Change game file</button>
+  </header>
+  <main>
+    <section id="chooser">
+      <label for="rom">Choose a decrypted 3DS game file</label>
+      <input id="rom" type="file" accept=".cci,.3ds" disabled>
+      <p>The game file stays on your device. Browser play is experimental.</p>
+    </section>
+    <p id="status" role="status">Preparing the browser player…</p>
+    <div id="game" hidden></div>
+  </main>
+</body>
+</html>
