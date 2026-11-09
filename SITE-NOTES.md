@@ -155,3 +155,9 @@ The library row now has a red Experimental tab. First open shows a warning dialo
 /super-mario-64.html now defaults to the SM64 PC port WebGL, served from /files/load/sm64webgl/index.html (launcher-only, based on the user's Stash launcher clmario64webgl.html). Engine/art loads from jsDelivr at the pinned gh-pages commit 16642fb00ca0be7e47e838caa7b29f81259e68b7; a "Nintendo 64 version" button falls back to the existing WebRetro own-file flow (still deployed). Commits c012901, 2f7b84c and 3af6dca; Pages runs succeeded for each. Chrome checks passed: local and live wrappers reach the game frame, WebGL context created, toggle between PC port and N64 mode works, no uncaught page errors from the wrapper.
 
 Automated caveat, shared with the upstream page it was copied from: in my automated browser the emscripten canvas never settles to a rendered image (pixels stay fully black while Module.calledRun is true). The official https://notan127.github.io/SM64-PC-Port-WebGL/ behaves the same in this environment, so a real desktop browser with manual input is the reference check; automated headless verification of pixels is not claimed here. Saves persist in browser storage on the arcade origin.
+
+### 2026-11-09 Geometry Dash main menu
+
+The main menu now follows the original Icon Kit, Play and Creator layout and has separate achievements, settings and stats screens. When imported resources contain the menu atlases and music, the player uses those original files locally. Creator shows the current coverage of the editor and online features. The playable set remains six levels.
+
+REA asset inventory evidence: ev_5c0945accd763a2b46c7dbca787980656e1d266b5fcaaaecc9b73d5b2b7aa791. It inventories the original menu atlas metadata and fonts, with sprite names corroborated against the installed plist files. The recreated layout does not establish native menu parity.

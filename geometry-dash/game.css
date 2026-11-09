@@ -1,4 +1,4 @@
-﻿:root { color-scheme: dark; font-family: system-ui, sans-serif; color: #e9f4ff; background: #09101d; }
+:root { color-scheme: dark; font-family: system-ui, sans-serif; color: #e9f4ff; background: #09101d; }
 * { box-sizing: border-box; }
 body { margin: 0; }
 .bar { min-height: 60px; padding: 10px clamp(12px, 4vw, 40px); display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #2b3b55; font-weight: 800; }
@@ -47,3 +47,22 @@ footer { margin-top: 16px; font-size: .75rem; }
   .cabinet:has(.overlay[data-menu]:not([hidden])) { min-height: 410px; }
   .skin-list canvas { min-height: 0; }
 }
+
+.overlay[data-home] { background: linear-gradient(#08164a33, #0b124842); }
+.overlay[data-home] .panel { width: min(850px, 100%); border: 0; background: transparent; }
+.overlay[data-home] .tag { display: none; }
+.overlay[data-home] h1 { display: flex; justify-content: center; flex-wrap: wrap; gap: .18em; font-size: clamp(1.9rem, 6vw, 4.4rem); font-weight: 1000; text-transform: uppercase; line-height: 1; letter-spacing: -.055em; color: #ffde3e; -webkit-text-stroke: .045em #16232f; paint-order: stroke fill; text-shadow: 0 .075em #142644; }
+.overlay[data-home] h1 span + span { color: #a9f554; }
+.overlay[data-home] .actions { margin-top: 14px; }
+.overlay[data-home] .status { color: #e1eaff; text-shadow: 0 1px 2px #000; }
+.main-buttons, .extra-buttons { display: flex; justify-content: center; align-items: center; gap: clamp(4px, 4vw, 38px); }
+.sprite-button { display: grid; justify-items: center; gap: 3px; padding: 3px; background: transparent; border: 0; color: white; font-weight: 850; text-shadow: 0 2px 2px #172c6f; }
+.sprite-button:hover { background: #b9e3ff1a; transform: scale(1.06); }
+.sprite-button canvas { width: clamp(54px, 11vw, 126px); height: auto; min-height: 0; }
+.extra-buttons .sprite-button canvas { width: clamp(47px, 8vw, 72px); }
+.fallback-symbol { display: grid; place-items: center; width: clamp(48px, 10vw, 90px); aspect-ratio: 1; border-radius: 18%; color: #e8ff91; background: #188f32; border: 3px solid #95df34; box-shadow: 0 4px 0 #0c3e28; font-size: clamp(1.55rem, 5vw, 3.1rem); }
+.extra-buttons .fallback-symbol { width: clamp(35px, 7vw, 58px); font-size: clamp(1.3rem, 3vw, 2rem); background: #0e5795; border-color: #5fc5ff; }
+.extra-buttons { margin-top: 12px; }
+.achievement-list { list-style: none; margin: 0; padding: 0; }
+.achievement-list li { opacity: .66; margin: 5px; }
+.achievement-list li[data-earned=true] { color: #c8ff77; opacity: 1; }

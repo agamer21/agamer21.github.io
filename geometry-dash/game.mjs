@@ -1,3 +1,4 @@
+import { extraButtons, localResources, menuButtons } from './menu.mjs';
 import { levels, playable, readProfile, recallResources, rememberResources, saveProfile, saveRun, skins, unlockScore } from './library.mjs';
 import { createRun, decodeLevel, nearby, parseLevel, STEP, stepRun } from './engine.mjs';
 
@@ -23,12 +24,17 @@ const pauseButton = get('pause');
 const profile = readProfile();
 const audio = new Audio();
 const atlases = ['GJ_GameSheet', 'GJ_GameSheet02', 'GJ_GameSheetIcons'];
+const menuAtlases = ['GJ_GameSheet03', 'GJ_GameSheet04'];
+const menuSong = new Audio();
+menuSong.loop = true;
 let assets;
 let resources;
 let selected;
 let recorded = true;
 let selectionVersion = 0;
 let libraryNotice = '';
+let menuSongUrl;
+let local = false;
 let level;
 let run = createRun();
 let held = false;
@@ -83,7 +89,8 @@ const commonFiles = [
   'game_bg_01_001.png', 'groundsquare_01_001.png',
   ...atlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']),
 ];
-const resourceNames = new Set([...commonFiles, ...levels.flatMap(entry => [entry.path, entry.song])]);
+const menuFiles = menuAtlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']);
+const resourceNames = new Set([...commonFiles, ...menuFiles, 'menuloop.mp3', ...levels.flatMap(entry => [entry.path, entry.song])]);
 
 function requireFile(paths, path) {
   const file = paths.get(path.toLowerCase());
@@ -97,7 +104,9 @@ async function loadResources(paths) {
   find(levels[0].path);
   find(levels[0].song);
   parseLevel(await decodeLevel(await find(levels[0].path).text()));
-  const sprites = await Promise.all(atlases.map(name => readAtlas(find, name)));
+  const availableMenuAtlases = menuAtlases.filter(name =>
+    paths.has(name.toLowerCase() + '.plist') && paths.has(name.toLowerCase() + '.png'));
+  const sprites = await Promise.all([...atlases, ...availableMenuAtlases].map(name => readAtlas(find, name)));
   const nextArt = {
     frames: new Map(sprites.flatMap(sheet => [...sheet])),
     background: await createImageBitmap(find(commonFiles[0])),
@@ -107,6 +116,12 @@ async function loadResources(paths) {
   assets = nextArt;
   resources = paths;
   level = undefined;
+  menuSong.pause();
+  if (menuSongUrl) URL.revokeObjectURL(menuSongUrl);
+  const music = paths.get('menuloop.mp3');
+  menuSongUrl = music && URL.createObjectURL(music);
+  if (menuSongUrl) menuSong.src = menuSongUrl;
+  else menuSong.removeAttribute('src');
 }
 
 async function selectLevel(entry) {
@@ -161,6 +176,15 @@ files.addEventListener('change', async () => {
 async function restoreLibrary() {
   choose.disabled = true;
   try {
+    const bundled = await localResources(resourceNames);
+    if (bundled) {
+      await loadResources(bundled);
+      local = true;
+      document.querySelector('.bar a').href = 'https://agamer21.github.io/';
+      libraryNotice = 'Steam resources loaded automatically on this PC.';
+      showMenu();
+      return;
+    }
     const saved = await recallResources();
     if (!saved) return;
     await loadResources(saved);
@@ -179,27 +203,108 @@ function show(next, heading, text) {
   title.textContent = heading;
   message.textContent = text;
   overlay.hidden = next === 'playing';
-  const menu = ['menu', 'levels', 'icons'].includes(next);
+  const menu = ['menu', 'levels', 'icons', 'settings', 'stats', 'achievements', 'creator'].includes(next);
+  overlay.toggleAttribute('data-home', next === 'menu');
+  if (!menu) menuSong.pause();
   overlay.toggleAttribute('data-menu', menu);
   get('hud').hidden = menu || next === 'import' || next === 'ready';
-  menuContent.hidden = next !== 'levels' && next !== 'icons';
+  menuContent.hidden = !menu;
   menuContent.replaceChildren();
   start.hidden = menu || next === 'import';
   start.textContent = next === 'paused' ? 'Resume' : next === 'dead' || next === 'complete' ? 'Try again' : 'Play level';
-  choose.hidden = next !== 'import' && next !== 'menu';
-  levelsButton.hidden = !menu;
-  iconsButton.hidden = !menu;
+  choose.hidden = local || next !== 'import' && next !== 'menu';
+  levelsButton.hidden = next !== 'levels' && next !== 'icons';
+  iconsButton.hidden = levelsButton.hidden;
   home.hidden = next === 'import' || next === 'menu';
   pauseButton.hidden = next !== 'playing';
   status.textContent = menu ? libraryNotice : audioNotice;
+}
+
+function startMenuMusic() {
+  if (menuSongUrl && !mute.matches('[aria-pressed=true]')) menuSong.play().catch(() => {});
 }
 
 function showMenu() {
   recordResult();
   held = false;
   audio.pause();
-  const cleared = Object.values(profile.results).filter(result => result.best === 100).length;
-  show('menu', 'Geometry Dash', cleared + ' levels cleared ? ' + unlockScore(profile) + ' unlock points');
+  startMenuMusic();
+  show('menu', 'Geometry Dash', '');
+  title.replaceChildren();
+  for (const word of ['Geometry', 'Dash']) {
+    const part = document.createElement('span');
+    part.textContent = word;
+    title.append(part);
+  }
+  const actions = { icons: showIcons, levels: showLevels, creator: showCreator,
+    settings: showSettings, stats: showStats, achievements: showAchievements };
+  for (const [buttons, className] of [[menuButtons, 'main-buttons'], [extraButtons, 'extra-buttons']]) {
+    const row = document.createElement('div');
+    row.className = className;
+    for (const [key, label, sprite, fallback] of buttons) {
+      const button = document.createElement('button');
+      button.className = 'sprite-button';
+      button.type = 'button';
+      button.id = 'menu-' + key;
+      const art = document.createElement('canvas');
+      art.width = art.height = 112;
+      art.setAttribute('aria-hidden', 'true');
+      const preview = art.getContext('2d');
+      if (drawSprite(sprite, 56, 56, 1, preview)) button.append(art);
+      else {
+        const symbol = document.createElement('span');
+        symbol.className = 'fallback-symbol';
+        symbol.setAttribute('aria-hidden', 'true');
+        symbol.textContent = fallback;
+        button.append(symbol);
+      }
+      const caption = document.createElement('span');
+      caption.textContent = label;
+      button.append(caption);
+      button.addEventListener('click', () => {
+        startMenuMusic();
+        actions[key]();
+      });
+      row.append(button);
+    }
+    menuContent.append(row);
+  }
+}
+
+function showCreator() {
+  show('creator', 'Creator', 'The editor, online levels, daily levels, and lists are pending.');
+}
+
+function showSettings() {
+  show('settings', 'Settings', 'Adjust sound for the browser port.');
+  const button = rowButton('Music', audio.muted ? 'Off' : 'On');
+  button.addEventListener('click', () => {
+    mute.click();
+    showSettings();
+    menuContent.querySelector('button').focus();
+  });
+  menuContent.append(button);
+}
+
+function showStats() {
+  const results = Object.values(profile.results);
+  const completed = results.filter(result => result.best === 100).length;
+  const attempts = results.reduce((count, result) => count + result.attempts, 0);
+  const coins = results.reduce((count, result) => count + result.coins.length, 0);
+  show('stats', 'Stats', completed + ' levels cleared \u00b7 ' + attempts + ' attempts \u00b7 ' + coins + ' secret coins');
+}
+
+function showAchievements() {
+  show('achievements', 'Achievements', 'Web achievements are earned by clearing levels and collecting secret coins.');
+  const list = document.createElement('ul');
+  list.className = 'achievement-list';
+  for (const skin of skins.filter(entry => entry.goal)) {
+    const item = document.createElement('li');
+    item.textContent = skin.name + ' ? ' + skin.goal + ' points';
+    item.dataset.earned = String(unlockScore(profile) >= skin.goal);
+    list.append(item);
+  }
+  menuContent.append(list);
 }
 
 function rowButton(name, description) {
@@ -320,7 +425,9 @@ mute.addEventListener('click', () => {
   audio.muted = !audio.muted;
   mute.textContent = audio.muted ? 'Sound off' : 'Sound on';
   mute.setAttribute('aria-pressed', String(audio.muted));
-  if (!audio.muted && screen === 'playing') playAudio();
+  if (audio.muted) menuSong.pause();
+  else if (screen === 'playing') playAudio();
+  else if (overlay.hasAttribute('data-menu')) startMenuMusic();
 });
 
 const jumpCodes = new Set(['Space', 'ArrowUp', 'KeyW']);
@@ -328,7 +435,7 @@ window.addEventListener('keydown', event => {
   if (event.code === 'Escape' && !event.repeat) {
     if (screen === 'playing') pause();
     else if (screen === 'paused') begin();
-    else if (['ready', 'dead', 'complete', 'levels', 'icons'].includes(screen)) showMenu();
+    else if (['ready', 'dead', 'complete'].includes(screen) || overlay.hasAttribute('data-menu') && screen !== 'menu') showMenu();
   }
   if (event.code === 'KeyR' && ['playing', 'paused', 'ready', 'dead', 'complete'].includes(screen) && !event.repeat && !event.ctrlKey && !event.metaKey && !event.altKey) {
     screen = 'ready';
@@ -438,7 +545,15 @@ function drawObject(object, x, y, scale) {
 }
 
 function draw() {
-  if (!assets || !level || ['menu', 'levels', 'icons'].includes(screen)) {
+  if (assets && overlay.hasAttribute('data-menu')) {
+    const travel = performance.now() / 42;
+    tiled(assets.background, travel, 0, height, '#274eb2');
+    tiled(assets.ground, travel * 2, height - 86, 148, '#263789');
+    ctx.fillStyle = '#d7f3ff';
+    ctx.fillRect(0, height - 86, width, 2);
+    return;
+  }
+  if (!assets || !level) {
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
     gradient.addColorStop(0, '#163780');
     gradient.addColorStop(1, '#348dcc');
@@ -501,7 +616,7 @@ function frame(now) {
       if (run.result === 'complete') show('complete', 'Level complete', '100% Â· ' + run.coins + ' / 3 coins');
       else show('dead', 'Try again', percent + '% Â· Press Space to retry.');
     }
-  } else if (!level || screen === 'ready' || ['menu', 'levels', 'icons'].includes(screen)) {
+  } else if (!level || screen === 'ready' || overlay.hasAttribute('data-menu')) {
     draw();
   }
   requestAnimationFrame(frame);
