@@ -185,3 +185,9 @@ The preview has a permanent Download Resources control beside the fullscreen but
 The preview uses the original logo from GJ_LaunchSheet when available. The main menu includes Newgrounds, Geometry Dash news, and RobTop links. Jump taps are preserved across physics steps, and visual effects now follow recent positions and emit particles at landings, portals, and coins. Practice mode supports manual checkpoints and restores the attempt and song position on retry. Practice attempts are excluded from normal scores and unlocks.
 
 REA recorded the installed executable under evidence ev_de4453a3fa45be6ea1ece7c0514a04381b99f7c287869a3e323df4146a7a0b18. Bounded PE disassembly examined MenuLayer::init at RVA 0x4720c0 and PlayerObject::updateJump at RVA 0x4e9b80. The original title asset was identified by reference. A gravity-factor change affected two existing input replays, so the preview retains its previous coefficients pending native timing and collision comparisons. Native gameplay parity, unported menus and the other maps remain open.
+
+### Geometry Dash level selector
+
+The preview uses one level card at a time with arrows, page dots, touch swipes, stars, coins, and separate Normal and Practice progress. When the corresponding resources are imported, the selector uses the original sprite frames and bitmap title font. Selecting an available level starts it directly. The Tower page and levels with unfinished gameplay remain unavailable.
+
+Native static references include LevelSelectLayer at RVA 0x4416a0 and LevelPage::updateDynamicPage at RVA 0x443df0 in the executable bound by REA evidence ev_de4453a3fa45be6ea1ece7c0514a04381b99f7c287869a3e323df4146a7a0b18. The reconstructed layout and browser engine have remaining native parity gaps.

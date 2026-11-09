@@ -88,9 +88,11 @@ export async function rememberResources(paths) {
   });
 }
 
-export function saveRun(profile, id, percent, coins) {
+export function saveRun(profile, id, percent, coins, coinSlots) {
   const previous = profile.results[id] || { best: 0, attempts: 0, coins: [] };
   profile.results[id] = {
+    ...previous,
+    coinSlots,
     best: Math.max(previous.best, percent),
     attempts: previous.attempts + 1,
     coins: [...new Set([...previous.coins, ...coins])],
