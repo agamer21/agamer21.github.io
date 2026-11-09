@@ -19,3 +19,20 @@ html[data-theme="midnight"] .arcade-home{color:#fff;font-weight:500}html[data-th
 /* Compact, game-first library. */
 .arcade-home .arcade-header{padding-block:20px;margin-bottom:24px}.arcade-home .arcade-brand{font-size:20px;font-weight:750;letter-spacing:-.6px}.arcade-home .ag-symbol{border-radius:8px;box-shadow:none}.arcade-home .game-card{border-radius:11px;box-shadow:none}.arcade-home .game-cover{aspect-ratio:1.65!important}.arcade-home .game-cover img{width:112px;height:112px;border-radius:22px}.arcade-home .game-info{padding:16px 17px}.arcade-home .game-info h3{font-size:16px!important;letter-spacing:-.2px}.arcade-home .favorite-game{border-radius:8px;width:28px;height:28px;font-size:18px}.arcade-home .library-tabs button{border-radius:7px}.arcade-home .game-card:hover{transform:translateY(-2px);box-shadow:none}.arcade-home .arcade-footer{margin-top:32px;padding-block:22px}
 @media(max-width:650px){.arcade-home .game-cover{aspect-ratio:1.4!important}.arcade-home .game-cover img{width:94px;height:94px;border-radius:19px}.arcade-home .game-info{padding:13px}.arcade-home .game-info h3{font-size:14px!important;min-height:34px}}
+
+/* Experimental games: red tab, red genre chips and warning dialog. */
+.arcade-home .library-tabs .experimental-tab{color:#ff7b7b!important}
+.arcade-home .library-tabs .experimental-tab:hover{background:#ff5f5f26;color:#ffa3a3!important}
+.arcade-home .library-tabs button[data-view="experimental"][aria-pressed="true"]{color:#fff!important;background:#c0392b!important;text-shadow:none!important}
+.arcade-home .game-card[data-game="geometry-dash"] .game-info .genre,.arcade-home .game-card[data-game="medieval2-lab"] .game-info .genre,.arcade-home .game-card[data-game="moon-sweepers"] .game-info .genre,.arcade-home .game-card[data-game="hlm2"] .game-info .genre{color:#ff7b7b!important}
+#experimental-warning{width:min(510px,calc(100vw - 28px));max-height:calc(100vh - 40px);overflow:auto;padding:28px;border:1px solid #e2483f;border-radius:18px;background:var(--panel);color:var(--ink);box-shadow:0 25px 100px #7a161099}
+#experimental-warning::backdrop{background:#4d0d0ab9;backdrop-filter:blur(6px)}
+#experimental-warning form{float:right}
+#experimental-warning h2{margin:0 26px 14px 0;font-size:21px;letter-spacing:-.4px;color:#ff6b6b}
+#experimental-warning p{line-height:1.6;font-size:14px;color:var(--muted);margin:0 0 14px}
+#experimental-warning strong{color:var(--ink)}
+#experimental-warning .dialog-close{padding:4px 10px;font-size:24px;border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit}
+#experimental-warning #accept-experimental{display:block;width:100%;margin:4px 0 0;padding:12px 14px;border:0;border-radius:10px;background:#c0392b;color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+#experimental-warning #accept-experimental:hover{background:#d9442f}
+#experimental-warning #experimental-status{display:none}
+@media(max-width:430px){.arcade-home .library-tabs{flex-wrap:wrap}}

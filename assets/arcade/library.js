@@ -23,6 +23,11 @@ const write = (key, value) => {
 let favorites = new Set(read("agArcade.favorites.v1", [])),
   recent = read("agArcade.recent.v1", []),
   view = "all";
+const experimentalAckKey = "agArcade.experimentalAck.v1";
+let experimentalAccepted = false;
+try {
+  experimentalAccepted = localStorage.getItem(experimentalAckKey) === "1";
+} catch {}
 const search = document.querySelector("#game-search"),
   genre = document.querySelector("#game-genre"),
   grid = document.querySelector(".games-grid"),
@@ -51,6 +56,7 @@ const cards = [...grid.querySelectorAll(".game-card")].map((card, index) => {
     id,
     name,
     category,
+    experimental: category === "Experimental",
     index,
     shell,
     star,
@@ -83,28 +89,57 @@ function render() {
       c.searchText.includes(query) &&
       (!genre.value || c.category === genre.value) &&
       (view !== "favorites" || favorites.has(c.id)) &&
-      (view !== "recent" || recent.some((x) => x.id === c.id))
+      (view !== "recent" || recent.some((x) => x.id === c.id)) &&
+      (view !== "experimental" || c.experimental)
     );
     grid.appendChild(c.shell);
     if (!c.shell.hidden) count++;
   }
   result.textContent = count
-    ? `${count} ${count === 1 ? "game" : "games"}${view === "favorites" ? " in favorites" : view === "recent" ? " recently played" : ""}`
+    ? `${count} ${count === 1 ? "game" : "games"}${
+        view === "favorites"
+          ? " in favorites"
+          : view === "recent"
+            ? " recently played"
+            : view === "experimental"
+              ? " experimental — most need your own game files and none are finished"
+              : ""
+      }`
     : view === "favorites"
       ? "Tap a star to add your favorites."
       : view === "recent"
         ? "Games you open will appear here."
-        : "No matching games. Try another search.";
+        : view === "experimental"
+          ? "No experimental games match. Try another search."
+          : "No matching games. Try another search.";
   for (const b of document.querySelectorAll("[data-view]"))
     b.setAttribute("aria-pressed", String(b.dataset.view === view));
 }
 search.oninput = render;
 genre.onchange = render;
+const experimentalDialog = document.querySelector("#experimental-warning");
+function setView(next) {
+  view = next;
+  for (const b of document.querySelectorAll("[data-view]"))
+    b.setAttribute("aria-pressed", String(b.dataset.view === view));
+  render();
+}
 for (const b of document.querySelectorAll("[data-view]"))
   b.onclick = () => {
-    view = b.dataset.view;
-    render();
+    if (b.dataset.view === "experimental" && !experimentalAccepted) {
+      experimentalDialog.showModal();
+      return;
+    }
+    setView(b.dataset.view);
   };
+document.querySelector("#accept-experimental").onclick = () => {
+  experimentalAccepted = true;
+  try {
+    localStorage.setItem(experimentalAckKey, "1");
+  } catch {}
+  experimentalDialog.close();
+  setView("experimental");
+};
 window.addEventListener("pageshow", () => {
   favorites = new Set(read("agArcade.favorites.v1", []));
   recent = read("agArcade.recent.v1", []);
