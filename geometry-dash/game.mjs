@@ -22,6 +22,8 @@ const iconsButton = get('icons');
 const home = get('home');
 const pauseButton = get('pause');
 const profile = readProfile();
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const cabinet = canvas.closest('.cabinet');
 const audio = new Audio();
 const atlases = ['GJ_GameSheet', 'GJ_GameSheet02', 'GJ_GameSheetIcons'];
 const menuAtlases = ['GJ_GameSheet03', 'GJ_GameSheet04'];
@@ -200,6 +202,7 @@ async function restoreLibrary() {
 function show(next, heading, text) {
   selectionVersion++;
   screen = next;
+  cabinet.dataset.result = effectsEnabled() ? next : '';
   title.textContent = heading;
   message.textContent = text;
   overlay.hidden = next === 'playing';
@@ -208,7 +211,7 @@ function show(next, heading, text) {
   if (!menu) menuSong.pause();
   overlay.toggleAttribute('data-menu', menu);
   get('hud').hidden = menu || next === 'import' || next === 'ready';
-  menuContent.hidden = !menu;
+  menuContent.hidden = !menu && !['paused', 'dead', 'complete'].includes(next);
   menuContent.replaceChildren();
   start.hidden = menu || next === 'import';
   start.textContent = next === 'paused' ? 'Resume' : next === 'dead' || next === 'complete' ? 'Try again' : 'Play level';
@@ -218,6 +221,25 @@ function show(next, heading, text) {
   home.hidden = next === 'import' || next === 'menu';
   pauseButton.hidden = next !== 'playing';
   status.textContent = menu ? libraryNotice : audioNotice;
+  if (['paused', 'dead', 'complete'].includes(next)) {
+    const actions = document.createElement('div');
+    actions.className = 'round-actions';
+    if (next === 'paused') actions.append(actionButton('Restart', restart));
+    if (next === 'complete') {
+      const nextLevel = levels.find(entry => entry.id > selected.id && playable.has(entry.id) &&
+        resources.has(entry.path) && resources.has(entry.song));
+      if (nextLevel) actions.append(actionButton('Next level', () => {
+        showLevels();
+        selectLevel(nextLevel);
+      }));
+    }
+    actions.append(actionButton('Level selection', () => {
+      recordResult();
+      audio.pause();
+      showLevels();
+    }));
+    menuContent.append(actions);
+  }
 }
 
 function startMenuMusic() {
@@ -275,15 +297,35 @@ function showCreator() {
   show('creator', 'Creator', 'The editor, online levels, daily levels, and lists are pending.');
 }
 
+function effectsEnabled() {
+  return profile.effects !== false && !reducedMotion.matches;
+}
+
+function actionButton(label, handler) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = label;
+  button.addEventListener('click', handler);
+  return button;
+}
+
 function showSettings() {
-  show('settings', 'Settings', 'Adjust sound for the browser port.');
+  show('settings', 'Settings', 'Adjust music and visual effects.');
   const button = rowButton('Music', audio.muted ? 'Off' : 'On');
   button.addEventListener('click', () => {
     mute.click();
     showSettings();
     menuContent.querySelector('button').focus();
   });
-  menuContent.append(button);
+  const effects = rowButton('Visual effects', reducedMotion.matches ? 'Reduced motion' : effectsEnabled() ? 'On' : 'Off');
+  effects.disabled = reducedMotion.matches;
+  effects.addEventListener('click', () => {
+    profile.effects = !effectsEnabled();
+    saveProfile(profile);
+    showSettings();
+    menuContent.lastElementChild.focus();
+  });
+  menuContent.append(button, effects);
 }
 
 function showStats() {
@@ -412,6 +454,11 @@ function begin() {
   playAudio();
 }
 
+function restart() {
+  screen = 'ready';
+  begin();
+}
+
 function pause() {
   held = false;
   audio.pause();
@@ -438,8 +485,7 @@ window.addEventListener('keydown', event => {
     else if (['ready', 'dead', 'complete'].includes(screen) || overlay.hasAttribute('data-menu') && screen !== 'menu') showMenu();
   }
   if (event.code === 'KeyR' && ['playing', 'paused', 'ready', 'dead', 'complete'].includes(screen) && !event.repeat && !event.ctrlKey && !event.metaKey && !event.altKey) {
-    screen = 'ready';
-    begin();
+    restart();
   }
   if (!jumpCodes.has(event.code) || !['playing', 'paused', 'ready', 'dead', 'complete'].includes(screen) || event.target instanceof HTMLButtonElement && screen !== 'playing') return;
   event.preventDefault();
@@ -581,6 +627,13 @@ function draw() {
     drawObject(object, screenX(object.x), screenY(object.y), scale);
   }
   ctx.save();
+  if (effectsEnabled() && screen === 'playing') {
+    const y = screenY(run.y);
+    for (let dot = 1; dot <= 8; dot++) {
+      ctx.fillStyle = 'rgba(128, 233, 255,' + (0.34 / dot) + ')';
+      ctx.fillRect(anchor - 15 - dot * 10, y - run.vy * dot / 750 - 2, 9 - dot, 5);
+    }
+  }
   ctx.translate(anchor, screenY(run.y));
   ctx.rotate(-run.angle);
   ctx.scale(1, run.direction);

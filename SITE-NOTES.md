@@ -165,3 +165,9 @@ REA asset inventory evidence: ev_5c0945accd763a2b46c7dbca787980656e1d266b5fcaaae
 ### Official Stereo Madness demo
 
 The Geometry Dash player links to /geometry-dash/official.html, where RobTop's official browser demo runs in a frame. It uses RobTop's hosted build and requires no Steam file selection. The browser preview remains available separately with local Steam resources.
+
+### Experimental visibility and Geometry Dash controls
+
+Experimental games appear only inside the Experimental tab after the existing confirmation. The regular views and genre selector exclude them.
+
+Both Geometry Dash pages have fullscreen and an editable side link saved in browser storage. The Steam-file preview adds restart and level selection to the pause menu, next-level navigation on completion, and a trail plus crash and clear effects. The effects setting honors reduced-motion preferences. The official demo's menus and effects are provided by RobTop.

@@ -39,7 +39,9 @@ const cards = [...grid.querySelectorAll(".game-card")].map((card, index) => {
   const shell = document.createElement("div");
   shell.className = "game-shell";
   card.replaceWith(shell);
+  shell.hidden = category === "Experimental";
   shell.appendChild(card);
+  card.hidden = false;
   const star = document.createElement("button");
   star.className = "favorite-game";
   shell.appendChild(star);
@@ -63,7 +65,7 @@ const cards = [...grid.querySelectorAll(".game-card")].map((card, index) => {
     searchText: (name + " " + category + " " + card.querySelector("p").textContent).toLowerCase(),
   };
 });
-for (const category of [...new Set(cards.map((c) => c.category))].sort()) {
+for (const category of [...new Set(cards.filter((c) => !c.experimental).map((c) => c.category))].sort()) {
   const o = document.createElement("option");
   o.value = category;
   o.textContent = category;
@@ -87,10 +89,10 @@ function render() {
     );
     c.shell.hidden = !(
       c.searchText.includes(query) &&
-      (!genre.value || c.category === genre.value) &&
+      (view === "experimental" || !genre.value || c.category === genre.value) &&
       (view !== "favorites" || favorites.has(c.id)) &&
       (view !== "recent" || recent.some((x) => x.id === c.id)) &&
-      (view !== "experimental" || c.experimental)
+      (c.experimental === (view === "experimental"))
     );
     grid.appendChild(c.shell);
     if (!c.shell.hidden) count++;

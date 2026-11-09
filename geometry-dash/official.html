@@ -1,10 +1,11 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Official Stereo Madness Demo | AG Arcade</title>
   <link rel="stylesheet" href="game.css">
+  <script type="module" src="player-controls.mjs"></script>
 </head>
 <body>
   <header class="bar">
@@ -13,6 +14,7 @@
     <a href="https://www.geometrydash.com/game/" target="_blank" rel="noopener">Open on RobTop's site</a>
   </header>
   <main>
+    <div class="player-tools"><a data-side-link target="_blank" rel="noopener noreferrer" hidden></a><button type="button" id="edit-side-link">Set side link</button><button type="button" id="fullscreen" aria-pressed="false">Fullscreen</button></div><p id="fullscreen-status" class="status" role="status" hidden></p>
     <iframe class="official-player" src="https://www.geometrydash.com/game/" title="Official Geometry Dash browser demo" allow="autoplay; fullscreen" allowfullscreen referrerpolicy="no-referrer"></iframe>
     <p class="controls">RobTop hosts this demo. It includes Stereo Madness and runs without Steam files.</p>
   </main>
