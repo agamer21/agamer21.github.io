@@ -135,3 +135,9 @@ REA identified the installed x86-64 Windows executable. The native deep-analysis
 Verified in Chrome with original Steam resources. The catalog link, folder validation, music, pause and resume, death and retry, mute, and mobile layout worked. An accelerated touch-input replay completed the level at 100%.
 
 References: [level fields](https://github.com/gd-programming/gd.docs/blob/main/docs/resources/client/level-components/level-object.md), [frame mapping](https://gist.github.com/frqubit/39bf5e3c6a072096424d93055991d7f8), and [browser physics reference](https://github.com/padale323/gd-web-decompiled/blob/main/src/player.js).
+
+### 2026-11-08 Geometry Dash library update
+
+The public arcade page now restores the selected Steam resource files from IndexedDB after reload. The browser caches only the files recognized by the game loader. Level results, secret coins from completed attempts, and the selected cube icon are saved per browser. The six-icon kit uses web unlock points earned through level clears and unique secret coins.
+
+The catalog lists all 27 maps present in the Steam install. Stereo Madness, Back on Track, Polargeist, Dry Out, Base After Base, and Jumper are playable. The remaining entries are labeled Port pending. Yellow pads, yellow orbs and gravity portals support the expanded selection. Browser replays reached 100% in all six, and cache restore, progress and icon persistence passed. Native progression rules, physics parity, remaining modes, and later levels are still open.

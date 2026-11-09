@@ -29,3 +29,21 @@ summary { cursor: pointer; }
 footer { margin-top: 16px; font-size: .75rem; }
 [hidden] { display: none !important; }
 @media (max-width: 560px) { .cabinet { min-height: 226px; } canvas { min-height: 226px; object-fit: contain; } .panel p { font-size: .81rem; } }
+
+.bar-actions { display: flex; gap: 8px; }
+.overlay[data-menu] .panel { width: min(610px, 100%); }
+#menu-content { margin-top: 12px; }
+.menu-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; max-height: min(30vh, 240px); overflow: auto; }
+.menu-list button { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; text-align: left; }
+.menu-list button:disabled, .skin-list button:disabled { cursor: default; opacity: .58; }
+.menu-list small, .skin-list small { font-weight: 600; letter-spacing: 0; }
+.skin-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.skin-list button { display: grid; justify-items: center; gap: 5px; }
+.skin-list button[aria-pressed=true] { border-color: #c3fb79; background: #254032; }
+.skin-list canvas { width: 38px; height: 38px; }
+@media (max-width: 560px) {
+  .bar-actions { gap: 4px; }
+  .bar-actions button { padding: 6px 8px; font-size: .72rem; }
+  .cabinet:has(.overlay[data-menu]:not([hidden])) { min-height: 410px; }
+  .skin-list canvas { min-height: 0; }
+}

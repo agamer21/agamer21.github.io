@@ -11,7 +11,7 @@ const sprites = new Map([
   [15, 'rod_01_001.png'], [16, 'rod_02_001.png'], [17, 'rod_03_001.png'],
   [18, 'd_spikes_01_001.png'], [19, 'd_spikes_02_001.png'], [20, 'd_spikes_03_001.png'],
   [21, 'd_spikes_04_001.png'],
-  [39, 'spike_02_001.png'],
+  [35, 'bump_01_001.png'], [36, 'ring_01_001.png'], [39, 'spike_02_001.png'],
   [41, 'chain_01_001.png'], [54, 'pit_01_low_001.png'], [62, 'pit_02_001.png'],
   [65, 'pit_03_001.png'], [103, 'spike_03_001.png'], [142, 'secretCoin_01_001.png'],
 ]);
@@ -53,15 +53,16 @@ export function parseLevel(text) {
     return { id, x, y, rotation, flipX, flipY, rgb, duration, sprite: sprites.get(id) };
   }).filter(({ id, x, y }) => [id, x, y].every(Number.isFinite)).sort((a, b) => a.x - b.x);
   if (!header.has('kA2') || objects.length < 100 || !objects.some(o => o.id === 13)) {
-    throw new Error('levels/1.txt does not look like the Steam Stereo Madness file.');
+    throw new Error('This file does not look like a supported Steam level.');
   }
+  const maxY = objects.reduce((top, object) => Math.max(top, object.y), 0);
   const bins = new Map();
   for (const object of objects) {
     const bin = Math.floor(object.x / 60);
     if (!bins.has(bin)) bins.set(bin, []);
     bins.get(bin).push(object);
   }
-  return { objects, bins, end: objects.at(-1).x + 210, startBackground, startGround };
+  return { objects, bins, maxY, end: objects.at(-1).x + 210, startBackground, startGround };
 }
 
 export function nearby(level, min, max) {
@@ -77,7 +78,7 @@ export function nearby(level, min, max) {
 export function createRun() {
   return {
     x: 0, y: 15, vy: 0, angle: 0, grounded: true, mode: 'cube', floor: 0, ceiling: Infinity,
-    ticks: 0, result: 'running', portal: null, coins: 0, collected: [],
+    ticks: 0, result: 'running', portal: null, boost: null, direction: 1, lastHeld: false, pressedAt: -Infinity, coins: 0, collected: [],
   };
 }
 
@@ -91,11 +92,18 @@ export function stepRun(run, level, held) {
   const previousX = run.x;
   run.x += SPEED * STEP;
   run.ticks++;
+  if (held && !run.lastHeld) run.pressedAt = run.ticks;
+  run.lastHeld = held;
   const objects = nearby(level, previousX - 33, run.x + 33);
   for (const object of objects) {
-    if ((object.id === 12 || object.id === 13) && run.portal !== object &&
+    if (object.id >= 10 && object.id <= 13 && run.portal !== object &&
         overlaps(run.x, run.y, object, 21, object.rotation % 180 ? 24 : 55)) {
       run.portal = object;
+      if (object.id === 10 || object.id === 11) {
+        run.direction = object.id === 11 ? -1 : 1;
+        run.grounded = false;
+        continue;
+      }
       run.mode = object.id === 13 ? 'ship' : 'cube';
       if (run.mode === 'ship') {
         run.floor = Math.max(0, Math.round((object.y - 150) / 30) * 30);
@@ -106,6 +114,17 @@ export function stepRun(run, level, held) {
         run.ceiling = Infinity;
       }
     }
+    if (run.mode === 'cube' && run.boost !== object) {
+      const pad = object.id === 35 && overlaps(run.x, run.y, object, 21, 20);
+      const orb = object.id === 36 && run.ticks - run.pressedAt <= 9 &&
+        overlaps(run.x, run.y, object, 23, 27);
+      if (pad || orb) {
+        run.boost = object;
+        run.pressedAt = -Infinity;
+        run.vy = (pad ? 1000 : JUMP_SPEED) * run.direction;
+        run.grounded = false;
+      }
+    }
     if (object.id === 142 && !run.collected.includes(object) && overlaps(run.x, run.y, object, 23, 25)) {
       run.coins++;
       run.collected = [...run.collected, object];
@@ -113,13 +132,14 @@ export function stepRun(run, level, held) {
   }
   if (run.mode === 'cube') {
     if (run.grounded && held) {
-      run.vy = JUMP_SPEED;
+      run.vy = JUMP_SPEED * run.direction;
       run.grounded = false;
     }
-    run.vy = Math.max(-900, run.vy - GRAVITY * STEP);
+    run.vy = Math.max(-900, run.vy * run.direction - GRAVITY * STEP) * run.direction;
   } else {
-    const acceleration = held ? (run.vy < 0 ? 0.5 : 0.4) : (run.vy > 0 ? -0.48 : -0.32);
-    run.vy = Math.max(-384, Math.min(480, run.vy + GRAVITY * acceleration * STEP));
+    const velocity = run.vy * run.direction;
+    const acceleration = held ? (velocity < 0 ? 0.5 : 0.4) : (velocity > 0 ? -0.48 : -0.32);
+    run.vy = Math.max(-384, Math.min(480, velocity + GRAVITY * acceleration * STEP)) * run.direction;
   }
   run.y += run.vy * STEP;
   const half = run.mode === 'ship' ? 9 : PLAYER_HALF;
@@ -128,24 +148,29 @@ export function stepRun(run, level, held) {
   if (run.y <= run.floor + foot) {
     run.y = run.floor + foot;
     run.vy = 0;
-    run.grounded = true;
+    run.grounded = run.direction === 1;
   } else if (run.y > run.ceiling - foot) {
     run.y = run.ceiling - foot;
     run.vy = Math.min(0, run.vy);
+    run.grounded = run.direction === -1;
   }
 
   for (const object of objects) {
     if ((object.id >= 1 && object.id <= 7) || object.id === 40) {
       const edge = object.id === 40 ? 3 : 15;
       if (!overlaps(run.x, run.y, object, 15 + half, edge + foot)) continue;
-      const top = object.y + edge;
+      const center = object.y * run.direction;
+      const top = center + edge;
       const inset = run.mode === 'ship' ? 9 : 5;
-      if (run.vy <= 0 && Math.max(previousY, run.y) - inset >= top) {
-        run.y = top + foot;
+      const previous = previousY * run.direction;
+      const current = run.y * run.direction;
+      const velocity = run.vy * run.direction;
+      if (velocity <= 0 && Math.max(previous, current) - inset >= top) {
+        run.y = (top + foot) * run.direction;
         run.vy = 0;
         run.grounded = true;
-      } else if (run.mode === 'ship' && run.vy > 0 && previousY + foot <= object.y - edge + 0.1) {
-        run.y = object.y - edge - foot;
+      } else if (run.mode === 'ship' && velocity > 0 && previous + foot <= center - edge + 0.1) {
+        run.y = (center - edge - foot) * run.direction;
         run.vy = 0;
       } else if (overlaps(run.x, run.y, object, 19.5, edge + 4.5)) {
         run.result = 'dead';
@@ -163,6 +188,7 @@ export function stepRun(run, level, held) {
       }
     }
   }
+  if (run.y > level.maxY + 240) run.result = 'dead';
   if (run.mode === 'ship') run.angle = Math.atan2(run.vy, SPEED) * 0.7;
   else if (!run.grounded) run.angle -= STEP * Math.PI * 2.35;
   else run.angle = Math.round(run.angle / (Math.PI / 2)) * (Math.PI / 2);

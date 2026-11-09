@@ -1,3 +1,4 @@
+import { levels, playable, readProfile, recallResources, rememberResources, saveProfile, saveRun, skins, unlockScore } from './library.mjs';
 import { createRun, decodeLevel, nearby, parseLevel, STEP, stepRun } from './engine.mjs';
 
 const get = id => document.getElementById(id);
@@ -14,9 +15,20 @@ const files = get('files');
 const mute = get('mute');
 const status = get('status');
 const progress = get('progress');
+const menuContent = get('menu-content');
+const levelsButton = get('levels');
+const iconsButton = get('icons');
+const home = get('home');
+const pauseButton = get('pause');
+const profile = readProfile();
 const audio = new Audio();
 const atlases = ['GJ_GameSheet', 'GJ_GameSheet02', 'GJ_GameSheetIcons'];
 let assets;
+let resources;
+let selected;
+let recorded = true;
+let selectionVersion = 0;
+let libraryNotice = '';
 let level;
 let run = createRun();
 let held = false;
@@ -67,70 +79,209 @@ function releaseArt(art) {
   for (const image of [...images, art.background, art.ground]) image.close();
 }
 
-async function loadResources(list) {
-  const paths = new Map([...list].map(file => [file.webkitRelativePath.replace(/^[^/]+\//, '').toLowerCase(), file]));
-  const find = path => {
-    const file = paths.get(path.toLowerCase());
-    if (!file) throw new Error('Missing ' + path + '. Choose the Resources folder inside Geometry Dash.');
-    return file;
-  };
-  const song = find('StereoMadness.mp3');
-  const map = find('levels/1.txt');
-  const background = find('game_bg_01_001.png');
-  const ground = find('groundSquare_01_001.png');
-  for (const name of atlases) {
-    find(name + '.plist');
-    find(name + '.png');
-  }
-  const parsed = parseLevel(await decodeLevel(await map.text()));
+const commonFiles = [
+  'game_bg_01_001.png', 'groundsquare_01_001.png',
+  ...atlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']),
+];
+const resourceNames = new Set([...commonFiles, ...levels.flatMap(entry => [entry.path, entry.song])]);
+
+function requireFile(paths, path) {
+  const file = paths.get(path.toLowerCase());
+  if (!file) throw new Error('Missing ' + path + '. Choose the Resources folder inside Geometry Dash.');
+  return file;
+}
+
+async function loadResources(paths) {
+  const find = path => requireFile(paths, path);
+  commonFiles.forEach(find);
+  find(levels[0].path);
+  find(levels[0].song);
+  parseLevel(await decodeLevel(await find(levels[0].path).text()));
   const sprites = await Promise.all(atlases.map(name => readAtlas(find, name)));
   const nextArt = {
     frames: new Map(sprites.flatMap(sheet => [...sheet])),
-    background: await createImageBitmap(background),
-    ground: await createImageBitmap(ground),
+    background: await createImageBitmap(find(commonFiles[0])),
+    ground: await createImageBitmap(find(commonFiles[1])),
   };
   releaseArt(assets);
   assets = nextArt;
-  level = parsed;
-  audio.pause();
-  if (songUrl) URL.revokeObjectURL(songUrl);
-  songUrl = URL.createObjectURL(song);
-  audio.src = songUrl;
-  audioNotice = '';
-  attempt = 0;
-  run = createRun();
-  cameraY = 0;
+  resources = paths;
+  level = undefined;
+}
+
+async function selectLevel(entry) {
+  const version = ++selectionVersion;
+  try {
+    const track = requireFile(resources, entry.song);
+    const parsed = parseLevel(await decodeLevel(await requireFile(resources, entry.path).text()));
+    if (version !== selectionVersion || screen !== 'levels') return;
+    audio.pause();
+    if (songUrl) URL.revokeObjectURL(songUrl);
+    songUrl = URL.createObjectURL(track);
+    audio.src = songUrl;
+    level = parsed;
+    selected = entry;
+    audioNotice = '';
+    attempt = 0;
+    run = createRun();
+    cameraY = 0;
+    const best = profile.results[entry.id]?.best || 0;
+    show('ready', entry.name, 'Best ' + best + '% ? Press Play level to start.');
+  } catch (error) {
+    if (version === selectionVersion) status.textContent = error.message;
+  }
 }
 
 files.addEventListener('change', async () => {
   if (!files.files.length) return;
+  const paths = new Map();
+  for (const file of files.files) {
+    const path = file.webkitRelativePath.replace(/^[^/]+\//, '').toLowerCase();
+    if (resourceNames.has(path)) paths.set(path, file);
+  }
   choose.disabled = true;
-  start.disabled = true;
-  status.textContent = 'Reading level, sprites, and music locally…';
+  status.textContent = 'Reading resources locally?';
   try {
-    await loadResources(files.files);
-    show('ready', 'Stereo Madness', 'Original Steam level loaded. Press play or Space to start.');
-    status.textContent = level.objects.length.toLocaleString() + ' level objects loaded.';
+    await loadResources(paths);
+    libraryNotice = 'Resources saved in this browser.';
+    try {
+      await rememberResources(paths);
+    } catch {
+      libraryNotice = 'Resources are available for this visit. Browser storage is unavailable.';
+    }
+    showMenu();
   } catch (error) {
     status.textContent = error.message;
   } finally {
     choose.disabled = false;
-    start.disabled = false;
     files.value = '';
   }
 });
 
+async function restoreLibrary() {
+  choose.disabled = true;
+  try {
+    const saved = await recallResources();
+    if (!saved) return;
+    await loadResources(saved);
+    libraryNotice = 'Using the resources saved in this browser.';
+    showMenu();
+  } catch {
+    status.textContent = 'Saved resources could not be restored. Choose the Steam Resources folder again.';
+  } finally {
+    choose.disabled = false;
+  }
+}
+
 function show(next, heading, text) {
+  selectionVersion++;
   screen = next;
   title.textContent = heading;
   message.textContent = text;
   overlay.hidden = next === 'playing';
-  get('hud').hidden = next === 'import' || next === 'ready';
-  start.hidden = !level;
+  const menu = ['menu', 'levels', 'icons'].includes(next);
+  overlay.toggleAttribute('data-menu', menu);
+  get('hud').hidden = menu || next === 'import' || next === 'ready';
+  menuContent.hidden = next !== 'levels' && next !== 'icons';
+  menuContent.replaceChildren();
+  start.hidden = menu || next === 'import';
   start.textContent = next === 'paused' ? 'Resume' : next === 'dead' || next === 'complete' ? 'Try again' : 'Play level';
-  choose.hidden = next === 'paused';
-  status.textContent = audioNotice;
+  choose.hidden = next !== 'import' && next !== 'menu';
+  levelsButton.hidden = !menu;
+  iconsButton.hidden = !menu;
+  home.hidden = next === 'import' || next === 'menu';
+  pauseButton.hidden = next !== 'playing';
+  status.textContent = menu ? libraryNotice : audioNotice;
 }
+
+function showMenu() {
+  recordResult();
+  held = false;
+  audio.pause();
+  const cleared = Object.values(profile.results).filter(result => result.best === 100).length;
+  show('menu', 'Geometry Dash', cleared + ' levels cleared ? ' + unlockScore(profile) + ' unlock points');
+}
+
+function rowButton(name, description) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  const label = document.createElement('span');
+  label.textContent = name;
+  const detail = document.createElement('small');
+  detail.textContent = description;
+  button.append(label, detail);
+  return button;
+}
+
+function showLevels() {
+  show('levels', 'Select a level', 'Choose a level marked ready. The catalog includes the 27 maps in the Steam install.');
+  const list = document.createElement('ul');
+  list.className = 'menu-list';
+  for (const entry of levels) {
+    const result = profile.results[entry.id];
+    const available = playable.has(entry.id) && resources.has(entry.path) && resources.has(entry.song);
+    const detail = available ? (result ? result.best + '% ? ' + result.coins.length + ' coins' : 'Ready')
+      : playable.has(entry.id) ? 'Files needed' : 'Port pending';
+    const item = document.createElement('li');
+    const button = rowButton(entry.name, detail);
+    button.disabled = !available;
+    button.addEventListener('click', () => selectLevel(entry));
+    item.append(button);
+    list.append(item);
+  }
+  menuContent.append(list);
+}
+
+function cubeFrame(id, layer = '') {
+  return 'player_' + String(id).padStart(2, '0') + layer + '_001.png';
+}
+
+function showIcons() {
+  const points = unlockScore(profile);
+  show('icons', 'Icon kit', 'Earn an unlock point for each level cleared and each unique secret coin saved.');
+  const list = document.createElement('div');
+  list.className = 'skin-list';
+  for (const skin of skins) {
+    const button = rowButton(skin.name, points >= skin.goal ? 'Unlocked' : skin.goal + ' points');
+    const preview = document.createElement('canvas');
+    preview.width = 40;
+    preview.height = 40;
+    preview.setAttribute('aria-hidden', 'true');
+    const paint = preview.getContext('2d');
+    drawSprite(cubeFrame(skin.id, '_2'), 20, 20, 1, paint);
+    drawSprite(cubeFrame(skin.id), 20, 20, 1, paint);
+    button.prepend(preview);
+    button.disabled = points < skin.goal || !assets.frames.has(cubeFrame(skin.id));
+    button.setAttribute('aria-pressed', String(profile.skin === skin.id));
+    button.addEventListener('click', () => {
+      profile.skin = skin.id;
+      saveProfile(profile);
+      showIcons();
+      list.querySelector('[aria-pressed=true]')?.focus();
+    });
+    list.append(button);
+  }
+  menuContent.append(list);
+  list.querySelector('[aria-pressed=true]')?.focus({ preventScroll: true });
+}
+
+function percentComplete() {
+  return run.result === 'complete' ? 100 : Math.min(99, Math.floor(run.x / level.end * 100));
+}
+
+function recordResult() {
+  if (recorded || !selected || !level) return;
+  recorded = true;
+  const coins = run.result === 'complete' ? run.collected.map(coin => coin.x + ',' + coin.y) : [];
+  if (!saveRun(profile, selected.id, percentComplete(), coins)) {
+    libraryNotice = 'Progress is available for this visit. Browser storage is unavailable.';
+  }
+}
+
+levelsButton.addEventListener('click', showLevels);
+iconsButton.addEventListener('click', showIcons);
+home.addEventListener('click', showMenu);
+window.addEventListener('pagehide', recordResult);
 
 function playAudio() {
   audio.play().catch(() => {
@@ -140,8 +291,10 @@ function playAudio() {
 }
 
 function begin() {
-  if (!level || start.disabled) return;
+  if (!level || !['ready', 'dead', 'complete', 'paused'].includes(screen)) return;
   if (screen !== 'paused') {
+    recordResult();
+    recorded = false;
     run = createRun();
     cameraY = 0;
     audio.currentTime = 0;
@@ -157,10 +310,11 @@ function begin() {
 function pause() {
   held = false;
   audio.pause();
-  show('paused', 'Paused', 'Resume Stereo Madness or press R for a new attempt.');
+  show('paused', 'Paused', 'Resume ' + selected.name + ' or press R for a new attempt.');
 }
 
 start.addEventListener('click', begin);
+pauseButton.addEventListener('click', pause);
 choose.addEventListener('click', () => files.click());
 mute.addEventListener('click', () => {
   audio.muted = !audio.muted;
@@ -174,12 +328,13 @@ window.addEventListener('keydown', event => {
   if (event.code === 'Escape' && !event.repeat) {
     if (screen === 'playing') pause();
     else if (screen === 'paused') begin();
+    else if (['ready', 'dead', 'complete', 'levels', 'icons'].includes(screen)) showMenu();
   }
-  if (event.code === 'KeyR' && level && !event.repeat && !event.ctrlKey && !event.metaKey && !event.altKey) {
+  if (event.code === 'KeyR' && ['playing', 'paused', 'ready', 'dead', 'complete'].includes(screen) && !event.repeat && !event.ctrlKey && !event.metaKey && !event.altKey) {
     screen = 'ready';
     begin();
   }
-  if (!jumpCodes.has(event.code) || !level || event.target instanceof HTMLButtonElement && screen !== 'playing') return;
+  if (!jumpCodes.has(event.code) || !['playing', 'paused', 'ready', 'dead', 'complete'].includes(screen) || event.target instanceof HTMLButtonElement && screen !== 'playing') return;
   event.preventDefault();
   if (screen !== 'playing' && !event.repeat) begin();
   else if (screen === 'playing') held = true;
@@ -201,20 +356,20 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden && screen === 'playing') pause();
 });
 
-function drawSprite(name, x, y, scale = 1) {
+function drawSprite(name, x, y, scale = 1, paint = ctx) {
   const frame = assets.frames.get(name);
   if (!frame) return false;
   const { image, x: sx, y: sy, w, h, ox, oy, rotated } = frame;
-  ctx.save();
-  ctx.translate(x + ox * scale, y - oy * scale);
-  ctx.scale(scale, scale);
+  paint.save();
+  paint.translate(x + ox * scale, y - oy * scale);
+  paint.scale(scale, scale);
   if (rotated) {
-    ctx.rotate(-Math.PI / 2);
-    ctx.drawImage(image, sx, sy, h, w, -h / 2, -w / 2, h, w);
+    paint.rotate(-Math.PI / 2);
+    paint.drawImage(image, sx, sy, h, w, -h / 2, -w / 2, h, w);
   } else {
-    ctx.drawImage(image, sx, sy, w, h, -w / 2, -h / 2, w, h);
+    paint.drawImage(image, sx, sy, w, h, -w / 2, -h / 2, w, h);
   }
-  ctx.restore();
+  paint.restore();
   return true;
 }
 
@@ -264,8 +419,8 @@ function drawObject(object, x, y, scale) {
   ctx.translate(x, y);
   ctx.rotate(object.rotation * Math.PI / 180);
   ctx.scale(object.flipX ? -1 : 1, object.flipY ? -1 : 1);
-  if (object.id === 12 || object.id === 13) {
-    const prefix = object.id === 13 ? 'portal_04' : 'portal_03';
+  if (object.id >= 10 && object.id <= 13) {
+    const prefix = 'portal_0' + (object.id - 9);
     drawSprite(prefix + '_back_001.png', 0, 0, scale);
     drawSprite(prefix + '_front_001.png', 0, 0, scale);
   } else if (object.id === 40) {
@@ -283,7 +438,7 @@ function drawObject(object, x, y, scale) {
 }
 
 function draw() {
-  if (!assets) {
+  if (!assets || !level || ['menu', 'levels', 'icons'].includes(screen)) {
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
     gradient.addColorStop(0, '#163780');
     gradient.addColorStop(1, '#348dcc');
@@ -313,13 +468,14 @@ function draw() {
   ctx.save();
   ctx.translate(anchor, screenY(run.y));
   ctx.rotate(-run.angle);
+  ctx.scale(1, run.direction);
   if (run.mode === 'ship') {
     drawSprite('ship_01_2_001.png', 0, 4, scale);
     drawSprite('ship_01_001.png', 0, 4, scale);
-    drawSprite('player_01_001.png', 0, -6, scale * 0.5);
+    drawSprite(cubeFrame(profile.skin), 0, -6, scale * 0.5);
   } else {
-    drawSprite('player_01_2_001.png', 0, 0, scale);
-    drawSprite('player_01_001.png', 0, 0, scale);
+    drawSprite(cubeFrame(profile.skin, '_2'), 0, 0, scale);
+    drawSprite(cubeFrame(profile.skin), 0, 0, scale);
   }
   ctx.restore();
 }
@@ -334,20 +490,23 @@ function frame(now) {
     }
     const cameraTarget = run.mode === 'ship' ? run.floor + 18 : Math.max(0, run.y - 185);
     cameraY += (cameraTarget - cameraY) * 0.09;
-    const percent = Math.min(100, Math.floor(run.x / level.end * 100));
+    const percent = percentComplete();
     progress.value = percent;
     get('percent').textContent = percent + '%';
     get('attempt').textContent = 'Attempt ' + attempt;
     draw();
     if (run.result !== 'running') {
+      recordResult();
       audio.pause();
-      if (run.result === 'complete') show('complete', 'Level complete', '100% · ' + run.coins + ' / 3 coins');
-      else show('dead', 'Try again', percent + '% · Press Space to retry.');
+      if (run.result === 'complete') show('complete', 'Level complete', '100% Â· ' + run.coins + ' / 3 coins');
+      else show('dead', 'Try again', percent + '% Â· Press Space to retry.');
     }
-  } else if (!level || screen === 'ready') {
+  } else if (!level || screen === 'ready' || ['menu', 'levels', 'icons'].includes(screen)) {
     draw();
   }
   requestAnimationFrame(frame);
 }
 
 requestAnimationFrame(frame);
+
+restoreLibrary();
