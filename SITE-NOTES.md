@@ -145,3 +145,7 @@ The catalog lists all 27 maps present in the Steam install. Stereo Madness, Back
 ## 2026-11-08: Experimental category
 
 Geometry Dash, Medieval II Asset Lab, Moon Sweepers 2D and HLM2 Web now use the Experimental genre on the homepage, so the genre filter lists them together as their own category. Card destinations, icons, order and game code are unchanged. Catalog is still 21 cards.
+
+## 2026-11-08: Experimental tab and warning
+
+The library row now has a red Experimental tab. First open shows a warning dialog that must be accepted; the acceptance flag (agArcade.experimentalAck.v1) keeps future opens direct. The tab lists only Geometry Dash, Medieval II Asset Lab, Moon Sweepers 2D and HLM2 Web, their genre chips are red in every view, and the status line repeats the files/unfinished notice. Commit ca534ef; Pages run 42570230930 succeeded. Local and live Chrome checks passed: dialog blocks until accept, close-X keeps All games, accept shows the four cards, red tab/genre styling in midnight and daylight, no page errors. Live verification used a cache-refreshed fetch because GitHub Pages assets can stay cached around ten minutes; visitors may need a refresh during that window.
