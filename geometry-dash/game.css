@@ -66,3 +66,8 @@ footer { margin-top: 16px; font-size: .75rem; }
 .achievement-list { list-style: none; margin: 0; padding: 0; }
 .achievement-list li { opacity: .66; margin: 5px; }
 .achievement-list li[data-earned=true] { color: #c8ff77; opacity: 1; }
+
+.official-callout { margin: 0 0 12px; padding: 10px 14px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; border: 1px solid #3b6386; border-radius: 8px; background: #101e32; }
+.official-callout a { font-weight: 800; }
+.official-callout span { color: #adc0d6; font-size: .88rem; }
+.official-player { display: block; width: 100%; height: clamp(320px, 60vw, 580px); border: 1px solid #3b6386; border-radius: 12px; background: #000; }

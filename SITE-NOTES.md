@@ -161,3 +161,7 @@ Automated caveat, shared with the upstream page it was copied from: in my automa
 The main menu now follows the original Icon Kit, Play and Creator layout and has separate achievements, settings and stats screens. When imported resources contain the menu atlases and music, the player uses those original files locally. Creator shows the current coverage of the editor and online features. The playable set remains six levels.
 
 REA asset inventory evidence: ev_5c0945accd763a2b46c7dbca787980656e1d266b5fcaaaecc9b73d5b2b7aa791. It inventories the original menu atlas metadata and fonts, with sprite names corroborated against the installed plist files. The recreated layout does not establish native menu parity.
+
+### Official Stereo Madness demo
+
+The Geometry Dash player links to /geometry-dash/official.html, where RobTop's official browser demo runs in a frame. It uses RobTop's hosted build and requires no Steam file selection. The browser preview remains available separately with local Steam resources.
