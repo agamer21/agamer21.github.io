@@ -185,8 +185,9 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
     } else if (HAZARDS.has(object.id)) {
       const upsideDown = object.flipY !== (Math.abs(object.rotation % 360) === 180);
       const vertical = Math.abs(object.rotation % 180) === 90;
-      if (calibrated && object.id === 8) {
-        if (overlaps(run.x, run.y, object, vertical ? 21 : 18, vertical ? 18 : 21)) run.result = 'dead';
+      if (calibrated && (object.id === 8 || object.id === 39)) {
+        const halfHeight = object.id === 8 ? 21 : 17.8;
+        if (overlaps(run.x, run.y, object, vertical ? halfHeight : 18, vertical ? 18 : halfHeight)) run.result = 'dead';
         continue;
       }
       const height = object.id === 9 ? 8 : object.id === 39 ? 12 : 25;
