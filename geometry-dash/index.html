@@ -1,0 +1,43 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Play your own Stereo Madness level files in a browser reimplementation.">
+  <title>Geometry Dash | AG Arcade</title>
+  <link rel="stylesheet" href="game.css">
+  <script type="module" src="game.mjs"></script>
+</head>
+<body>
+  <header class="bar">
+    <a href="../">← AG Arcade</a>
+    <span>GEOMETRY DASH <small>WEB PREVIEW</small></span>
+    <button id="mute" type="button" aria-pressed="false">Sound on</button>
+  </header>
+  <main>
+    <section class="cabinet" aria-label="Geometry Dash player">
+      <canvas id="game" width="960" height="540" aria-label="Stereo Madness playfield"></canvas>
+      <div class="hud" hidden id="hud"><span id="attempt"></span><progress id="progress" max="100" value="0" aria-label="Level progress"></progress><span id="percent">0%</span></div>
+      <div class="overlay" id="overlay">
+        <div class="panel">
+          <p class="tag">AG ARCADE / BROWSER PORT</p>
+          <h1 id="title">Stereo Madness</h1>
+          <p id="message">Choose the Resources folder from your Steam copy of Geometry Dash to play the original level with its music. The files stay in this browser.</p>
+          <div class="actions">
+            <button type="button" id="start" hidden>Play level</button>
+            <button type="button" id="choose">Choose Resources folder</button>
+          </div>
+          <input type="file" id="files" webkitdirectory multiple hidden>
+          <p class="status" id="status" role="status"></p>
+        </div>
+      </div>
+    </section>
+    <p class="controls"><kbd>Space</kbd> / <kbd>↑</kbd> / click or touch to jump. Hold to keep jumping or fly. <kbd>Esc</kbd> pauses. <kbd>R</kbd> restarts.</p>
+    <details>
+      <summary>Find the game files</summary>
+      <p>In Steam, open Geometry Dash’s gear menu, then choose Manage → Browse local files. Select the Resources folder inside. This preview uses the original Stereo Madness level and track from that folder.</p>
+    </details>
+    <footer>Unofficial browser reimplementation. Geometry Dash by RobTop Games.</footer>
+  </main>
+</body>
+</html>

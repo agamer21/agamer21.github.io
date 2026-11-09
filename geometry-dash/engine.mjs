@@ -1,0 +1,172 @@
+const STEP = 1 / 240;
+const SPEED = 311.58;
+const GRAVITY = 3449.52;
+const JUMP_SPEED = 670.80;
+const PLAYER_HALF = 12;
+const HAZARDS = new Set([8, 9, 39, 103]);
+
+const sprites = new Map([
+  ...Array.from({ length: 7 }, (_, i) => [i + 1, 'square_0' + (i + 1) + '_001.png']),
+  [8, 'spike_01_001.png'], [9, 'pit_01_001.png'],
+  [15, 'rod_01_001.png'], [16, 'rod_02_001.png'], [17, 'rod_03_001.png'],
+  [18, 'd_spikes_01_001.png'], [19, 'd_spikes_02_001.png'], [20, 'd_spikes_03_001.png'],
+  [21, 'd_spikes_04_001.png'],
+  [39, 'spike_02_001.png'],
+  [41, 'chain_01_001.png'], [54, 'pit_01_low_001.png'], [62, 'pit_02_001.png'],
+  [65, 'pit_03_001.png'], [103, 'spike_03_001.png'], [142, 'secretCoin_01_001.png'],
+]);
+
+function pairs(value, separator = ',') {
+  const parts = value.split(separator);
+  const result = new Map();
+  for (let i = 0; i + 1 < parts.length; i += 2) result.set(parts[i], parts[i + 1]);
+  return result;
+}
+
+export async function decodeLevel(value) {
+  const normalized = value.trim().replace(/-/g, '+').replace(/_/g, '/').replace(/=+$/, '');
+  const raw = Uint8Array.from(atob(normalized), char => char.charCodeAt(0));
+  const stream = new Blob([raw]).stream().pipeThrough(new DecompressionStream('gzip'));
+  return new Response(stream).text();
+}
+
+function color(fields, keys, fallback) {
+  const channels = keys.map(key => Number(fields.get(key)));
+  return channels.every(Number.isFinite) ? channels : fallback;
+}
+
+export function parseLevel(text) {
+  const [settings, ...rows] = text.split(';');
+  const header = pairs(settings);
+  const startBackground = color(pairs(header.get('kS29') || '', '_'), ['1', '2', '3'], [40, 62, 255]);
+  const startGround = color(pairs(header.get('kS30') || '', '_'), ['1', '2', '3'], [0, 19, 200]);
+  const objects = rows.filter(row => row.trim()).map(row => {
+    const data = pairs(row);
+    const id = Number(data.get('1'));
+    const x = Number(data.get('2'));
+    const y = Number(data.get('3'));
+    const rotation = Number(data.get('6') || 0);
+    const flipX = data.get('4') === '1';
+    const flipY = data.get('5') === '1';
+    const rgb = color(data, ['7', '8', '9'], [40, 62, 255]);
+    const duration = Number(data.get('10') || 0);
+    return { id, x, y, rotation, flipX, flipY, rgb, duration, sprite: sprites.get(id) };
+  }).filter(({ id, x, y }) => [id, x, y].every(Number.isFinite)).sort((a, b) => a.x - b.x);
+  if (!header.has('kA2') || objects.length < 100 || !objects.some(o => o.id === 13)) {
+    throw new Error('levels/1.txt does not look like the Steam Stereo Madness file.');
+  }
+  const bins = new Map();
+  for (const object of objects) {
+    const bin = Math.floor(object.x / 60);
+    if (!bins.has(bin)) bins.set(bin, []);
+    bins.get(bin).push(object);
+  }
+  return { objects, bins, end: objects.at(-1).x + 210, startBackground, startGround };
+}
+
+export function nearby(level, min, max) {
+  const result = [];
+  for (let bin = Math.floor(min / 60); bin <= Math.floor(max / 60); bin++) {
+    for (const object of level.bins.get(bin) || []) {
+      if (object.x >= min && object.x <= max) result.push(object);
+    }
+  }
+  return result;
+}
+
+export function createRun() {
+  return {
+    x: 0, y: 15, vy: 0, angle: 0, grounded: true, mode: 'cube', floor: 0, ceiling: Infinity,
+    ticks: 0, result: 'running', portal: null, coins: 0, collected: [],
+  };
+}
+
+function overlaps(x, y, object, halfX, halfY) {
+  return Math.abs(x - object.x) < halfX && Math.abs(y - object.y) < halfY;
+}
+
+export function stepRun(run, level, held) {
+  if (run.result !== 'running') return;
+  const previousY = run.y;
+  const previousX = run.x;
+  run.x += SPEED * STEP;
+  run.ticks++;
+  const objects = nearby(level, previousX - 33, run.x + 33);
+  for (const object of objects) {
+    if ((object.id === 12 || object.id === 13) && run.portal !== object &&
+        overlaps(run.x, run.y, object, 21, object.rotation % 180 ? 24 : 55)) {
+      run.portal = object;
+      run.mode = object.id === 13 ? 'ship' : 'cube';
+      if (run.mode === 'ship') {
+        run.floor = Math.max(0, Math.round((object.y - 150) / 30) * 30);
+        run.ceiling = run.floor + 300;
+        run.vy *= 0.4;
+      } else {
+        run.floor = 0;
+        run.ceiling = Infinity;
+      }
+    }
+    if (object.id === 142 && !run.collected.includes(object) && overlaps(run.x, run.y, object, 23, 25)) {
+      run.coins++;
+      run.collected = [...run.collected, object];
+    }
+  }
+  if (run.mode === 'cube') {
+    if (run.grounded && held) {
+      run.vy = JUMP_SPEED;
+      run.grounded = false;
+    }
+    run.vy = Math.max(-900, run.vy - GRAVITY * STEP);
+  } else {
+    const acceleration = held ? (run.vy < 0 ? 0.5 : 0.4) : (run.vy > 0 ? -0.48 : -0.32);
+    run.vy = Math.max(-384, Math.min(480, run.vy + GRAVITY * acceleration * STEP));
+  }
+  run.y += run.vy * STEP;
+  const half = run.mode === 'ship' ? 9 : PLAYER_HALF;
+  const foot = run.mode === 'ship' ? 9 : 15;
+  run.grounded = false;
+  if (run.y <= run.floor + foot) {
+    run.y = run.floor + foot;
+    run.vy = 0;
+    run.grounded = true;
+  } else if (run.y > run.ceiling - foot) {
+    run.y = run.ceiling - foot;
+    run.vy = Math.min(0, run.vy);
+  }
+
+  for (const object of objects) {
+    if ((object.id >= 1 && object.id <= 7) || object.id === 40) {
+      const edge = object.id === 40 ? 3 : 15;
+      if (!overlaps(run.x, run.y, object, 15 + half, edge + foot)) continue;
+      const top = object.y + edge;
+      const inset = run.mode === 'ship' ? 9 : 5;
+      if (run.vy <= 0 && Math.max(previousY, run.y) - inset >= top) {
+        run.y = top + foot;
+        run.vy = 0;
+        run.grounded = true;
+      } else if (run.mode === 'ship' && run.vy > 0 && previousY + foot <= object.y - edge + 0.1) {
+        run.y = object.y - edge - foot;
+        run.vy = 0;
+      } else if (overlaps(run.x, run.y, object, 19.5, edge + 4.5)) {
+        run.result = 'dead';
+      }
+    } else if (HAZARDS.has(object.id)) {
+      const upsideDown = object.flipY !== (Math.abs(object.rotation % 360) === 180);
+      const vertical = Math.abs(object.rotation % 180) === 90;
+      const height = object.id === 9 ? 8 : object.id === 39 ? 12 : 25;
+      const extent = object.id === 9 ? 10 : half * 0.69;
+      const center = object.id === 9 ? object.y + 2 : object.y + (upsideDown ? 1 : -1) * (15 - height / 2);
+      if (vertical ? overlaps(run.x, run.y, object, 10 + extent, 8 + extent)
+        : Math.abs(run.x - object.x) < (object.id === 9 ? 11 : 6) + extent &&
+          Math.abs(run.y - center) < height / 2 + extent) {
+        run.result = 'dead';
+      }
+    }
+  }
+  if (run.mode === 'ship') run.angle = Math.atan2(run.vy, SPEED) * 0.7;
+  else if (!run.grounded) run.angle -= STEP * Math.PI * 2.35;
+  else run.angle = Math.round(run.angle / (Math.PI / 2)) * (Math.PI / 2);
+  if (run.result === 'running' && run.x >= level.end) run.result = 'complete';
+}
+
+export { STEP };

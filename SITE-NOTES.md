@@ -125,3 +125,13 @@ Publication verified 2026-11-06: root Pages run 42232458968 succeeded, serving c
 
 ## 2026-11-06: immediately playable medieval battle
 User requested no game-folder/mesh selection and a playable first milestone toward the full web port. The existing /medieval2-web/ entry now opens an original procedural 72-vs-72 battle with regiment orders, archers/melee, AI, morale/routing/rally, running/stamina, pause/speed/challenge, synthesized sound and victory/defeat/restart. Original-asset viewer preserved at /medieval2-web/lab.html as optional research tooling. The battle fetches no native data and needs no installation. Updated homepage name/description to Medieval Battle. Functional prototype commit 6a06318. Local 41 tests passed and real Chrome completed a UI-driven victory/restart, plus desktop/touch/mobile checks. Native combat/campaign parity is not established. Deployment and public verification pending.
+
+## Geometry Dash browser preview
+
+The arcade card opens the original Stereo Madness level from a user-selected Steam Resources folder. The browser reads the level, sprite atlases and track locally. The site ships only the JavaScript engine, UI and original catalog icon.
+
+REA identified the installed x86-64 Windows executable. The native deep-analysis calls did not return usable movement pseudocode during development. The player uses a fixed 240 Hz simulation with approximate cube, ship and collision behavior informed by the public web runtime reference. This preview covers one level. Native physics, visual timing and coin routes still need comparison. No account, editor or other levels are available.
+
+Verified in Chrome with original Steam resources. The catalog link, folder validation, music, pause and resume, death and retry, mute, and mobile layout worked. An accelerated touch-input replay completed the level at 100%.
+
+References: [level fields](https://github.com/gd-programming/gd.docs/blob/main/docs/resources/client/level-components/level-object.md), [frame mapping](https://gist.github.com/frqubit/39bf5e3c6a072096424d93055991d7f8), and [browser physics reference](https://github.com/padale323/gd-web-decompiled/blob/main/src/player.js).
