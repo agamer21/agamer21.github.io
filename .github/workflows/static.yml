@@ -51,6 +51,7 @@ jobs:
             /files/load/retro-bowl/
             /files/load/rbcollege/
             /files/load/webretro/index.html
+            /files/load/sm64webgl/index.html
             /files/load/webretro/assets/
             /files/load/webretro/cores/mupen64plus_next_libretro.js
             /files/load/webretro/cores/mupen64plus_next_libretro.wasm
@@ -75,7 +76,7 @@ jobs:
           cp -R moon-sweepers geometry-dash site/
           cp -R assets/arcade site/assets/
           cp -R files/drive-mad site/files/
-          cp -R files/load/retro-bowl files/load/rbcollege site/files/load/
+          cp -R files/load/retro-bowl files/load/rbcollege files/load/sm64webgl site/files/load/
           cp files/load/webretro/index.html files/load/webretro/manifest.json files/load/webretro/pwa.js files/load/webretro/pwa-sw.js site/files/load/webretro/
           cp files/load/webretro/LICENSE site/files/load/webretro/
           cp -R files/load/webretro/assets files/load/webretro/uauth files/load/webretro/info site/files/load/webretro/

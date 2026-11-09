@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#f5f3e9" />
-    <meta name="description" content="Play a Nintendo 64 game in your browser with the AG Arcade emulator. Bring your own game file." />
+    <meta name="theme-color" content="#0d121c" />
+    <meta name="description" content="Play the Super Mario 64 PC port right in your browser. WebGL, no game files needed." />
     <title>Super Mario 64 Player — AG Arcade</title>
     <link rel="icon" href="/assets/arcade/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/arcade/arcade.css" />
@@ -12,25 +12,31 @@
   <body class="player-page mario-page">
     <header class="player-header">
       <a href="/#games">&larr; AG Arcade</a>
-      <h1>Super Mario 64 <span style="font-weight:400;color:#9ba98f;font-size:10px">Nintendo 64 browser player</span></h1>
+      <h1>Super Mario 64 <span style="font-weight:400;color:#9ba98f;font-size:10px">PC port · WebGL · saves in your browser</span></h1>
       <button id="fullscreen" type="button">Fullscreen &nearr;</button>
     </header>
     <div class="mario-notice">
-      <span>The shared Super Mario 64 version loads from its external game host. Use the emulator's Save Manager to manage progress, or choose your own game file.</span>
-      <button id="own-file" class="mario-reference-link" type="button">Choose my own file</button>
+      <span>The Super Mario 64 PC port loads from its public host. WASD to move, Space to start, and check the in-page controls. Use <button id="own-file" class="mario-reference-link" type="button">Nintendo 64 version</button> to pick your own game file instead.</span>
     </div>
     <iframe
       id="game"
       class="player-frame"
-      src="/files/load/webretro/index.html?core=mupen64plus_next&amp;nobundle&amp;rom=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fbubbls%2Fclsm64%40139e09e38eb3e7783095eee30fdf75b18ee59e02%2FSuper%2520Mario%252064%2520%28USA%29.zip"
+      src="/files/load/sm64webgl/index.html"
       title="Super Mario 64 browser player"
       allow="fullscreen; autoplay; gamepad"
       allowfullscreen
     ></iframe>
     <script>
-      document.getElementById("own-file").onclick=()=>{document.getElementById("game").src="/files/load/webretro/index.html?core=mupen64plus_next&nobundle";};
+      var SM64_WEBGL_SRC = "/files/load/sm64webgl/index.html";
+      var SM64_N64_SRC = "/files/load/webretro/index.html?core=mupen64plus_next&nobundle";
+      var webglMode = true;
+      document.getElementById("own-file").onclick = function () {
+        webglMode = !webglMode;
+        document.getElementById("game").src = webglMode ? SM64_WEBGL_SRC : SM64_N64_SRC;
+        document.getElementById("own-file").textContent = webglMode ? "Nintendo 64 version" : "PC port version";
+      };
       document.getElementById("fullscreen").addEventListener("click", function () {
-        var frame = document.documentElement;
+        var frame = document.getElementById("game");
         if (frame.requestFullscreen) {
           frame.requestFullscreen().catch(function () {
             document.getElementById("fullscreen").textContent = "Fullscreen unavailable";

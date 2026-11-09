@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <base href="https://cdn.jsdelivr.net/gh/NotAn127/SM64-PC-Port-WebGL@16642fb00ca0be7e47e838caa7b29f81259e68b7/">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Super Mario 64 PC WebGL</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+      body, html{
+        margin: 0;
+        padding: 0;
+        scrollbar-width: none;
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      @media (pointer: coarse) {
+        #controls { display: none; }
+      }
+      #controls {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 14px 16px;
+        background: #0a0d14;
+        color: #b8c4d8;
+        font: 13px/1.6 system-ui, sans-serif;
+      }
+      #controls h1 { margin: 6px 0 4px; font-size: 20px; color: #f0f4fb; }
+      #controls h3 { margin: 12px 0 6px; font-size: 13px; color: #8fa0bd; text-transform: uppercase; letter-spacing: 1px; }
+      #controls li { list-style: none; padding: 2px 0; }
+      #controls ul { margin: 0; padding: 0; }
+      #controls a { color: #8fb3ff; }
+      #controls .hidden-hint { font-size: 11px; color: #55617a; }
+      #container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        background: #050505;
+      }
+      canvas {
+        width: 100vw;
+        height: 100vh;
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="controls">
+      <h3>Keyboard controls (can be changed in game)</h3>
+      <ul>
+        <li>Movement: WASD</li>
+        <li>A: L</li>
+        <li>B: ,</li>
+        <li>L: .</li>
+        <li>R: Shift</li>
+        <li>Z: K</li>
+        <li>Start: Space</li>
+        <li>C-stick: Arrow Keys</li>
+      </ul>
+      <h3>Other</h3>
+      <li>You can use a controller!</li>
+      <li><a href="https://notan127.github.io/SM64-PC-Port-WebGL/classic/" target="_blank">Click Here to Play Classic</a></li>
+      <li>Scroll down to hide these instructions and to start playing the game.</li>
+      <li>Make sure to remember these keybinds.</li>
+      <li>Press Alt + Enter anywhere to show these instructions again.</li>
+      <div class="hidden-hint">Save files live in this browser. Delete cookies or site data to reset them.</div>
+    </div>
+    <div id="container">
+      <canvas class="emscripten" id="canvas"></canvas>
+    </div>
+    <script type='text/javascript'>
+      var Module = {
+        preRun: [],
+        postRun: [],
+        print: (function() {
+          return function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            console.log(text);
+          };
+        })(),
+        printErr: function(text) {
+          if (arguments.length > 1)
+            text = Array.prototype.slice.call(arguments).join(' ');
+          console.error(text);
+        },
+        canvas: (function() {
+          var canvas = document.getElementById('canvas');
+          canvas.width = window.innerWidth; // Todo: how to do this from c++
+          canvas.height = window.innerHeight;
+          canvas.addEventListener("webglcontextlost", function(e) {
+            alert('WebGL context lost. You will need to reload the page.');
+            e.preventDefault();
+          }, false);
+          return canvas;
+        })(),
+        setStatus: function(text) {
+        }
+      };
+    </script>
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/gh/NotAn127/SM64-PC-Port-WebGL@16642fb00ca0be7e47e838caa7b29f81259e68b7/game/sm64.us.f3dex2e.js"></script>
+  </body>
+</html>
