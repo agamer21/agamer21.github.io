@@ -52,6 +52,7 @@ rom.addEventListener("change", () => {
     EJS_gameName: gameFile.name,
     EJS_pathtodata: dataPath,
     EJS_threads: true,
+    EJS_cacheConfig: { enabled: false },
     EJS_startOnLoaded: true,
     EJS_onGameStart: () => { status.textContent = ""; },
   });
