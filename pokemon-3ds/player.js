@@ -35,12 +35,12 @@ async function preparePlayer() {
 rom.addEventListener("change", () => {
   const file = rom.files[0];
   if (!file) return;
-  if (!file.size || !/\.(cci|3ds)$/i.test(file.name)) {
-    status.textContent = "Choose a nonempty, decrypted .cci or .3ds game file.";
+  if (!file.size || !/\.(cci|3ds|cxi)$/i.test(file.name)) {
+    status.textContent = "Choose a nonempty, decrypted .cci, .3ds, or .cxi game file.";
     rom.value = "";
     return;
   }
-  const gameFile = new File([file], file.name.replace(/\.(cci|3ds)$/i, ".cci"));
+  const gameFile = /\.3ds$/i.test(file.name) ? new File([file], file.name.replace(/\.3ds$/i, ".cci")) : file;
   chooser.hidden = true;
   game.hidden = false;
   change.hidden = false;
