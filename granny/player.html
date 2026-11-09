@@ -1,0 +1,19 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Granny Player</title>
+  <style>
+    body { margin: 0; background: #0b0b0d; color: white; font: 16px system-ui; }
+    canvas { display: block; width: 100%; height: 100dvh; }
+    #status { position: fixed; inset: 0; display: grid; place-content: center; text-align: center; padding: 20px; background: #0b0b0d; }
+    #status[hidden] { display: none; }
+  </style>
+  <script defer src="loader.js"></script>
+</head>
+<body>
+  <canvas id="game" tabindex="0" aria-label="Granny game"></canvas>
+  <p id="status" role="status">Loading Granny…</p>
+</body>
+</html>
