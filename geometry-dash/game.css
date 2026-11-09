@@ -95,3 +95,7 @@ footer { margin-top: 16px; font-size: .75rem; }
 
 .player-tools .resource-download { padding: 9px 15px; border: 1px solid #7095b8; border-radius: 8px; background: #17334d; color: inherit; font-weight: 750; }
 .player-tools .resource-download:hover { background: #22496c; text-decoration: none; }
+
+.overlay[data-home] .native-logo { width: min(100%, 620px); height: auto; min-height: 0; margin: .12em auto; }
+.official-menu-links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-top: 5px; }
+.official-menu-links canvas { width: clamp(50px, 7vw, 80px); height: auto; min-height: 0; }

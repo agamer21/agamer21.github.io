@@ -24,17 +24,20 @@ const levelsButton = get('levels');
 const iconsButton = get('icons');
 const home = get('home');
 const pauseButton = get('pause');
+const checkpointButton = get('checkpoint');
 const profile = readProfile();
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const cabinet = canvas.closest('.cabinet');
 const audio = new Audio();
 const atlases = ['GJ_GameSheet', 'GJ_GameSheet02', 'GJ_GameSheetIcons'];
-const menuAtlases = ['GJ_GameSheet03', 'GJ_GameSheet04'];
+const menuAtlases = ['GJ_GameSheet03', 'GJ_GameSheet04', 'GJ_LaunchSheet'];
 const menuSong = new Audio();
 menuSong.loop = true;
 let assets;
 let resources;
 let selected;
+let practice = false;
+let checkpoint;
 let recorded = true;
 let selectionVersion = 0;
 let libraryNotice = '';
@@ -43,6 +46,9 @@ let local = false;
 let level;
 let run = createRun();
 let held = false;
+let pendingPress = false;
+const trail = [];
+const sparks = [];
 let screen = 'import';
 let attempt = 0;
 let previous = 0;
@@ -141,6 +147,8 @@ async function selectLevel(entry) {
     audio.src = songUrl;
     level = parsed;
     selected = entry;
+    practice = false;
+    checkpoint = undefined;
     audioNotice = '';
     attempt = 0;
     run = createRun();
@@ -230,7 +238,7 @@ function show(next, heading, text) {
   if (!menu) menuSong.pause();
   overlay.toggleAttribute('data-menu', menu);
   get('hud').hidden = menu || next === 'import' || next === 'ready';
-  menuContent.hidden = !menu && !['paused', 'dead', 'complete'].includes(next);
+  menuContent.hidden = !menu && !['ready', 'paused', 'dead', 'complete'].includes(next);
   menuContent.replaceChildren();
   start.hidden = menu || next === 'import';
   start.textContent = next === 'paused' ? 'Resume' : next === 'dead' || next === 'complete' ? 'Try again' : 'Play level';
@@ -240,12 +248,21 @@ function show(next, heading, text) {
   iconsButton.hidden = levelsButton.hidden;
   home.hidden = next === 'import' || next === 'menu';
   pauseButton.hidden = next !== 'playing';
+  checkpointButton.hidden = next !== 'playing' || !practice;
+  checkpointButton.textContent = checkpoint ? 'Checkpoint saved' : 'Set checkpoint';
   status.textContent = menu ? libraryNotice : audioNotice;
-  if (['paused', 'dead', 'complete'].includes(next)) {
+  if (['ready', 'paused', 'dead', 'complete'].includes(next)) {
     const actions = document.createElement('div');
     actions.className = 'round-actions';
+    if (next === 'ready' || next === 'paused') {
+      actions.append(actionButton(practice ? 'Normal mode' : 'Practice mode', () => {
+        recordResult();
+        practice = !practice;
+        restart();
+      }));
+    }
     if (next === 'paused') actions.append(actionButton('Restart', restart));
-    if (next === 'complete') {
+    if (next === 'complete' && !practice) {
       const nextLevel = levels.find(entry => entry.id > selected.id && playable.has(entry.id) &&
         resources.has(entry.path) && resources.has(entry.song));
       if (nextLevel) actions.append(actionButton('Next level', () => {
@@ -272,12 +289,13 @@ function showMenu() {
   audio.pause();
   startMenuMusic();
   show('menu', 'Geometry Dash', '');
-  title.replaceChildren();
-  for (const word of ['Geometry', 'Dash']) {
-    const part = document.createElement('span');
-    part.textContent = word;
-    title.append(part);
-  }
+  const logo = document.createElement('canvas');
+  logo.width = 430;
+  logo.height = 54;
+  logo.className = 'native-logo';
+  logo.setAttribute('role', 'img');
+  logo.setAttribute('aria-label', 'Geometry Dash');
+  if (drawSprite('GJ_logo_001.png', 214, 26, 1, logo.getContext('2d'))) title.replaceChildren(logo);
   const actions = { icons: showIcons, levels: showLevels, creator: showCreator,
     settings: showSettings, stats: showStats, achievements: showAchievements };
   for (const [buttons, className] of [[menuButtons, 'main-buttons'], [extraButtons, 'extra-buttons']]) {
@@ -311,6 +329,27 @@ function showMenu() {
     }
     menuContent.append(row);
   }
+  const links = document.createElement('div');
+  links.className = 'official-menu-links';
+  for (const [name, href, sprite] of [
+    ['Newgrounds', 'https://www.newgrounds.com/audio', 'GJ_ngBtn_001.png'],
+    ['Geometry Dash news', 'https://www.geometrydash.com/', 'GJ_newsBtn_001.png'],
+    ['RobTop Games', 'https://www.robtopgames.com/', 'robtoplogo_small.png'],
+  ]) {
+    const link = document.createElement('a');
+    link.href = href;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.setAttribute('aria-label', name);
+    const art = document.createElement('canvas');
+    art.width = 108;
+    art.height = 62;
+    art.setAttribute('aria-hidden', 'true');
+    if (drawSprite(sprite, 54, 31, 1, art.getContext('2d'))) link.append(art);
+    else link.textContent = name;
+    links.append(link);
+  }
+  menuContent.append(links);
 }
 
 function showCreator() {
@@ -439,6 +478,7 @@ function percentComplete() {
 function recordResult() {
   if (recorded || !selected || !level) return;
   recorded = true;
+  if (practice) return;
   const coins = run.result === 'complete' ? run.collected.map(coin => coin.x + ',' + coin.y) : [];
   if (!saveRun(profile, selected.id, percentComplete(), coins)) {
     libraryNotice = 'Progress is available for this visit. Browser storage is unavailable.';
@@ -462,12 +502,16 @@ function begin() {
   if (screen !== 'paused') {
     recordResult();
     recorded = false;
-    run = createRun();
-    cameraY = 0;
-    audio.currentTime = 0;
+    const saved = screen === 'dead' && practice ? checkpoint : undefined;
+    run = saved ? { ...saved.run, collected: [...saved.run.collected] } : createRun();
+    trail.length = 0;
+    sparks.length = 0;
+    cameraY = saved?.cameraY ?? 0;
+    audio.currentTime = saved?.songTime ?? 0;
     attempt++;
   }
   held = false;
+  pendingPress = false;
   accumulator = 0;
   previous = 0;
   show('playing', '', '');
@@ -475,8 +519,15 @@ function begin() {
 }
 
 function restart() {
+  checkpoint = undefined;
   screen = 'ready';
   begin();
+}
+
+function placeCheckpoint() {
+  if (!practice || screen !== 'playing') return;
+  checkpoint = { run: { ...run, collected: [...run.collected] }, cameraY, songTime: audio.currentTime };
+  checkpointButton.textContent = 'Checkpoint saved';
 }
 
 function pause() {
@@ -487,6 +538,7 @@ function pause() {
 
 start.addEventListener('click', begin);
 pauseButton.addEventListener('click', pause);
+checkpointButton.addEventListener('click', placeCheckpoint);
 choose.addEventListener('click', () => files.click());
 chooseZip.addEventListener('click', () => zipInput.click());
 mute.addEventListener('click', () => {
@@ -505,13 +557,17 @@ window.addEventListener('keydown', event => {
     else if (screen === 'paused') begin();
     else if (['ready', 'dead', 'complete'].includes(screen) || overlay.hasAttribute('data-menu') && screen !== 'menu') showMenu();
   }
+  if (event.code === 'KeyZ' && !event.repeat && !event.ctrlKey && !event.metaKey && !event.altKey) placeCheckpoint();
   if (event.code === 'KeyR' && ['playing', 'paused', 'ready', 'dead', 'complete'].includes(screen) && !event.repeat && !event.ctrlKey && !event.metaKey && !event.altKey) {
     restart();
   }
   if (!jumpCodes.has(event.code) || !['playing', 'paused', 'ready', 'dead', 'complete'].includes(screen) || event.target instanceof HTMLButtonElement && screen !== 'playing') return;
   event.preventDefault();
   if (screen !== 'playing' && !event.repeat) begin();
-  else if (screen === 'playing') held = true;
+  if (screen === 'playing' && !event.repeat) {
+    pendingPress ||= !held;
+    held = true;
+  }
 });
 window.addEventListener('keyup', event => {
   if (jumpCodes.has(event.code)) held = false;
@@ -520,6 +576,7 @@ canvas.addEventListener('pointerdown', event => {
   if (screen !== 'playing' || event.button !== 0) return;
   event.preventDefault();
   canvas.setPointerCapture(event.pointerId);
+  pendingPress ||= !held;
   held = true;
 });
 for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
@@ -648,12 +705,20 @@ function draw() {
     drawObject(object, screenX(object.x), screenY(object.y), scale);
   }
   ctx.save();
-  if (effectsEnabled() && screen === 'playing') {
-    const y = screenY(run.y);
-    for (let dot = 1; dot <= 8; dot++) {
-      ctx.fillStyle = 'rgba(128, 233, 255,' + (0.34 / dot) + ')';
-      ctx.fillRect(anchor - 15 - dot * 10, y - run.vy * dot / 750 - 2, 9 - dot, 5);
+  if (effectsEnabled()) {
+    ctx.fillStyle = run.mode === 'ship' ? '#ffc358' : '#a7f5ff';
+    for (const sample of trail) {
+      const remaining = 1 - (run.ticks - sample.tick) / 36;
+      ctx.globalAlpha = Math.max(0, remaining * 0.55);
+      ctx.fillRect(screenX(sample.x) - 4, screenY(sample.y) - 3, 7 * remaining, 6 * remaining);
     }
+    ctx.fillStyle = '#f2ffb7';
+    for (const particle of sparks) {
+      const age = (run.ticks - particle.tick) / 240;
+      ctx.globalAlpha = Math.max(0, 1 - age * 3.5);
+      ctx.fillRect(screenX(particle.x + particle.vx * age), screenY(particle.y + particle.vy * age - 110 * age ** 2), 4, 4);
+    }
+    ctx.globalAlpha = 1;
   }
   ctx.translate(anchor, screenY(run.y));
   ctx.rotate(-run.angle);
@@ -674,7 +739,24 @@ function frame(now) {
     if (previous) accumulator += Math.min(0.07, (now - previous) / 1000);
     previous = now;
     while (accumulator >= STEP && run.result === 'running') {
-      stepRun(run, level, held);
+      const wasGrounded = run.grounded;
+      const portal = run.portal;
+      const coins = run.coins;
+      stepRun(run, level, held || pendingPress);
+      pendingPress = false;
+      if (effectsEnabled()) {
+        if (run.ticks % 3 === 0) {
+          trail.push({ x: run.x, y: run.y, tick: run.ticks });
+          if (trail.length > 12) trail.shift();
+        }
+        if (run.portal !== portal || run.coins !== coins || (!wasGrounded && run.grounded)) {
+          for (let ray = 0; ray < 8; ray++) {
+            const angle = ray * Math.PI / 4;
+            sparks.push({ x: run.x, y: run.y, tick: run.ticks, vx: Math.cos(angle) * 115, vy: Math.sin(angle) * 115 });
+          }
+        }
+        while (sparks.length && run.ticks - sparks[0].tick > 68) sparks.shift();
+      }
       accumulator -= STEP;
     }
     const cameraTarget = run.mode === 'ship' ? run.floor + 18 : Math.max(0, run.y - 185);
@@ -682,12 +764,12 @@ function frame(now) {
     const percent = percentComplete();
     progress.value = percent;
     get('percent').textContent = percent + '%';
-    get('attempt').textContent = 'Attempt ' + attempt;
+    get('attempt').textContent = (practice ? 'Practice ' : '') + 'Attempt ' + attempt;
     draw();
     if (run.result !== 'running') {
       recordResult();
       audio.pause();
-      if (run.result === 'complete') show('complete', 'Level complete', '100% Â· ' + run.coins + ' / 3 coins');
+      if (run.result === 'complete') show('complete', practice ? 'Practice complete' : 'Level complete', '100% Â· ' + run.coins + ' / 3 coins');
       else show('dead', 'Try again', percent + '% Â· Press Space to retry.');
     }
   } else if (!level || screen === 'ready' || overlay.hasAttribute('data-menu')) {

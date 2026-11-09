@@ -179,3 +179,9 @@ The preview accepts a local ZIP of the Steam Resources folder as well as the fol
 ### Geometry Dash release link
 
 The preview has a permanent Download Resources control beside the fullscreen button. It opens the existing arcade-downloads GitHub release page. The player accepts ZIPs selected locally by the visitor.
+
+### Geometry Dash menu, input, and practice
+
+The preview uses the original logo from GJ_LaunchSheet when available. The main menu includes Newgrounds, Geometry Dash news, and RobTop links. Jump taps are preserved across physics steps, and visual effects now follow recent positions and emit particles at landings, portals, and coins. Practice mode supports manual checkpoints and restores the attempt and song position on retry. Practice attempts are excluded from normal scores and unlocks.
+
+REA recorded the installed executable under evidence ev_de4453a3fa45be6ea1ece7c0514a04381b99f7c287869a3e323df4146a7a0b18. Bounded PE disassembly examined MenuLayer::init at RVA 0x4720c0 and PlayerObject::updateJump at RVA 0x4e9b80. The original title asset was identified by reference. A gravity-factor change affected two existing input replays, so the preview retains its previous coefficients pending native timing and collision comparisons. Native gameplay parity, unported menus and the other maps remain open.
