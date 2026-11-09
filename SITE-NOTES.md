@@ -191,3 +191,9 @@ REA recorded the installed executable under evidence ev_de4453a3fa45be6ea1ece7c0
 The preview uses one level card at a time with arrows, page dots, touch swipes, stars, coins, and separate Normal and Practice progress. When the corresponding resources are imported, the selector uses the original sprite frames and bitmap title font. Selecting an available level starts it directly. The Tower page and levels with unfinished gameplay remain unavailable.
 
 Native static references include LevelSelectLayer at RVA 0x4416a0 and LevelPage::updateDynamicPage at RVA 0x443df0 in the executable bound by REA evidence ev_de4453a3fa45be6ea1ece7c0514a04381b99f7c287869a3e323df4146a7a0b18. The reconstructed layout and browser engine have remaining native parity gaps.
+
+### Granny and Geometry Dash input
+
+Granny opens from its arcade card in an isolated Unity player. The wrapper uses the build identified in the supplied launcher, pinned to source revision 7f5d35f798453258384eefb31fc6ee3227b2fd75. It fetches the game from the source CDN. The launcher's ad scripts are omitted, and the Unity cache is disabled inside the isolated player.
+
+Geometry Dash tracks each keyboard and pointer input separately and preserves a new tap between physics ticks. The camera smoothing is consistent across display refresh rates. Landings, portals, coins, and boosts now have distinct particles, and the imported resources can provide the original death and end sounds. The existing movement coefficients are retained.

@@ -1,4 +1,4 @@
-﻿const LIMIT = 96 * 1024 * 1024;
+const LIMIT = 96 * 1024 * 1024;
 const decoder = new TextDecoder();
 const crcTable = Uint32Array.from({ length: 256 }, (_, value) => {
   for (let bit = 0; bit < 8; bit++) value = (value >>> 1) ^ (value & 1 ? 0xedb88320 : 0);
@@ -63,7 +63,7 @@ async function extract(archive, entry, directoryOffset) {
     reader.releaseLock();
   }
   if (position !== bytes.length || checksum(bytes) !== entry.crc) throw new Error('A game file in this ZIP is damaged.');
-  const type = entry.path.endsWith('.mp3') ? 'audio/mpeg' : entry.path.endsWith('.png') ? 'image/png' : 'text/plain';
+  const type = { mp3: 'audio/mpeg', ogg: 'audio/ogg', png: 'image/png' }[entry.path.split('.').at(-1)] || 'text/plain';
   return new Blob([bytes], { type });
 }
 

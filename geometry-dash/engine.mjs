@@ -86,13 +86,13 @@ function overlaps(x, y, object, halfX, halfY) {
   return Math.abs(x - object.x) < halfX && Math.abs(y - object.y) < halfY;
 }
 
-export function stepRun(run, level, held) {
+export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
   if (run.result !== 'running') return;
   const previousY = run.y;
   const previousX = run.x;
   run.x += SPEED * STEP;
   run.ticks++;
-  if (held && !run.lastHeld) run.pressedAt = run.ticks;
+  if (pressed) run.pressedAt = run.ticks;
   run.lastHeld = held;
   const objects = nearby(level, previousX - 33, run.x + 33);
   for (const object of objects) {

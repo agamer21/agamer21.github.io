@@ -48,7 +48,7 @@ let menuSongUrl;
 let local = false;
 let level;
 let run = createRun();
-let held = false;
+const jumpInputs = new Set();
 let pendingPress = false;
 const trail = [];
 const sparks = [];
@@ -97,6 +97,7 @@ function releaseArt(art) {
   if (!art) return;
   const images = new Set([...art.frames.values()].map(frame => frame.image));
   for (const image of [...images, art.background, art.ground, art.font?.image]) image?.close();
+  for (const sound of art.sounds.values()) URL.revokeObjectURL(sound);
 }
 
 const commonFiles = [
@@ -104,7 +105,8 @@ const commonFiles = [
   ...atlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']),
 ];
 const menuFiles = menuAtlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']);
-const resourceNames = new Set([...commonFiles, ...menuFiles, 'menuloop.mp3', 'bigfont.fnt', 'bigfont.png', ...levels.flatMap(entry => [entry.path, entry.song])]);
+const effectNames = { dead: 'explode_11.ogg', complete: 'endstart_02.ogg' };
+const resourceNames = new Set([...commonFiles, ...menuFiles, 'menuloop.mp3', 'bigfont.fnt', 'bigfont.png', ...Object.values(effectNames), ...levels.flatMap(entry => [entry.path, entry.song])]);
 
 function requireFile(paths, path) {
   const file = paths.get(path.toLowerCase());
@@ -159,6 +161,8 @@ async function loadResources(paths) {
   const nextArt = {
     frames: new Map(sprites.flatMap(sheet => [...sheet])),
     font: await loadSelectorFont(paths).catch(() => undefined),
+    sounds: new Map(Object.entries(effectNames).flatMap(([event, name]) =>
+      paths.has(name) ? [[event, URL.createObjectURL(paths.get(name))]] : [])),
     background: await createImageBitmap(find(commonFiles[0])),
     ground: await createImageBitmap(find(commonFiles[1])),
   };
@@ -331,7 +335,7 @@ function startMenuMusic() {
 
 function showMenu() {
   recordResult();
-  held = false;
+  jumpInputs.clear();
   audio.pause();
   startMenuMusic();
   show('menu', 'Geometry Dash', '');
@@ -569,7 +573,7 @@ function begin() {
     audio.currentTime = saved?.songTime ?? 0;
     attempt++;
   }
-  held = false;
+  jumpInputs.clear();
   pendingPress = false;
   accumulator = 0;
   previous = 0;
@@ -590,7 +594,7 @@ function placeCheckpoint() {
 }
 
 function pause() {
-  held = false;
+  jumpInputs.clear();
   audio.pause();
   show('paused', 'Paused', 'Resume ' + selected.name + ' or press R for a new attempt.');
 }
@@ -608,6 +612,12 @@ mute.addEventListener('click', () => {
   else if (screen === 'playing') playAudio();
   else if (overlay.hasAttribute('data-menu')) startMenuMusic();
 });
+
+function pressJump(input) {
+  if (jumpInputs.has(input)) return;
+  pendingPress ||= jumpInputs.size === 0;
+  jumpInputs.add(input);
+}
 
 const jumpCodes = new Set(['Space', 'ArrowUp', 'KeyW']);
 window.addEventListener('keydown', event => {
@@ -630,22 +640,20 @@ window.addEventListener('keydown', event => {
   event.preventDefault();
   if (screen !== 'playing' && !event.repeat) begin();
   if (screen === 'playing' && !event.repeat) {
-    pendingPress ||= !held;
-    held = true;
+    pressJump(event.code);
   }
 });
 window.addEventListener('keyup', event => {
-  if (jumpCodes.has(event.code)) held = false;
+  jumpInputs.delete(event.code);
 });
 canvas.addEventListener('pointerdown', event => {
   if (screen !== 'playing' || event.button !== 0) return;
   event.preventDefault();
   canvas.setPointerCapture(event.pointerId);
-  pendingPress ||= !held;
-  held = true;
+  pressJump(event.pointerId);
 });
 for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
-  canvas.addEventListener(type, () => { held = false; });
+  canvas.addEventListener(type, event => jumpInputs.delete(event.pointerId));
 }
 window.addEventListener('blur', () => { if (screen === 'playing') pause(); });
 document.addEventListener('visibilitychange', () => {
@@ -777,8 +785,8 @@ function draw() {
       ctx.globalAlpha = Math.max(0, remaining * 0.55);
       ctx.fillRect(screenX(sample.x) - 4, screenY(sample.y) - 3, 7 * remaining, 6 * remaining);
     }
-    ctx.fillStyle = '#f2ffb7';
     for (const particle of sparks) {
+      ctx.fillStyle = particle.color;
       const age = (run.ticks - particle.tick) / 240;
       ctx.globalAlpha = Math.max(0, 1 - age * 3.5);
       ctx.fillRect(screenX(particle.x + particle.vx * age), screenY(particle.y + particle.vy * age - 110 * age ** 2), 4, 4);
@@ -801,23 +809,29 @@ function draw() {
 
 function frame(now) {
   if (screen === 'playing') {
-    if (previous) accumulator += Math.min(0.07, (now - previous) / 1000);
+    const elapsed = previous ? Math.min(0.07, (now - previous) / 1000) : 0;
+    accumulator += elapsed;
     previous = now;
     while (accumulator >= STEP && run.result === 'running') {
       const wasGrounded = run.grounded;
       const portal = run.portal;
       const coins = run.coins;
-      stepRun(run, level, held || pendingPress);
+      const boost = run.boost;
+      const isHeld = jumpInputs.size > 0;
+      stepRun(run, level, isHeld || pendingPress, pendingPress || undefined);
       pendingPress = false;
       if (effectsEnabled()) {
         if (run.ticks % 3 === 0) {
           trail.push({ x: run.x, y: run.y, tick: run.ticks });
           if (trail.length > 12) trail.shift();
         }
-        if (run.portal !== portal || run.coins !== coins || (!wasGrounded && run.grounded)) {
-          for (let ray = 0; ray < 8; ray++) {
-            const angle = ray * Math.PI / 4;
-            sparks.push({ x: run.x, y: run.y, tick: run.ticks, vx: Math.cos(angle) * 115, vy: Math.sin(angle) * 115 });
+        const ring = run.portal !== portal || run.coins !== coins || run.boost !== boost;
+        if (ring || (!wasGrounded && run.grounded)) {
+          const color = run.coins !== coins ? '#ffe464' : run.portal !== portal ? '#7cffed' : '#fff3a7';
+          const count = ring ? 12 : 6;
+          for (let ray = 0; ray < count; ray++) {
+            const angle = ring ? ray * Math.PI * 2 / count : Math.PI * (0.2 + ray * 0.6 / count) * run.direction;
+            sparks.push({ x: run.x, y: run.y, tick: run.ticks, vx: Math.cos(angle) * 115, vy: Math.sin(angle) * 115, color });
           }
         }
         while (sparks.length && run.ticks - sparks[0].tick > 68) sparks.shift();
@@ -825,7 +839,7 @@ function frame(now) {
       accumulator -= STEP;
     }
     const cameraTarget = run.mode === 'ship' ? run.floor + 18 : Math.max(0, run.y - 185);
-    cameraY += (cameraTarget - cameraY) * 0.09;
+    cameraY += (cameraTarget - cameraY) * (1 - 0.91 ** (elapsed * 60));
     const percent = percentComplete();
     progress.value = percent;
     get('percent').textContent = percent + '%';
@@ -834,6 +848,8 @@ function frame(now) {
     if (run.result !== 'running') {
       recordResult();
       audio.pause();
+      const sound = assets.sounds.get(run.result);
+      if (sound && !audio.muted) new Audio(sound).play().catch(() => {});
       if (run.result === 'complete') show('complete', practice ? 'Practice complete' : 'Level complete', '100% Â· ' + run.coins + ' / 3 coins');
       else show('dead', 'Try again', percent + '% Â· Press Space to retry.');
     }
