@@ -182,7 +182,7 @@ async function selectLevel(entry, launch = false) {
   const version = ++selectionVersion;
   try {
     const track = requireFile(resources, entry.song);
-    const parsed = parseLevel(await decodeLevel(await requireFile(resources, entry.path).text()));
+    const parsed = parseLevel(await decodeLevel(await requireFile(resources, entry.path).text()), { steamCube: entry.id === 1 });
     if (version !== selectionVersion || screen !== 'levels') return;
     audio.pause();
     if (songUrl) URL.revokeObjectURL(songUrl);

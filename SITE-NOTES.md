@@ -197,3 +197,9 @@ Native static references include LevelSelectLayer at RVA 0x4416a0 and LevelPage:
 Granny opens from its arcade card in an isolated Unity player. The wrapper uses the build identified in the supplied launcher, pinned to source revision 7f5d35f798453258384eefb31fc6ee3227b2fd75. It fetches the game from the source CDN. The launcher's ad scripts are omitted, and the Unity cache is disabled inside the isolated player.
 
 Geometry Dash tracks each keyboard and pointer input separately and preserves a new tap between physics ticks. The camera smoothing is consistent across display refresh rates. Landings, portals, coins, and boosts now have distinct particles, and the imported resources can provide the original death and end sounds. The existing movement coefficients are retained.
+
+### Stereo Madness native cube comparison
+
+A locally instrumented Steam run sampled the player position at each physics update and isolated game input to the replay. With the same 391 inputs, the previous browser model cleared the first spike while the native game hit it. The updated model uses the measured Stereo Madness cube launch speed, gravity, horizontal float precision, and standard spike overlap. The two traces now agree on horizontal position and the first collision tick. Relative vertical position differs by less than 0.00001 game units in that sample.
+
+The change is scoped to Stereo Madness cube gameplay because applying the same coefficients globally exposed compatibility gaps in other levels. Chrome verified the first collision and cleared all six browser levels with completion routes. Full native playthrough, ship, other collisions, and rendered audio and video parity remain open. Original save hashes matched before and after the native runs.

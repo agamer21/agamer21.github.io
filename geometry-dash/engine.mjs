@@ -2,6 +2,8 @@ const STEP = 1 / 240;
 const SPEED = 311.58;
 const GRAVITY = 3449.52;
 const JUMP_SPEED = 670.80;
+// Measured from the Steam Stereo Madness trace at 240 physics steps per second.
+const STEREO_CUBE = { stepX: 1.298250436782837, gravity: 2799.36, jumpSpeed: 603.72 };
 const PLAYER_HALF = 12;
 const HAZARDS = new Set([8, 9, 39, 103]);
 
@@ -35,7 +37,7 @@ function color(fields, keys, fallback) {
   return channels.every(Number.isFinite) ? channels : fallback;
 }
 
-export function parseLevel(text) {
+export function parseLevel(text, { steamCube = false } = {}) {
   const [settings, ...rows] = text.split(';');
   const header = pairs(settings);
   const startBackground = color(pairs(header.get('kS29') || '', '_'), ['1', '2', '3'], [40, 62, 255]);
@@ -62,7 +64,7 @@ export function parseLevel(text) {
     if (!bins.has(bin)) bins.set(bin, []);
     bins.get(bin).push(object);
   }
-  return { objects, bins, maxY, end: objects.at(-1).x + 210, startBackground, startGround };
+  return { objects, bins, maxY, steamCube, end: objects.at(-1).x + 210, startBackground, startGround };
 }
 
 export function nearby(level, min, max) {
@@ -90,7 +92,8 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
   if (run.result !== 'running') return;
   const previousY = run.y;
   const previousX = run.x;
-  run.x += SPEED * STEP;
+  const nativeCube = level.steamCube && run.mode === 'cube';
+  run.x = nativeCube ? Math.fround(run.x + STEREO_CUBE.stepX) : run.x + SPEED * STEP;
   run.ticks++;
   if (pressed) run.pressedAt = run.ticks;
   run.lastHeld = held;
@@ -130,18 +133,22 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
       run.collected = [...run.collected, object];
     }
   }
+  const jumping = run.mode === 'cube' && run.grounded && held;
+  const calibrated = level.steamCube && run.mode === 'cube';
+  const cubeGravity = calibrated ? STEREO_CUBE.gravity : GRAVITY;
   if (run.mode === 'cube') {
-    if (run.grounded && held) {
-      run.vy = JUMP_SPEED * run.direction;
+    if (jumping) {
+      run.vy = (calibrated ? STEREO_CUBE.jumpSpeed : JUMP_SPEED) * run.direction;
       run.grounded = false;
     }
-    run.vy = Math.max(-900, run.vy * run.direction - GRAVITY * STEP) * run.direction;
+    run.vy = Math.max(-900, run.vy * run.direction - cubeGravity * STEP) * run.direction;
   } else {
     const velocity = run.vy * run.direction;
     const acceleration = held ? (velocity < 0 ? 0.5 : 0.4) : (velocity > 0 ? -0.48 : -0.32);
     run.vy = Math.max(-384, Math.min(480, velocity + GRAVITY * acceleration * STEP)) * run.direction;
   }
-  run.y += run.vy * STEP;
+  const jumpTickOffset = calibrated && jumping ? cubeGravity * STEP * run.direction : 0;
+  run.y += (run.vy + jumpTickOffset) * STEP;
   const half = run.mode === 'ship' ? 9 : PLAYER_HALF;
   const foot = run.mode === 'ship' ? 9 : 15;
   run.grounded = false;
@@ -178,6 +185,10 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
     } else if (HAZARDS.has(object.id)) {
       const upsideDown = object.flipY !== (Math.abs(object.rotation % 360) === 180);
       const vertical = Math.abs(object.rotation % 180) === 90;
+      if (calibrated && object.id === 8) {
+        if (overlaps(run.x, run.y, object, vertical ? 21 : 18, vertical ? 18 : 21)) run.result = 'dead';
+        continue;
+      }
       const height = object.id === 9 ? 8 : object.id === 39 ? 12 : 25;
       const extent = object.id === 9 ? 10 : half * 0.69;
       const center = object.id === 9 ? object.y + 2 : object.y + (upsideDown ? 1 : -1) * (15 - height / 2);
