@@ -130,7 +130,7 @@ footer { margin-top: 16px; font-size: .75rem; }
 .selector-dot::before { content: ""; position: absolute; inset: 7px auto auto 50%; width: 7px; height: 7px; border-radius: 50%; background: #a1b0cb; transform: translateX(-50%); }
 .selector-dot[aria-current]::before { background: white; box-shadow: 0 0 5px #fff9; }
 .selector-detail { font-size: .82rem; }
-@media (max-width: 560px) { .cabinet:has(.overlay[data-selector]:not([hidden])) { min-height: 320px; } .selector-level-label { min-height: 42px; } .selector-level-label > canvas { max-width: 34px; } .selector-coins canvas { width: 22px; } }
+@media (max-width: 560px) { .cabinet:has(.overlay[data-selector]:not([hidden])) { min-height: 320px; } .selector-level-label { min-height: 42px; } .selector-level-label > .selector-art { max-width: 34px; } .selector-coins canvas { width: 22px; } }
 
 .overlay[data-selector] #status.selector-error { display: block; position: absolute; inset: auto 14px 24px; z-index: 1; color: #fff; background: #641d2e; border-radius: 7px; padding: 6px; }
 
