@@ -213,3 +213,8 @@ The 3DS cards fetch their selected executable from https://roms.agamer21.kozow.c
 The deployment applies the shared theme preference to game wrapper headers, including Geometry Dash, Granny, and the 3DS player. Geometry Dash ignores game hotkeys while a text or selection control has focus.
 
 Granny now uses the build referenced by the source launcher, pinned at e9ba6903f7e1d942cdabfdabb2b0dd491ccebec8. Its assets are served by the home HTTPS endpoint with JavaScript MIME headers, including streaming audio, after the upstream CDN returned HTTP 403.
+
+
+## 2026-11-10: Bloons TD 6 tutorial
+
+Added a Strategy card for the welcome intro and Monkey Meadow rounds 1?10 at /bloons-td6.html. The page embeds its terrain, text, and native Dart Monkey/Quincy animation frames. The Pages sparse checkout and staging command include the new page. This release covers the tutorial. Native wave timings, combat tuning, camera, audio, and further game content remain open.
