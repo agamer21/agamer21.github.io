@@ -135,3 +135,26 @@ footer { margin-top: 16px; font-size: .75rem; }
 .overlay[data-selector] #status.selector-error { display: block; position: absolute; inset: auto 14px 24px; z-index: 1; color: #fff; background: #641d2e; border-radius: 7px; padding: 6px; }
 
 .selector-bitmap-title { display: block; width: auto; max-width: 76%; height: auto; min-height: 0; max-height: clamp(22px, 5vw, 48px); object-fit: contain; }
+
+.overlay[data-home] { padding: 0; background: transparent; overflow: hidden; }
+.overlay[data-home] .panel { position: relative; width: 100%; height: 100%; padding: 0; border-radius: 0; }
+.overlay[data-home] h1 { position: absolute; top: 15%; left: 14%; width: 72%; margin: 0; }
+.overlay[data-home] .native-logo { width: 100%; min-height: 0; }
+.overlay[data-home] #menu-content { position: absolute; inset: 0; margin: 0; pointer-events: none; }
+.overlay[data-home] #menu-content :is(button, a) { pointer-events: auto; }
+.overlay[data-home] .main-buttons { position: absolute; top: 37%; left: 20%; width: 60%; height: 29%; gap: 8%; }
+.overlay[data-home] .main-buttons .sprite-button { width: 26%; padding: 0; }
+.overlay[data-home] .main-buttons #menu-levels { width: 34%; }
+.overlay[data-home] .sprite-button canvas { width: 100%; }
+.overlay[data-home] .sprite-caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.overlay[data-home] .extra-buttons { position: absolute; bottom: 3%; left: 35%; width: 30%; height: 14%; margin: 0; gap: 10%; }
+.overlay[data-home] .extra-buttons .sprite-button { width: 26%; padding: 0; }
+.overlay[data-home] .official-menu-links { position: absolute; bottom: 2%; left: 2%; width: 26%; margin: 0; gap: 3%; }
+.overlay[data-home] .official-menu-links a { width: 31%; }
+.overlay[data-home] .official-menu-links canvas { width: 100%; min-height: 0; }
+.overlay[data-home] .actions { position: absolute; top: 2%; right: 2%; margin: 0; }
+.overlay[data-home] .actions button { font-size: .65rem; padding: 3px 5px; }
+.overlay[data-home] #status { position: absolute; bottom: 20%; left: 10%; width: 80%; }
+@media (max-width: 560px) {
+  .cabinet:has(.overlay[data-home]:not([hidden])) { min-height: 226px; }
+}

@@ -52,6 +52,8 @@ const jumpInputs = new Set();
 let pendingPress = false;
 const trail = [];
 const sparks = [];
+const dragParticles = [];
+let dragEmission = 0;
 let screen = 'import';
 let attempt = 0;
 let previous = 0;
@@ -96,7 +98,7 @@ async function readAtlas(find, name) {
 function releaseArt(art) {
   if (!art) return;
   const images = new Set([...art.frames.values()].map(frame => frame.image));
-  for (const image of [...images, art.background, art.ground, art.font?.image]) image?.close();
+  for (const image of [...images, art.background, art.ground, art.font?.image, art.particle]) image?.close();
   for (const sound of art.sounds.values()) URL.revokeObjectURL(sound);
 }
 
@@ -106,7 +108,8 @@ const commonFiles = [
 ];
 const menuFiles = menuAtlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']);
 const effectNames = { dead: 'explode_11.ogg', complete: 'endstart_02.ogg' };
-const resourceNames = new Set([...commonFiles, ...menuFiles, 'menuloop.mp3', 'bigfont.fnt', 'bigfont.png', ...Object.values(effectNames), ...levels.flatMap(entry => [entry.path, entry.song])]);
+const dragFiles = ['drageffect.plist', 'shipdrageffect.plist', 'square.png'];
+const resourceNames = new Set([...commonFiles, ...menuFiles, ...dragFiles, 'menuloop.mp3', 'bigfont.fnt', 'bigfont.png', ...Object.values(effectNames), ...levels.flatMap(entry => [entry.path, entry.song])]);
 
 function requireFile(paths, path) {
   const file = paths.get(path.toLowerCase());
@@ -165,6 +168,11 @@ async function loadResources(paths) {
       paths.has(name) ? [[event, URL.createObjectURL(paths.get(name))]] : [])),
     background: await createImageBitmap(find(commonFiles[0])),
     ground: await createImageBitmap(find(commonFiles[1])),
+    drag: new Map(await Promise.all(dragFiles.slice(0, 2).filter(name => paths.has(name)).map(async name => {
+      const doc = new DOMParser().parseFromString(await paths.get(name).text(), 'application/xml');
+      return [name, decodePlist(doc.querySelector('plist > dict'))];
+    }))),
+    particle: paths.has('square.png') ? await createImageBitmap(paths.get('square.png')) : undefined,
   };
   releaseArt(assets);
   assets = nextArt;
@@ -356,11 +364,14 @@ function showMenu() {
       button.className = 'sprite-button';
       button.type = 'button';
       button.id = 'menu-' + key;
+      button.setAttribute('aria-label', label);
       const art = document.createElement('canvas');
-      art.width = art.height = 112;
+      const frame = assets.frames.get(sprite);
+      art.width = frame ? frame.w + 2 * Math.abs(frame.ox) : 112;
+      art.height = frame ? frame.h + 2 * Math.abs(frame.oy) : 112;
       art.setAttribute('aria-hidden', 'true');
       const preview = art.getContext('2d');
-      if (drawSprite(sprite, 56, 56, 1, preview)) button.append(art);
+      if (drawSprite(sprite, art.width / 2, art.height / 2, 1, preview)) button.append(art);
       else {
         const symbol = document.createElement('span');
         symbol.className = 'fallback-symbol';
@@ -369,6 +380,7 @@ function showMenu() {
         button.append(symbol);
       }
       const caption = document.createElement('span');
+      caption.className = 'sprite-caption';
       caption.textContent = label;
       button.append(caption);
       button.addEventListener('click', () => {
@@ -569,6 +581,8 @@ function begin() {
     run = saved ? { ...saved.run, collected: [...saved.run.collected] } : createRun();
     trail.length = 0;
     sparks.length = 0;
+    dragParticles.length = 0;
+    dragEmission = 0;
     cameraY = saved?.cameraY ?? 0;
     audio.currentTime = saved?.songTime ?? 0;
     attempt++;
@@ -742,6 +756,38 @@ function drawObject(object, x, y, scale) {
   ctx.restore();
 }
 
+function updateDragParticles() {
+  for (let index = dragParticles.length - 1; index >= 0; index--) {
+    if ((run.ticks - dragParticles[index].tick) * STEP >= dragParticles[index].life) dragParticles.splice(index, 1);
+  }
+  const config = assets.drag.get(run.mode === 'ship' ? 'shipdrageffect.plist' : 'drageffect.plist');
+  if (!config || !assets.particle || (run.mode !== 'ship' && !run.grounded)) {
+    dragEmission = 0;
+    return;
+  }
+  const number = key => Number(config.get(key)) || 0;
+  const vary = key => number(key) + (Math.random() * 2 - 1) * number(key + 'Variance');
+  dragEmission += number('maxParticles') / Math.max(0.01, number('particleLifespan')) * STEP;
+  while (dragEmission >= 1) {
+    dragEmission--;
+    if (dragParticles.length >= number('maxParticles')) continue;
+    const angle = vary('angle') * Math.PI / 180;
+    const speed = vary('speed');
+    const color = prefix => ['Red', 'Green', 'Blue', 'Alpha'].map(channel =>
+      Math.max(0, Math.min(1, number(prefix + 'Color' + channel) +
+        (Math.random() * 2 - 1) * number(prefix + 'ColorVariance' + channel))));
+    dragParticles.push({
+      tick: run.ticks, life: Math.max(0.01, vary('particleLifespan')),
+      x: run.x - 12 + (Math.random() * 2 - 1) * number('sourcePositionVariancex'),
+      y: run.y - 15 * run.direction + (Math.random() * 2 - 1) * number('sourcePositionVariancey'),
+      vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed * run.direction,
+      gx: number('gravityx'), gy: number('gravityy') * run.direction,
+      size: Math.max(0, vary('startParticleSize')), endSize: number('finishParticleSize'),
+      start: color('start'), end: color('finish'), additive: number('blendFuncDestination') === 1,
+    });
+  }
+}
+
 function draw() {
   if (assets && overlay.hasAttribute('data-menu')) {
     const travel = performance.now() / 42;
@@ -780,6 +826,20 @@ function draw() {
   }
   ctx.save();
   if (effectsEnabled()) {
+    for (const particle of dragParticles) {
+      const age = (run.ticks - particle.tick) * STEP;
+      if (age >= particle.life) continue;
+      const fraction = age / particle.life;
+      const size = (particle.size + (particle.endSize - particle.size) * fraction) * scale;
+      const color = particle.start.map((value, i) => value + (particle.end[i] - value) * fraction);
+      ctx.globalCompositeOperation = particle.additive ? 'lighter' : 'source-over';
+      ctx.globalAlpha = color[3] * Math.max(...color.slice(0, 3));
+      const x = screenX(particle.x + particle.vx * age + particle.gx * age * age / 2);
+      const y = screenY(particle.y + particle.vy * age + particle.gy * age * age / 2);
+      ctx.drawImage(assets.particle, x - size / 2, y - size / 2, size, size);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
     ctx.fillStyle = run.mode === 'ship' ? '#ffc358' : '#a7f5ff';
     for (const sample of trail) {
       const remaining = 1 - (run.ticks - sample.tick) / 36;
@@ -822,6 +882,7 @@ function frame(now) {
       stepRun(run, level, isHeld || pendingPress, pendingPress || undefined);
       pendingPress = false;
       if (effectsEnabled()) {
+        updateDragParticles();
         if (run.ticks % 3 === 0) {
           trail.push({ x: run.x, y: run.y, tick: run.ticks });
           if (trail.length > 12) trail.shift();
