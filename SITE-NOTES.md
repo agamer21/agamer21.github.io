@@ -205,3 +205,11 @@ A locally instrumented Steam run sampled the player position at each physics upd
 The change is scoped to Stereo Madness cube gameplay because applying the same coefficients globally exposed compatibility gaps in other levels. Chrome verified the first collision and cleared all six browser levels with completion routes. Full native playthrough, ship, other collisions, and rendered audio and video parity remain open. Original save hashes matched before and after the native runs.
 
 A second recorded Steam input sequence clears the first obstacle and hits the small spike at tick 738 in both engines. The browser model still differs by up to 1.157 vertical game units in the sampled landing. The visitor badge no longer blocks pointer input on the preview controls. Synchronized native/browser video and audio remain unverified.
+
+### Home-hosted game loading and page themes
+
+The 3DS cards fetch their selected executable from https://roms.agamer21.kozow.com through the existing home HTTPS proxy. Files live on cosmos under /opt/mediastack/arcade/roms and match the prepared originals by SHA-256. The Lenovo remained unreachable. This setup uses the existing home server and domain.
+
+The deployment applies the shared theme preference to game wrapper headers, including Geometry Dash, Granny, and the 3DS player. Geometry Dash ignores game hotkeys while a text or selection control has focus.
+
+Granny now uses the build referenced by the source launcher, pinned at e9ba6903f7e1d942cdabfdabb2b0dd491ccebec8. Its assets are served by the home HTTPS endpoint with JavaScript MIME headers, including streaming audio, after the upstream CDN returned HTTP 403.

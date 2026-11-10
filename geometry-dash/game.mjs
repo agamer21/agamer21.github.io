@@ -621,6 +621,7 @@ function pressJump(input) {
 
 const jumpCodes = new Set(['Space', 'ArrowUp', 'KeyW']);
 window.addEventListener('keydown', event => {
+  if (event.target instanceof HTMLElement && event.target.closest('input, select, textarea, [contenteditable="true"]')) return;
   if (screen === 'levels' && ['ArrowLeft', 'ArrowRight'].includes(event.code)) {
     event.preventDefault();
     const direction = event.code === 'ArrowLeft' ? -1 : 1;

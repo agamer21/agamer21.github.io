@@ -1,4 +1,4 @@
-const base = 'https://cdn.jsdelivr.net/gh/gru6nny/ohd@7f5d35f798453258384eefb31fc6ee3227b2fd75';
+const base = 'https://roms.agamer21.kozow.com/granny';
 const build = base + '/Build/';
 const canvas = document.querySelector('#game');
 const status = document.querySelector('#status');
@@ -37,7 +37,7 @@ async function start() {
       dataUrl, codeUrl, frameworkUrl: build + 'Granny.framework.js',
       cacheControl: () => 'no-store',
       streamingAssetsUrl: base + '/StreamingAssets',
-      companyName: 'AG Arcade', productName: 'Granny', productVersion: '1.0',
+      companyName: 'Anastasia Kazantseva', productName: 'Granny', productVersion: '1.0',
       showBanner(message, type) { if (type === 'error') status.textContent = message; },
     }, progress => { status.textContent = 'Starting Granny (' + Math.round(100 * progress) + '%)'; });
     status.hidden = true;

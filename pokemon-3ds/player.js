@@ -51,8 +51,7 @@ async function preparePlayer() {
   }
 }
 
-rom.addEventListener("change", () => {
-  const file = rom.files[0];
+function launchGame(file) {
   if (!file) return;
   if (!file.size || !/\.(cci|3ds|cxi|zcxi)$/i.test(file.name)) {
     status.textContent = "Choose a nonempty, decrypted .cci, .3ds, .cxi, or .zcxi game file.";
@@ -84,7 +83,29 @@ rom.addEventListener("change", () => {
     status.textContent = "The emulator could not download. Check your connection and try again.";
   });
   document.body.append(loader);
-});
+}
+
+rom.addEventListener("change", () => launchGame(rom.files[0]));
 
 change.addEventListener("click", () => location.reload());
-preparePlayer();
+await preparePlayer();
+const hostedGames = new Map([
+  ["ultra-sun", ["ultra-sun.zcxi", "Pokemon Ultra Sun.zcxi"]],
+  ["omega-ruby", ["omega-ruby.cxi", "Pokemon Omega Ruby.cxi"]],
+  ["alpha-sapphire", ["alpha-sapphire.cxi", "Pokemon Alpha Sapphire.cxi"]],
+]);
+const selected = hostedGames.get(new URLSearchParams(location.search).get("game"));
+if (selected && !rom.disabled) {
+  rom.disabled = true;
+  status.textContent = "Downloading " + title + " from the home server?";
+  try {
+    const response = await fetch("https://roms.agamer21.kozow.com/" + selected[0], { cache: "no-store" });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    const blob = await response.blob();
+    launchGame(new File([blob], selected[1]));
+  } catch (error) {
+    status.textContent = "The home server could not load this game. You can choose a local file below. " + error.message;
+  } finally {
+    rom.disabled = false;
+  }
+}
