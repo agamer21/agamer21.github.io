@@ -4,6 +4,16 @@ const canvas = document.querySelector('#game');
 const status = document.querySelector('#status');
 let loaded = 0;
 
+// The Unity build requests its device type through this platform interface.
+const platform = {
+  deviceInfo: { type: matchMedia('(pointer: coarse)').matches ? 'mobile' : 'desktop' },
+  adv: {
+    showFullscreenAdv({ callbacks }) { callbacks.onClose?.(false); },
+    showRewardedVideo({ callbacks }) { callbacks.onError?.(new Error('Rewarded ads unavailable')); },
+  },
+};
+window.YaGames = { init: async () => platform };
+
 // The isolated player has no persistent Unity cache.
 Object.defineProperty(window, 'caches', { value: undefined });
 
@@ -33,7 +43,7 @@ async function start() {
       loader.onerror = () => reject(new Error('Game loader unavailable'));
       document.head.append(loader);
     });
-    await createUnityInstance(canvas, {
+    window.myGameInstance = await createUnityInstance(canvas, {
       dataUrl, codeUrl, frameworkUrl: build + 'Granny.framework.js',
       cacheControl: () => 'no-store',
       streamingAssetsUrl: base + '/StreamingAssets',

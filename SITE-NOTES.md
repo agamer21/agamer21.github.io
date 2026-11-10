@@ -218,3 +218,5 @@ Granny now uses the build referenced by the source launcher, pinned at e9ba6903f
 ## 2026-11-10: Bloons TD 6 tutorial
 
 Added a Strategy card for the welcome intro and Monkey Meadow rounds 1?10 at /bloons-td6.html. The page embeds its terrain, text, and native Dart Monkey/Quincy animation frames. The Pages sparse checkout and staging command include the new page. This release covers the tutorial. Native wave timings, combat tuning, camera, audio, and further game content remain open.
+
+Granny's Unity runtime also requires the YaGames device interface and the global myGameInstance reference. The wrapper now supplies device type locally, closes unavailable interstitials, and reports rewarded ads unavailable. A sandboxed Chrome run reached the rendered title menu after this bridge was added.
