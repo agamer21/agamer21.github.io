@@ -22,4 +22,5 @@ export const extraButtons = [
   ['achievements', 'Achievements', 'GJ_achBtn_001.png', '★'],
   ['settings', 'Settings', 'GJ_optionsBtn_001.png', '⚙'],
   ['stats', 'Stats', 'GJ_statsBtn_001.png', '▥'],
+  ['newgrounds', 'Newgrounds', 'GJ_ngBtn_001.png', 'NG'],
 ];

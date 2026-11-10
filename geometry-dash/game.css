@@ -158,3 +158,18 @@ footer { margin-top: 16px; font-size: .75rem; }
 @media (max-width: 560px) {
   .cabinet:has(.overlay[data-home]:not([hidden])) { min-height: 226px; }
 }
+
+/* MenuLayer::init positions use a 320-unit-high Cocos viewport. */
+.overlay[data-home] .panel { container-type: size; }
+.overlay[data-home] h1 { top: 15.625%; left: 50%; width: calc(429 * 100cqh / 320); transform: translate(-50%, -50%); }
+.overlay[data-home] .main-buttons { inset: 0; width: auto; height: auto; display: block; pointer-events: none; }
+.overlay[data-home] .main-buttons .sprite-button { position: absolute; top: 46.875%; width: calc(var(--sprite-width) * 100cqh / 320); transform: translate(-50%, -50%); }
+.overlay[data-home] .main-buttons #menu-levels { left: 50%; width: calc(var(--sprite-width) * 100cqh / 320); }
+.overlay[data-home] #menu-icons { left: calc(50% - 110 * 100cqh / 320); }
+.overlay[data-home] #menu-creator { left: calc(50% + 110 * 100cqh / 320); }
+.overlay[data-home] .extra-buttons { left: 50%; bottom: 14.0625%; width: auto; height: auto; gap: calc(5 * 100cqh / 320); transform: translate(-50%, 50%); }
+.overlay[data-home] .extra-buttons .sprite-button { width: calc(var(--sprite-width) * 100cqh / 320); flex-shrink: 0; }
+.overlay[data-home] .official-menu-links { inset: 0; width: auto; pointer-events: none; }
+.overlay[data-home] .official-menu-links a { position: absolute; transform: translate(-50%, 50%); }
+.overlay[data-home] .official-menu-links [data-menu-link=news] { left: calc(100% - 43 * 100cqh / 320); bottom: 14.0625%; width: calc(var(--sprite-width) * 100cqh / 320); }
+.overlay[data-home] .official-menu-links [data-menu-link=robtop] { left: calc(50 * 100cqh / 320); bottom: 7.8125%; width: calc(var(--sprite-width) * 100cqh / 320); }

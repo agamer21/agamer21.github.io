@@ -355,7 +355,8 @@ function showMenu() {
   logo.setAttribute('aria-label', 'Geometry Dash');
   if (drawSprite('GJ_logo_001.png', 214, 26, 1, logo.getContext('2d'))) title.replaceChildren(logo);
   const actions = { icons: showIcons, levels: showLevels, creator: showCreator,
-    settings: showSettings, stats: showStats, achievements: showAchievements };
+    settings: showSettings, stats: showStats, achievements: showAchievements,
+    newgrounds: () => window.open('https://www.newgrounds.com/audio', '_blank', 'noopener,noreferrer') };
   for (const [buttons, className] of [[menuButtons, 'main-buttons'], [extraButtons, 'extra-buttons']]) {
     const row = document.createElement('div');
     row.className = className;
@@ -369,6 +370,7 @@ function showMenu() {
       const frame = assets.frames.get(sprite);
       art.width = frame ? frame.w + 2 * Math.abs(frame.ox) : 112;
       art.height = frame ? frame.h + 2 * Math.abs(frame.oy) : 112;
+      button.style.setProperty('--sprite-width', art.width);
       art.setAttribute('aria-hidden', 'true');
       const preview = art.getContext('2d');
       if (drawSprite(sprite, art.width / 2, art.height / 2, 1, preview)) button.append(art);
@@ -394,7 +396,6 @@ function showMenu() {
   const links = document.createElement('div');
   links.className = 'official-menu-links';
   for (const [name, href, sprite] of [
-    ['Newgrounds', 'https://www.newgrounds.com/audio', 'GJ_ngBtn_001.png'],
     ['Geometry Dash news', 'https://www.geometrydash.com/', 'GJ_newsBtn_001.png'],
     ['RobTop Games', 'https://www.robtopgames.com/', 'robtoplogo_small.png'],
   ]) {
@@ -403,11 +404,14 @@ function showMenu() {
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.setAttribute('aria-label', name);
+    link.dataset.menuLink = sprite === 'GJ_newsBtn_001.png' ? 'news' : 'robtop';
     const art = document.createElement('canvas');
-    art.width = 108;
-    art.height = 62;
+    const frame = assets.frames.get(sprite);
+    art.width = frame ? frame.w + 2 * Math.abs(frame.ox) : 108;
+    art.height = frame ? frame.h + 2 * Math.abs(frame.oy) : 62;
+    link.style.setProperty('--sprite-width', art.width * (link.dataset.menuLink === 'news' ? 0.85 : 0.8));
     art.setAttribute('aria-hidden', 'true');
-    if (drawSprite(sprite, 54, 31, 1, art.getContext('2d'))) link.append(art);
+    if (drawSprite(sprite, art.width / 2, art.height / 2, 1, art.getContext('2d'))) link.append(art);
     else link.textContent = name;
     links.append(link);
   }

@@ -18,7 +18,7 @@
   </header>
   <main>
     <p class="official-callout"><a href="./official.html">Play the official Stereo Madness demo</a><span>Runs in your browser with no Steam files.</span></p>
-    <div class="player-tools"><a class="resource-download" href="https://github.com/agamer21/agamer21.github.io/releases/tag/arcade-downloads" target="_blank" rel="noopener noreferrer">Download Resources</a><a data-side-link target="_blank" rel="noopener noreferrer" hidden></a><button type="button" id="edit-side-link">Set side link</button><button type="button" id="fullscreen" aria-pressed="false">Fullscreen</button></div><p id="fullscreen-status" class="status" role="status" hidden></p>
+    <div class="player-tools"><button type="button" id="choose-zip">Load Resources ZIP</button><button type="button" id="choose">Choose Resources folder</button><a class="resource-download" href="https://github.com/agamer21/agamer21.github.io/releases/tag/arcade-downloads" target="_blank" rel="noopener noreferrer">Download Resources</a><a data-side-link target="_blank" rel="noopener noreferrer" hidden></a><button type="button" id="edit-side-link">Set side link</button><button type="button" id="fullscreen" aria-pressed="false">Fullscreen</button></div><p id="fullscreen-status" class="status" role="status" hidden></p>
     <section class="cabinet" aria-label="Geometry Dash player">
       <canvas id="game" width="960" height="540" aria-label="Geometry Dash playfield"></canvas>
       <div class="hud" hidden id="hud"><span id="attempt"></span><progress id="progress" max="100" value="0" aria-label="Level progress"></progress><span id="percent">0%</span></div>
@@ -31,8 +31,6 @@
             <button type="button" id="start" hidden>Play level</button>
             <button type="button" id="levels" hidden>Play</button>
             <button type="button" id="icons" hidden>Icon kit</button>
-            <button type="button" id="choose-zip">Load Resources ZIP</button>
-            <button type="button" id="choose">Choose Resources folder</button>
           </div>
           <div id="menu-content" hidden></div>
           <input type="file" id="files" webkitdirectory multiple hidden>
