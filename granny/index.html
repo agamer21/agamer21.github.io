@@ -6,18 +6,18 @@
   <title>Granny | AG Arcade</title>
   <style>
     :root { color-scheme: dark; font: 16px system-ui; background: #0d1118; color: #f4f5fa; }
-    body { margin: 0; }
+    body { margin: 0; height: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr); }
     header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; }
     a { color: #b9d9ff; }
     button { font: inherit; padding: 7px 12px; cursor: pointer; }
-    main { display: grid; min-height: calc(100dvh - 65px); }
-    iframe { width: 100%; height: 100%; min-height: 300px; border: 0; }
+    main { display: grid; min-height: 0; }
+    iframe { width: 100%; height: 100%; min-height: 0; border: 0; }
     main:fullscreen { background: #000; }
   </style>
 </head>
 <body>
   <header><a href="../">AG Arcade</a><strong>Granny</strong><button type="button" id="fullscreen">Fullscreen</button></header>
-  <main id="player"><iframe src="https://roms.agamer21.kozow.com/granny/player.html" title="Granny game" sandbox="allow-scripts allow-pointer-lock allow-orientation-lock" allow="autoplay; fullscreen" allowfullscreen></iframe></main>
+  <main id="player"><iframe src="https://roms.agamer21.kozow.com/granny/player.html" title="Granny game" sandbox="allow-scripts allow-pointer-lock allow-orientation-lock" allow="autoplay; fullscreen; local-network *" allowfullscreen></iframe></main>
   <script>
     const player = document.querySelector('#player');
     const fullscreen = document.querySelector('#fullscreen');
