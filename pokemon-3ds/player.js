@@ -104,7 +104,7 @@ if (selected && !rom.disabled) {
     const blob = await response.blob();
     launchGame(new File([blob], selected[1]));
   } catch (error) {
-    status.textContent = "The home server could not load this game. You can choose a local file below. " + error.message;
+    status.textContent = "The home server could not load this game. On home Wi-Fi, allow this site's local network access and reload. You can also choose a local file below. " + error.message;
   } finally {
     rom.disabled = false;
   }
