@@ -39,3 +39,13 @@ The target is the installed Steam build, Unity 6000.3.23. This checklist disting
 ## Verification for this revision
 
 The standalone page was played through all ten rounds in Chrome with ordinary UI clicks and the game's speed controls. Both audio buses produced nonzero PCM samples. Both towers were inspected after placement and during attacks. The screen exposed all three paths and 15 upgrade icons, and the first-tier unlock and cash purchase completed. These checks establish working browser behavior. The remaining comparison work is listed above.
+
+## First standard match
+
+Monkey Meadow Easy Standard runs from round 1 through the round-40 MOAB. Four towers are available, with original Ninja Monkey and Bomb Shooter models, idle and placement clips. The browser implements cash, lives, placement, camo detection, lead and explosion immunities, Bloon children, basic regrowth, and the first Dart upgrades. Quincy uses the installed game description's level-8 and level-14 MOAB damage multipliers. Hero XP, most tower stats, upgrade paths, and attack behavior still need native decoding. The remaining tower and hero roster is unimplemented.
+
+Recovered 529 Bloon group records from the installed simulation model. The published round table supplies grouping and start offsets. The installed data confirmed type, count, and duration for 103 of the 115 groups across rounds 1–40. Twelve groups retain published values pending exact native mapping. [Exported standard round table](https://wiki.biligame.com/btd6/Module:Rounds/DefaultRoundSet.json)
+
+The welcome screen uses shipped logo, sky and button art. The town briefing uses the original projected image and Major Monkey art. The native 3D title and home scenes remain open. A persistent Back to AG Arcade link is available across the game.
+
+Chrome completed the full normal match with 34 lives after real-time opening shots, UI purchases and placements, and accelerated simulation for most of the round time. The round-40 MOAB and final board were visually inspected.

@@ -231,3 +231,7 @@ Replaced synthesized sounds with original pop variations, UI/upgrade/placement/Q
 Native menu construction follow-up
 
 REA 6.7.0 CLI completed MenuLayer::init at 0x1404720c0, evidence ev_5dae16073973b85fe2fbe074d639bb7019c32a83b6d0462e9cd9fcf68d6737ba. The default startup timed out, so the successful analysis used a 900-second startup allowance and disabled Decompiler Parameter ID. Applied native coordinates to the home layout using a 320-unit logical height. Play is centered at half-height plus 10, garage/creator are offset by 110, logo is 50 from the top, and bottom actions are 45 from the bottom with padding 5. Newgrounds now joins the bottom actions, News is right-aligned, and RobTop is bottom-left. Resource controls moved into the page toolbar. Original submenu behavior, social/profile/daily features, animated menu character and full game parity remain open. The decompiler output is private and static evidence does not establish runtime visual parity.
+
+## 2026-11-10 Monkey Meadow Easy Standard
+
+Bloons TD 6 now offers a 40-round Easy Standard match alongside the ten-round tutorial. The four playable towers are Dart Monkey, Quincy, Ninja Monkey and Bomb Shooter. The welcome art was refreshed from the installed assets, and Back to AG Arcade stays accessible throughout play. Local Chrome completed both modes. Standard finished at 34 lives using browser controls for purchases and placements and accelerated simulation for most round time. Scope and native comparison gaps are in BTD6-PARITY.md.
