@@ -51,16 +51,16 @@ async function preparePlayer() {
   }
 }
 
-function launchGame(file, readHostedGame) {
+function launchGame(file, hostedUrl) {
   if (!file) return;
-  if ((!file.size && !readHostedGame) || !/\.(cci|3ds|cxi|zcxi)$/i.test(file.name)) {
+  if ((!file.size && !hostedUrl) || !/\.(cci|3ds|cxi|zcxi)$/i.test(file.name)) {
     status.textContent = "Choose a nonempty, decrypted .cci, .3ds, .cxi, or .zcxi game file.";
     rom.value = "";
     return;
   }
   const gameFile = /\.3ds$/i.test(file.name) ? new File([file], file.name.replace(/\.3ds$/i, ".cci")) : file;
-  if (readHostedGame) {
-    gameFile.arrayBuffer = readHostedGame;
+  if (hostedUrl) {
+    installHostedDownload(gameFile, hostedUrl);
   } else if (gameFile.size > maxWholeFileRead) {
     gameFile.arrayBuffer = () => readLargeGame(gameFile);
   }
@@ -101,9 +101,12 @@ const hostedGames = new Map([
   ["alpha-sapphire", ["alpha-sapphire.cxi", "Pokemon Alpha Sapphire.cxi"]],
 ]);
 const selected = hostedGames.get(new URLSearchParams(location.search).get("game"));
+const blockSize = 8 * 1024 * 1024;
+
 async function downloadHostedGame(url) {
   const signal = AbortSignal.timeout(15 * 60 * 1000);
-  let bytes;
+  const blocks = [];
+  let fileSize = 0;
   let received = 0;
   let lastPercent = -1;
 
@@ -116,24 +119,16 @@ async function downloadHostedGame(url) {
       throw new Error(`Download unavailable (HTTP ${response.status}).`);
     }
 
-    if (!bytes) {
+    if (!fileSize) {
       const length = Number(response.headers.get("Content-Length"));
       if (!Number.isSafeInteger(length) || length <= 0) {
         await response.body.cancel();
         throw new Error("The download did not include its file size.");
       }
-      try {
-        bytes = new Uint8Array(length);
-      } catch (error) {
-        await response.body.cancel().catch(() => {});
-        if (error instanceof RangeError) {
-          throw new Error("This browser could not reserve enough memory for the game file.");
-        }
-        throw error;
-      }
+      fileSize = length;
     } else {
       const length = Number(response.headers.get("Content-Length"));
-      if (received && (response.status !== 206 || length !== bytes.length - received)) {
+      if (received && (response.status !== 206 || length !== fileSize - received)) {
         await response.body.cancel();
         throw new Error("The download could not resume.");
       }
@@ -144,15 +139,25 @@ async function downloadHostedGame(url) {
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-        bytes.set(value, received);
-        received += value.byteLength;
-        const percent = Math.floor(received * 100 / bytes.length);
+        if (received + value.byteLength > fileSize) throw new Error("Unexpected game file size.");
+        let offset = 0;
+        while (offset < value.byteLength) {
+          const index = Math.floor(received / blockSize);
+          const position = received % blockSize;
+          blocks[index] ??= new Uint8Array(Math.min(blockSize, fileSize - received + position));
+          const block = blocks[index];
+          const count = Math.min(block.length - position, value.byteLength - offset);
+          block.set(value.subarray(offset, offset + count), position);
+          received += count;
+          offset += count;
+        }
+        const percent = Math.floor(received * 100 / fileSize);
         if (percent !== lastPercent) {
           status.textContent = `Downloading ${title}? ${percent}%`;
           lastPercent = percent;
         }
       }
-      if (received === bytes.length) return bytes.buffer;
+      if (received === fileSize) return { blocks, fileSize };
     } catch (error) {
       if (attempt || signal.aborted || error instanceof RangeError) throw error;
     } finally {
@@ -163,17 +168,59 @@ async function downloadHostedGame(url) {
   throw new Error("The download stopped before all bytes arrived.");
 }
 
-if (selected && !rom.disabled && !new URLSearchParams(location.search).has("local")) {
-  launchGame(new File([], selected[1]), async () => {
-    try {
-      const buffer = await downloadHostedGame("https://roms.agamer21.kozow.com/" + selected[0]);
-      status.textContent = "Download complete. Starting the emulator?";
-      await new Promise(resolve => setTimeout(resolve, 0));
-      return buffer;
-    } catch (error) {
-      const detail = error instanceof TypeError ? "The browser lost or blocked the connection." : error.message;
-      status.textContent = `${detail} Reload to retry or choose a local file.`;
-      throw error;
-    }
+function mountHostedGame(fs, name, { blocks, fileSize }) {
+  const path = "/" + name;
+  fs.writeFile(path, new Uint8Array(0));
+  const node = fs.lookupPath(path).node;
+  node.usedBytes = fileSize;
+  node.stream_ops = {
+    ...node.stream_ops,
+    read(_stream, buffer, offset, length, position) {
+      const available = Math.max(0, Math.min(length, fileSize - position));
+      let copied = 0;
+      while (copied < available) {
+        const index = Math.floor(position / blockSize);
+        const within = position % blockSize;
+        const block = blocks[index];
+        const count = Math.min(block.length - within, available - copied);
+        buffer.set(block.subarray(within, within + count), offset + copied);
+        copied += count;
+        position += count;
+      }
+      return copied;
+    },
+  };
+}
+
+function installHostedDownload(file, url) {
+  // The loader publishes the emulator before it starts fetching the core.
+  Object.defineProperty(window, "EJS_emulator", {
+    configurable: true,
+    set(emulator) {
+      Object.defineProperty(window, "EJS_emulator", {
+        value: emulator, writable: true, configurable: true,
+      });
+      const originalDownload = emulator.download;
+      emulator.download = async function (source, ...args) {
+        if (source !== file) return originalDownload.call(this, source, ...args);
+        try {
+          const data = await downloadHostedGame(url);
+          mountHostedGame(this.gameManager.FS, file.name, data);
+          status.textContent = "Download complete. Starting the emulator?";
+          await new Promise(resolve => setTimeout(resolve, 0));
+          return { files: [{ filename: file.name }] };
+        } catch (error) {
+          const detail = error instanceof RangeError
+            ? "This browser ran out of memory while loading the game."
+            : error instanceof TypeError ? "The browser lost or blocked the connection." : error.message;
+          status.textContent = `${detail} Reload to retry or choose a local file.`;
+          throw error;
+        }
+      };
+    },
   });
+}
+
+if (selected && !rom.disabled && !new URLSearchParams(location.search).has("local")) {
+  launchGame(new File([], selected[1]), "https://roms.agamer21.kozow.com/" + selected[0]);
 }
