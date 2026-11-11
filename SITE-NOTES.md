@@ -255,3 +255,7 @@ Easy Standard rounds 1–40 use the installed Steam build’s DefaultRoundSet. T
 ## Town Center tutorial
 
 The opening tutorial now uses the original Town Center terrain, a bottom-to-right route, and the first ten shipped DefaultRoundSet rounds. The Standard game still uses Monkey Meadow. See BTD6-PARITY.md for the comparison and remaining 3D scene and UI work.
+
+## Town Center scenery
+
+Restored the original Town Hall, both houses, animated windmill, trees and flag using the Steam scene's meshes, textures and transforms.
