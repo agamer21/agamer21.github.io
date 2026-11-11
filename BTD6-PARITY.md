@@ -6,8 +6,8 @@ The target is the installed Steam build, Unity 6000.3.23. This checklist disting
 | --- | --- | --- |
 | Welcome text and tutorial prompts | English localization extracted from the installed bundle | Compare timing, camera cuts, and input blocking against a native first launch |
 | Tutorial checkpoints | Cpp2IL recovered InGameTutorial methods for rounds 1, 2, 3, 9, and 10 | Reproduce every branch, failure, delay, and callback |
-| Map appearance | Original Monkey Meadow terrain texture | Restore native camera projection, terrain geometry, foreground objects, materials, and lighting |
-| Route and placement | Hand-traced route and manually chosen guide circles | Decode MapModel path points, placement areas, collisions, guide coordinates, and obstacle checks |
+| Map appearance | Original Town Center terrain in the tutorial and original Monkey Meadow terrain in Standard | Restore native camera projection, terrain geometry, foreground objects, materials, and lighting |
+| Route and placement | Separate traced routes. Town Center starts at the bottom and exits at the right, with guides aligned to the reference footage | Decode MapModel path points, placement areas, collisions, guide coordinates, and obstacle checks |
 | Monkeys | Original Dart Monkey and Quincy models and idle/attack/placement clips rendered in Unity | Match the native camera and materials, all upgrade models, blink logic, and animation event timing |
 | Ground contact | Every sampled pose stores its projected prefab origin and aligns that origin to the board position | Compare terrain height, footprint, shadow scale, and ground contact with native video |
 | Animation smoothness | 32 samples per action, 16 headings | Compare playback transitions and target tracking with the native renderer |
@@ -19,7 +19,7 @@ The target is the installed Steam build, Unity 6000.3.23. This checklist disting
 | In-game upgrade panel | First-tier cash purchases are implemented | Recreate all native targeting, path panels, crosspath rules, portraits, sell controls, and model swaps |
 | Upgrade behavior | Three first-tier effects in a custom simulation | Decode UpgradeModel, TowerModel, attacks, weapons, projectiles, and all behavior models |
 | Economy and XP | Cash and XP values include provisional tutorial choices | Decode native starting conditions, XP distribution, unlock costs, rewards, refunds, and save writes |
-| Bloons and rounds | Tutorial completes using a custom round list and collision loop | Decode native RoundSetModel, spawn times, BloonModel properties, damage, pierce, immunity, movement, and RNG |
+| Bloons and rounds | Both modes use the shipped DefaultRoundSet spawn groups and the browser collision loop | Decode native RoundSetModel, spawn times, BloonModel properties, damage, pierce, immunity, movement, and RNG |
 | Quincy | Native animation/voice with simplified attacks and leveling | Decode HeroModel XP curve, attack behavior, upgrades, targeting, and abilities |
 | HUD and settings | Browser HUD, pause, restart, and audio controls | Rebuild native layout, buttons, settings persistence, and shortcuts |
 | Victory and handoff | Tutorial victory and replay work | Recreate the native reward sequence, Patch conversation, home scene, and progress persistence |
@@ -63,3 +63,9 @@ Browser fixtures bought and placed each character, confirmed a visible body and 
 The linked walkthrough shows 150 tutorial lives and two placed Dart Monkeys before the first wave, Dart upgrade prompts around 1:00–1:20, and Quincy around 1:40–1:50. The browser now starts the tutorial with 150 lives. The 10-second storyboard samples begin with loading and skip to the map. The title screen, briefing, exact prompt timing, placement coordinates, and later tower-unlock flow still require a closer comparison. [Walkthrough](https://www.youtube.com/watch?v=Bq3cwkB4qa4)
 
 The latest Chrome Standard run used the Steam schedule and completed round 40 with 34 lives. Purchases and placements used browser controls, with accelerated simulation for most rounds. A separate field-by-field check compared all 115 spawn groups with the serialized export. Native combat, economy, physics, map and animation parity are still open.
+
+## Town Center opening
+
+The walkthrough's tutorial takes place on Town Center. The native Town Center bundle contains the river, shoreline and stone route texture seen in the reference. The browser uses that texture cropped to approximate the reference framing, with its own placement guides and route from bottom to right. Monkey Meadow remains the Standard board. The tutorial uses the first ten DefaultRoundSet rounds. The first wave's 20 red Bloons and $121 total payout produced the reference's $371 and 150 lives with two Dart Monkeys placed.
+
+REA identified the installed GameAssembly.dll. Cpp2IL exposed the scripted tower placement and round callbacks. UnityPy extracted the original Town Center terrain and tutorial mode configuration, which specifies 150 lives, a round-10 end, and $100 plus the round number in round-clear cash. The exact camera, native path and placement geometry, 3D props, their sight blocking, and tutorial UI timing remain open.

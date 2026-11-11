@@ -251,3 +251,7 @@ Ultra Sun, Omega Ruby and Alpha Sapphire share the same 3DS player. The default 
 ## BTD6 Standard round data and tutorial reference
 
 Easy Standard rounds 1–40 use the installed Steam build’s DefaultRoundSet. The tutorial starts at 150 lives as shown in the linked Monkey Meadow walkthrough. See BTD6-PARITY.md for coverage and remaining differences.
+
+## Town Center tutorial
+
+The opening tutorial now uses the original Town Center terrain, a bottom-to-right route, and the first ten shipped DefaultRoundSet rounds. The Standard game still uses Monkey Meadow. See BTD6-PARITY.md for the comparison and remaining 3D scene and UI work.
