@@ -181,7 +181,7 @@ async function selectLevel(entry, launch = false) {
   const version = ++selectionVersion;
   try {
     const track = requireFile(resources, entry.song);
-    const parsed = parseLevel(await decodeLevel(await requireFile(resources, entry.path).text()), { steamCube: entry.id === 1 });
+    const parsed = parseLevel(await decodeLevel(await requireFile(resources, entry.path).text()), { steamCube: entry.id === 1, levelId: entry.id });
     if (version !== selectionVersion || screen !== 'levels') return;
     audio.pause();
     if (songUrl) URL.revokeObjectURL(songUrl);
@@ -747,6 +747,9 @@ function drawObject(object, x, y, scale) {
   ctx.translate(x, y);
   ctx.rotate(object.rotation * Math.PI / 180);
   ctx.scale(object.flipX ? -1 : 1, object.flipY ? -1 : 1);
+  if (!object.noGlow && object.sprite?.startsWith('spike_')) {
+    drawSprite(object.sprite.replace('_001.png', '_glow_001.png'), 0, 0, scale);
+  }
   if (object.id >= 10 && object.id <= 13) {
     const prefix = 'portal_0' + (object.id - 9);
     drawSprite(prefix + '_back_001.png', 0, 0, scale);
@@ -820,7 +823,7 @@ function draw() {
     return;
   }
   const scale = level.steamCube ? height / 320 : 1.5;
-  const anchor = 210;
+  const anchor = level.steamCube ? width * 324 / 880 : 210;
   // Native Stereo Madness opening: the floor crosses row 1031 of a 1440-pixel frame.
   const groundY = (level.steamCube ? height * 1031 / 1440 : height - 82) + cameraY * scale;
   const screenX = x => (x - run.x) * scale + anchor;

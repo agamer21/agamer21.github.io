@@ -6,6 +6,9 @@ const JUMP_SPEED = 670.80;
 const STEREO_CUBE = { stepX: 1.298250436782837, gravity: 2799.36, jumpSpeed: 603.72 };
 const PLAYER_HALF = 12;
 const HAZARDS = new Set([8, 9, 39, 103]);
+const SPIKE_HALF_HEIGHTS = new Map([[8, 21], [39, 17.8], [216, 21]]);
+const SAW_IDS = new Set([89, 187]);
+const NATIVE_CONTACT_LEVELS = new Set([6, 9, 12, 13, 15, 18, 21]);
 
 const sprites = new Map([
   ...Array.from({ length: 7 }, (_, i) => [i + 1, 'square_0' + (i + 1) + '_001.png']),
@@ -15,7 +18,7 @@ const sprites = new Map([
   [21, 'd_spikes_04_001.png'],
   [35, 'bump_01_001.png'], [36, 'ring_01_001.png'], [39, 'spike_02_001.png'],
   [41, 'chain_01_001.png'], [54, 'pit_01_low_001.png'], [62, 'pit_02_001.png'],
-  [65, 'pit_03_001.png'], [103, 'spike_03_001.png'], [142, 'secretCoin_01_001.png'],
+  [65, 'pit_03_001.png'], [89, 'sawblade_02_001.png'], [103, 'spike_03_001.png'], [142, 'secretCoin_01_001.png'],
 ]);
 
 function pairs(value, separator = ',') {
@@ -38,7 +41,7 @@ function color(fields, keys, fallback) {
   return channels.every(Number.isFinite) ? channels : fallback;
 }
 
-export function parseLevel(text, { steamCube = false } = {}) {
+export function parseLevel(text, { steamCube = false, levelId } = {}) {
   const [settings, ...rows] = text.split(';');
   const header = pairs(settings);
   const startBackground = color(pairs(header.get('kS29') || '', '_'), ['1', '2', '3'], [40, 62, 255]);
@@ -51,9 +54,10 @@ export function parseLevel(text, { steamCube = false } = {}) {
     const rotation = Number(data.get('6') || 0);
     const flipX = data.get('4') === '1';
     const flipY = data.get('5') === '1';
+    const noGlow = data.get('96') === '1';
     const rgb = color(data, ['7', '8', '9'], [40, 62, 255]);
     const duration = Number(data.get('10') || 0);
-    return { id, x, y, rotation, flipX, flipY, rgb, duration, sprite: sprites.get(id) };
+    return { id, x, y, rotation, flipX, flipY, noGlow, rgb, duration, sprite: sprites.get(id) };
   }).filter(({ id, x, y }) => [id, x, y].every(Number.isFinite)).sort((a, b) => a.x - b.x);
   if (!header.has('kA2') || objects.length < 100 || !objects.some(o => o.id === 13)) {
     throw new Error('This file does not look like a supported Steam level.');
@@ -65,7 +69,8 @@ export function parseLevel(text, { steamCube = false } = {}) {
     if (!bins.has(bin)) bins.set(bin, []);
     bins.get(bin).push(object);
   }
-  return { objects, bins, maxY, steamCube, end: objects.at(-1).x + 210, startBackground, startGround };
+  const nativeContacts = steamCube || NATIVE_CONTACT_LEVELS.has(levelId);
+  return { objects, bins, maxY, steamCube, nativeContacts, end: objects.at(-1).x + 210, startBackground, startGround };
 }
 
 export function nearby(level, min, max) {
@@ -98,7 +103,8 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
   run.ticks++;
   if (pressed) run.pressedAt = run.ticks;
   run.lastHeld = held;
-  const objects = nearby(level, previousX - 33, run.x + 33);
+  const reach = level.nativeContacts ? 40 : 33;
+  const objects = nearby(level, previousX - reach, run.x + reach);
   for (const object of objects) {
     if (object.id >= 10 && object.id <= 13 && run.portal !== object &&
         overlaps(run.x, run.y, object, 21, object.rotation % 180 ? 24 : 55)) {
@@ -183,11 +189,14 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
       } else if (overlaps(run.x, run.y, object, 19.5, edge + 4.5)) {
         run.result = 'dead';
       }
-    } else if (HAZARDS.has(object.id)) {
+    } else if (level.nativeContacts && run.mode === 'cube' && SAW_IDS.has(object.id)) {
+      // Effective contact distance fitted to the four measured native opening contacts.
+      if (Math.hypot(run.x - object.x, run.y - object.y) < 39.4) run.result = 'dead';
+    } else if (HAZARDS.has(object.id) || (level.nativeContacts && object.id === 216)) {
       const upsideDown = object.flipY !== (Math.abs(object.rotation % 360) === 180);
       const vertical = Math.abs(object.rotation % 180) === 90;
-      if (calibrated && (object.id === 8 || object.id === 39)) {
-        const halfHeight = object.id === 8 ? 21 : 17.8;
+      if (level.nativeContacts && run.mode === 'cube' && SPIKE_HALF_HEIGHTS.has(object.id)) {
+        const halfHeight = SPIKE_HALF_HEIGHTS.get(object.id);
         if (overlaps(run.x, run.y, object, vertical ? halfHeight : 18, vertical ? 18 : halfHeight)) run.result = 'dead';
         continue;
       }

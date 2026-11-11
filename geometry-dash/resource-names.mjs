@@ -1,7 +1,7 @@
 import { levels } from './library.mjs';
 
 const atlases = ['GJ_GameSheet', 'GJ_GameSheet02', 'GJ_GameSheetIcons'];
-const menuAtlases = ['GJ_GameSheet03', 'GJ_GameSheet04', 'GJ_LaunchSheet'];
+const menuAtlases = ['GJ_GameSheet03', 'GJ_GameSheet04', 'GJ_LaunchSheet', 'GJ_GameSheetGlow'];
 const commonFiles = [
   'game_bg_01_001.png', 'groundsquare_01_001.png',
   ...atlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']),
