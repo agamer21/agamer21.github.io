@@ -101,44 +101,78 @@ const hostedGames = new Map([
   ["alpha-sapphire", ["alpha-sapphire.cxi", "Pokemon Alpha Sapphire.cxi"]],
 ]);
 const selected = hostedGames.get(new URLSearchParams(location.search).get("game"));
+async function downloadHostedGame(url) {
+  const signal = AbortSignal.timeout(15 * 60 * 1000);
+  let bytes;
+  let received = 0;
+  let lastPercent = -1;
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const headers = received ? { Range: `bytes=${received}-` } : {};
+    status.textContent = attempt ? "Resuming the game download?" : `Downloading ${title}?`;
+    const response = await fetch(url, { cache: "no-store", headers, signal });
+    if (!response.ok || !response.body) {
+      await response.body?.cancel();
+      throw new Error(`Download unavailable (HTTP ${response.status}).`);
+    }
+
+    if (!bytes) {
+      const length = Number(response.headers.get("Content-Length"));
+      if (!Number.isSafeInteger(length) || length <= 0) {
+        await response.body.cancel();
+        throw new Error("The download did not include its file size.");
+      }
+      try {
+        bytes = new Uint8Array(length);
+      } catch (error) {
+        await response.body.cancel().catch(() => {});
+        if (error instanceof RangeError) {
+          throw new Error("This browser could not reserve enough memory for the game file.");
+        }
+        throw error;
+      }
+    } else {
+      const length = Number(response.headers.get("Content-Length"));
+      if (received && (response.status !== 206 || length !== bytes.length - received)) {
+        await response.body.cancel();
+        throw new Error("The download could not resume.");
+      }
+    }
+
+    const reader = response.body.getReader();
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        bytes.set(value, received);
+        received += value.byteLength;
+        const percent = Math.floor(received * 100 / bytes.length);
+        if (percent !== lastPercent) {
+          status.textContent = `Downloading ${title}? ${percent}%`;
+          lastPercent = percent;
+        }
+      }
+      if (received === bytes.length) return bytes.buffer;
+    } catch (error) {
+      if (attempt || signal.aborted || error instanceof RangeError) throw error;
+    } finally {
+      await reader.cancel().catch(() => {});
+    }
+  }
+
+  throw new Error("The download stopped before all bytes arrived.");
+}
+
 if (selected && !rom.disabled && !new URLSearchParams(location.search).has("local")) {
   launchGame(new File([], selected[1]), async () => {
     try {
-      status.textContent = "Downloading " + title + "?";
-      const response = await fetch("https://roms.agamer21.kozow.com/" + selected[0], {
-        cache: "no-store",
-        signal: AbortSignal.timeout(15 * 60 * 1000),
-      });
-      if (!response.ok) throw new Error("HTTP " + response.status);
-      const length = Number(response.headers.get("Content-Length"));
-      if (!Number.isSafeInteger(length) || length <= 0 || !response.body) {
-        throw new Error("Missing game file size");
-      }
-      const bytes = new Uint8Array(length);
-      const reader = response.body.getReader();
-      let received = 0;
-      let lastPercent = -1;
-      try {
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-          bytes.set(value, received);
-          received += value.byteLength;
-          const percent = Math.floor(received * 100 / length);
-          if (percent !== lastPercent) {
-            status.textContent = "Downloading " + title + "? " + percent + "%";
-            lastPercent = percent;
-          }
-        }
-      } finally {
-        await reader.cancel().catch(() => {});
-      }
-      if (received !== length) throw new Error("Incomplete download");
+      const buffer = await downloadHostedGame("https://roms.agamer21.kozow.com/" + selected[0]);
       status.textContent = "Download complete. Starting the emulator?";
       await new Promise(resolve => setTimeout(resolve, 0));
-      return bytes.buffer;
+      return buffer;
     } catch (error) {
-      status.textContent = "The game could not download. Reload to retry or choose a local file.";
+      const detail = error instanceof TypeError ? "The browser lost or blocked the connection." : error.message;
+      status.textContent = `${detail} Reload to retry or choose a local file.`;
       throw error;
     }
   });
