@@ -5,7 +5,7 @@ self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.mode !== "navigate" || !request.url.startsWith(self.registration.scope)) return;
   event.respondWith((async () => {
-    const response = await fetch(request);
+    const response = await fetch(request, { cache: "no-cache" });
     if (!response.ok || response.redirected) return response;
     const headers = new Headers(response.headers);
     headers.set("Cross-Origin-Opener-Policy", "same-origin");
