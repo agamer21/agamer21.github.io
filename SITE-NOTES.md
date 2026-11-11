@@ -243,3 +243,7 @@ Added playable Boomerang Monkey, Tack Shooter, Sniper Monkey, Wizard Monkey, Sup
 ## 2026-11-11: Geometry Dash and library artwork
 
 Geometry Dash appears under Platformer in the main library. Experimental still contains Medieval II Asset Lab, Moon Sweepers 2D, and HLM2 Web. All 27 card images were reviewed and 17 changed, including distinct Nintendo covers for all three Pokemon games. Sources are in THIRD-PARTY-GAMES.md.
+
+## 2026-11-11: Pokémon keyboard and performance settings
+
+Ultra Sun, Omega Ruby and Alpha Sapphire share the same 3DS player. The default layout uses WASD for the Circle Pad, arrows for the D-pad, Z/X for A/B and a trackpad click for the bottom screen. Direct Keyboard Input and mouse locking default to off. Returning players can apply the layout without clearing saves or controller mappings. The performance button restores native 1x resolution and disables video filters. The page explains where to find the FPS display and links to desktop Azahar for machines that struggle with browser emulation.

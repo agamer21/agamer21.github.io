@@ -12,8 +12,22 @@ const rom = document.querySelector("#rom");
 const change = document.querySelector("#change");
 const status = document.querySelector("#status");
 const game = document.querySelector("#game");
+const resetKeyboard = document.querySelector("#reset-keyboard");
+const keyboardStatus = document.querySelector("#keyboard-status");
+const resetVideo = document.querySelector("#reset-video");
+const videoStatus = document.querySelector("#video-status");
 const dataPath = "/pokemon-3ds/vendor/emulatorjs/";
 const maxWholeFileRead = 0x7fffffff;
+const performanceOptions = { citra_resolution_factor: "1", shader: "disabled" };
+// EmulatorJS uses RetroPad IDs. Axes 16–19 are the Circle Pad.
+const keyboard = Object.fromEntries(Object.entries({
+  0: "x", 1: "v", 2: "shift", 3: "enter",
+  4: "up arrow", 5: "down arrow", 6: "left arrow", 7: "right arrow",
+  8: "z", 9: "c", 10: "q", 11: "e", 12: "1", 13: "2",
+  16: "d", 17: "a", 18: "s", 19: "w",
+  20: "l", 21: "j", 22: "k", 23: "i",
+  24: "", 25: "", 26: "",
+}).map(([id, value]) => [id, { value }]));
 
 // Chromium rejects a single Blob read above 2 GiB. EmulatorJS still needs one buffer.
 async function readLargeGame(file) {
@@ -77,7 +91,17 @@ function launchGame(file, hostedUrl) {
     EJS_threads: true,
     EJS_cacheConfig: { enabled: false },
     EJS_startOnLoaded: true,
-    EJS_onGameStart: () => { status.textContent = ""; },
+    EJS_defaultControls: { 0: keyboard },
+    EJS_defaultOptions: {
+      keyboardInput: "disabled",
+      lockMouse: "disabled",
+      ...performanceOptions,
+    },
+    EJS_onGameStart: () => {
+      status.textContent = "";
+      resetKeyboard.disabled = false;
+      resetVideo.disabled = false;
+    },
   });
   const loader = document.createElement("script");
   loader.src = `${dataPath}loader.js`;
@@ -88,6 +112,27 @@ function launchGame(file, hostedUrl) {
 }
 
 rom.addEventListener("change", () => launchGame(rom.files[0]));
+
+resetKeyboard.addEventListener("click", () => {
+  const emulator = window.EJS_emulator;
+  for (const [id, binding] of Object.entries(keyboard)) {
+    emulator.controls[0][id] = { ...emulator.controls[0][id], ...binding };
+  }
+  emulator.setupKeys();
+  emulator.frontend.changeSettingOption("keyboardInput", "disabled");
+  emulator.frontend.changeSettingOption("lockMouse", "disabled");
+  emulator.saveSettings();
+  keyboardStatus.textContent = "Keyboard layout applied.";
+});
+
+resetVideo.addEventListener("click", () => {
+  const emulator = window.EJS_emulator;
+  for (const [option, value] of Object.entries(performanceOptions)) {
+    emulator.frontend.changeSettingOption(option, value);
+  }
+  emulator.saveSettings();
+  videoStatus.textContent = "1× resolution and video filters off.";
+});
 
 change.addEventListener("click", () => {
   const url = new URL(location.href);

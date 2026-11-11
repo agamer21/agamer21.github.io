@@ -11,8 +11,12 @@
     label { display: block; font-weight: 700; margin-bottom: .5rem; }
     input { max-width: 100%; font: inherit; }
     #game:not([hidden]) { width: 100%; height: clamp(330px, 66dvh, 740px); background: #101013; }
+    .player-help { margin: 1rem 0; line-height: 1.5; }
+    .player-help details { margin: .5rem 0; }
+    .player-help summary { cursor: pointer; font-weight: 700; }
+    .player-help kbd { font: inherit; font-weight: 700; }
   </style>
-  <script type="module" src="./player.js?v=self-hosted-1"></script>
+  <script type="module" src="./player.js?v=keyboard-performance-1"></script>
 </head>
 <body class="player-page">
   <header class="player-header">
@@ -27,6 +31,28 @@
       <p>You can also choose a local game file.</p>
     </section>
     <p id="status" role="status">Preparing the browser player…</p>
+    <div class="player-help">
+      <p><kbd>WASD</kbd> Move · <kbd>Z</kbd> Confirm · <kbd>X</kbd> Back · Click the bottom screen to tap</p>
+      <details>
+        <summary>All keyboard controls</summary>
+        <ul>
+          <li><kbd>WASD</kbd> Circle Pad · <kbd>Arrow keys</kbd> D-pad</li>
+          <li><kbd>Z</kbd> A · <kbd>X</kbd> B · <kbd>C</kbd> X · <kbd>V</kbd> Y</li>
+          <li><kbd>Q</kbd> L · <kbd>E</kbd> R · <kbd>1</kbd> ZL · <kbd>2</kbd> ZR</li>
+          <li><kbd>Enter</kbd> Start · <kbd>Shift</kbd> Select · <kbd>IJKL</kbd> C-stick</li>
+        </ul>
+        <p>Click the game if the keyboard is focused elsewhere. Use the emulator’s Control Settings to remap keys.</p>
+        <button type="button" id="reset-keyboard" disabled>Apply this keyboard layout</button>
+        <span id="keyboard-status" role="status"></span>
+      </details>
+      <details>
+        <summary>If gameplay is slow</summary>
+        <p>The browser player uses threaded emulation. Use the performance settings to restore native 1× resolution and turn off video filters. You can show the frame rate in the emulator’s Settings under Video.</p>
+        <button type="button" id="reset-video" disabled>Use performance settings</button>
+        <span id="video-status" role="status"></span>
+        <p>On a laptop, plug in, close other heavy tabs, and check that graphics acceleration is enabled in Chrome or Edge. If Ultra Sun still runs slowly, try <a href="https://azahar-emu.org/">desktop Azahar</a> with your own game dump. It runs outside the browser and can use native CPU and graphics acceleration.</p>
+      </details>
+    </div>
     <div id="game" hidden></div>
   </main>
 </body>
