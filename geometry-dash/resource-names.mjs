@@ -9,6 +9,6 @@ const commonFiles = [
 const menuFiles = menuAtlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']);
 const effectNames = { dead: 'explode_11.ogg', complete: 'endstart_02.ogg' };
 const dragFiles = ['drageffect.plist', 'shipdrageffect.plist', 'square.png'];
-const resourceNames = new Set([...commonFiles, ...menuFiles, ...dragFiles, 'menuloop.mp3', 'bigfont.fnt', 'bigfont.png', ...Object.values(effectNames), ...levels.flatMap(entry => [entry.path, entry.song])]);
+const resourceNames = new Set([...commonFiles, ...menuFiles, ...dragFiles, 'ringeffect.plist', 'menuloop.mp3', 'bigfont.fnt', 'bigfont.png', ...Object.values(effectNames), ...levels.flatMap(entry => [entry.path, entry.song])]);
 
 export { atlases, menuAtlases, commonFiles, dragFiles, effectNames, resourceNames };

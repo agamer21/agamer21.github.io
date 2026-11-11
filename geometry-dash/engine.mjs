@@ -2,8 +2,8 @@ const STEP = 1 / 240;
 const SPEED = 311.58;
 const GRAVITY = 3449.52;
 const JUMP_SPEED = 670.80;
-// Measured from the Steam Stereo Madness trace at 240 physics steps per second.
-const STEREO_CUBE = { stepX: 1.298250436782837, gravity: 2799.36, jumpSpeed: 603.72 };
+// Measured from Steam Stereo Madness and Dry Out openings at 240 steps per second.
+const STEAM_CUBE = { stepX: 1.298250436782837, gravity: 2799.36, jumpSpeed: 603.72 };
 const PLAYER_HALF = 12;
 const HAZARDS = new Set([8, 9, 39, 103]);
 const SPIKE_HALF_HEIGHTS = new Map([[8, 21], [39, 17.8], [216, 21]]);
@@ -41,7 +41,8 @@ function color(fields, keys, fallback) {
   return channels.every(Number.isFinite) ? channels : fallback;
 }
 
-export function parseLevel(text, { steamCube = false, levelId } = {}) {
+export function parseLevel(text, { steamCube: calibratedCube = false, levelId } = {}) {
+  const steamCube = calibratedCube || levelId === 4;
   const [settings, ...rows] = text.split(';');
   const header = pairs(settings);
   const startBackground = color(pairs(header.get('kS29') || '', '_'), ['1', '2', '3'], [40, 62, 255]);
@@ -69,7 +70,7 @@ export function parseLevel(text, { steamCube = false, levelId } = {}) {
     if (!bins.has(bin)) bins.set(bin, []);
     bins.get(bin).push(object);
   }
-  const nativeContacts = steamCube || NATIVE_CONTACT_LEVELS.has(levelId);
+  const nativeContacts = calibratedCube || NATIVE_CONTACT_LEVELS.has(levelId);
   return { objects, bins, maxY, steamCube, nativeContacts, end: objects.at(-1).x + 210, startBackground, startGround };
 }
 
@@ -99,7 +100,7 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
   const previousY = run.y;
   const previousX = run.x;
   const nativeCube = level.steamCube && run.mode === 'cube';
-  run.x = nativeCube ? Math.fround(run.x + STEREO_CUBE.stepX) : run.x + SPEED * STEP;
+  run.x = nativeCube ? Math.fround(run.x + STEAM_CUBE.stepX) : run.x + SPEED * STEP;
   run.ticks++;
   if (pressed) run.pressedAt = run.ticks;
   run.lastHeld = held;
@@ -142,10 +143,10 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
   }
   const jumping = run.mode === 'cube' && run.grounded && held;
   const calibrated = level.steamCube && run.mode === 'cube';
-  const cubeGravity = calibrated ? STEREO_CUBE.gravity : GRAVITY;
+  const cubeGravity = calibrated ? STEAM_CUBE.gravity : GRAVITY;
   if (run.mode === 'cube') {
     if (jumping) {
-      run.vy = (calibrated ? STEREO_CUBE.jumpSpeed : JUMP_SPEED) * run.direction;
+      run.vy = (calibrated ? STEAM_CUBE.jumpSpeed : JUMP_SPEED) * run.direction;
       run.grounded = false;
     }
     run.vy = Math.max(-900, run.vy * run.direction - cubeGravity * STEP) * run.direction;
@@ -195,7 +196,7 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
     } else if (HAZARDS.has(object.id) || (level.nativeContacts && object.id === 216)) {
       const upsideDown = object.flipY !== (Math.abs(object.rotation % 360) === 180);
       const vertical = Math.abs(object.rotation % 180) === 90;
-      if (level.nativeContacts && run.mode === 'cube' && SPIKE_HALF_HEIGHTS.has(object.id)) {
+      if (run.mode === 'cube' && (object.id === 8 || level.nativeContacts) && SPIKE_HALF_HEIGHTS.has(object.id)) {
         const halfHeight = SPIKE_HALF_HEIGHTS.get(object.id);
         if (overlaps(run.x, run.y, object, vertical ? halfHeight : 18, vertical ? 18 : halfHeight)) run.result = 'dead';
         continue;

@@ -33,6 +33,7 @@ const cabinet = canvas.closest('.cabinet');
 const audio = new Audio();
 const menuSong = new Audio();
 menuSong.loop = true;
+audio.volume = menuSong.volume = profile.musicVolume ?? 1;
 let assets;
 let resources;
 let selected;
@@ -51,6 +52,7 @@ const jumpInputs = new Set();
 let pendingPress = false;
 const trail = [];
 const sparks = [];
+let orbPulse;
 const dragParticles = [];
 let dragEmission = 0;
 let screen = 'import';
@@ -152,6 +154,10 @@ async function loadResources(paths) {
   const availableMenuAtlases = menuAtlases.filter(name =>
     paths.has(name.toLowerCase() + '.plist') && paths.has(name.toLowerCase() + '.png'));
   const sprites = await Promise.all([...atlases, ...availableMenuAtlases].map(name => readAtlas(find, name)));
+  const readEffect = async name => {
+    const doc = new DOMParser().parseFromString(await paths.get(name).text(), 'application/xml');
+    return decodePlist(doc.querySelector('plist > dict'));
+  };
   const nextArt = {
     frames: new Map(sprites.flatMap(sheet => [...sheet])),
     font: await loadSelectorFont(paths).catch(() => undefined),
@@ -159,10 +165,8 @@ async function loadResources(paths) {
       paths.has(name) ? [[event, URL.createObjectURL(paths.get(name))]] : [])),
     background: await createImageBitmap(find(commonFiles[0])),
     ground: await createImageBitmap(find(commonFiles[1])),
-    drag: new Map(await Promise.all(dragFiles.slice(0, 2).filter(name => paths.has(name)).map(async name => {
-      const doc = new DOMParser().parseFromString(await paths.get(name).text(), 'application/xml');
-      return [name, decodePlist(doc.querySelector('plist > dict'))];
-    }))),
+    drag: new Map(await Promise.all(dragFiles.slice(0, 2).filter(name => paths.has(name)).map(async name => [name, await readEffect(name)]))),
+    ringEffect: paths.has('ringeffect.plist') ? await readEffect('ringeffect.plist') : null,
     particle: paths.has('square.png') ? await createImageBitmap(paths.get('square.png')) : undefined,
   };
   releaseArt(assets);
@@ -296,10 +300,12 @@ function show(next, heading, text) {
   overlay.hidden = next === 'playing';
   const menu = ['menu', 'levels', 'icons', 'settings', 'stats', 'achievements', 'creator'].includes(next);
   overlay.toggleAttribute('data-home', next === 'menu');
+  overlay.toggleAttribute('data-settings', next === 'settings');
   overlay.toggleAttribute('data-selector', next === 'levels');
   if (!menu) menuSong.pause();
   overlay.toggleAttribute('data-menu', menu);
   get('hud').hidden = menu || next === 'import' || next === 'ready';
+  progress.hidden = get('percent').hidden = profile.showProgress === false;
   menuContent.hidden = !menu && !['ready', 'paused', 'dead', 'complete'].includes(next);
   menuContent.replaceChildren();
   start.hidden = menu || next === 'import';
@@ -343,7 +349,7 @@ function show(next, heading, text) {
 }
 
 function startMenuMusic() {
-  if (menuSongUrl && !mute.matches('[aria-pressed=true]')) menuSong.play().catch(() => {});
+  if (menuSongUrl && profile.menuMusic !== false && !audio.muted) menuSong.play().catch(() => {});
 }
 
 function showMenu() {
@@ -439,23 +445,73 @@ function actionButton(label, handler) {
   return button;
 }
 
-function showSettings() {
-  show('settings', 'Settings', 'Adjust music and visual effects.');
-  const button = rowButton('Music', audio.muted ? 'Off' : 'On');
-  button.addEventListener('click', () => {
-    mute.click();
-    showSettings();
-    menuContent.querySelector('button').focus();
+function showSettings(section = 'Settings') {
+  show('settings', section, '');
+  const bitmap = selectorTitle(section);
+  if (bitmap) title.replaceChildren(bitmap);
+  const back = actionButton('←', section === 'Settings' ? showMenu : () => showSettings());
+  back.className = 'settings-back';
+  back.setAttribute('aria-label', 'Back');
+  menuContent.append(back);
+
+  const toggle = (label, checked, onChange) => {
+    const field = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = checked;
+    input.addEventListener('change', () => { onChange(input.checked); saveProfile(profile); });
+    field.append(label, input);
+    return field;
+  };
+
+  if (section === 'Graphics') {
+    menuContent.append(toggle('Visual effects', profile.effects !== false, value => { profile.effects = value; }));
+    return;
+  }
+  if (section === 'Options') {
+    menuContent.append(toggle('Progress bar', profile.showProgress !== false, value => { profile.showProgress = value; }));
+    return;
+  }
+  if (section !== 'Settings') {
+    const instructions = document.createElement('p');
+    instructions.textContent = 'Press Space, Up, or tap to jump. Hold to keep jumping or fly. Press Esc to pause.';
+    menuContent.append(instructions);
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'settings-grid';
+  for (const label of ['Account', 'How to Play', 'Options', 'Graphics', 'Rate', 'Parent', 'Help']) {
+    const button = actionButton(label, () => showSettings(label));
+    button.disabled = ['Account', 'Rate', 'Parent'].includes(label);
+    grid.append(button);
+  }
+  menuContent.append(grid);
+  const sound = document.createElement('div');
+  sound.className = 'settings-sound';
+  for (const [label, key] of [['Music', 'musicVolume'], ['SFX', 'sfxVolume']]) {
+    const field = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'range';
+    input.min = '0';
+    input.max = '100';
+    input.value = Math.round((profile[key] ?? 1) * 100);
+    input.addEventListener('input', () => {
+      profile[key] = Number(input.value) / 100;
+      if (key === 'musicVolume') audio.volume = menuSong.volume = profile[key];
+    });
+    input.addEventListener('change', () => saveProfile(profile));
+    field.append(label, input);
+    sound.append(field);
+  }
+  const menuMusic = toggle('Menu music', profile.menuMusic !== false, value => {
+    profile.menuMusic = value;
+    if (value) startMenuMusic();
+    else menuSong.pause();
   });
-  const effects = rowButton('Visual effects', reducedMotion.matches ? 'Reduced motion' : effectsEnabled() ? 'On' : 'Off');
-  effects.disabled = reducedMotion.matches;
-  effects.addEventListener('click', () => {
-    profile.effects = !effectsEnabled();
-    saveProfile(profile);
-    showSettings();
-    menuContent.lastElementChild.focus();
-  });
-  menuContent.append(button, effects);
+  menuMusic.className = 'settings-menu-music';
+  sound.append(menuMusic);
+  menuContent.append(sound);
 }
 
 function showStats() {
@@ -590,6 +646,7 @@ function begin() {
     run = saved ? { ...saved.run, collected: [...saved.run.collected] } : createRun();
     trail.length = 0;
     sparks.length = 0;
+    orbPulse = undefined;
     dragParticles.length = 0;
     dragEmission = 0;
     cameraY = saved?.cameraY ?? 0;
@@ -747,6 +804,25 @@ function drawObject(object, x, y, scale) {
   ctx.translate(x, y);
   ctx.rotate(object.rotation * Math.PI / 180);
   ctx.scale(object.flipX ? -1 : 1, object.flipY ? -1 : 1);
+  if (object.id === 36 && effectsEnabled() && assets.ringEffect) {
+    const effect = assets.ringEffect;
+    const life = Number(effect.get('particleLifespan'));
+    const radius = Number(effect.get('maxRadius'));
+    const count = Number(effect.get('maxParticles'));
+    if (life > 0) {
+      ctx.fillStyle = '#ffdf46';
+      for (let index = 0; index < count; index++) {
+        const phase = (run.ticks * STEP / life + index / count) % 1;
+        const angle = index * 2.39996 + phase * life * Number(effect.get('rotatePerSecond')) * Math.PI / 180;
+        const distance = radius * (1 - phase) * scale;
+        const size = Number(effect.get('startParticleSize')) * (1 - phase) * scale;
+        ctx.globalAlpha = phase;
+        ctx.fillRect(Math.cos(angle) * distance, Math.sin(angle) * distance, size, size);
+      }
+      ctx.globalAlpha = 1;
+    }
+    drawSprite('ring_01_glow_001.png', 0, 0, scale);
+  }
   if (!object.noGlow && object.sprite?.startsWith('spike_')) {
     drawSprite(object.sprite.replace('_001.png', '_glow_001.png'), 0, 0, scale);
   }
@@ -822,10 +898,11 @@ function draw() {
     }
     return;
   }
-  const scale = level.steamCube ? height / 320 : 1.5;
-  const anchor = level.steamCube ? width * 324 / 880 : 210;
+  const stereo = selected?.id === 1;
+  const scale = stereo ? height / 320 : 1.5;
+  const anchor = stereo ? width * 324 / 880 : 210;
   // Native Stereo Madness opening: the floor crosses row 1031 of a 1440-pixel frame.
-  const groundY = (level.steamCube ? height * 1031 / 1440 : height - 82) + cameraY * scale;
+  const groundY = (stereo ? height * 1031 / 1440 : height - 82) + cameraY * scale;
   const screenX = x => (x - run.x) * scale + anchor;
   const screenY = y => groundY - y * scale;
   tiled(assets.background, run.x * 0.23, 0, height, colorsAt(29, level.startBackground));
@@ -839,6 +916,16 @@ function draw() {
   }
   ctx.save();
   if (effectsEnabled()) {
+    if (orbPulse) {
+      const age = (run.ticks - orbPulse.tick) * STEP;
+      if (age < 0.3) {
+        ctx.save();
+        ctx.globalAlpha = 1 - age / 0.3;
+        ctx.filter = 'sepia(1) saturate(5)';
+        drawSprite('d_scaleFadeRing_01_001.png', screenX(orbPulse.x), screenY(orbPulse.y), scale * (1 + age * 6));
+        ctx.restore();
+      }
+    }
     for (const particle of dragParticles) {
       const age = (run.ticks - particle.tick) * STEP;
       if (age >= particle.life) continue;
@@ -895,6 +982,9 @@ function frame(now) {
       stepRun(run, level, isHeld || pendingPress, pendingPress || undefined);
       pendingPress = false;
       if (effectsEnabled()) {
+        if (run.boost !== boost && run.boost?.id === 36) {
+          orbPulse = { x: run.boost.x, y: run.boost.y, tick: run.ticks };
+        }
         updateDragParticles();
         if (run.ticks % 3 === 0) {
           trail.push({ x: run.x, y: run.y, tick: run.ticks });
@@ -924,7 +1014,11 @@ function frame(now) {
       recordResult();
       audio.pause();
       const sound = assets.sounds.get(run.result);
-      if (sound && !audio.muted) new Audio(sound).play().catch(() => {});
+      if (sound && !audio.muted) {
+        const effect = new Audio(sound);
+        effect.volume = profile.sfxVolume ?? 1;
+        effect.play().catch(() => {});
+      }
       if (run.result === 'complete') show('complete', practice ? 'Practice complete' : 'Level complete', '100% Â· ' + run.coins + ' / 3 coins');
       else show('dead', 'Try again', percent + '% Â· Press Space to retry.');
     }
