@@ -14,7 +14,7 @@ function render(text, connected) {
     badge.setAttribute('role', 'status');
     badge.setAttribute('aria-live', 'polite');
     badge.title = 'Live visitors across AG Arcade and its hosted games. One count per browser, including multiple tabs. Disconnects may take a moment to clear.';
-    const actions = document.querySelector('.header-actions, .player-header');
+    const actions = document.querySelector('.header-actions, .player-header, .bar, body > header');
     if (actions) actions.prepend(badge);
     else { badge.classList.add('arcade-online-floating'); document.body.append(badge); }
   }
