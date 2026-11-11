@@ -26,7 +26,8 @@ function pairs(value, separator = ',') {
 }
 
 export async function decodeLevel(value) {
-  const normalized = value.trim().replace(/-/g, '+').replace(/_/g, '/').replace(/=+$/, '');
+  // Some shipped levels terminate the encoded string with a NUL before trailing bytes.
+  const normalized = value.split('\0', 1)[0].trim().replace(/-/g, '+').replace(/_/g, '/').replace(/=+$/, '');
   const raw = Uint8Array.from(atob(normalized), char => char.charCodeAt(0));
   const stream = new Blob([raw]).stream().pipeThrough(new DecompressionStream('gzip'));
   return new Response(stream).text();

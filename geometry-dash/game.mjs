@@ -814,9 +814,10 @@ function draw() {
     }
     return;
   }
-  const scale = 1.5;
+  const scale = level.steamCube ? height / 320 : 1.5;
   const anchor = 210;
-  const groundY = height - 82 + cameraY * scale;
+  // Native Stereo Madness opening: the floor crosses row 1031 of a 1440-pixel frame.
+  const groundY = (level.steamCube ? height * 1031 / 1440 : height - 82) + cameraY * scale;
   const screenX = x => (x - run.x) * scale + anchor;
   const screenY = y => groundY - y * scale;
   tiled(assets.background, run.x * 0.23, 0, height, colorsAt(29, level.startBackground));
