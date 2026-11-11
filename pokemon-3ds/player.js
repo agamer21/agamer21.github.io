@@ -12,7 +12,7 @@ const rom = document.querySelector("#rom");
 const change = document.querySelector("#change");
 const status = document.querySelector("#status");
 const game = document.querySelector("#game");
-const dataPath = "https://cdn.emulatorjs.org/nightly/data/";
+const dataPath = "/pokemon-3ds/vendor/emulatorjs/";
 const maxWholeFileRead = 0x7fffffff;
 
 // Chromium rejects a single Blob read above 2 GiB. EmulatorJS still needs one buffer.
