@@ -51,15 +51,17 @@ async function preparePlayer() {
   }
 }
 
-function launchGame(file) {
+function launchGame(file, readHostedGame) {
   if (!file) return;
-  if (!file.size || !/\.(cci|3ds|cxi|zcxi)$/i.test(file.name)) {
+  if ((!file.size && !readHostedGame) || !/\.(cci|3ds|cxi|zcxi)$/i.test(file.name)) {
     status.textContent = "Choose a nonempty, decrypted .cci, .3ds, .cxi, or .zcxi game file.";
     rom.value = "";
     return;
   }
   const gameFile = /\.3ds$/i.test(file.name) ? new File([file], file.name.replace(/\.3ds$/i, ".cci")) : file;
-  if (gameFile.size > maxWholeFileRead) {
+  if (readHostedGame) {
+    gameFile.arrayBuffer = readHostedGame;
+  } else if (gameFile.size > maxWholeFileRead) {
     gameFile.arrayBuffer = () => readLargeGame(gameFile);
   }
   chooser.hidden = true;
@@ -87,7 +89,11 @@ function launchGame(file) {
 
 rom.addEventListener("change", () => launchGame(rom.files[0]));
 
-change.addEventListener("click", () => location.reload());
+change.addEventListener("click", () => {
+  const url = new URL(location.href);
+  url.searchParams.set("local", "1");
+  location.replace(url);
+});
 await preparePlayer();
 const hostedGames = new Map([
   ["ultra-sun", ["ultra-sun.zcxi", "Pokemon Ultra Sun.zcxi"]],
@@ -95,17 +101,45 @@ const hostedGames = new Map([
   ["alpha-sapphire", ["alpha-sapphire.cxi", "Pokemon Alpha Sapphire.cxi"]],
 ]);
 const selected = hostedGames.get(new URLSearchParams(location.search).get("game"));
-if (selected && !rom.disabled) {
-  rom.disabled = true;
-  status.textContent = "Downloading " + title + " from the home server?";
-  try {
-    const response = await fetch("https://roms.agamer21.kozow.com/" + selected[0], { cache: "no-store" });
-    if (!response.ok) throw new Error("HTTP " + response.status);
-    const blob = await response.blob();
-    launchGame(new File([blob], selected[1]));
-  } catch (error) {
-    status.textContent = "The home server could not load this game. On home Wi-Fi, allow this site's local network access and reload. You can also choose a local file below. " + error.message;
-  } finally {
-    rom.disabled = false;
-  }
+if (selected && !rom.disabled && !new URLSearchParams(location.search).has("local")) {
+  launchGame(new File([], selected[1]), async () => {
+    try {
+      status.textContent = "Downloading " + title + "?";
+      const response = await fetch("https://roms.agamer21.kozow.com/" + selected[0], {
+        cache: "no-store",
+        signal: AbortSignal.timeout(15 * 60 * 1000),
+      });
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const length = Number(response.headers.get("Content-Length"));
+      if (!Number.isSafeInteger(length) || length <= 0 || !response.body) {
+        throw new Error("Missing game file size");
+      }
+      const bytes = new Uint8Array(length);
+      const reader = response.body.getReader();
+      let received = 0;
+      let lastPercent = -1;
+      try {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          bytes.set(value, received);
+          received += value.byteLength;
+          const percent = Math.floor(received * 100 / length);
+          if (percent !== lastPercent) {
+            status.textContent = "Downloading " + title + "? " + percent + "%";
+            lastPercent = percent;
+          }
+        }
+      } finally {
+        await reader.cancel().catch(() => {});
+      }
+      if (received !== length) throw new Error("Incomplete download");
+      status.textContent = "Download complete. Starting the emulator?";
+      await new Promise(resolve => setTimeout(resolve, 0));
+      return bytes.buffer;
+    } catch (error) {
+      status.textContent = "The game could not download. Reload to retry or choose a local file.";
+      throw error;
+    }
+  });
 }
