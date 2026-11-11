@@ -44,7 +44,7 @@ The standalone page was played through all ten rounds in Chrome with ordinary UI
 
 Monkey Meadow Easy Standard runs from round 1 through the round-40 MOAB. Four towers are available, with original Ninja Monkey and Bomb Shooter models, idle and placement clips. The browser implements cash, lives, placement, camo detection, lead and explosion immunities, Bloon children, basic regrowth, and the first Dart upgrades. Quincy uses the installed game description's level-8 and level-14 MOAB damage multipliers. Hero XP, most tower stats, upgrade paths, and attack behavior still need native decoding. The remaining tower and hero roster is unimplemented.
 
-Recovered 529 Bloon group records from the installed simulation model. The published round table supplies grouping and start offsets. The installed data confirmed type, count, and duration for 103 of the 115 groups across rounds 1–40. Twelve groups retain published values pending exact native mapping. [Exported standard round table](https://wiki.biligame.com/btd6/Module:Rounds/DefaultRoundSet.json)
+The installed Steam build’s serialized DefaultRoundSet supplies all 115 spawn groups for Easy Standard rounds 1–40, including type, count, start, and duration. The browser converts seconds to 60 Hz ticks. Spawn scheduling and combat still use the browser simulation.
 
 The welcome screen uses shipped logo, sky and button art. The town briefing uses the original projected image and Major Monkey art. The native 3D title and home scenes remain open. A persistent Back to AG Arcade link is available across the game.
 
@@ -57,3 +57,9 @@ Standard now offers ten characters. Boomerang Monkey uses curving projectiles. T
 Original shelf models and their idle and placement clips are used for the six additions and for Ninja Monkey and Bomb Shooter. The shelf controllers lack gameplay firing clips. The browser adds ground-anchored recoil and attack effects for those eight characters. Dart Monkey and Quincy continue to use their recovered attack clips. Exact attack trajectories, hero abilities, the remaining roster, and complete upgrades remain open.
 
 Browser fixtures bought and placed each character, confirmed a visible body and firing-frame changes with idle motion disabled, and confirmed Bloon damage. The tests covered eight Tack Shooter projectiles, Sniper's two-layer hit, Bomb's lead damage, Ninja and Sauda camo hits, and the one-hero rule. The tutorial and standard victory regression checks also passed. The shop scrolls independently to preserve the board and Arcade return at short viewport heights.
+
+## Tutorial walkthrough reference
+
+The linked walkthrough shows 150 tutorial lives and two placed Dart Monkeys before the first wave, Dart upgrade prompts around 1:00–1:20, and Quincy around 1:40–1:50. The browser now starts the tutorial with 150 lives. The 10-second storyboard samples begin with loading and skip to the map. The title screen, briefing, exact prompt timing, placement coordinates, and later tower-unlock flow still require a closer comparison. [Walkthrough](https://www.youtube.com/watch?v=Bq3cwkB4qa4)
+
+The latest Chrome Standard run used the Steam schedule and completed round 40 with 34 lives. Purchases and placements used browser controls, with accelerated simulation for most rounds. A separate field-by-field check compared all 115 spawn groups with the serialized export. Native combat, economy, physics, map and animation parity are still open.

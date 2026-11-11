@@ -247,3 +247,7 @@ Geometry Dash appears under Platformer in the main library. Experimental still c
 ## 2026-11-11: Pokémon keyboard and performance settings
 
 Ultra Sun, Omega Ruby and Alpha Sapphire share the same 3DS player. The default layout uses WASD for the Circle Pad, arrows for the D-pad, Z/X for A/B and a trackpad click for the bottom screen. Direct Keyboard Input and mouse locking default to off. Returning players can apply the layout without clearing saves or controller mappings. The performance button restores native 1x resolution and disables video filters. The page explains where to find the FPS display and links to desktop Azahar for machines that struggle with browser emulation.
+
+## BTD6 Standard round data and tutorial reference
+
+Easy Standard rounds 1–40 use the installed Steam build’s DefaultRoundSet. The tutorial starts at 150 lives as shown in the linked Monkey Meadow walkthrough. See BTD6-PARITY.md for coverage and remaining differences.
