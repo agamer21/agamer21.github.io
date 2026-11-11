@@ -5,8 +5,9 @@ const JUMP_SPEED = 670.80;
 // Measured from Steam Stereo Madness and Dry Out openings at 240 steps per second.
 const STEAM_CUBE = { stepX: 1.298250436782837, gravity: 2799.36, jumpSpeed: 603.72 };
 const PLAYER_HALF = 12;
+const CUBE_HALF = 15;
 const HAZARDS = new Set([8, 9, 39, 103]);
-const SPIKE_HALF_HEIGHTS = new Map([[8, 21], [39, 17.8], [216, 21]]);
+const SPIKE_HEIGHTS = new Map([[8, 12], [39, 5.6], [216, 12]]);
 const SAW_IDS = new Set([89, 187]);
 const NATIVE_CONTACT_LEVELS = new Set([6, 9, 12, 13, 15, 18, 21]);
 
@@ -71,7 +72,9 @@ export function parseLevel(text, { steamCube: calibratedCube = false, levelId } 
     bins.get(bin).push(object);
   }
   const nativeContacts = calibratedCube || NATIVE_CONTACT_LEVELS.has(levelId);
-  return { objects, bins, maxY, steamCube, nativeContacts, end: objects.at(-1).x + 210, startBackground, startGround };
+  const measuredShortSpikes = nativeContacts || [2, 3, 4, 5, 7].includes(levelId);
+  const measuredPads = levelId === 2 || levelId === 4;
+  return { objects, bins, maxY, steamCube, nativeContacts, measuredShortSpikes, measuredPads, end: objects.at(-1).x + 210, startBackground, startGround };
 }
 
 export function nearby(level, min, max) {
@@ -87,7 +90,8 @@ export function nearby(level, min, max) {
 export function createRun() {
   return {
     x: 0, y: 15, vy: 0, angle: 0, grounded: true, mode: 'cube', floor: 0, ceiling: Infinity,
-    ticks: 0, result: 'running', portal: null, boost: null, direction: 1, lastHeld: false, pressedAt: -Infinity, coins: 0, collected: [],
+    ticks: 0, result: 'running', portal: null, boost: null, padFlight: false, padLaunch: false,
+    direction: 1, lastHeld: false, pressedAt: -Infinity, coins: 0, collected: [],
   };
 }
 
@@ -116,6 +120,7 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
         continue;
       }
       run.mode = object.id === 13 ? 'ship' : 'cube';
+      run.padFlight = run.padLaunch = false;
       if (run.mode === 'ship') {
         run.floor = Math.max(0, Math.round((object.y - 150) / 30) * 30);
         run.ceiling = run.floor + 300;
@@ -126,7 +131,7 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
       }
     }
     if (run.mode === 'cube' && run.boost !== object) {
-      const pad = object.id === 35 && overlaps(run.x, run.y, object, 21, 20);
+      const pad = object.id === 35 && !level.measuredPads && overlaps(run.x, run.y, object, 21, 20);
       const orb = object.id === 36 && run.ticks - run.pressedAt <= 9 &&
         overlaps(run.x, run.y, object, 23, 27);
       if (pad || orb) {
@@ -142,7 +147,7 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
     }
   }
   const jumping = run.mode === 'cube' && run.grounded && held;
-  const calibrated = level.steamCube && run.mode === 'cube';
+  const calibrated = (level.steamCube || run.padFlight) && run.mode === 'cube';
   const cubeGravity = calibrated ? STEAM_CUBE.gravity : GRAVITY;
   if (run.mode === 'cube') {
     if (jumping) {
@@ -155,7 +160,8 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
     const acceleration = held ? (velocity < 0 ? 0.5 : 0.4) : (velocity > 0 ? -0.48 : -0.32);
     run.vy = Math.max(-384, Math.min(480, velocity + GRAVITY * acceleration * STEP)) * run.direction;
   }
-  const jumpTickOffset = calibrated && jumping ? cubeGravity * STEP * run.direction : 0;
+  const jumpTickOffset = calibrated && (jumping || run.padLaunch) ? cubeGravity * STEP * run.direction : 0;
+  run.padLaunch = false;
   run.y += (run.vy + jumpTickOffset) * STEP;
   const half = run.mode === 'ship' ? 9 : PLAYER_HALF;
   const foot = run.mode === 'ship' ? 9 : 15;
@@ -170,8 +176,12 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
     run.grounded = run.direction === -1;
   }
 
+  let padContact;
   for (const object of objects) {
-    if ((object.id >= 1 && object.id <= 7) || object.id === 40) {
+    if (object.id === 35 && level.measuredPads && run.mode === 'cube' && run.boost !== object &&
+        overlaps(run.x, run.y, object, CUBE_HALF + 12.5, CUBE_HALF + 2)) {
+      padContact ??= object;
+    } else if ((object.id >= 1 && object.id <= 7) || object.id === 40) {
       const edge = object.id === 40 ? 3 : 15;
       if (!overlaps(run.x, run.y, object, 15 + half, edge + foot)) continue;
       const center = object.y * run.direction;
@@ -196,9 +206,11 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
     } else if (HAZARDS.has(object.id) || (level.nativeContacts && object.id === 216)) {
       const upsideDown = object.flipY !== (Math.abs(object.rotation % 360) === 180);
       const vertical = Math.abs(object.rotation % 180) === 90;
-      if (run.mode === 'cube' && (object.id === 8 || level.nativeContacts) && SPIKE_HALF_HEIGHTS.has(object.id)) {
-        const halfHeight = SPIKE_HALF_HEIGHTS.get(object.id);
-        if (overlaps(run.x, run.y, object, vertical ? halfHeight : 18, vertical ? 18 : halfHeight)) run.result = 'dead';
+      const spikeHeight = SPIKE_HEIGHTS.get(object.id);
+      if (run.mode === 'cube' && spikeHeight && (object.id !== 39 || level.measuredShortSpikes)) {
+        const halfWidth = CUBE_HALF + 3;
+        const halfHeight = CUBE_HALF + spikeHeight / 2;
+        if (overlaps(run.x, run.y, object, vertical ? halfHeight : halfWidth, vertical ? halfWidth : halfHeight)) run.result = 'dead';
         continue;
       }
       const height = object.id === 9 ? 8 : object.id === 39 ? 12 : 25;
@@ -210,6 +222,15 @@ export function stepRun(run, level, held, pressed = held && !run.lastHeld) {
         run.result = 'dead';
       }
     }
+  }
+  if (run.grounded) run.padFlight = false;
+  if (padContact && run.result === 'running') {
+    // Steam applies the yellow pad's 16 × 54 impulse after the contact step.
+    run.boost = padContact;
+    run.pressedAt = -Infinity;
+    run.vy = 864 * run.direction;
+    run.grounded = false;
+    run.padFlight = run.padLaunch = true;
   }
   if (run.y > level.maxY + 240) run.result = 'dead';
   if (run.mode === 'ship') run.angle = Math.atan2(run.vy, SPEED) * 0.7;
