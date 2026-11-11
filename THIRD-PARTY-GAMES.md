@@ -70,3 +70,14 @@ Half-Life retains the supplied pinned bubbls/UGS-Assets revision 354e3c6939a08e4
 ## Nintendo 3DS browser player
 
 The Pokémon launch pages use EmulatorJS's experimental threaded Azahar core from its nightly CDN. Users select a decrypted cartridge dump, CXI executable, or compressed ZCXI executable. The player reads large files in chunks and disables ROM caching. The deployment includes the player code and original icons only.
+
+## Arcade card artwork
+
+- Official app icons from the App Store for [Geometry Dash](https://apps.apple.com/us/app/geometry-dash/id625334537), [Granny](https://apps.apple.com/us/app/granny/id1323957120), and [Angry Birds 2](https://apps.apple.com/us/app/angry-birds-2/id880047117).
+- Steam library artwork for [Half-Life](https://store.steampowered.com/app/70/), [Medieval II](https://store.steampowered.com/app/4700/), and [Hotline Miami 2](https://store.steampowered.com/app/274170/).
+- Retro Bowl College uses the icon bundled with its browser build. Krillion uses the touch icon from [its own site](https://krillion.io/).
+- Nintendo box covers for all three Pokemon games and Super Mario 64 come from the [Libretro thumbnail archive](https://thumbnails.libretro.com/).
+- Wordle+ and 2048 use artwork bundled with their builds.
+- OpenFront uses its [press-kit icon](https://github.com/openfrontio/OpenFrontIO/tree/main/resources/public/press/images/logos).
+- Five Nights at Epstein's uses artwork from its title screen.
+- Agar Arcade uses the [official Agar.io icon](https://apps.apple.com/us/app/agar-io/id995999703) for its fan version.

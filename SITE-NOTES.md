@@ -239,3 +239,7 @@ Bloons TD 6 now offers a 40-round Easy Standard match alongside the ten-round tu
 ## 2026-11-11 BTD6 roster and firing motion
 
 Added playable Boomerang Monkey, Tack Shooter, Sniper Monkey, Wizard Monkey, Super Monkey and Sauda. All ten playable characters now visibly animate when firing. Dart and Quincy use recovered firing clips. The other eight use their original shelf models and idle/placement clips with browser-rendered firing motion. Shop scrolling preserves the board and Arcade return in portrait and landscape. Chrome passed per-character placement, visible model, firing pose and damage, as well as full tutorial and standard victory checks. Exact combat, remaining characters and upgrade/hero abilities remain open in BTD6-PARITY.md.
+
+## 2026-11-11: Geometry Dash and library artwork
+
+Geometry Dash appears under Platformer in the main library. Experimental still contains Medieval II Asset Lab, Moon Sweepers 2D, and HLM2 Web. All 27 card images were reviewed and 17 changed, including distinct Nintendo covers for all three Pokemon games. Sources are in THIRD-PARTY-GAMES.md.
