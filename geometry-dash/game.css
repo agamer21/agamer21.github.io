@@ -93,8 +93,6 @@ footer { margin-top: 16px; font-size: .75rem; }
 .side-link-dialog h2, .side-link-dialog p { margin: 0; }
 .side-link-dialog input { width: 100%; padding: 8px; font: inherit; }
 
-.player-tools .resource-download { padding: 9px 15px; border: 1px solid #7095b8; border-radius: 8px; background: #17334d; color: inherit; font-weight: 750; }
-.player-tools .resource-download:hover { background: #22496c; text-decoration: none; }
 
 .overlay[data-home] .native-logo { width: min(100%, 620px); height: auto; min-height: 0; margin: .12em auto; }
 .official-menu-links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-top: 5px; }
@@ -173,3 +171,4 @@ footer { margin-top: 16px; font-size: .75rem; }
 .overlay[data-home] .official-menu-links a { position: absolute; transform: translate(-50%, 50%); }
 .overlay[data-home] .official-menu-links [data-menu-link=news] { left: calc(100% - 43 * 100cqh / 320); bottom: 14.0625%; width: calc(var(--sprite-width) * 100cqh / 320); }
 .overlay[data-home] .official-menu-links [data-menu-link=robtop] { left: calc(50 * 100cqh / 320); bottom: 7.8125%; width: calc(var(--sprite-width) * 100cqh / 320); }
+.resource-options { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; margin-top: 10px; }

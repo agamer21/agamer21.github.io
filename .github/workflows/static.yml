@@ -90,6 +90,13 @@ jobs:
         run: python3 .github/scripts/prepare-angry-birds.py site/files/games/angry-birds-2/Build
       - name: Include shared online counter
         run: python3 .github/scripts/add-presence.py site
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare Geometry Dash release resources
+        run: |
+          curl --fail --location --retry 3 'https://github.com/agamer21/agamer21.github.io/releases/download/arcade-downloads/Resources.zip' --output "$RUNNER_TEMP/geometry-dash-resources.zip"
+          node .github/scripts/prepare-geometry-dash.mjs "$RUNNER_TEMP/geometry-dash-resources.zip" site/geometry-dash
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

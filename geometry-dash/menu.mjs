@@ -1,12 +1,20 @@
 export async function localResources(accepted) {
   if (!['127.0.0.1', '[::1]', 'localhost'].includes(location.hostname)) return null;
-  const response = await fetch('./local-resources.json', { cache: 'no-store' });
+  return fetchResources('local', accepted);
+}
+
+export function releaseResources(accepted) {
+  return fetchResources('release', accepted);
+}
+
+async function fetchResources(source, accepted) {
+  const response = await fetch('./' + source + '-resources.json', { cache: 'no-cache' });
   if (response.status === 404) return null;
-  if (!response.ok) throw new Error('The local launcher could not find your Steam resources.');
+  if (!response.ok) throw new Error('Could not find the resource list.');
   const { files } = await response.json();
   const entries = await Promise.all(files.filter(name => accepted.has(name)).map(async name => {
-    const response = await fetch('./local-assets/' + name);
-    if (!response.ok) throw new Error('Could not read ' + name + ' from Steam.');
+    const response = await fetch('./' + source + '-assets/' + name);
+    if (!response.ok) throw new Error('Could not read ' + name + '.');
     return [name, await response.blob()];
   }));
   return new Map(entries);

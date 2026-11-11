@@ -1,6 +1,7 @@
 import { renderLevelSelector } from './level-selector.mjs';
+import { atlases, menuAtlases, commonFiles, dragFiles, effectNames, resourceNames } from './resource-names.mjs';
 import { readResourceZip } from './resource-zip.mjs';
-import { extraButtons, localResources, menuButtons } from './menu.mjs';
+import { extraButtons, localResources, menuButtons, releaseResources } from './menu.mjs';
 import { levels, playable, readProfile, recallResources, rememberResources, saveProfile, saveRun, skins, unlockScore } from './library.mjs';
 import { createRun, decodeLevel, nearby, parseLevel, STEP, stepRun } from './engine.mjs';
 
@@ -30,8 +31,6 @@ const profile = readProfile();
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const cabinet = canvas.closest('.cabinet');
 const audio = new Audio();
-const atlases = ['GJ_GameSheet', 'GJ_GameSheet02', 'GJ_GameSheetIcons'];
-const menuAtlases = ['GJ_GameSheet03', 'GJ_GameSheet04', 'GJ_LaunchSheet'];
 const menuSong = new Audio();
 menuSong.loop = true;
 let assets;
@@ -102,14 +101,6 @@ function releaseArt(art) {
   for (const sound of art.sounds.values()) URL.revokeObjectURL(sound);
 }
 
-const commonFiles = [
-  'game_bg_01_001.png', 'groundsquare_01_001.png',
-  ...atlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']),
-];
-const menuFiles = menuAtlases.flatMap(name => [name.toLowerCase() + '.plist', name.toLowerCase() + '.png']);
-const effectNames = { dead: 'explode_11.ogg', complete: 'endstart_02.ogg' };
-const dragFiles = ['drageffect.plist', 'shipdrageffect.plist', 'square.png'];
-const resourceNames = new Set([...commonFiles, ...menuFiles, ...dragFiles, 'menuloop.mp3', 'bigfont.fnt', 'bigfont.png', ...Object.values(effectNames), ...levels.flatMap(entry => [entry.path, entry.song])]);
 
 function requireFile(paths, path) {
   const file = paths.get(path.toLowerCase());
@@ -270,8 +261,22 @@ async function restoreLibrary() {
       showMenu();
       return;
     }
+    message.textContent = 'Loading game resources?';
+    try {
+      const published = await releaseResources(resourceNames);
+      if (published) {
+        await loadResources(published);
+        showMenu();
+        return;
+      }
+    } catch {
+      status.textContent = 'The Arcade resources could not load.';
+    }
     const saved = await recallResources();
-    if (!saved) return;
+    if (!saved) {
+      message.textContent = 'Automatic loading is unavailable. Try reloading or open Resource options to load a local copy.';
+      return;
+    }
     await loadResources(saved);
     libraryNotice = 'Using the resources saved in this browser.';
     showMenu();

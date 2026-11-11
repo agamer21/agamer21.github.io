@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Play Geometry Dash levels with the resources from your Steam copy.">
+  <meta name="description" content="Play Geometry Dash levels in AG Arcade.">
   <title>Geometry Dash | AG Arcade</title>
   <link rel="stylesheet" href="game.css">
   <script type="module" src="game.mjs"></script>
@@ -17,8 +17,11 @@
     <div class="bar-actions"><button id="home" type="button" hidden>Menu</button><button id="checkpoint" type="button" hidden>Set checkpoint</button><button id="pause" type="button" hidden>Pause</button><button id="mute" type="button" aria-pressed="false">Sound on</button></div>
   </header>
   <main>
-    <p class="official-callout"><a href="./official.html">Play the official Stereo Madness demo</a><span>Runs in your browser with no Steam files.</span></p>
-    <div class="player-tools"><button type="button" id="choose-zip">Load Resources ZIP</button><button type="button" id="choose">Choose Resources folder</button><a class="resource-download" href="https://github.com/agamer21/agamer21.github.io/releases/tag/arcade-downloads" target="_blank" rel="noopener noreferrer">Download Resources</a><a data-side-link target="_blank" rel="noopener noreferrer" hidden></a><button type="button" id="edit-side-link">Set side link</button><button type="button" id="fullscreen" aria-pressed="false">Fullscreen</button></div><p id="fullscreen-status" class="status" role="status" hidden></p>
+    <div class="player-tools">
+      <a data-side-link target="_blank" rel="noopener noreferrer" hidden></a>
+      <button type="button" id="fullscreen" aria-pressed="false">Fullscreen</button>
+    </div>
+    <p id="fullscreen-status" class="status" role="status" hidden></p>
     <section class="cabinet" aria-label="Geometry Dash player">
       <canvas id="game" width="960" height="540" aria-label="Geometry Dash playfield"></canvas>
       <div class="hud" hidden id="hud"><span id="attempt"></span><progress id="progress" max="100" value="0" aria-label="Level progress"></progress><span id="percent">0%</span></div>
@@ -26,7 +29,7 @@
         <div class="panel">
           <p class="tag">AG ARCADE / BROWSER PORT</p>
           <h1 id="title">Geometry Dash</h1>
-          <p id="message">Load a ZIP of your Steam Resources folder or select the folder itself. This browser can remember the files for your next visit.</p>
+          <p id="message">Loading game resources?</p>
           <div class="actions">
             <button type="button" id="start" hidden>Play level</button>
             <button type="button" id="levels" hidden>Play</button>
@@ -41,8 +44,14 @@
     </section>
     <p class="controls"><kbd>Space</kbd> / <kbd>↑</kbd> / click or touch to jump. Hold to keep jumping or fly. <kbd>Esc</kbd> pauses. <kbd>R</kbd> restarts. In practice, <kbd>Z</kbd> saves a checkpoint.</p>
     <details>
-      <summary>Find the game files</summary>
-      <p>In Steam, open Geometry Dash’s gear menu, then choose Manage → Browse local files. Select the Resources folder inside or ZIP that folder and load the ZIP here. Files are cached locally in this browser. Clearing the site data removes those files and your web progress.</p>
+      <summary>Resource options</summary>
+      <div class="resource-options">
+        <button type="button" id="choose-zip">Load Resources ZIP</button>
+        <button type="button" id="choose">Choose Resources folder</button>
+        <button type="button" id="edit-side-link">Set side link</button>
+        <a href="https://github.com/agamer21/agamer21.github.io/releases/tag/arcade-downloads">Download Resources</a>
+        <a href="./official.html">Official Stereo Madness demo</a>
+      </div>
     </details>
     <footer>Unofficial browser reimplementation. Geometry Dash by RobTop Games.</footer>
   </main>
