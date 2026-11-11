@@ -235,3 +235,7 @@ REA 6.7.0 CLI completed MenuLayer::init at 0x1404720c0, evidence ev_5dae16073973
 ## 2026-11-10 Monkey Meadow Easy Standard
 
 Bloons TD 6 now offers a 40-round Easy Standard match alongside the ten-round tutorial. The four playable towers are Dart Monkey, Quincy, Ninja Monkey and Bomb Shooter. The welcome art was refreshed from the installed assets, and Back to AG Arcade stays accessible throughout play. Local Chrome completed both modes. Standard finished at 34 lives using browser controls for purchases and placements and accelerated simulation for most round time. Scope and native comparison gaps are in BTD6-PARITY.md.
+
+## 2026-11-11 BTD6 roster and firing motion
+
+Added playable Boomerang Monkey, Tack Shooter, Sniper Monkey, Wizard Monkey, Super Monkey and Sauda. All ten playable characters now visibly animate when firing. Dart and Quincy use recovered firing clips. The other eight use their original shelf models and idle/placement clips with browser-rendered firing motion. Shop scrolling preserves the board and Arcade return in portrait and landscape. Chrome passed per-character placement, visible model, firing pose and damage, as well as full tutorial and standard victory checks. Exact combat, remaining characters and upgrade/hero abilities remain open in BTD6-PARITY.md.
