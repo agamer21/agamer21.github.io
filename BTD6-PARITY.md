@@ -73,3 +73,7 @@ REA identified the installed GameAssembly.dll. Cpp2IL exposed the scripted tower
 ## Original Town Center scenery
 
 At roughly 0:20 in the walkthrough, the board shows Town Hall above the center lane, a house inside the upper-right loop, a house by the lower-right trees, and the windmill beside the entrance. The web board now uses the Steam scene's original meshes, textures and scene transforms for all four buildings, the tree clusters and the red flag. The windmill renders 24 baked poses of its original blades. Reduced-motion mode uses a still. The browser projection is aligned to the native terrain UVs. Lighting, water effects, the game camera, prop collisions and HUD presentation still differ. [Reference walkthrough](https://www.youtube.com/watch?v=Bq3cwkB4qa4&t=20s)
+
+## First-load menus
+
+The installed TitleScreenUI hierarchy places the welcome and subtitle with the logo in the title scene. The browser groups those with the original logo and Start button, gives the Town briefing its own Back action, and keeps Standard available through a secondary shortcut with an illustrated map card. Town Center uses a two-column shop with visible locked towers and bottom-center speech. Pause now names the correct map and can return to the title. The native title's 3D cast, camera and animation, main-menu world, unlock screens and complete UI behavior still need matching. The Steam game was not launched for this pass.
