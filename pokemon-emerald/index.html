@@ -7,10 +7,10 @@
   <link rel="icon" href="/assets/arcade/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/arcade/arcade.css">
   <style>
-    main { width: min(960px, calc(100% - 2rem)); margin: 1.5rem auto; }
-    label { display: block; font-weight: 700; margin-bottom: .5rem; }
-    #game:not([hidden]) { width: 100%; height: clamp(360px, 70dvh, 760px); background: #101013; }
-    .note { line-height: 1.5; margin: 1rem 0; }
+    main { width: min(960px, calc(100% - 2rem)); margin: 1rem auto; }
+    #game { width: 100%; height: clamp(360px, 72dvh, 760px); background: #101013; }
+    .note { line-height: 1.5; margin: .5rem 0 1rem; }
+    kbd { font: inherit; font-weight: 700; padding: .05rem .35rem; border: 1px solid #555; border-radius: 4px; }
   </style>
 </head>
 <body class="player-page">
@@ -20,45 +20,45 @@
     <button id="fullscreen">Fullscreen</button>
   </header>
   <main>
-    <p id="status" role="status">Choose your Pokémon Emerald ROM (.gba) to play in the browser. Saves stay in this browser (EmulatorJS storage).</p>
-    <p id="chooser">
-      <label for="rom">Game file (.gba)</label>
-      <input id="rom" type="file" accept=".gba,application/octet-stream">
-    </p>
-    <p class="note"><small>Provide your own legally obtained ROM. This page is ready for the ROM file you give it.</small></p>
-    <div id="game" hidden></div>
+    <p id="status" role="status">Loading Pokémon Emerald...</p>
+    <p class="note"><small>Controls: <kbd>↑↓←→</kbd> move, <kbd>X</kbd> A, <kbd>Z</kbd> B, <kbd>A</kbd> L, <kbd>S</kbd> R, <kbd>Enter</kbd> Start, <kbd>Shift</kbd> Select. Click/tap the game to focus keyboard input. Saves stay in this browser.</small></p>
+    <div id="game"></div>
   </main>
   <script>
-    const status = document.getElementById('status');
-    const chooser = document.getElementById('chooser');
-    const rom = document.getElementById('rom');
-    const game = document.getElementById('game');
     document.getElementById('fullscreen').onclick = () => {
       if (!document.fullscreenElement) document.documentElement.requestFullscreen();
       else document.exitFullscreen();
     };
-    rom.addEventListener('change', () => {
-      const file = rom.files && rom.files[0];
-      if (!file) return;
-      if (!/\.gba$/i.test(file.name)) {
-        status.textContent = 'Please choose a .gba ROM file.';
-        rom.value = '';
-        return;
-      }
-      chooser.hidden = true;
-      game.hidden = false;
-      status.textContent = 'Loading emulator...';
-      window.EJS_player = '#game';
-      window.EJS_core = 'gba';
-      window.EJS_gameName = 'Pokemon Emerald';
-      window.EJS_gameUrl = file;
-      window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-      window.EJS_startOnLoaded = true;
-      const script = document.createElement('script');
-      script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
-      script.onerror = () => { status.textContent = 'Failed to load the emulator. Check your connection and try again.'; };
-      document.body.appendChild(script);
-    });
+
+    const status = document.getElementById('status');
+    // RetroPad IDs for GBA: 0=B,2=Select,3=Start,4=Up,5=Down,6=Left,7=Right,8=A,10=L,11=R
+    const keyboard = Object.fromEntries(Object.entries({
+      0: 'z',        // B
+      2: 'shift',    // Select
+      3: 'enter',    // Start
+      4: 'up arrow', // Up
+      5: 'down arrow',
+      6: 'left arrow',
+      7: 'right arrow',
+      8: 'x',        // A
+      10: 'a',       // L
+      11: 's',       // R
+    }).map(([id, value]) => [id, { value }]));
+
+    window.EJS_player = '#game';
+    window.EJS_core = 'gba';
+    window.EJS_gameName = 'Pokemon Emerald';
+    window.EJS_gameUrl = '/pokemon-emerald/emerald.gba';
+    window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+    window.EJS_startOnLoaded = true;
+    window.EJS_defaultControls = { 0: keyboard };
+    window.EJS_defaultOptions = { shader: 'disabled' };
+    window.EJS_onGameStart = () => { status.textContent = 'Loaded. Click the game if keys do not respond.'; };
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+    script.onerror = () => { status.textContent = 'Failed to load the emulator or ROM. Check your connection and try again.'; };
+    document.body.appendChild(script);
   </script>
 </body>
 </html>
