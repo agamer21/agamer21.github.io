@@ -88,6 +88,9 @@ jobs:
             /files/games/hextris/
             /files/games/moto-x3m/
             /files/games/tiny-fishing/
+            /files/games/idle-breakout/
+            /files/games/slope-real/
+            /files/games/cookie-clicker-real/
       - name: Prepare curated site
         run: |
           mkdir -p site/assets site/files/load site/files/games site/files/load/webretro/cores
@@ -104,7 +107,7 @@ jobs:
           cp files/load/webretro/LICENSE site/files/load/webretro/
           cp -R files/load/webretro/assets files/load/webretro/uauth files/load/webretro/info site/files/load/webretro/
           cp files/load/webretro/cores/mupen64plus_next_libretro.js files/load/webretro/cores/mupen64plus_next_libretro.wasm site/files/load/webretro/cores/
-          cp -R files/games/fnae files/games/basketbros-io files/games/2048 files/games/wordle files/games/hexgl files/games/hextris files/games/moto-x3m files/games/tiny-fishing site/files/games/
+          cp -R files/games/fnae files/games/basketbros-io files/games/2048 files/games/wordle files/games/hexgl files/games/hextris files/games/moto-x3m files/games/tiny-fishing files/games/idle-breakout files/games/slope-real files/games/cookie-clicker-real site/files/games/
           touch site/.nojekyll
       - name: Prepare pinned Angry Birds runtime
         run: python3 .github/scripts/prepare-angry-birds.py site/files/games/angry-birds-2/Build
