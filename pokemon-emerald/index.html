@@ -49,14 +49,15 @@
     window.EJS_core = 'gba';
     window.EJS_gameName = 'Pokemon Emerald';
     window.EJS_gameUrl = '/pokemon-emerald/emerald.gba';
-    window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+    window.EJS_pathtodata = '/pokemon-emerald/vendor/emulatorjs/';
     window.EJS_startOnLoaded = true;
+    window.EJS_threads = false;
     window.EJS_defaultControls = { 0: keyboard };
     window.EJS_defaultOptions = { shader: 'disabled' };
     window.EJS_onGameStart = () => { status.textContent = 'Loaded. Click the game if keys do not respond.'; };
 
     const script = document.createElement('script');
-    script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+    script.src = '/pokemon-emerald/vendor/emulatorjs/loader.js';
     script.onerror = () => { status.textContent = 'Failed to load the emulator or ROM. Check your connection and try again.'; };
     document.body.appendChild(script);
   </script>
