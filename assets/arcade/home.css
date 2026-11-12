@@ -3,3 +3,27 @@
 .arcade-home [data-game="openfront"] .game-cover img{padding:0;background:transparent;object-fit:cover}.arcade-home #library-results{white-space:nowrap}.arcade-home .library-view-row{gap:4px}
 
 .arcade-home .game-cover-full-art img{object-fit:contain;background:#171a21}
+
+/* recommendations additions */
+.home-section{margin:8px 0 22px}
+.home-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:10px}
+.home-section-head h2{margin:0;font-size:20px;letter-spacing:-.4px}
+.home-section-head p{margin:0;color:var(--home-muted,#65746b);font-size:13px}
+.mini-games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.mini-card{border:1px solid #dfe6dc;border-radius:12px;padding:8px;display:flex;gap:10px;align-items:center;background:#fffefb}
+.mini-card .game-cover,.mini-card .game-cover img{width:48px;height:48px;min-width:48px;border-radius:10px}
+.mini-card .game-info{padding:0}
+.mini-card h3{font-size:14px;margin:0 0 3px}
+.mini-card .genre{font-size:11px}
+.sort-field select{width:100%;min-height:48px;border:1px solid #d6e0d2;border-radius:12px;background:#fffefb;padding:12px 14px;font:inherit;color:inherit}
+.card-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.meta-chip{font-size:11px;line-height:1;border:1px solid color-mix(in srgb,currentColor 18%,transparent);border-radius:999px;padding:5px 7px;opacity:.85}
+.meta-chip-plays{font-weight:600}
+.about-section{margin:28px auto 8px;padding:18px 0;border-top:1px solid var(--home-line,#dfe6dc)}
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.about-section h2{margin:0 0 10px;font-size:22px}
+.about-section h3{margin:0 0 8px;font-size:16px}
+.about-section p,.about-section li{color:var(--home-muted,#65746b);line-height:1.5;font-size:14px}
+.about-section ul{margin:0;padding-left:18px}
+.library-tools .sort-field{min-width:170px}
+@media(max-width:800px){.home-section-head{flex-direction:column;align-items:flex-start}.mini-games-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.library-tools{flex-wrap:wrap}}

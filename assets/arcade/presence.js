@@ -20,7 +20,7 @@ function ensureBadges() {
   peakBadge = document.createElement('span');
   peakBadge.className = 'arcade-online arcade-online-peak';
   peakBadge.setAttribute('aria-live', 'polite');
-  peakBadge.title = 'Record high number of people online at the same time.';
+  peakBadge.title = 'Record high number of people online at the same time (shared when available, with a local fallback).';
   peakBadge.hidden = true;
 
   const actions = document.querySelector('.header-actions, .player-header, .bar, body > header');

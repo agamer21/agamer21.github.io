@@ -1,0 +1,17 @@
+{
+  "name": "AG Arcade",
+  "short_name": "AG Arcade",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d121c",
+  "theme_color": "#0d121c",
+  "description": "Your favorite games, all in one place. Play, save favorites, and pick up where you left off.",
+  "icons": [
+    {
+      "src": "/assets/arcade/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
