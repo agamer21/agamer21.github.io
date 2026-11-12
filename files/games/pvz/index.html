@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plants vs. Zombies</title>
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    #flash-container { position: absolute; inset: 0; display: grid; place-items: center; background: #000; }
+    ruffle-player { width: 100%; height: 100%; max-width: 100vw; max-height: 100vh; display: block; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@ruffle-rs/ruffle@0.2.0-nightly.2025.10.2/ruffle.min.js"></script>
+</head>
+<body>
+  <div id="flash-container"></div>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("flash-container");
+      const swf = "https://cdn.jsdelivr.net/gh/sasa24s/Sphere-compile@95d1d98dc38a920d02e6bbcf61620501b2bacfcb/tables/pvz_9_15.swf";
+      const ruffle = window.RufflePlayer?.newest() || window.RufflePlayer?.createPlayer();
+      if (!ruffle || !container) {
+        container.textContent = "Ruffle failed to load.";
+        return;
+      }
+      const player = ruffle.createPlayer();
+      player.style.width = "100%";
+      player.style.height = "100%";
+      container.appendChild(player);
+      player.load(swf).catch(() => { container.textContent = "Failed to load Plants vs. Zombies."; });
+    });
+  </script>
+</body>
+</html>

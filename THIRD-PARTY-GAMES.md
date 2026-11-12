@@ -93,3 +93,8 @@ Added wrappers/cards for bundled browser builds already present in the repositor
 ## 2026-11-12: Deployment fix and Idle Breakout
 
 Updated GitHub Pages workflow to include newly added game pages/assets so they deploy (previous 404s). Added original Idle Breakout (incremental brick-breaker) and wrapped bundled Slope/Run 3/Cookie Clicker/Flappy Bird builds. Crossy Hop remains an original alternative to Crossy Road.
+
+## 2026-11-12: Plants vs. Zombies (Flash)
+
+Added Plants vs. Zombies wrapper using Ruffle; SWF loaded from jsDelivr (\sasa24s/Sphere-compile@95d1d98dc38a920d02e6bbcf61620501b2bacfcb/tables/pvz_9_15.swf\) as provided via Ultimate Game Stash/Drive link. Icon sourced from Wikimedia Commons (cover art thumbnail).
+

@@ -83,6 +83,7 @@ const metaByName = new Map([
   ["Flappy Bird", { input: "Tap/Keyboard", save: "Best score" }],
   ["Crossy Hop", { input: "Keyboard/Touch", save: "Best score" }],
   ["Idle Breakout", { input: "Mouse/Touch", save: "Saves progress" }],
+  ["Plants vs. Zombies", { input: "Mouse", save: "In-game (Flash/Ruffle)" }],
 ]);
 
 const cards = [...grid.querySelectorAll(".game-card")].map((card, index) => {
