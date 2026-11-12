@@ -1,4 +1,5 @@
 .arcade-online{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font:500 12px/1.25 system-ui,sans-serif;color:inherit;border:1px solid currentColor;border-color:color-mix(in srgb,currentColor 22%,transparent);border-radius:999px;padding:7px 10px;opacity:.85}
+.arcade-online[hidden]{display:none !important}
 .arcade-online::before{content:"";width:6px;height:6px;border-radius:50%;background:#90959e;flex:none}
 .arcade-online[data-connected="true"]::before{background:#5ed58b;box-shadow:0 0 7px #5ed58b55}
 .arcade-online-peak::before{background:#f2b84b;box-shadow:0 0 7px #f2b84b55}

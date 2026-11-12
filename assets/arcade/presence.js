@@ -62,6 +62,16 @@ async function start() {
   const db = getDatabase(app);
   const session = ref(db, `arcadePresence/${auth.currentUser.uid}/${crypto.randomUUID()}`);
   const peakRef = ref(db, 'arcadePresencePeak');
+  const localPeakKey = 'ag-arcade-presence-peak';
+  const readLocalPeak = () => {
+    try {
+      const value = Number(localStorage.getItem(localPeakKey));
+      return Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
+    } catch { return 0; }
+  };
+  const writeLocalPeak = (value) => {
+    try { localStorage.setItem(localPeakKey, String(value)); } catch {}
+  };
   let connected = false, pageActive = true, ready = false;
   const fail = () => { ready = false; render('Online unavailable', false); };
   const announce = async () => {
@@ -70,38 +80,50 @@ async function start() {
     if (connected && pageActive) await set(session, true);
   };
   let count = 0;
-  let peak = null;
+  let peak = readLocalPeak();
+  const tryUpdatePeak = () => {
+    if (!ready) return;
+    if (count > peak) {
+      peak = count;
+      writeLocalPeak(peak);
+    }
+    runTransaction(peakRef, current => {
+      const currentPeak = Math.max(
+        typeof current === 'number' ? current : 0,
+        count,
+        peak
+      );
+      return currentPeak;
+    }).then(result => {
+      const committed = result?.snapshot?.val();
+      if (typeof committed === 'number') {
+        peak = Math.max(peak, committed);
+        writeLocalPeak(peak);
+        update();
+      }
+    }).catch(() => {});
+  };
   const update = () => {
     if (connected && ready) clearTimeout(waiting);
     const onlineText = connected && ready ? `${count} online` : 'Connecting…';
-    const peakText = connected && ready && typeof peak === 'number' ? `Peak ${peak}` : '';
+    const peakText = connected && ready ? `Peak ${Math.max(peak, count, 0)}` : '';
     render(onlineText, connected && ready, peakText);
   };
   onValue(ref(db, 'arcadePresence'), snapshot => {
     count = Object.values(snapshot.val() ?? {}).filter(tabs =>
       tabs && typeof tabs === 'object' && Object.values(tabs).some(value => value === true)).length;
     ready = true;
-    if (typeof peak === 'number' && count > peak) {
-      peak = count;
-      runTransaction(peakRef, current => {
-        const currentPeak = typeof current === 'number' ? current : 0;
-        return count > currentPeak ? count : currentPeak;
-      }).catch(() => {});
-    }
+    tryUpdatePeak();
     update();
   }, fail);
   onValue(peakRef, snapshot => {
     const value = snapshot.val();
-    peak = typeof value === 'number' ? value : 0;
-    if (ready && count > peak) {
-      peak = count;
-      runTransaction(peakRef, current => {
-        const currentPeak = typeof current === 'number' ? current : 0;
-        return count > currentPeak ? count : currentPeak;
-      }).catch(() => {});
+    if (typeof value === 'number' && value > peak) {
+      peak = value;
+      writeLocalPeak(peak);
     }
     update();
-  }, () => { peak = null; update(); });
+  }, () => { update(); });
   onValue(ref(db, '.info/connected'), snapshot => {
     connected = snapshot.val() === true;
     if (!connected) { render('Online unavailable', false); return; }
