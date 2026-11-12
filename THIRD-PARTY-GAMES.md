@@ -98,3 +98,8 @@ Updated GitHub Pages workflow to include newly added game pages/assets so they d
 
 Added Plants vs. Zombies wrapper using Ruffle; SWF loaded from jsDelivr (\sasa24s/Sphere-compile@95d1d98dc38a920d02e6bbcf61620501b2bacfcb/tables/pvz_9_15.swf\) as provided via Ultimate Game Stash/Drive link. Icon sourced from Wikimedia Commons (cover art thumbnail).
 
+
+## 2026-11-12: Remove browser 3DS Pokémon, prep Pokémon Emerald
+
+Removed Pokémon Ultra Sun/Omega Ruby/Alpha Sapphire browser pages/cards and stopped deploying \pokemon-3ds/\ from the site repo (3DS performance was poor in browser). Added Pokémon Emerald (GBA) player page ready for a user-provided ROM via EmulatorJS (CDN). ROMs previously hosted on the separate home server origin must be removed there separately if desired. PVZ icon replaced with a working cover-art image.
+

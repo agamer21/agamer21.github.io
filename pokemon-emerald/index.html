@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pokémon Emerald | AG Arcade</title>
+  <link rel="icon" href="/assets/arcade/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/arcade/arcade.css">
+  <style>
+    main { width: min(960px, calc(100% - 2rem)); margin: 1.5rem auto; }
+    label { display: block; font-weight: 700; margin-bottom: .5rem; }
+    #game:not([hidden]) { width: 100%; height: clamp(360px, 70dvh, 760px); background: #101013; }
+    .note { line-height: 1.5; margin: 1rem 0; }
+  </style>
+</head>
+<body class="player-page">
+  <header class="player-header">
+    <a href="/#games">&larr; AG Arcade</a>
+    <h1>Pokémon Emerald</h1>
+    <button id="fullscreen">Fullscreen</button>
+  </header>
+  <main>
+    <p id="status" role="status">Choose your Pokémon Emerald ROM (.gba) to play in the browser. Saves stay in this browser (EmulatorJS storage).</p>
+    <p id="chooser">
+      <label for="rom">Game file (.gba)</label>
+      <input id="rom" type="file" accept=".gba,application/octet-stream">
+    </p>
+    <p class="note"><small>Provide your own legally obtained ROM. This page is ready for the ROM file you give it.</small></p>
+    <div id="game" hidden></div>
+  </main>
+  <script>
+    const status = document.getElementById('status');
+    const chooser = document.getElementById('chooser');
+    const rom = document.getElementById('rom');
+    const game = document.getElementById('game');
+    document.getElementById('fullscreen').onclick = () => {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    };
+    rom.addEventListener('change', () => {
+      const file = rom.files && rom.files[0];
+      if (!file) return;
+      if (!/\.gba$/i.test(file.name)) {
+        status.textContent = 'Please choose a .gba ROM file.';
+        rom.value = '';
+        return;
+      }
+      chooser.hidden = true;
+      game.hidden = false;
+      status.textContent = 'Loading emulator...';
+      window.EJS_player = '#game';
+      window.EJS_core = 'gba';
+      window.EJS_gameName = 'Pokemon Emerald';
+      window.EJS_gameUrl = file;
+      window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+      window.EJS_startOnLoaded = true;
+      const script = document.createElement('script');
+      script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+      script.onerror = () => { status.textContent = 'Failed to load the emulator. Check your connection and try again.'; };
+      document.body.appendChild(script);
+    });
+  </script>
+</body>
+</html>

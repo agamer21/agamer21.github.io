@@ -60,7 +60,6 @@ jobs:
             /pvz.html
             /moon-sweepers/
             /granny/
-            /pokemon-3ds/
             /geometry-dash/
             /assets/arcade/
             /files/drive-mad/
@@ -101,7 +100,7 @@ jobs:
              2048.html wordle.html hexgl.html hextris.html tank-arena.html retro-bowl.html moto-x3m.html tiny-fishing.html \
              retro-bowl-college.html super-mario-64.html snake.html minesweeper.html tetris.html breakout.html pong.html \
              idle-breakout.html slope.html run-3.html cookie-clicker.html flappy-bird.html crossy-hop.html site/
-          cp -R moon-sweepers geometry-dash granny pokemon-3ds site/
+          cp -R moon-sweepers geometry-dash granny pokemon-emerald site/
           cp -R assets/arcade site/assets/
           cp -R files/drive-mad files/slope files/run3 files/cookieclicker site/files/
           cp -R files/load/retro-bowl files/load/rbcollege files/load/sm64webgl files/load/flappy-bird site/files/load/
