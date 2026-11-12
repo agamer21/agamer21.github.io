@@ -72,6 +72,11 @@ const metaByName = new Map([
   ["Five Nights at Epstein's", { input: "Mouse", save: "Session play" }],
   ["Basket Bros", { input: "Keyboard", save: "Session play" }],
   ["Agar Arcade", { input: "Mouse/Touch", save: "Session play" }],
+  ["Snake", { input: "Keyboard/Touch", save: "Best score" }],
+  ["Minesweeper", { input: "Mouse/Touch", save: "Session play" }],
+  ["Block Drop", { input: "Keyboard/Touch", save: "Best score" }],
+  ["Breakout", { input: "Mouse/Touch", save: "Best score" }],
+  ["Pong 2P", { input: "Keyboard/Touch", save: "Local match" }],
 ]);
 
 const cards = [...grid.querySelectorAll(".game-card")].map((card, index) => {

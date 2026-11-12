@@ -81,3 +81,7 @@ The Pokémon launch pages use EmulatorJS's experimental threaded Azahar core fro
 - OpenFront uses its [press-kit icon](https://github.com/openfrontio/OpenFrontIO/tree/main/resources/public/press/images/logos).
 - Five Nights at Epstein's uses artwork from its title screen.
 - Agar Arcade uses the [official Agar.io icon](https://apps.apple.com/us/app/agar-io/id995999703) for its fan version.
+
+## 2026-11-12: Original arcade additions
+
+Added original in-house browser games (self-hosted): Snake, Minesweeper, Block Drop (tetris-style), Breakout, and Pong 2P, with original SVG icons. Game code and icons for these additions were created for AG Arcade.

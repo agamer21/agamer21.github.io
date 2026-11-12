@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Snake - AG Arcade</title><link rel="icon" href="/assets/arcade/icon.svg"><link rel="stylesheet" href="/assets/arcade/arcade.css"><style>body{margin:0;min-height:100vh;display:flex;flex-direction:column}main{flex:1;display:grid;place-items:center;padding:16px}.wrap-game{width:min(560px,100%);text-align:center}canvas{width:100%;max-width:480px;aspect-ratio:1;background:#0f1722;border:1px solid #334155;border-radius:12px;touch-action:none}.hud{display:flex;justify-content:space-between;gap:12px;margin:10px 0;color:inherit;font:600 14px system-ui}button{font:600 13px system-ui;padding:8px 12px;border-radius:10px;border:1px solid #475569;background:#1e293b;color:#fff;cursor:pointer}.hint{opacity:.8;font:13px system-ui;margin-top:8px}</style></head><body class="player-page"><header class="player-header"><a href="/#games">&larr; AG Arcade</a><h1>Snake</h1><button id="fullscreen">Fullscreen</button></header><main><div class="wrap-game"><div class="hud"><span>Score: <strong id="score">0</strong></span><span>Best: <strong id="best">0</strong></span><button id="restart">Restart</button></div><canvas id="c" width="480" height="480" aria-label="Snake game"></canvas><p class="hint">Arrow keys / WASD / swipe to move. Don’t hit walls or yourself.</p></div></main><script>
+const c=document.getElementById('c'),x=c.getContext('2d'),N=24,S=c.width/N;
+let snake,dir,next,food,score,best=Number(localStorage.getItem('agArcade.snake.best')||0),over,t;
+document.getElementById('best').textContent=best;
+function place(){let p;do{p={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)};}while(snake.some(s=>s.x===p.x&&s.y===p.y));food=p;}
+function reset(){snake=[{x:12,y:12},{x:11,y:12},{x:10,y:12}];dir={x:1,y:0};next={x:1,y:0};score=0;over=false;place();draw();if(t)clearInterval(t);t=setInterval(step,110);}
+function drawCell(px,py,color,r=6){x.fillStyle=color;x.beginPath();if(x.roundRect)x.roundRect(px*S+1,py*S+1,S-2,S-2,r);else x.rect(px*S+1,py*S+1,S-2,S-2);x.fill();}
+function draw(){x.fillStyle='#0f1722';x.fillRect(0,0,c.width,c.height);x.strokeStyle='#172033';for(let i=0;i<=N;i++){x.beginPath();x.moveTo(i*S,0);x.lineTo(i*S,c.height);x.stroke();x.beginPath();x.moveTo(0,i*S);x.lineTo(c.width,i*S);x.stroke();}
+drawCell(food.x,food.y,'#ef4444',10);snake.forEach((s,i)=>drawCell(s.x,s.y,i?'#22c55e':'#4ade80'));
+if(over){x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,0,c.width,c.height);x.fillStyle='#fff';x.textAlign='center';x.font='700 34px system-ui';x.fillText('Game Over',240,230);x.font='16px system-ui';x.fillText('Press Restart or Space',240,265);} }
+function step(){if(over)return;dir=next;const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+if(h.x<0||h.y<0||h.x>=N||h.y>=N||snake.some(s=>s.x===h.x&&s.y===h.y)){over=true;best=Math.max(best,score);localStorage.setItem('agArcade.snake.best',best);document.getElementById('best').textContent=best;draw();return;}
+snake.unshift(h);if(h.x===food.x&&h.y===food.y){score++;document.getElementById('score').textContent=score;place();}else snake.pop();draw();}
+function setDir(nx,ny){if(nx===-dir.x&&ny===-dir.y)return;next={x:nx,y:ny};}
+addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='arrowup'||k==='w')setDir(0,-1);else if(k==='arrowdown'||k==='s')setDir(0,1);else if(k==='arrowleft'||k==='a')setDir(-1,0);else if(k==='arrowright'||k==='d')setDir(1,0);else if(k===' '&&over)reset();});
+let sx=0,sy=0;c.addEventListener('pointerdown',e=>{sx=e.clientX;sy=e.clientY;c.setPointerCapture(e.pointerId);});
+c.addEventListener('pointerup',e=>{const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(Math.abs(dx)>Math.abs(dy))setDir(dx>0?1:-1,0);else setDir(0,dy>0?1:-1);});
+document.getElementById('restart').onclick=reset;document.getElementById('fullscreen').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();};
+reset();
+</script></body></html>
