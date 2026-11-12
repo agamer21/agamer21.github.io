@@ -85,3 +85,7 @@ The Pokémon launch pages use EmulatorJS's experimental threaded Azahar core fro
 ## 2026-11-12: Original arcade additions
 
 Added original in-house browser games (self-hosted): Snake, Minesweeper, Block Drop (tetris-style), Breakout, and Pong 2P, with original SVG icons. Game code and icons for these additions were created for AG Arcade.
+
+## 2026-11-12: Additional arcade games
+
+Added wrappers/cards for bundled browser builds already present in the repository: Slope (`/files/slope/game.html`), Run 3 (`/files/run3/index.html`), Cookie Clicker (`/files/cookieclicker/index.html`), and Flappy Bird (`/files/load/flappy-bird/index.html`). Added original game Crossy Hop as a road-crossing/hopper alternative. Renamed the in-house block-stacking game card/title to "Tetris". Game names, assets, and rights for third-party titles remain with their respective owners; include and credit original sources/licenses where required.

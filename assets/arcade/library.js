@@ -74,9 +74,14 @@ const metaByName = new Map([
   ["Agar Arcade", { input: "Mouse/Touch", save: "Session play" }],
   ["Snake", { input: "Keyboard/Touch", save: "Best score" }],
   ["Minesweeper", { input: "Mouse/Touch", save: "Session play" }],
-  ["Block Drop", { input: "Keyboard/Touch", save: "Best score" }],
+  ["Tetris", { input: "Keyboard/Touch", save: "Best score" }],
   ["Breakout", { input: "Mouse/Touch", save: "Best score" }],
   ["Pong 2P", { input: "Keyboard/Touch", save: "Local match" }],
+  ["Slope", { input: "Keyboard", save: "Progress varies" }],
+  ["Run 3", { input: "Keyboard", save: "Progress saves" }],
+  ["Cookie Clicker", { input: "Mouse/Touch", save: "Saves locally" }],
+  ["Flappy Bird", { input: "Tap/Keyboard", save: "Best score" }],
+  ["Crossy Hop", { input: "Keyboard/Touch", save: "Best score" }],
 ]);
 
 const cards = [...grid.querySelectorAll(".game-card")].map((card, index) => {
