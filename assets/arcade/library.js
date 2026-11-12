@@ -37,8 +37,6 @@ const search = document.querySelector("#game-search"),
   sort = document.querySelector("#game-sort"),
   grid = document.querySelector(".games-grid"),
   result = document.querySelector("#library-results"),
-  continueSection = document.querySelector("#continue-section"),
-  continueGrid = document.querySelector("#continue-grid"),
   featuredGrid = document.querySelector("#featured-grid");
 
 const featuredIds = new Set([
@@ -135,14 +133,25 @@ for (const category of [...new Set(cards.filter((c) => !c.experimental).map((c) 
   genre.appendChild(o);
 }
 
-function cardById(id) { return cards.find(c => c.id === id); }
-function makeMiniCard(c) {
-  const a = c.card.cloneNode(true);
-  a.classList.add("mini-card");
-  a.querySelectorAll(".card-meta").forEach(n => n.remove());
-  a.querySelectorAll(".play-mark").forEach(n => n.remove());
-  const p = a.querySelector(".card-description");
-  if (p) p.remove();
+function makeFeaturedCard(c) {
+  const a = document.createElement("a");
+  a.className = "featured-card";
+  a.href = c.card.href;
+  a.setAttribute("aria-label", c.card.getAttribute("aria-label") || `Play ${c.name}`);
+  const img = c.card.querySelector(".game-cover img");
+  const thumb = document.createElement("img");
+  thumb.className = "featured-thumb";
+  thumb.src = img ? img.getAttribute("src") : "";
+  thumb.alt = "";
+  thumb.loading = "lazy";
+  thumb.width = 56;
+  thumb.height = 56;
+  const info = document.createElement("div");
+  info.className = "featured-info";
+  info.innerHTML = `<span class="featured-name"></span><span class="featured-genre"></span>`;
+  info.querySelector(".featured-name").textContent = c.name;
+  info.querySelector(".featured-genre").textContent = c.category;
+  a.append(thumb, info);
   a.addEventListener("click", () => {
     recent = [{ id: c.id, at: Date.now() }, ...recent.filter((x) => x.id !== c.id)].slice(0, 20);
     plays[c.id] = (Number(plays[c.id]) || 0) + 1;
@@ -152,14 +161,9 @@ function makeMiniCard(c) {
   return a;
 }
 function renderHighlights() {
-  if (continueGrid) {
-    const recents = recent.map(r => cardById(r.id)).filter(c => c && !c.experimental).slice(0, 5);
-    continueGrid.replaceChildren(...recents.map(makeMiniCard));
-    if (continueSection) continueSection.hidden = recents.length === 0;
-  }
   if (featuredGrid && featuredGrid.childElementCount === 0) {
     const featured = cards.filter(c => c.featured && !c.experimental).slice(0, 6);
-    featuredGrid.replaceChildren(...featured.map(makeMiniCard));
+    featuredGrid.replaceChildren(...featured.map(makeFeaturedCard));
   }
 }
 

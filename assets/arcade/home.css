@@ -27,3 +27,11 @@
 .about-section ul{margin:0;padding-left:18px}
 .library-tools .sort-field{min-width:170px}
 @media(max-width:800px){.home-section-head{flex-direction:column;align-items:flex-start}.mini-games-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.library-tools{flex-wrap:wrap}}
+
+/* featured fix */
+.featured-card{border:1px solid #dfe6dc;border-radius:14px;padding:10px;display:flex;gap:10px;align-items:center;background:#fffefb;min-width:0;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.featured-card:hover{transform:translateY(-2px);border-color:#b4c9a9;box-shadow:0 8px 16px #1c3d2610}
+.featured-thumb{width:56px;height:56px;min-width:56px;border-radius:12px;object-fit:cover;background:#eef2e9;box-shadow:0 4px 10px #15372d18}
+.featured-info{display:flex;flex-direction:column;min-width:0;gap:3px}
+.featured-name{font-size:14px;font-weight:700;line-height:1.2;color:var(--home-ink,#172c24);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.featured-genre{font-size:12px;color:var(--home-muted,#65746b)}
