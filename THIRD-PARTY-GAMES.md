@@ -89,3 +89,7 @@ Added original in-house browser games (self-hosted): Snake, Minesweeper, Block D
 ## 2026-11-12: Additional arcade games
 
 Added wrappers/cards for bundled browser builds already present in the repository: Slope (`/files/slope/game.html`), Run 3 (`/files/run3/index.html`), Cookie Clicker (`/files/cookieclicker/index.html`), and Flappy Bird (`/files/load/flappy-bird/index.html`). Added original game Crossy Hop as a road-crossing/hopper alternative. Renamed the in-house block-stacking game card/title to "Tetris". Game names, assets, and rights for third-party titles remain with their respective owners; include and credit original sources/licenses where required.
+
+## 2026-11-12: Deployment fix and Idle Breakout
+
+Updated GitHub Pages workflow to include newly added game pages/assets so they deploy (previous 404s). Added original Idle Breakout (incremental brick-breaker) and wrapped bundled Slope/Run 3/Cookie Clicker/Flappy Bird builds. Crossy Hop remains an original alternative to Crossy Road.

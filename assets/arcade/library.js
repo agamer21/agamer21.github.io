@@ -82,6 +82,7 @@ const metaByName = new Map([
   ["Cookie Clicker", { input: "Mouse/Touch", save: "Saves locally" }],
   ["Flappy Bird", { input: "Tap/Keyboard", save: "Best score" }],
   ["Crossy Hop", { input: "Keyboard/Touch", save: "Best score" }],
+  ["Idle Breakout", { input: "Mouse/Touch", save: "Saves progress" }],
 ]);
 
 const cards = [...grid.querySelectorAll(".game-card")].map((card, index) => {

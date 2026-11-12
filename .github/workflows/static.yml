@@ -23,10 +23,13 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /.github/scripts/
-            /bloons-td6.html
             /index.html
             /move-saves.html
             /library.html
+            /404.html
+            /LICENSE
+            /manifest.webmanifest
+            /bloons-td6.html
             /drive-mad.html
             /agar.html
             /fnae.html
@@ -43,18 +46,31 @@ jobs:
             /tiny-fishing.html
             /retro-bowl-college.html
             /super-mario-64.html
-            /404.html
-            /LICENSE
+            /snake.html
+            /minesweeper.html
+            /tetris.html
+            /breakout.html
+            /pong.html
+            /idle-breakout.html
+            /slope.html
+            /run-3.html
+            /cookie-clicker.html
+            /flappy-bird.html
+            /crossy-hop.html
             /moon-sweepers/
             /granny/
             /pokemon-3ds/
             /geometry-dash/
             /assets/arcade/
             /files/drive-mad/
+            /files/slope/
+            /files/run3/
+            /files/cookieclicker/
             /files/load/retro-bowl/
             /files/load/rbcollege/
+            /files/load/sm64webgl/
+            /files/load/flappy-bird/
             /files/load/webretro/index.html
-            /files/load/sm64webgl/index.html
             /files/load/webretro/assets/
             /files/load/webretro/cores/mupen64plus_next_libretro.js
             /files/load/webretro/cores/mupen64plus_next_libretro.wasm
@@ -75,11 +91,15 @@ jobs:
       - name: Prepare curated site
         run: |
           mkdir -p site/assets site/files/load site/files/games site/files/load/webretro/cores
-          cp bloons-td6.html angry-birds-2.html half-life.html move-saves.html agar.html fnae.html basket-bros.html 2048.html wordle.html hexgl.html hextris.html tank-arena.html index.html library.html drive-mad.html retro-bowl.html moto-x3m.html tiny-fishing.html retro-bowl-college.html super-mario-64.html 404.html LICENSE site/
+          cp index.html move-saves.html library.html 404.html LICENSE manifest.webmanifest \
+             bloons-td6.html drive-mad.html agar.html fnae.html angry-birds-2.html half-life.html basket-bros.html \
+             2048.html wordle.html hexgl.html hextris.html tank-arena.html retro-bowl.html moto-x3m.html tiny-fishing.html \
+             retro-bowl-college.html super-mario-64.html snake.html minesweeper.html tetris.html breakout.html pong.html \
+             idle-breakout.html slope.html run-3.html cookie-clicker.html flappy-bird.html crossy-hop.html site/
           cp -R moon-sweepers geometry-dash granny pokemon-3ds site/
           cp -R assets/arcade site/assets/
-          cp -R files/drive-mad site/files/
-          cp -R files/load/retro-bowl files/load/rbcollege files/load/sm64webgl site/files/load/
+          cp -R files/drive-mad files/slope files/run3 files/cookieclicker site/files/
+          cp -R files/load/retro-bowl files/load/rbcollege files/load/sm64webgl files/load/flappy-bird site/files/load/
           cp files/load/webretro/index.html files/load/webretro/manifest.json files/load/webretro/pwa.js files/load/webretro/pwa-sw.js site/files/load/webretro/
           cp files/load/webretro/LICENSE site/files/load/webretro/
           cp -R files/load/webretro/assets files/load/webretro/uauth files/load/webretro/info site/files/load/webretro/
