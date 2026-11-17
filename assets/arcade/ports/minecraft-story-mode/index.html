@@ -46,7 +46,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 
 <div id="options">
 <label>Quality<select id="option-quality"></select></label>
-<label>Frame rate<select id="option-fps"><option value="60">60 fps</option><option value="uncapped">Unlimited</option></select></label>
+<label>Frame rate<select id="option-fps"><option value="30">30 fps (lighter)</option><option value="60">60 fps</option><option value="uncapped">Unlimited</option></select></label>
 <label>Anti-aliasing<select id="option-aa"><option value="smooth">Smooth</option><option value="sharp">Sharp</option></select></label>
 <label>Shadows<select id="option-shadows"><option value="auto">Auto</option><option value="on">On</option><option value="off">Off</option></select></label>
 <label>Multithreading<select id="option-threads"><option value="on">On</option><option value="off">Off</option></select></label>
@@ -69,9 +69,10 @@ window.setGameLoadingProgress = function(percentage, label) {
 };
 </script>
 
-<script src="quality.js"></script>
-<script src="filesystem.js?v=cdn-data-20261117"></script>
+<script src="quality.js?v=streaming-2"></script>
+<script src="parts.js?v=streaming-2"></script>
+<script src="filesystem.js?v=streaming-2"></script>
 <script src="audio.js"></script>
-<script src="loader.js?v=cdn-data-20261117"></script>
+<script src="loader.js?v=streaming-2"></script>
 </body>
 </html>

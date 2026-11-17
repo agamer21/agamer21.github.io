@@ -15,7 +15,6 @@ function fail(error) {
   const originalFetch = globalThis.fetch.bind(globalThis);
   const PART_COUNT = 324;
   const CHUNK_SIZE = 20 * 1024 * 1024;
-  const partCache = new Map();
   let totalSizePromise = null;
 
   function progress(value, label) {
@@ -29,44 +28,7 @@ function fail(error) {
   }
 
   async function getPart(index) {
-    if (index < 0 || index >= PART_COUNT) {
-      throw new Error(`Invalid game.data part index: ${index}`);
-    }
-
-    if (!partCache.has(index)) {
-      const name = `game.data.part${String(index).padStart(3, "0")}`;
-      const url = new URL(`https://cdn.jsdelivr.net/gh/linkawaken1979-alt/mcsm-web-port@92ea4bab239286af747c00626cf3d31bf360c65f/game-files/${name}`, location.href);
-
-      const promise = originalFetch(url.href).then(async response => {
-        if (!response.ok) {
-          throw new Error(`${name}: HTTP ${response.status}`);
-        }
-
-        const bytes = await response.arrayBuffer();
-
-        if (bytes.byteLength > CHUNK_SIZE) {
-          throw new Error(`${name} exceeds 20 MiB`);
-        }
-
-        if (index < PART_COUNT - 1 && bytes.byteLength !== CHUNK_SIZE) {
-          throw new Error(
-            `${name} is ${bytes.byteLength} bytes; expected ${CHUNK_SIZE}.`
-          );
-        }
-
-        return bytes;
-      });
-
-      partCache.set(index, promise);
-
-      promise.catch(() => {
-        if (partCache.get(index) === promise) {
-          partCache.delete(index);
-        }
-      });
-    }
-
-    return partCache.get(index);
+    return (await MCSMParts.read(index)).buffer;
   }
 
   async function getTotalSize() {
@@ -422,6 +384,8 @@ function progressPlaceholder() {
 var Module = {
   canvas: document.getElementById("canvas"),
 
+  mcsmTargetFps: Number(MCSMConfig.settings.fps) === 30 ? 30 : 60,
+
   mcsmUncapped:
     new URLSearchParams(location.search).has("uncapped") ||
     !!(
@@ -721,7 +685,7 @@ function setupPicker() {
   const config = globalThis.MCSMConfig || {};
 
   const labels = {
-    auto: config.detected ? `Auto (${config.detected.tier})` : "Auto",
+    auto: config.autoTier ? `Auto (${config.autoTier})` : "Auto",
     "4k": "4K (3840x2160)",
     ultra: "Ultra (1440p to 1080p)",
     high: "High (1080p)",
@@ -738,7 +702,7 @@ function setupPicker() {
 
   const controlled = {
     quality: ["quality", "res", "out"],
-    fps: ["uncapped"],
+    fps: ["uncapped", "fps"],
     aa: ["aa"],
     shadows: ["shadows"],
     threads: ["threads", "build"]
@@ -795,5 +759,5 @@ const engineScript = document.createElement("script");
 engineScript.onerror = () =>
   leaveThreadedBuild("script failed to load");
 
-engineScript.src = `${buildName}.js`;
+engineScript.src = `${buildName}.js?v=streaming-2`;
 document.body.appendChild(engineScript);

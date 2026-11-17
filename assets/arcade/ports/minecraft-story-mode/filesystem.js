@@ -13,48 +13,10 @@ globalThis.MCSMFiles = {
   source: "game.data",
   partSize: 20 * 1024 * 1024,
   partCount: 324,
-  partCache: new Map(),
-  partPending: new Map(),
   totalSize: null,
 
   async getPart(index) {
-    if (index < 0 || index >= this.partCount) throw new Error(`Invalid game.data part ${index}`);
-
-    if (this.partCache.has(index)) return this.partCache.get(index);
-    if (this.partPending.has(index)) return this.partPending.get(index);
-
-    const promise = (async () => {
-      const name = `game.data.part${String(index).padStart(3, "0")}`;
-      const response = await fetch(`https://cdn.jsdelivr.net/gh/linkawaken1979-alt/mcsm-web-port@92ea4bab239286af747c00626cf3d31bf360c65f/game-files/${name}`, { cache: "force-cache" });
-
-      if (!response.ok) throw new Error(`${name} failed: HTTP ${response.status}`);
-
-      const bytes = new Uint8Array(await response.arrayBuffer());
-      if (bytes.length > this.partSize) throw new Error(`${name} exceeds 20 MiB`);
-
-      this.partCache.set(index, bytes);
-
-      // Keep only a few parts in memory to avoid retaining the entire game.
-      while (this.partCache.size > 3) {
-        const oldest = this.partCache.keys().next().value;
-        if (oldest === index && this.partCache.size > 1) {
-          const keys = Array.from(this.partCache.keys());
-          this.partCache.delete(keys[0]);
-        } else {
-          this.partCache.delete(oldest);
-        }
-      }
-
-      return bytes;
-    })();
-
-    this.partPending.set(index, promise);
-
-    try {
-      return await promise;
-    } finally {
-      this.partPending.delete(index);
-    }
+    return MCSMParts.read(index);
   },
 
   async getTotalSize() {
@@ -131,7 +93,7 @@ globalThis.MCSMFiles = {
 
   async init() {
     const memory = typeof navigator !== "undefined" && navigator.deviceMemory ? navigator.deviceMemory : 8;
-    this.blockLimit = memory <= 2 ? 512 : memory <= 4 ? 1024 : 6144;
+    this.blockLimit = memory <= 2 ? 512 : memory <= 4 ? 1024 : 3072;
 
     const head = await this.slice(0, this.blockSize, true);
     const view = new DataView(head.buffer, head.byteOffset, head.byteLength);
@@ -250,9 +212,17 @@ globalThis.MCSMFiles = {
   },
 
   stream(group) {
-    if (group.started || !this.fits(group)) return;
+    if (group.started) return;
     group.started = true;
-    this.pull(group.offset, group.items, false);
+    // Warm the beginning without retaining/downloading the entire 815 MiB startup group.
+    const budget = Math.min(256 * 1024 * 1024, this.blockLimit * this.blockSize / 2);
+    let size = 0;
+    const items = [];
+    for (const item of group.items) {
+      if (items.length && size + item.length > budget) break;
+      items.push(item);size += item.length;
+    }
+    if (items.length) this.pull(group.offset, items, false);
   },
 
   resolve(path) {
@@ -470,7 +440,7 @@ globalThis.MCSMFiles = {
 
       notice = document.createElement("div");
       notice.id = "network";
-      notice.textContent = "Connection lost. Retrying…";
+      notice.textContent = "Downloading game data. Retrying…";
       notice.style.cssText = "position:absolute;left:50%;top:24px;transform:translateX(-50%);padding:8px 16px;background:rgba(0,0,0,.8);color:#fff;font:16px ui-monospace,SFMono-Regular,Menlo,monospace;border-radius:4px;z-index:10";
       document.body.appendChild(notice);
     }
@@ -608,7 +578,7 @@ globalThis.MCSMFiles = {
         let completed = false;
         let lastError = null;
 
-        for (let attempt = 0; attempt < 9 && !completed; attempt++) {
+        for (let attempt = 0; attempt < 3 && !completed; attempt++) {
           try {
             const output = new Uint8Array(item.length);
             let copied = 0;
@@ -652,7 +622,7 @@ globalThis.MCSMFiles = {
             lastError = error;
             this.trouble(true);
 
-            if (attempt < 8) {
+            if (attempt < 2) {
               const delay = Math.min(
                 3000,
                 250 * 2 ** Math.min(attempt, 4)

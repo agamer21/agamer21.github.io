@@ -4006,7 +4006,7 @@ function __asyncjs__mcsm_present_wait_js() {
         context.deleteSync(fences.shift());
       }
     }
-    const target = pace.last + (Module.mcsmUncapped ? 0 : 1e3 / 60 - 1.5);
+    const target = pace.last + (Module.mcsmUncapped ? 0 : 1e3 / (Module.mcsmTargetFps === 30 ? 30 : 60) - 1.5);
     if (performance.now() >= target) {
       await yielder();
     } else {

@@ -138,3 +138,13 @@ Minecraft's main-thread loader, filesystem, background reader and synchronous re
 The player remains embedded on AG Arcade, but the approximately 6 GiB dataset still requires external streaming because it exceeds this Pages site's capacity. Client networks must allow cdn.jsdelivr.net. Network failures now identify that host rather than showing only “Failed to fetch.”
 
 Validation: Minecraft reached its opening screen embedded on the arcade page while the browser test blocked raw.githubusercontent.com, mcsm-web.pages.dev and gcore.jsdelivr.net. CDN data requests returned 200, with no page errors or failed responses. This validates startup, not a full playthrough or the client network’s own CDN policy.
+
+## 2026-11-17: Minecraft streaming and lighter Auto settings
+
+Auto quality is capped at 720p (540p for the weakest detected devices), with shadows and default anti-aliasing disabled. New sessions default to 30 fps, enforced by the runtime presentation scheduler; 60 fps, unlimited and explicit quality preferences remain selectable.
+
+`parts.js` shares game-data reads across the loader and filesystem. It deduplicates pending requests, permits at most two transfers, retries HTTP/network/truncated-body failures up to three times, and keeps only two or three 20 MiB parts in memory. Optional Cache Storage retains at most twelve validated parts for reuse (storage denial/quota failures fall back to networking). The filesystem's decoded block cache is capped at 128 MiB on low-memory devices, 256 MiB on 4 GiB devices and 768 MiB otherwise, replacing the prior maximum of 1.5 GiB with a bounded startup prefetch (at most 256 MiB or half the block budget) rather than prefetching the entire roughly 815 MiB group. The retry notice describes game-data downloading rather than claiming the entire connection is lost.
+
+Validation: Node streaming tests cover retries, truncated bodies, deduplication, concurrency limits, disk reuse after memory eviction and recovery after exhausted retries. Browser validation checks the lighter Auto settings and startup with the old blocked hosts unavailable. The full dataset still streams from cdn.jsdelivr.net, so unstable networks and limited client hardware can still cause pauses.
+
+The final browser check reached “Click to Begin” at 720p with a 30 fps target, shadows off and anti-aliasing off; all requested CDN parts returned 200 with no page errors. This was a startup check, not an extended gameplay benchmark on the user’s hardware.

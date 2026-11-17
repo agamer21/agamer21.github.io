@@ -65,15 +65,16 @@ globalThis.MCSMConfig = (() => {
   const pick = (value, allowed, fallback) => allowed.includes(value) ? value : fallback
   const settings = {
     quality: pick(params.get("quality") || stored.quality, ["auto", ...Object.keys(tiers)], "auto"),
-    fps: params.has("uncapped") ? "uncapped" : pick(stored.fps, ["60", "uncapped"], "60"),
-    aa: params.get("aa") ? (params.get("aa") === "off" ? "sharp" : "smooth") : pick(stored.aa, ["smooth", "sharp"], "smooth"),
+    fps: params.has("uncapped") ? "uncapped" : pick(params.get("fps") || stored.fps, ["30", "60", "uncapped"], "30"),
+    aa: params.get("aa") ? (params.get("aa") === "off" ? "sharp" : "smooth") : pick(stored.aa, ["smooth", "sharp"], "sharp"),
     shadows: params.get("shadows") ? (params.get("shadows") === "0" || params.get("shadows") === "off" ? "off" : "on") : pick(stored.shadows, ["auto", "on", "off"], "auto"),
     threads: params.get("threads") ? (params.get("threads") === "0" || params.get("threads") === "off" ? "off" : "on") : pick(stored.threads, ["on", "off"], "on")
   }
   const detected = detect()
-  const tier = settings.quality === "auto" ? detected.tier : settings.quality
-  const config = Object.assign({tier, detected, settings}, tiers[tier])
-  if (settings.aa === "sharp") config.antialias = 0
+  const autoTier = detected.tier === "minimum" ? "minimum" : "low"
+  const tier = settings.quality === "auto" ? autoTier : settings.quality
+  const config = Object.assign({tier, autoTier, detected, settings}, tiers[tier])
+  if (settings.aa === "sharp" || (settings.quality === "auto" && !params.has("aa") && !stored.aa)) config.antialias = 0
   if (settings.shadows !== "auto") config.shadows = settings.shadows === "on"
   const size = (value, fallback) => {
     const match = /^(\d{3,4})x(\d{3,4})$/.exec(value || "")
