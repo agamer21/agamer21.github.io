@@ -18,16 +18,25 @@
     addEventListener('touchstart', openAudio, { capture: true, once: true, passive: true });
   }
   const ASSETS = {
-    'hcr.data': { count: 6, size: 103210907 },
-    'hcr.wasm': { count: 6, size: 97394647 },
-    'image.bin': { count: 2, size: 22085632 }
-  };
+  "hcr.data": {
+    "size": 103210907,
+    "compressedSize": 72421454
+  },
+  "hcr.wasm": {
+    "size": 97394647,
+    "compressedSize": 18224605
+  },
+  "image.bin": {
+    "size": 22085632,
+    "compressedSize": 4648288
+  }
+};
   const TYPES = {
     'hcr.wasm': 'application/wasm',
     'hcr.data': 'application/octet-stream',
     'image.bin': 'application/octet-stream'
   };
-  const TOTAL = Object.values(ASSETS).reduce((sum, asset) => sum + asset.size, 0);
+  const TOTAL = Object.values(ASSETS).reduce((sum, asset) => sum + asset.compressedSize, 0);
   const loaded = new Map();
   const bar = document.getElementById('loading-fill');
   const status = document.getElementById('status');
@@ -67,7 +76,7 @@
   async function fetchPart(name) {
     let lastError;
     for (let attempt = 0; attempt < 4; attempt++) {
-      const url = 'https://raw.githubusercontent.com/CoreScripts/hill-climb-racing/f8168d645cfe67ffaa996a829073d05200cc6949/' + name;
+      const url = name;
       try {
         const response = await fetch(url, attempt === 0 ? undefined : { cache: 'no-store' });
         if (!response.ok) throw new Error(`${name}: HTTP ${response.status}`);
@@ -83,12 +92,11 @@
   }
 
   async function loadAsset(name, asset) {
-    const parts = await Promise.all(Array.from({ length: asset.count }, (_, i) =>
-      fetchPart(`${name}.part${i + 1}`)
-    ));
-    const merged = new Blob(parts, { type: TYPES[name] });
-    if (merged.size !== asset.size) throw new Error(name + ': incomplete game file');
-    return merged;
+    const compressed = await fetchPart(`${name}.gz`);
+    if (compressed.size !== asset.compressedSize) throw new Error(name + ': incomplete download');
+    const bytes = await new Response(compressed.stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+    if (bytes.byteLength !== asset.size) throw new Error(name + ': incomplete game file');
+    return new Blob([bytes], { type: TYPES[name] });
   }
 
   function installBridge(assets) {
