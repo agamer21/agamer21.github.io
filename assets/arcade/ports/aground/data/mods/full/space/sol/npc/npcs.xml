@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="keycard" exp="1000" giver="scavenger">
+		<item id="disabled_keycard" count="1" />
+	</quest>
+	<quest id="professor" exp="1000" giver="scavenger">
+		<flag id="find_professor" name="quests.find_professor" />
+	</quest>
+	<quest id="research_lab" exp="4000" giver="professor" achievement="research">
+        <item id="ai_core" count="8" />
+        <item id="ship_parts" count="10" />
+		<item id="titanium" count="50" />
+		<item id="magnegem" count="10" />
+	</quest>
+	<quest id="locate_hq" exp="2000" giver="professor" achievement="alien_locator">
+		<item id="alien_locator" count="1" />
+	</quest>
+	<include id="sprites.xml" includeRoot="true" />
+	<tile id="scavenger" sheet="sprites.png" />
+	<animation id="scavenger.idle" x="12" count="14" />
+	<animation id="scavenger.walk" x="26" count="8" />
+	<animation id="scavenger.talk" x="0" count="12" />
+	<procedure id="scavenger.intro">
+		<quest /><action>player.removeContact("scavenger_hidden"); player.setContact("scavenger", "call_scavenger", true);</action>
+		<scene id="scavenger" show="keycard" with="fade" showToAll="true" />
+	</procedure>
+	<procedure id="scavenger.invite">
+		<quest /><menu section="common">
+			<dialogue title="professor.invite{npc:[object=scavenger]}" />
+			<choice id="yes">
+				<scene id="scavenger" show="invite_scavenger" with="fade">
+					<remove object="this" /><action>o.enter(player); updateArea(); player.removeQuestsByGiver("scavenger");</action>
+					<object id="scavenger" x="15" y="3" /><set id="this" value="scavenger" />
+					<facing object="this" dir="left" /><move object="player" to="this" />
+				</scene>
+			</choice>
+			<choice id="no" />
+		</menu>
+	</procedure>
+	<procedure id="scavenger.activate">
+		<dialogue section="scavenger" id="keycard3" speaker='this' />
+		<action>ct = player.getItemCount('disabled_keycard'); player.inventory.addItems(getItem('disabled_keycard'), -ct);</action>
+		<item id="keycard" count="ct" />
+	</procedure>
+	<npc id="scavenger" tile="scavenger" action="talk" talk_sfx="talking5" night="true" researcher="true">
+		<idle class="build" storeIf="player.questComplete('keycard')">
+			<collect>
+				<loot id="steel_bar" p="10" />
+				<loot id="silicon" p="10" />
+				<loot id="titanium" p="4" />
+				<loot id="refined_oil" p="4" />
+				<loot id="gold_bar" p="4" />
+				<loot id="uranium" p="1" />
+			</collect>
+		</idle>
+		<operate>
+			<section if="!getFlag('drones.attack') && !player.hasSeenItem('drone_control')">
+				<quest /><dialogue section="scavenger" id="drone1" speaker="this" />
+				<item id="drone_control" modal="true" />
+				<dialogue section="scavenger" id="drone2" speaker="this" />
+			</section>
+			<choose if="area.vehicle != null">
+				<run procedure="scavenger.activate" if="player.getItemCount('disabled_keycard') > 0" />
+				<dialogue section="scavenger" id="win1" speaker="this" if="getFlag('final_boss_defeat') || (player.info.id == 'player.werewolf' && !getFlag('splicer_defeat'))" />
+				<dialogue section="scavenger" id="research2" speaker="this" />
+			</choose>
+			<dialogue section="scavenger" id="no_distress" speaker="this" if="!player.hasItem('com_device')" />
+			<run procedure="scavenger.invite" if="o = player.areas.get('earth.city').getObject('research'); return o != null" />
+			<run procedure="scavenger.intro" if="!player.hasQuest('keycard')" />
+			<choose if="!player.questComplete('keycard')">
+				<section if="player.canCompleteQuest('keycard')">
+					<dialogue section="scavenger" id="keycard3" speaker='this' />
+					<complete quest="keycard" />
+					<item id="keycard" modal="true" />
+					<dialogue section="scavenger" id="keycard4" speaker='this' />
+				</section>
+				<dialogue section="scavenger" id="keycard2" speaker="this" />
+			</choose>
+			<section if="!getFlag('drones.attack') && !player.hasQuest('professor')">
+				<dialogue section="scavenger" id="professor1" speaker="this" />
+				<dialogue section="scavenger" id="professor2" speaker="this" />
+				<dialogue section="scavenger" id="professor3" speaker="this" />
+				<quest id="professor">
+					<dialogue section="scavenger" id="professor4" speaker="this" /><item id="keycard1" />
+				</quest>
+			</section>
+			<section if="player.hasQuest('professor') && !player.hasSeenItem('keycard1')">
+				<quest /><dialogue section="scavenger" id="professor2" speaker="this" /><dialogue section="scavenger" id="professor4" speaker="this" /><item id="keycard1" />
+			</section>
+			<run procedure="scavenger.activate" if="player.getItemCount('disabled_keycard') > 0" />
+			<dialogue section="scavenger" id="research_lab" speaker="this" if="player.questComplete('research_lab') && area.vehicle == null" />
+			<dialogue section="scavenger" id="keycard4" speaker="this" if="getFlag('drones.attack')" />
+			<dialogue section="scavenger" id="professor5" speaker="this" if="player.questComplete('professor')" />
+			<dialogue section="scavenger" id="professor2" speaker="this" if="player.hasQuest('professor')" />
+			<dialogue section="scavenger" id="drone2" speaker="this" />
+		</operate>
+	</npc>
+	
+	<animation id="scavenger_hidden.idle" count="14" color="000000" />
+	<animation id="scavenger_hidden.talk" x="22" count="12" color="000000" />
+	<npc id="scavenger_hidden" tile="scavenger" animation="scavenger_hidden" />
+	<object id="scavenger.distress" width="16" height="16" icon="scavenger" iconColor="000000" />
+	<procedure id="call_scavenger">
+		<set id="this" value="player.getNPC('scavenger')" /><run procedure="checkCallRange" />
+		<call id="scavenger" />
+		<choose>
+			<choose if="this.area.vehicle != null">
+				<dialogue section="scavenger" id="win1" speaker="scavenger" if="getFlag('final_boss_defeat') || (player.info.id == 'player.werewolf' && !getFlag('splicer_defeat'))" />
+				<dialogue section="scavenger" id="research2" speaker="scavenger" />
+			</choose>
+			<dialogue section="scavenger" id="research2" speaker="scavenger" if="this.area.vehicle != null" />
+			<section if="o = player.areas.get('earth.city').getObject('research'); return o != null && (player.vehicle == o || area.vehicle == o || o.area == area)">
+				<call id="scavenger" end="true" /><run procedure="scavenger.invite" /><stop />
+			</section>
+			<dialogue section="scavenger" id="research_lab" speaker="scavenger" if="player.questComplete('research_lab') && this.area.vehicle == null" />
+			<dialogue section="scavenger" id="professor5" speaker="scavenger" if="player.questComplete('professor')" />
+			<dialogue section="scavenger" id="professor2" speaker="scavenger" if="player.hasQuest('professor')" />
+			<dialogue section="scavenger" id="call" speaker="scavenger" />
+		</choose>
+		<call id="scavenger" end="true" />
+	</procedure>
+	<procedure id="call_scavenger_hidden">
+		<set id="a" value="area.vehicle == null?area:area.vehicle.area" />
+		<section if="a.id.substring(0,11) == 'earth.orbit'"><dialogue section="scavenger" id="distress_orbit" /><stop /></section>
+		<set id="this" value="player.getNPC('scavenger')" /><run procedure="checkCallRange" />
+		<choose>
+			<dialogue section="scavenger" id="distress_ruins" if="a.id == 'earth.ruins'" />
+			<dialogue section="scavenger" id="distress_far" if="a.id != 'earth.city'" />
+			<section>
+				<dialogue section="scavenger" id="distress_near" />
+				<sound id="item" /><locate id="scavenger.distress" />
+				<action>l = getLocator(); x = l.x; y = l.y; l.x = WIDTH*0.5; l.y = HEIGHT*0.5;</action>
+				<lerp object="l" x="x/Tile.SIZE" y="y/Tile.SIZE" seconds="0.5" />
+			</section>
+		</choose>
+	</procedure>
+	<procedure id="scavenger.signal"><invokeLater if="player.hasItem('com_device') && !player.hasContact('scavenger_hidden') && !player.hasContact('scavenger')">
+		<dialogue section="scavenger" id="distress_intro" />
+		<action>player.setContact("scavenger_hidden", "call_scavenger_hidden")</action>
+	</invokeLater></procedure>
+	<include id="scene.xml" />
+	
+	<tile id="professor" sheet="sprites.png" x="74" />
+	<animation id="professor.idle" x="0" count="19" />
+	<animation id="professor.walk" x="27" count="10" />
+	<animation id="professor.talk" x="19" count="8" />
+	<npc id="professor" tile="professor" action="talk" talk_sfx="talking6" night="true" idle="wander" researcher="true">
+		<operate>
+			<section if="player.info.id == 'player.werewolf' && !getFlag('splicer_defeat')">
+				<dialogue section="professor" id="werewolf1" speaker="this" />
+				<dialogue section="professor" id="werewolf2" speaker="this" />
+			</section>
+			<dialogue section="professor" id="cheater" speaker="this" if="!player.hasQuest('professor')" />
+			<section if="!player.questComplete('professor')">
+				<complete quest="professor" useResources="false" />
+				<scene id="scavenger" show="professor" with="fade" showToAll="true" />
+			</section>
+			<section if="!player.hasQuest('research_lab')">
+				<dialogue section="professor" id="lab1" speaker="this" />
+				<quest id="research_lab" />
+			</section>
+			<choose if="!player.questComplete('research_lab')">
+				<section if="player.canCompleteQuest('research_lab')">
+					<dialogue section="professor" id="lab2" speaker='this' />
+					<complete quest="research_lab" /><sound id="build" /><section with="fade">
+						<remove object="this" /><object id="research" x="101" />
+						<action>research.enter(player); updateArea();</action>
+						<object id="professor" x="17" y="4" /><set id="this" value="professor" />
+						<facing object="this" dir="left" /><move object="player" to="this" />
+					</section>
+					<dialogue section="professor" id="lab3" speaker='this' />
+					<dialogue section="professor" id="lab4" speaker='this' />
+					<dialogue section="professor" id="lab5" speaker='this' />
+				</section>
+				<dialogue section="professor" id="lab6" speaker='this' />
+			</choose>
+			<choose if="area.getNPC('scavenger') != null">
+				<dialogue section="professor" id="win1" speaker='this' if="getFlag('final_boss_defeat')" />
+				<section if="!player.hasQuest('locate_hq')">
+					<dialogue section="professor" id="hq1" speaker="this" />
+					<quest id="locate_hq">
+						<action>area.getStructureById('research.lab').queue.addSmeltItem(getRecipe("research_alien_locator"), 1);</action>
+						<dialogue section="professor" id="hq2" speaker="this" />
+					</quest>
+				</section>
+				<choose if="!player.questComplete('locate_hq')">
+					<section if="player.canCompleteQuest('locate_hq')">
+						<dialogue section="professor" id="hq3" speaker='this' />
+						<complete quest="locate_hq" useResources="false" /><action>setFlag('alien_hq', true)</action>
+						<dialogue section="professor" id="hq4" speaker='this' />
+					</section>
+					<dialogue section="professor" id="hq2" speaker="this" />
+				</choose>
+				<dialogue section="professor" id="hq5" speaker="this" if="getFlag('colony_world')" />
+				<dialogue section="professor" id="hq4" speaker="this" />
+			</choose>
+			<section>
+				<dialogue section="professor" id="lab4" speaker='this' />
+				<dialogue section="professor" id="lab5" speaker='this' />
+			</section>
+		</operate>
+	</npc>
+	<tile id="hunter_lab" sheet="sprites.png" x="34" />
+	<animation id="hunter_lab.idle" x="1" count="21"><frame x="0" length="2" /></animation>
+	<animation id="hunter_lab.walk" x="30" count="10" />
+	<animation id="hunter_lab.talk" x="22" count="8" />
+	<npc id="hunter_lab" tile="hunter_lab" action="talk" talk_sfx="talking4" idle="wander" researcher="true">
+		<operate>
+			<run procedure="hunter.endgame" if="getFlag('final_boss_defeat')" />
+			<dialogue section="hunter" id="werewolf" speaker="this" if="player.info.id == 'player.werewolf'" />
+			<section><dialogue section="hunter" id="research2" speaker="this" /><dialogue section="hunter" id="research3" speaker="this" /></section>
+		</operate>
+	</npc>
+</data>

@@ -1,0 +1,20 @@
+<tilesheet id='ocean.png' width='32' height='32'>
+	<image frame='0' x='0' y='0' width='30' height='29' offsetX='1' offsetY='2' />
+	<image frame='3' x='30' y='0' width='28' height='27' offsetX='3' offsetY='2' />
+	<image frame='4' x='58' y='0' width='28' height='26' offsetX='3' offsetY='3' />
+	<image frame='5' x='86' y='0' width='28' height='26' offsetX='3' offsetY='2' />
+	<image frame='6' x='0' y='29' width='30' height='29' offsetX='1' offsetY='1' />
+	<image frame='7' x='0' y='58' width='30' height='30' offsetX='1' offsetY='0' />
+	<image frame='8' x='0' y='88' width='30' height='29' offsetX='1' offsetY='1' />
+	<image frame='9' x='30' y='29' width='28' height='30' offsetX='2' offsetY='2' />
+	<image frame='10' x='58' y='29' width='28' height='30' offsetX='2' offsetY='1' />
+	<image frame='11' x='86' y='29' width='28' height='30' offsetX='2' offsetY='2' />
+	<image frame='12' x='30' y='59' width='31' height='32' offsetX='1' offsetY='0' />
+	<image frame='13' x='30' y='91' width='31' height='31' offsetX='1' offsetY='1' />
+	<image frame='14' x='61' y='59' width='32' height='31' offsetX='0' offsetY='0' />
+	<image frame='15' x='93' y='59' width='29' height='29' offsetX='2' offsetY='2' />
+	<image frame='16' x='61' y='90' width='29' height='32' offsetX='2' offsetY='0' />
+	<image frame='17' x='90' y='90' width='29' height='30' offsetX='2' offsetY='1' />
+	<image frame='1' equals='0' offsetX='1' offsetY='1' />
+	<image frame='2' equals='0' offsetX='1' offsetY='2' />
+</tilesheet>

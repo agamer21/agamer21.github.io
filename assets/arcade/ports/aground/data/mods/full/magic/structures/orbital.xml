@@ -1,0 +1,26 @@
+<sheets>
+<tilesheet id='orbital.1' sheet='orbital.png' offsetX="-16" width='32' height='64'>
+	<image frame='0' x='0' y='0' width='46' height='57' offsetX='9' offsetY='4' />
+	<image frame='1' x='0' y='57' width='45' height='60' offsetX='9' offsetY='4' />
+	<image frame='2' x='0' y='117' width='46' height='61' offsetX='9' offsetY='0' />
+	<image frame='3' x='0' y='178' width='45' height='61' offsetX='9' offsetY='0' />
+	<image frame='4' x='0' y='239' width='44' height='57' offsetX='10' offsetY='4' />
+	<image frame='5' x='0' y='296' width='45' height='56' offsetX='9' offsetY='4' />
+</tilesheet>
+<tilesheet id='orbital.2' sheet='orbital.png' offsetX="-16" offsetY="-64" width='224' height='192'>
+	<image frame='0' x='46' y='0' width='161' height='177' offsetX='47' offsetY='79' />
+	<image frame='1' x='46' y='177' width='232' height='183' offsetX='6' offsetY='73' />
+	<image frame='2' x='278' y='177' width='249' height='181' offsetX='1' offsetY='75' />
+	<image frame='3' x='46' y='360' width='216' height='193' offsetX='19' offsetY='63' />
+	<image frame='4' x='207' y='0' width='127' height='128' offsetX='64' offsetY='128' />
+	<image frame='5' x='334' y='0' width='209' height='135' offsetX='23' offsetY='121' />
+	<image frame='6' x='278' y='358' width='127' height='128' offsetX='64' offsetY='128' />
+	<image frame='7' x='405' y='358' width='139' height='133' offsetX='58' offsetY='123' />
+	<image frame='8' x='278' y='486' width='65' height='64' offsetX='96' offsetY='159' />
+	<image frame='9' x='0' y='352' width='40' height='39' offsetX='109' offsetY='171' />
+	<image frame='10' x='0' y='391' width='28' height='31' offsetX='115' offsetY='177' />
+	<image frame='11' x='0' y='422' width='32' height='36' offsetX='111' offsetY='174' />
+	<image frame='12' x='28' y='391' width='11' height='15' offsetX='123' offsetY='185' />
+	<image frame='13' x='0' y='458' width='24' height='25' offsetX='116' offsetY='180' />
+</tilesheet>
+</sheets>

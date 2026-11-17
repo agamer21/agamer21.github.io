@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="sheet.xml" />
+	<tile id="nursery.bg" sheet="sheet.1" />
+	<animation id="nursery.bg.idle" equals="item8" />
+	<structure id="nursery.bg" tile="nursery.bg" behind="true" remove="false" allowSpawn="true" fps="6" />
+	
+	<tile id="nursery.crab" sheet="sheet.2" />
+	<tile id="nursery.crab.spikes" animateSub="true"><tile sheet="sheet.2" x="0" /><tile sheet="sheet.2" x="22" /><tile sheet="sheet.2" x="36" /></tile>
+	<animation id="nursery.crab.spikes" count="8" />
+	<animation id="nursery.crab.idle" count="8" x="14">
+		<append tile="nursery.crab.spikes" animation="nursery.crab.spikes" behind="true" />
+	</animation>
+	<animation id="nursery.crab.spikes.fire" x="8" count="4"><frame visible="false" length="2" /><frame x="12" count="2" /></animation>
+	<animation id="nursery.crab.attack" count="8" x="14">
+		<append tile="nursery.crab.spikes" animation="nursery.crab.spikes.fire" behind="true" />
+	</animation>
+	<tile id="nursery.crab.arm" sheet="sheet.7" />
+	<tile id="nursery.crab.claw" sheet="sheet.8" />
+	<enemy id="nursery.crab.arm" tile="nursery.crab.arm" health="15" defense="5" canFlip="false" canCritical="false" overlapVehicle="true">
+		<over><damage object="player" attacker="this" damage="25" directional="false" critical="false" /></over>
+	</enemy>
+	<tile id="nursery.crab.spike.left" sheet="sheet.3" /><tile id="nursery.crab.spike.up" sheet="sheet.4" />
+	<enemy id="nursery.crab.claw" tile="nursery.crab.claw" extends="nursery.crab.arm" offsetX="-18" offsetY="18" />
+	<enemy id="nursery.crab.claw_flip" tile="nursery.crab.claw" extends="nursery.crab.arm" offsetX="2" offsetY="18" facing="right" />
+	<enemy id="nursery.crab" tile="nursery.crab" health="150" defense="7" canFlip="false" canCritical="false" type="surface" speed="0" death_sfx="kraken_death" soundScale="2" ignoreHit="true" passEnemies="true" friendlyFire="false" fps="10" kill_achievement="nursery_crab">
+		<arm id="nursery.crab.arm" x="2" y="7" length="7" diameter="10" end="nursery.crab.claw" angle="160" angleDelta="50" regrow="3" />
+		<arm id="nursery.crab.arm" x="48" y="7" length="7" diameter="10" end="nursery.crab.claw_flip" angle="20" angleDelta="50" regrow="3" />
+		<addedToArea><action>
+			var fromX = this.tile_x; var toX = this.tile_right; var fromY = Math.round(this.yTop()/Tile.SIZE); var toY = this.tile_y+1;
+			for(y in fromY...toY) for(x in fromX...toX) area.setBlockPlayer(x, y);
+		</action></addedToArea>
+		<removedFromArea><action>
+			var fromX = this.tile_x; var toX = this.tile_right; var fromY = Math.round(this.yTop()/Tile.SIZE); var toY = this.tile_y+1;
+			for(y in fromY...toY) for(x in fromX...toX) area.unsetBlockPlayer(x, y);
+		</action></removedFromArea>
+		<onDeath>
+			<section if="player.questComplete('launch_virus') && !getFlag('magic_path_end') && player.info.id != 'player.colosseum'" >
+				<call id="president" incoming="true" />
+				<call id="president" end="true" />
+				<scene id="colony" show="nursery_defeat" with="fade" showToAll="true" />
+			</section>
+		</onDeath>
+		<cooldown seconds="0.8">
+			<attack type="projectile" range="10" damage="40" requireTarget="false">
+				<projectile tile="nursery.crab.spike.left" animation="item4" offsetX="-17" speed="3" delay="4" underwater="true" />
+			</attack>
+			<projectile tile="nursery.crab.spike.left" spawner="this" range="10" damage="40" animation="item4" dx="1" offsetX="17" speed="3" delay="4" underwater="true" />
+			<projectile tile="nursery.crab.spike.up" spawner="this" range="6" damage="40" animation="item4" dy="-1" offsetY="-17" speed="3" delay="4" underwater="true" />
+		</cooldown>
+	</enemy>
+	
+	<tile id="alien.cocoon" sheet="sheet.5" />
+	<animation id="alien.cocoon.empty" count="1" length="5" />
+	<animation id="alien.cocoon.grow" count="8" length="8" />
+	<animation id="alien.cocoon.idle" x="8" count="8" repeat="4" />
+	<animation id="alien.cocoon.hatch" x="16" count="8" />
+	<procedure id="alien.cocoon">
+		<choose>
+			<section if="random() < 0.75 || (area.getObject('nursery.crab') == null && area.getObject('nursery_crab_npc') == null)"><action if="this.renderer != null">this.renderer.setFrame(0);</action><play object="this" animation="empty" /></section>
+			<section>
+				<play object="this" animation="grow" /><play object="this" animation="idle" if="this.area != null" />
+				<section if="area.getLiveCount('alien.hatchling') < 8">
+					<play object="this" animation="hatch" if="this.area != null" /><object id="alien.hatchling" x="this.xPos/Tile.SIZE" y="(this.yTile-46)/Tile.SIZE" if="area != null" />
+				</section>
+			</section>
+		</choose>
+		<run procedure="alien.cocoon" if="this.area != null" />
+	</procedure>
+	<enemy id="alien.cocoon" tile="alien.cocoon" health="25" defense="7" fps="10" type="surface" speed="0" canFlip="false" canCritical="false" ignoreHit="true" death_sfx="clam_death" blood="magic.explosion.sm">
+		<init><run procedure="alien.cocoon" /></init>
+	</enemy>
+	<tile id="alien.hatchling" sheet="sheet.6" />
+	<animation id="alien.hatchling.idle" x="8" count="8" />
+	<animation id="alien.hatchling.walk" equals="alien.hatchling.idle" />
+	<animation id="alien.hatchling.attack" count="8" glow="true"><append tile="alien.hatchling" animation="alien.hatchling.idle" behind="true" /></animation>
+	<enemy id="alien.hatchling" tile="alien.hatchling" health="20" defense="3" overlapVehicle="true" fps="10" type="underwater" ignoreHit="true" range="8" vrange="4" vertical="true" friendlyFire="false" passEnemies="true" death_sfx="snaptopus_death" blood="magic.explosion.sm" inFront="true">
+		<loot p="1" /><loot id="alien_heart" p="1" />
+		<attack type="melee" damage="25" range="0.5" />
+		<over><attack type="omni" damage="25" range="1" /></over>
+		<overSecond><attack type="omni" damage="25" range="1" /></overSecond>
+	</enemy>
+	
+	<object id="alien_hq.nursery.hotspot" width="352" height="240" overlapVehicle="true">
+		<over>
+			<section if="player.questComplete('launch_virus') && getFlag('alien_hq.open') && !getFlag('alien_hq.locked')">
+				<remove object="this" />
+				<call id="president" incoming="true" />
+				<dialogue section="colony" id="nursery_enter" speaker="president" />
+				<call id="president" end="true" />
+			</section>
+		</over>
+	</object>
+	<area id="alien_hq.nursery">
+		<tiles from="tiles.png"><tile id="blackstone.ore" color="000000" /><tile id="clear" color="ff0000" /></tiles>
+		<action>for(x in 4...18) setBack(x, 0, "cells1");</action>
+		<structure id="nursery.bg" x="0" y="14" /><object id="alien_hq.nursery.hotspot" x="0" y="14" />
+		<object id="nursery.crab" x="143/Tile.SIZE" y="98/Tile.SIZE" />
+		<spawner id="alien.cocoon" time="20000" count="6" fromX="0" toX="22" fromY="10" toY="15" underwater="true" bottom="true" enabled="area.getObject('nursery.crab') != null || area.getObject('nursery_crab_npc') != null" />
+		<init><action>area.spawner.spawnAll('alien.cocoon'); for(o in area.getObjectsById('alien.cocoon')) area.addObject(ObjectInfo.make("alien.hatchling", o.xPos, o.yTile-46));</action></init>
+	</area>
+</data>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="sheet.xml" />
+	<tile id="minigame.shooter.title" sheet="sheet.12" />
+	<animation id="minigame.shooter.title.cycle" count="18" />
+	<animation id="minigame.shooter.title" x="18" count="1" length="18"><append tile="minigame.shooter.title" animation="minigame.shooter.title.cycle" /></animation>
+	<tile id="minigame.platformer.title" sheet="sheet.12" x="19" />
+	<animation id="minigame.platformer.title.cycle" count="8">
+		<frame visible="false" length="2" /><frame x="8" count="2" /><frame visible="false" length="2" /><frame x="10" count="2" /><frame visible="false" length="2" />
+		<frame count="8" reverse="true" /><frame visible="false" length="6" />
+	</animation>
+	<animation id="minigame.platformer.title" x="12" count="1" length="32"><append tile="minigame.platformer.title" animation="minigame.platformer.title.cycle" /></animation>
+	
+	<include id="shooter.xml" />
+	<include id="platformer.xml" />
+	
+	<procedure id="minigame.enter"><action>setGlobal("originalArea", area); setGlobal("originalX", player.xPos); setGlobal("originalY", player.yTile);</action></procedure>
+	<procedure id="minigame.exit"><action>player.doTeleport(null, getGlobal("originalX"), getGlobal("originalY"), false, getGlobal("originalArea")); setGlobal("originalArea", null); updateArea();</action></procedure>
+	
+	<item id="arcade1_blueprint" type="blueprint" cost="8000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="research.arcade1" underground="true">
+			<item id="ship_parts" count="1" />
+			<item id="steel_bar" count="2" />
+			<item id="silicon" count="2" />
+		</action>
+	</item>
+	<item id="arcade2_blueprint" type="blueprint" cost="8000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="research.arcade2" underground="true">
+			<item id="ship_parts" count="1" />
+			<item id="steel_bar" count="2" />
+			<item id="silicon" count="2" />
+		</action>
+	</item>
+</data>

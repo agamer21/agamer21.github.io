@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <include id="scenes.xml" />
+
+  <quest id="mecha_dragon" exp="1000">
+    <item id="mecha_dragon" count="1"/>
+    <canComplete><complete quest="mecha_dragon" useResources="false"/></canComplete>
+  </quest>
+    <quest id="mecha_dragon_ship" exp="4000">
+      <object id="mecha_dragon_ship" name="quests.mecha_dragon_ship" tile="mecha_dragon_ship.ico" count="1" />
+    </quest>
+
+  <npc id="alchemist" extends="alchemist" researcher="true">
+    <operate>
+      <section if="player.hasSeenItem('steel_wyrm') && player.questComplete('alter_gem') && !player.hasSeenItem('npc.steel_wyrm_helm')">
+        <dialogue section="alchemist" id="steel_wyrm_helm" speaker="this"/>
+        <action>player.setSeenItem('npc.steel_wyrm_helm');</action>
+      </section>
+    <section if="getFlag('bombardment') && !getFlag('alchemist.bombardment') && !getFlag('final_boss_defeat') && (this.area.id == 'research.interior' || this.area.id == 'alchemist.portal')">
+      <quest /><action>setFlag('alchemist.bombardment', true)</action>
+      <choose>
+        <scene id="scavenger" show="alchemist_bombardment" with="fade" showToAll="true" if="this.area.id == 'research.interior'"/>
+        <scene id="alchemist" show="bombardment" with="fade" showToAll="true" />
+      </choose>
+    </section>
+      <section if="player.hasSeenItem('mecha_dragon') && !player.questComplete('mecha_dragon') && !player.hasSeenItem('npc.mecha_dragon')">
+        <quest /><dialogue section="hybrid" id="no_quest_dragon" speaker="this"/>
+        <action>player.setSeenItem('npc.mecha_dragon'); player.setSeenItem('steel_wyrm_helm');</action><stop />
+      </section>
+      <section if="!player.hasQuest('mecha_dragon') && !player.hasSeenItem('mecha_dragon') && player.hasSeenItem('steel_wyrm_helm') && player.questComplete('go_east')">
+        <choose>
+          <dialogue section="hybrid" id="mecha_dragon1.3" speaker="this" if="this.area.vehicle != null"/>
+          <dialogue section="hybrid" id="mecha_dragon1.2" speaker="this" if="getFlag('hybrid_research')"/>
+          <dialogue section="hybrid" id="mecha_dragon1.4" speaker="this" if="getFlag('mirrows.sacrifice')" />
+        </choose>
+        <dialogue section="hybrid" id="mecha_dragon2" speaker="this" />
+        <dialogue section="hybrid" id="mecha_dragon3" speaker="this" />
+        <quest id="mecha_dragon"/>
+      </section>
+      <section if="!player.hasQuest('mecha_dragon_ship') && player.hasSeenItem('mecha_dragon') && player.questComplete('repair_escort') && player.questComplete('dragon_ship')">
+        <dialogue section="hybrid" id="ship1" speaker="this" />
+        <dialogue section="hybrid" id="ship2" speaker="this" />
+        <quest id="mecha_dragon_ship" />
+      </section>
+      <run procedure="alchemist.invite" if="o = player.areas.get('start').getObject('research'); return o != null && player.hasQuest('go_east') && player.hasSeenItem('steel_wyrm_helm') && this.area.vehicle == null" />
+      <section if="!getFlag('hybrid_research') && player.questComplete('water_cave') && !getFlag('mirrows.sacrifice') && this.area.vehicle == null && (player.hasSeenItem('steel_wyrm_helm') || player.questComplete('mirrows2'))">
+        <quest />
+        <dialogue section="alchemist" id="steel_wyrm_helm2" speaker="this" if="!player.hasSeenItem('npc.steel_wyrm_helm')"/>
+        <choose>
+          <dialogue section="alchemist" id="hybrid_research.1" speaker="this" if="player.questComplete('mirrows2')"/>
+          <dialogue section="alchemist" id="hybrid_research.2" speaker="this"/>
+        </choose>
+        <scene id="mechanic" show="hybrid_research" with="fade"/>
+        <action>setFlag('hybrid_research',true)</action>
+      </section>
+    </operate>
+  </npc>
+
+  <npc id="alchemist_science" tile="alchemist" action="talk" animation="alchemist" talk_sfx="talking2" speed="3" night="true" title="npc.alchemist">
+    <idle class="repair">
+      <repair structure="medivat.full1" /><repair structure="medivat.full2" /><repair structure="medivat.full3" /><repair structure="medivat.full4" />
+    </idle>
+    <operate>
+      <run procedure="alchemist.invite" if="o = player.areas.get('science1').getObject('research'); return o != null && player.hasQuest('go_east') && player.hasSeenItem('steel_wyrm_helm')" />
+      <section if="player.hasSeenItem('mecha_dragon') && !player.questComplete('mecha_dragon') && !player.hasSeenItem('npc.mecha_dragon')">
+        <quest /><dialogue section="hybrid" id="no_quest_dragon" speaker="this"/>
+        <action>player.setSeenItem('npc.mecha_dragon'); player.setSeenItem('steel_wyrm_helm');</action><stop />
+      </section>
+      <section if="!player.hasQuest('mecha_dragon') && !player.hasSeenItem('mecha_dragon') && player.hasSeenItem('steel_wyrm_helm') && player.questComplete('go_east')">
+        <choose>
+          <dialogue section="hybrid" id="mecha_dragon1.3" speaker="this" if="this.area.vehicle != null"/>
+          <dialogue section="hybrid" id="mecha_dragon1.2" speaker="this" if="getFlag('hybrid_research')"/>
+          <dialogue section="hybrid" id="mecha_dragon1.4" speaker="this" if="getFlag('mirrows.sacrifice')" />
+        </choose>
+        <dialogue section="hybrid" id="mecha_dragon2" speaker="this" />
+        <dialogue section="hybrid" id="mecha_dragon3" speaker="this" />
+        <quest id="mecha_dragon"/>
+      </section>
+      <section if="!player.hasQuest('mecha_dragon_ship') && player.hasSeenItem('mecha_dragon') && player.questComplete('repair_escort') && player.questComplete('dragon_ship')">
+        <dialogue section="hybrid" id="ship1" speaker="this" />
+        <dialogue section="hybrid" id="ship2" speaker="this" />
+        <quest id="mecha_dragon_ship" />
+      </section>
+      <dialogue section="alchemist" id="ship_parts_hint" speaker="this" if="!player.hasSeenItem('ship_parts')"/>
+      <dialogue section="alchemist" id="evo_gem_hint" speaker="this" if="!player.hasSeenItem('evo_gem')"/>
+	  <choose if="player.hasSeenItem('mecha_dragon') && (!player.questComplete('repair_escort') || !player.questComplete('dragon_ship'))">
+		  <dialogue section="alchemist" id="build_ships_hint3" speaker="this" if="player.hasQuest('dragon_ship') && !player.questComplete('dragon_ship')" />
+		  <dialogue section="alchemist" id="build_ships_hint2" speaker="this" if="player.hasQuest('repair_escort') && !player.questComplete('repair_escort')" />
+		  <dialogue section="alchemist" id="build_ships_hint1" speaker="this" />
+	  </choose>
+      <dialogue section="alchemist" id="hybrid_muttering" speaker="this"/>
+    </operate>
+  </npc>
+  <npc id="alchemist_magic" extends="alchemist_magic">
+    <operate>
+      <section if="player.hasSeenItem('steel_wyrm') && player.questComplete('alter_gem') && !player.hasSeenItem('npc.steel_wyrm_helm')">
+        <dialogue section="alchemist" id="steel_wyrm_helm" speaker="this"/>
+        <action>player.setSeenItem('npc.steel_wyrm_helm');</action>
+      </section>
+    </operate>
+  </npc>
+
+    <area id="water_cave" extends="water_cave">
+      <onLoad><object id="alchemist_science" x="10" y="30" if="getFlag('hybrid_research') && area.getObject('alchemist_science') == null && area.getNPC('mirrow_n.npc') != null && (alch = player.getNPC('alchemist')) != null && alch.area.vehicle == null"/></onLoad>
+      <onLeave><set id="o" value="area.getObject('alchemist_science')" /><remove object="o" if="o != null" /></onLeave>
+    </area>
+
+  <procedure id="alchemist.idle" extends="alchemist.idle">
+    <section if="this.area.id == 'research.interior'"><dialogue section="alchemist" id="hybrid_muttering" speaker="this"/><stop /></section>
+  </procedure>
+
+  <procedure id="alchemist.invite">
+    <quest /><menu section="common">
+      <dialogue title="professor.invite{npc:[object=alchemist]}" />
+      <choice id="yes">
+        <scene id="scavenger" show="invite_alchemist" with="fade" >
+          <set id="a" value="player.areas.get('alchemist.portal').getObject('alchemist')" if="getFlag('bombardment')"/>
+          <remove object="a" if="a != null" />
+          <set id="a" value="player.areas.get('start').getObject('alchemist')" />
+          <remove object="a" if="a != null" />
+          <set id="a" value="player.areas.get('magic1').getObject('alchemist_magic')" />
+          <remove object="a" if="a != null" />
+          <remove object="this" />
+          <action>o.enter(player); updateArea();</action>
+          <object id="alchemist" x="11" y="2" /><set id="this" value="alchemist" />
+          <facing object="this" dir="left" /><move object="player" to="this" />
+        </scene>
+      </choice>
+      <choice id="no" />
+    </menu>
+  </procedure>
+
+  <quest id="bombardment_shield" giver="mirrows" exp="1000">
+    <item id="ship_parts" count="5" />
+    <item id="power_core" count="1" />
+    <item id="mecha_dragon" count="1" />
+    <location id="science2" x="32" y="-33" width="32" height="1" name="quests.highest_mountain" />
+  </quest>
+    <quest id="bombardment_shield2" giver="mechanic" exp="1000">
+      <item id="ship_parts" count="5" />
+      <item id="power_core" count="1" />
+      <item id="mecha_dragon" count="1" />
+    </quest>
+
+  <procedure id="build_bombardment_shield">
+    <section with="fade"><run procedure="to_bombardment_shield" /></section>
+    <complete quest="bombardment_shield" reserve="prepare" />
+    <structure id="bombardment_shield" x="50" y="-33" place="true" rangeX="16" rangeY="0" sfx="build" seconds="0.25">
+      <onPlace>
+        <complete quest="bombardment_shield" reserve="finish" />
+        <lerp object="object" alpha="1" seconds="0.25" /><pan toObject="player" seconds="0.25" />
+        <scene id="start.space" show="activate_shield" with="fade"/>
+        <dialogue section="mirrows" id="shield5"/>
+      </onPlace>
+      <onCancel><complete quest="bombardment_shield" reserve="cancel" /><pan toObject="player" seconds="0.25" /></onCancel>
+    </structure>
+    <run procedure="mirrows.fly_back" />
+  </procedure>
+  <procedure id="to_bombardment_shield">
+    <action if="player.vehicle != null">player.vehicle.doDismount(true);</action>
+    <teleport area="science2" x="50" y="-33" clearReturn="true" />
+    <object id="fake_jet" x="54" y="-33" /><action>fake_jet.moveToFront()</action><facing object="player" dir="right" />
+    <object id="mirrow_n.npc" name="mirrow_n" x="54" y="-33" facing="left" />
+    <object id="mirrow_d.npc" name="mirrow_d" x="55" y="-33" facing="left" />
+  </procedure>
+
+  <procedure id="mirrows.npc" extends="mirrows.npc">
+    <section if="player.questComplete('mirrows2') && !player.hasSeenItem('npc.steel_wyrm_helm') && player.hasQuest('water_cave')">
+      <dialogue section="mirrows" id="steel_wyrm_helm1" speaker="this"/>
+      <dialogue section="mirrows" id="steel_wyrm_helm2" speaker="this"/>
+      <action>player.setSeenItem('npc.steel_wyrm_helm');</action><stop />
+    </section>
+	<section if="player.hasSeenItem('steel_wyrm_helm') && !getFlag('hybrid_research') && player.questComplete('water_cave') && this.area.vehicle == null && player.getNPC('alchemist') != null">
+      <quest /><dialogue section="mirrows" id="steel_wyrm_helm3" speaker="this" if="!player.hasSeenItem('npc.steel_wyrm_helm')"/>
+      <dialogue section="mirrows" id="hybrid_research" speaker="this"/>
+      <scene id="mechanic" show="hybrid_research" with="fade"/>
+      <action>setFlag('hybrid_research',true)</action><object id="alchemist_science" x="10" y="30" if="area.id == 'water_cave' && area.getObject('alchemist_science') == null && player.getNPC('alchemist').area.vehicle == null"/><stop />
+    </section>
+    <section if="player.hasSeenItem('mecha_dragon') && !player.questComplete('mecha_dragon') && !player.hasSeenItem('npc.mecha_dragon')">
+      <quest /><dialogue section="hybrid" id="no_quest_dragon" speaker="this"/>
+      <action>player.setSeenItem('npc.mecha_dragon'); player.setSeenItem('steel_wyrm_helm');</action><stop />
+    </section>
+    <section if="!player.hasQuest('mecha_dragon') && !player.hasSeenItem('mecha_dragon') && player.hasSeenItem('steel_wyrm_helm') && player.questComplete('go_east')">
+      <choose>
+        <dialogue section="hybrid" id="mecha_dragon1.3" speaker="this" if="this.area.vehicle != null"/>
+        <dialogue section="hybrid" id="mecha_dragon1.1" speaker="this" if="player.getNPC('alchemist') == null"/>
+        <dialogue section="hybrid" id="mecha_dragon1.2" speaker="this" if="getFlag('hybrid_research')"/>
+      </choose>
+      <dialogue section="hybrid" id="mecha_dragon2" speaker="this" />
+      <dialogue section="hybrid" id="mecha_dragon3" speaker="this" />
+      <quest id="mecha_dragon"/><stop />
+    </section>
+    <section if="!player.hasQuest('mecha_dragon_ship') && player.hasSeenItem('mecha_dragon') && player.questComplete('repair_escort') && player.questComplete('dragon_ship')">
+      <dialogue section="hybrid" id="ship1" speaker="this" />
+      <dialogue section="hybrid" id="ship2" speaker="this" />
+      <quest id="mecha_dragon_ship" /><stop />
+    </section>
+    <section if="!player.hasQuest('bombardment_shield') && player.hasSeenItem('mecha_dragon') && player.questComplete('ship_parts') && !getFlag('final_boss_defeat')">
+      <choose>
+        <dialogue section="mirrows" id="shield1.2" speaker="this" if="getFlag('bombardment') && isBombardment(player)"/>
+        <dialogue section="mirrows" id="shield1.3" speaker="this" if="getFlag('bombardment')"/>
+        <dialogue section="mirrows" id="shield1.1" speaker="this"/>
+      </choose>
+      <dialogue section="mirrows" id="shield2" speaker="this"/>
+      <dialogue section="mirrows" id="shield3" speaker="this"/>
+      <quest id="bombardment_shield" /><stop />
+    </section>
+    <section if="getFlag('final_boss_defeat') && !player.hasQuest('mecha_dragon') && !player.hasSeenItem('mecha_dragon') && player.hasSeenItem('evo_gem')">
+      <dialogue section="mirrows" id="mecha_dragon" speaker="this" />
+      <dialogue section="hybrid" id="mecha_dragon2" speaker="this" />
+      <dialogue section="hybrid" id="mecha_dragon3" speaker="this" />
+      <quest id="mecha_dragon"/><stop />
+    </section>
+    <section if="getFlag('final_boss_defeat') && player.hasSeenItem('mecha_dragon') && !player.hasQuest('mecha_dragon_ship') && (player.questComplete('dragon_ship') || player.questComplete('activate_hq_structures'))">
+      <dialogue section="mirrows" id="mecha_ship" speaker="this" />
+      <dialogue section="hybrid" id="ship2" speaker="this" />
+      <quest id="mecha_dragon_ship" /><stop />
+    </section>
+    <section if="player.questComplete('mecha_dragon_ship') && !getFlag('mirrows_hybrid_store_hint') && (!player.hasSeenItem('mecha_dragon_ship.gun') || !player.hasSeenItem('mecha_dragon_ship.cannon'))">
+      <dialogue section="mirrows" id="hybrid_weapons" speaker="this"/>
+      <action>setFlag('mirrows_hybrid_store_hint',true)</action>
+		<run procedure="mirrows.store" /><stop />
+    </section>
+  </procedure>
+
+  <procedure id="call_mirrows" extends="call_mirrows">
+    <section if="player.canCompleteQuest('bombardment_shield')">
+      <dialogue section="mirrows" id="shield4" />
+      <run procedure="build_bombardment_shield" /><stop />
+    </section>
+  </procedure>
+
+  <quest id="hidden_world" giver="professor" exp="1000">
+    <area id="hidden_world" name="quests.hidden_world" count="1" hidden="true"/>
+  </quest>
+  <quest id="exotic_gas" giver="professor" exp="500">
+    <item id="exotic_gas" count="1" hidden="true"/>
+  </quest>
+    <quest id="professor_hq_structures" giver="professor" exp="500">
+      <script id="player.questComplete('activate_hq_structures')?1:0" name="quests.activate_hq_structures" of="1" hidden="true" />
+    </quest>
+  <npc id="professor" extends="professor">
+    <operate>
+      <section if="!player.hasQuest('hidden_world') && player.questComplete('mecha_dragon_ship') && player.questComplete('research_lab')">
+        <dialogue section="professor" id="hidden_world1" speaker="this" />
+        <dialogue section="professor" id="hidden_world2" speaker="this" />
+        <quest id="hidden_world" />
+      </section>
+      <section if="player.canCompleteQuest('hidden_world')">
+        <dialogue section="professor" id="hidden_world3" speaker="this" />
+        <complete quest="hidden_world" />
+      </section>
+      <section if="!player.hasQuest('exotic_gas') && getFlag('draconian_teacher_intro') && (player.questComplete('locate_hq') || player.questComplete('spirit_portal'))">
+        <dialogue section="professor" id="exotic_gas1" speaker="this" />
+        <dialogue section="professor" id="exotic_gas2" speaker="this" />
+        <quest id="exotic_gas"/>
+      </section>
+      <section if="player.canCompleteQuest('exotic_gas')">
+        <dialogue section="professor" id="exotic_gas3" speaker="this" />
+        <complete quest="exotic_gas" useResources="false"/>
+        <dialogue section="professor" id="shieldbreaker1" speaker="this"/>
+        <dialogue section="professor" id="shieldbreaker2" speaker="this"/>
+        <action>setFlag('shieldbreaker',true)</action>
+      </section>
+    <section if="player.hasSeenItem('translation_book') && player.areas.exists('alien_hq') && !player.questComplete('activate_hq_structures') && !player.hasQuest('professor_hq_structures') && !getFlag('final_boss_defeat') && !player.hasQuest('holo_projector')">
+      <dialogue section="hybrid" id="hq_structures" speaker="this" />
+      <quest id="professor_hq_structures" />
+    </section>
+    <section if="player.canCompleteQuest('professor_hq_structures') || (!player.hasQuest('holo_projector') && player.questComplete('exotic_gas') && player.questComplete('activate_hq_structures') && !getFlag('final_boss_defeat'))">
+      <dialogue section="professor" id="holo_projector" speaker="this" />
+      <complete quest="professor_hq_structures" if="player.canCompleteQuest('professor_hq_structures')" />
+    </section>
+      <section if="!player.hasQuest('mecha_dragon') && !player.hasSeenItem('mecha_dragon') && getFlag('final_boss_defeat') && player.questComplete('research_lab') && player.hasSeenItem('evo_gem')">
+        <dialogue section="professor" id="dragon" speaker="this" />
+        <dialogue section="hybrid" id="mecha_dragon2" speaker="this" />
+        <dialogue section="hybrid" id="mecha_dragon3" speaker="this" />
+        <quest id="mecha_dragon" />
+      </section>
+      <section if="!player.hasQuest('mecha_dragon_ship') && player.hasSeenItem('mecha_dragon') && getFlag('final_boss_defeat') && player.questComplete('research_lab') && (player.questComplete('dragon_ship') || player.questComplete('activate_hq_structures'))">
+        <dialogue section="professor" id="ship" speaker="this" />
+        <dialogue section="hybrid" id="ship2" speaker="this" />
+        <quest id="mecha_dragon_ship" />
+      </section>
+	  <choose if="player.questComplete('locate_hq') && player.questComplete('exotic_gas') && !player.questComplete('spirit_portal') && !getFlag('final_boss_defeat') && !player.hasQuest('holo_projector')">
+		<dialogue section="hybrid" id="alien_hq" speaker="this" if="!player.areas.exists('alien_hq')" />
+		<dialogue section="hybrid" id="translation" speaker="this" if="!player.hasSeenItem('translation_book')" />
+		<dialogue section="hybrid" id="hq_structures" speaker="this" />
+	  </choose>
+    </operate>
+  </npc>
+
+  <quest id="holo_projector" giver="draconian_teacher" exp="2000">
+    <item id="hq_factory_seed" count="1" />
+    <item id="light_book" count="1" />
+    <item id="exotic_gas" count="2"/>
+    <item id="ai_core" count="5"/>
+  </quest>
+  <quest id="holo_ships" giver="draconian_teacher" exp="1000">
+    <script id="holoShips(player,'dragon_cruiser')?1:0" name="world.dragon_cruiser" tile="dragon_cruiser.ico" count="1" />
+    <script id="holoShips(player,'exo_fighter')?1:0" name="item.names.exo_fighter" tile="exo_fighter.ico" count="1" />
+  </quest>
+  <action>
+    function holoShips(player,ship) return player.area.id == 'hidden_world' && player.area.getObjectsById(ship) != '[]';
+  </action>
+
+  <tile id="draconian_teacher" sheet="npc.1" />
+  <animation id="draconian_teacher.idle">
+    <frame x="0" y="0" length="4" />
+    <frame x="1" y="0" length="2" />
+    <frame x="0" y="0" length="32" />
+  </animation>
+  <animation id="draconian_teacher.walk" x="2" count="8" />
+  <animation id="draconian_teacher.talk" x="10" count="12" />
+  <animation id="draconian_teacher.cast" x="22" count="11" />
+  <npc id="draconian_teacher" tile="draconian_teacher" action="talk" night="true" idle="wander">
+    <operate>
+      <section if="!getFlag('draconian_teacher_intro')">
+        <quest /><complete quest="hidden_world" /><action>setFlag('draconian_teacher_intro',true)</action>
+        <object id="draconian_sister" x="70" if="player.getKillCount('draconian_wizard') != 0 && player.getNPC('draconian_sister') == null" />
+        <scene id="teacher" show="intro" showToAll="true" with="fade"/>
+      </section>
+      <section if="player.hasSeenItem('exo_sword') && !player.state.hasRecipe('magic_forge', getRecipe('make_fire_exo_sword')) && player.hasSeenItem('exotic_gas')">
+        <quest /><dialogue section="draconian" id="exo_magic1" speaker="this"/>
+        <dialogue section="draconian" id="exo_magic2" speaker="this"/>
+        <function run="learnRecipe" args="getRecipe('make_fire_exo_sword'), 'magic_forge', 'fish.recipe'" />
+      </section>
+      <section if="player.hasSeenItem('staff') && player.hasSeenItem('exotic_gas') && !getFlag('make_battery_staff')">
+        <quest /><dialogue section="draconian" id="battery_staff" speaker="this"/>
+        <dialogue section="draconian" id="battery_staff_recipe" speaker="this"/>
+        <action>setFlag('make_battery_staff',true)</action>
+      </section>
+      <choose if="getFlag('final_boss_defeat')">
+        <dialogue section="draconian" id="no_sister" speaker="this" if="area.getNPC('draconian_sister') == null" />
+        <section if="!getFlag('dragon_sanctuary')">
+          <quest /><dialogue section="draconian" id="sanctuary1" speaker="this"/>
+            <menu section="draconian" width="150" closeable="true">
+              <dialogue section="draconian" id="sanctuary2"/>
+              <choice id="sanctuary_choice1">
+                <action>setFlag('dragon_sanctuary',true)</action><achievement id="dragon_sanctuary" />
+                <play object="this" animation="cast" modal="true" />
+                <dialogue section="draconian" id="sanctuary3" speaker="this"/>
+              </choice>
+              <choice id="sanctuary_choice2"/>
+            </menu>
+        </section>
+        <group>
+          <dialogue section="draconian" id="win2" speaker="this"/>
+          <scene id="teacher" show="info" with="fade"/>
+        </group>
+      </choose>
+      <section if="!player.hasQuest('holo_projector') && player.questComplete('exotic_gas') && player.questComplete('activate_hq_structures') && player.getNPC('professor') != null">
+        <dialogue section="draconian" id="projector1" speaker="this"/>
+        <dialogue section="draconian" id="projector2" speaker="this"/>
+        <dialogue section="draconian" id="projector3" speaker="this"/>
+        <quest id="holo_projector" />
+      </section>
+      <section if="player.canCompleteQuest('holo_projector')">
+        <dialogue section="draconian" id="projector4" speaker="this"/>
+        <complete quest="holo_projector" reserve="prepare" />
+        <play object="this" animation="cast" modal="true"/>
+        <structure id="holo_projector" x="60" place="true" rangeX="64" rangeY="0" sfx="build" seconds="0.25">
+          <onPlace>
+            <complete quest="holo_projector" reserve="finish" />
+            <lerp object="object" alpha="1" seconds="0.25" /><pan toObject="player" seconds="0.25" />
+            <play object="this" animation="cast" modal="true"/>
+            <dialogue section="draconian" id="projector5" speaker="this"/>
+            <quest id="holo_ships" ask="false"/>
+          </onPlace>
+          <onCancel><complete quest="holo_projector" reserve="cancel" /><pan toObject="player" seconds="0.25" /></onCancel>
+        </structure>
+      </section>
+      <dialogue section="draconian" id="projector6" speaker="this" if="player.hasQuest('holo_ships') && !player.questComplete('holo_ships')"/>
+      <group>
+        <scene id="teacher" show="info" with="fade"/>
+        <choose>
+          <dialogue section="draconian" id="professor_dead" speaker="this" if="player.questComplete('research_lab') && player.getNPC('professor') == null" />
+          <dialogue section="draconian" id="exotic_gas_hint" speaker="this" if="player.hasQuest('exotic_gas') && !player.questComplete('exotic_gas')"/>
+          <dialogue section="draconian" id="no_help" speaker="this"/>
+        </choose>
+      </group>
+    </operate>
+  </npc>
+
+  <npc id="draconian_sister" extends="draconian_sister">
+    <operate>
+      <section if="this.area.id == 'hidden_world'">
+        <dialogue section="draconian" id="sister" speaker="this"/>
+      </section>
+    </operate>
+  </npc>
+
+  <npc id="ancient_dragon_npc" extends="ancient_dragon_npc">
+    <operate>
+      <section if="getFlag('dragon_sanctuary')"><pan y="96-this.yTile" seconds="0.5" />
+        <choose>
+          <section if="this.area.id != 'hidden_world'">
+            <dialogue section="dragon" id="hybrid_win1" speaker="this" />
+            <remove object="this" /><object id="ancient_dragon_npc" x="4" area="hidden_world" />
+          </section>
+          <dialogue section="dragon" id="hybrid_win2" speaker="this" />
+        </choose>
+      </section>
+    </operate>
+  </npc>
+
+  <npc id="final_boss_npc" tile="final_boss" animation="final_boss" night="true" action="talk" stopForPlayer="false">
+    <operate><section>
+      <dialogue section="alien" id="hybrid_win1" speaker="this"/>
+	  <dialogue section="alien" id="hybrid_win2" speaker="this"/>
+    </section></operate>
+  </npc>
+
+  <enemy id="alien.hatchling" extends="alien.hatchling" hostileFlag="aliens.hostile"/>
+  <enemy id="alien.fighter" extends="alien.fighter" hostileFlag="aliens.hostile"/>
+  <enemy id="alien.bomber" extends="alien.bomber" hostileFlag="aliens.hostile"/>
+  <enemy id="alien.cruiser" extends="alien.cruiser" hostileFlag="aliens.hostile"/>
+  <enemy id="hi_alien" extends="hi_alien" hostileFlag="aliens.hostile" />
+  <enemy id="ancient_dragon" extends="ancient_dragon" hostileFlag="aliens.hostile" />
+
+  <enemy id="npc.baby_dragon" tile="baby_dragon" animation="baby_dragon" health="20" defense="4" hostileFlag="never_set" friendlyFire="false" speed="2" range="10" trapped="dragon" capture="4" type="surface" attack_sfx="dragon_atk" element="fire" death_sfx="dragon_death">
+    <target id="boar" />
+    <attack type="melee" range="0.5" damage="3" animation="doFire" hitEffect="fire_sm" spawnLoot="false">
+      <pre><play object="this" animation="prepareFire" /></pre>
+    </attack>
+    <loot id="dragonblood" />
+  </enemy>
+
+  <animation id="young_dragon.hover" equals="young_dragon.fly" />
+  <animation id="young_dragon.hover_fire" equals="young_dragon.fly" />
+  <animation id="young_dragon.walk" equals="young_dragon.fly" />
+  <enemy id="npc.young_dragon" tile="young_dragon" animation="young_dragon" type="surface" health="30" defense="5" hostileFlag="never_set" friendlyFire="false" range="10" vrange="7" capture="16" trapped="young_dragon" flying="true" passEnemies="true" vertical="true" death_sfx="dragon_death" walk_sfx="dragon_wings" hoverWalk="true" flyAnim="true" element="fire">
+    <target id="boar" />
+    <attack cooldown="10" type="breath" damage="3" range="7" repeat="2" animation="fire" state="standing" sfx="dragon_atk" spawnLoot="false">
+      <projectile tile="fire" glow="true" speed="2" frames="8" breakTile="1" breakPower="8" scaleTo="2" offsetX="-24" offsetY="1" hitEffect="fire_sm" hitTrees="true" color="f9be0b" colorScale="2">
+        <light tile="light.small" color="cc5500" />
+      </projectile>
+    </attack>
+    <attack cooldown="10" type="breath" damage="3" range="7" repeat="2" animation="hover_fire" state="flying" sfx="dragon_atk">
+      <projectile tile="fire" glow="true" speed="2" frames="8" breakTile="1" breakPower="8" scaleTo="2" offsetX="-24" offsetY="1" hitEffect="fire_sm" hitTrees="true" color="f9be0b" colorScale="2">
+        <light tile="light.small" color="cc5500" />
+      </projectile>
+    </attack>
+    <loot id="dragonblood" count="2" />
+  </enemy>
+
+  <npc id="builder2" extends="builder2">
+    <operate>
+      <section if="player.questComplete('bombardment_shield')">
+        <quest /><dialogue section="hybrid" id="builder_return" speaker="this"/>
+        <remove object="this" /><object id="builder" x="40" area="start" />
+      </section>
+    </operate>
+  </npc>
+  <npc id="hunter2" extends="hunter2">
+    <operate>
+      <section if="player.questComplete('bombardment_shield')">
+				<quest /><dialogue section="hybrid" id="hunter_return" speaker="this" />
+				<remove object="this" /><object id="hunter" x="90" area="start" />
+			</section>
+    </operate>
+  </npc>
+  <npc id="fisherman2" extends="fisherman2">
+    <operate>
+      <section if="player.questComplete('bombardment_shield')">
+				<quest /><dialogue section="hybrid" id="fisherman_return" speaker="this" />
+				<remove object="this" /><object id="fisherman" x="198" area="science1" />
+				<set id="cat" value="area.getObject('fisherman.cat2')" />
+				<section if="cat != null"><remove object="cat" /><object id="fisherman.cat" x="196" area="science1" /></section>
+			</section>
+    </operate>
+  </npc>
+  <npc id="mechanic" extends="mechanic">
+    <operate>
+        <section if="this.area.id == 'earth.desert' && !player.hasQuest('bombardment_shield2') && player.hasSeenItem('mecha_dragon')">
+          <dialogue section="mechanic" id="shield1" speaker="this"/>
+          <dialogue section="mechanic" id="shield2" speaker="this"/>
+          <quest id="bombardment_shield2" />
+        </section>
+        <section if="player.canCompleteQuest('bombardment_shield2')">
+          <complete quest="bombardment_shield2" reserve="prepare" />
+          <action>for(x in 131...141){ mine(x, -30); mine(x, -31); }</action>
+          <structure id="bombardment_shield" x="131" y="-30" place="true" rangeX="0" rangeY="0" sfx="build" seconds="0.25" underground="true">
+            <onPlace>
+              <complete quest="bombardment_shield2" reserve="finish" />
+              <lerp object="object" alpha="1" seconds="0.25" /><pan toObject="player" seconds="0.25" />
+              <scene id="start.space" show="activate_shield_earth" with="fade"/>
+              <dialogue section="mechanic" id="shield3"/>
+            </onPlace>
+            <onCancel><complete quest="bombardment_shield2" reserve="cancel" /><pan toObject="player" seconds="0.25" /></onCancel>
+          </structure>
+        </section>
+      <section if="this.area.id == 'crashed_ship.cave1' && player.questComplete('bombardment_shield')">
+        <quest /><dialogue section="hybrid" id="mechanic_return" speaker="this" />
+        <remove object="this" /><object id="mechanic" x="170" area="science1" />
+      </section>
+    </operate>
+  </npc>
+</data>

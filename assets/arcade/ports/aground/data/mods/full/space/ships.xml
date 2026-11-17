@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="jumpship.xml" includeRoot="true" />
+	<tile id="jumpship" sheet="jumpship.png" />
+	<animation id="jumpship.vempty" x="28" count="1" rotate="90" />
+	<animation id="jumpship.empty"><frame visible="false" /><append tile="jumpship" animation="jumpship.vempty" /></animation>
+	<animation id="jumpship.cockpit" x="0" count="12" />
+	<animation id="jumpship.vbody" x="41" count="12" rotate="90" />
+	<animation id="jumpship.idle" x="0" count="12"><append tile="jumpship" animation="jumpship.vbody" /></animation>
+	<animation id="jumpship.hover.engines" x="29" count="12" rotate="90" />
+	<animation id="jumpship.hover">
+		<frame visible="false" length="12" /><append tile="jumpship" animation="jumpship.cockpit" />
+		<append tile="jumpship" animation="jumpship.vbody" /><append tile="jumpship" animation="jumpship.hover.engines" />
+	</animation>
+	<animation id="jumpship.fly.engines" x="29" count="12" />
+	<animation id="jumpship.fly" x="41" count="12"><append tile="jumpship" animation="jumpship.cockpit" behind="true" /><append tile="jumpship" animation="jumpship.fly.engines" /></animation>
+	<animation id="jumpship._ftl.engage"><frame x="29" count="12" /><frame x="16" count="12" /></animation>
+	<animation id="jumpship._ftl" x="12" count="4" repeat="3" />
+	<animation id="jumpship.ftl.engage" x="41" count="12" repeat="2">
+		<append tile="jumpship" animation="jumpship.cockpit" behind="true" />
+		<append tile="jumpship" animation="jumpship._ftl.engage" behind="true" />
+	</animation>
+	<animation id="jumpship.ftl.bubble" x="53" count="7" repeat="2" />
+	<animation id="jumpship.ftl" x="41" count="12">
+		<append tile="jumpship" animation="jumpship.cockpit" behind="true" />
+		<append tile="jumpship" animation="jumpship._ftl" behind="true" />
+		<append tile="jumpship" animation="jumpship.ftl.bubble" />
+	</animation>
+	<vehicle id="jumpship" tile="jumpship" health="1000" defense="3" speed="9" type="spaceship" blood="science.explosion.sm" underground="false" flight_height="999" max_weight="1000" death_sfx="explosion" title="item.names.jumpship" tilesBehind="true" offsetY="2" item="jumpship">
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>player.vehicle.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" /><item id="jumpship" value="this.health" />
+			</section></invokeLater>
+		</listItem>
+		<repair id="titanium" value="250" /><player x="24" y="26" animation="idle" behind="true" />
+		<mount><action>setGameScale(2)</action></mount>
+		<onDismount><window type="prompt" message="warning.spaceship_exit" if="var flight = player.getFlight(); return this.exitFlying() && (flight == null || this.tile_y <= -flight.flight.height)" on="no"><stop /></window></onDismount>
+	</vehicle>
+	
+	<item id="jumpship" type="object" cost="0" weight="100" icon="jumpship.ico" durability="1000" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="jumpship" onGrass="false" on_air="true" overlapBlueprints="true" overlapStructures="true" removeBushes="false" offsetY="2">
+			<action>object.setHealth(this.getFeed());</action>
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="titanium" value="250" />
+	</item>
+	
+	<recipe id="craft_jumpship" creates="jumpship" type="advanced_lab" available="player.questComplete('repair_escort')" first="true">
+		<item id="ship_parts" count="5" />
+	</recipe>
+	
+	<include id="mirrows.xml" />
+	<tile id="mirrows.ship" sheet="mirrows.1" />
+	<tile id="mirrows.ship.orb" sheet="mirrows.2" />
+	<animation id="mirrows.ship.empty" x="71" count="1" />
+	<animation id="mirrows.ship.idle" x="70" count="1" />
+	<animation id="mirrows.ship.hover" x="0" count="3" repeat="5"><append tile="mirrows.ship" animation="mirrows.ship.idle" behind="true" /></animation>
+	<animation id="mirrows.ship.fly" x="3" count="4" repeat="4"><append tile="mirrows.ship" animation="mirrows.ship.idle" /></animation>
+	<animation id="mirrows.ship.knife.form" x="42" count="14" />
+	<animation id="mirrows.ship.knife" x="56" count="14"><append tile="mirrows.ship" animation="mirrows.ship.hover" /><append tile="mirrows.ship" animation="mirrows.ship.knife.form" /></animation>
+	<animation id="mirrows.ship.knife.impact" x="35" count="7" />
+	<animation id="mirrows.ship.orb.form" x="7" count="14" />
+	<animation id="mirrows.ship.orb" x="21" count="14"><append tile="mirrows.ship" animation="mirrows.ship.hover" /><append tile="mirrows.ship" animation="mirrows.ship.orb.form" /></animation>
+	<animation id="mirrows.orb" x="6" count="3" /><animation id="mirrows.orb.impact" x="0" count="6" />
+	
+	<include id="explosions.xml" />
+	<tile id="magic.explosion.sm" sheet="explosions.1" x="12" />
+	<tile id="magic.explosion.med" sheet="explosions.1" x="6" />
+	<tile id="magic.explosion.lg" sheet="explosions.1" x="0" />
+	<animation id="magic.explosion.sm" equals="item8" />
+	<animation id="magic.explosion.med" equals="item6" />
+	<animation id="magic.explosion.lg" equals="item6" />
+	
+	<tile id="science.explosion.sm" sheet="explosions.2" x="14" offsetY="-16" />
+	<tile id="science.explosion.med" sheet="explosions.2" x="8" />
+	<tile id="science.explosion.lg" sheet="explosions.2" x="0" />
+	<animation id="science.explosion.sm" equals="item8" />
+	<animation id="science.explosion.med" equals="item6" />
+	<animation id="science.explosion.lg" equals="item8" />
+	
+	<enemy id="alien" extends="alien" blood="magic.explosion.sm" />
+</data>

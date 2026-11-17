@@ -1,0 +1,29 @@
+{
+  "manifestFiles": [
+    "runner.data",
+    "runner.js",
+    "runner.wasm",
+    "audio-worklet.js",
+    "game.unx.aa",
+    "game.unx.ab",
+    "game.unx.ac",
+    "music_easylemon.ogg",
+    "music_iceflow.ogg",
+    "music_lionfish.ogg",
+    "music_nightofchaos.ogg"
+  ],
+  "manifestFilesMD5": [
+    "dd035956d310fed1c404154aa42c84f1",
+    "8205c033904e1ce761eff28ed921da38",
+    "fddf7a96557a9a49f48a0d4d14e86104",
+    "",
+    "",
+    "",
+    "52e31f097ff00197a4919391f583b65c",
+    "ac03fc2ded691384798c70b054a6bfd1",
+    "a3f04a53b291ea7d3bada1538f48ee9c",
+    "0872d94d6b114bfa31acd8f55b5d3436",
+    "3360cc7cb4f4ed468d7b645e813d890b"
+  ],
+  "mainJS": "runner.js"
+}

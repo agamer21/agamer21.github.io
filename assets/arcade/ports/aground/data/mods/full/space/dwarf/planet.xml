@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="parallax.xml" />
+	<parallax id="stars.dwarf" mapBG="0" skyColor="0">
+		<layer p="0" glow="true"><tile sheet="{mod:full_version}/space/night_bg.png" x="0" y="0" /></layer>
+		<layer p="0" glow="true">
+			<tile id="sun" animation="sun" fps="5" rise="5" set="20" dir="left" pathHeight="96" pathTop="-16" sun="true" />
+		</layer>
+		<layer p="0.0625" py="0.25"><tile sheet="parallax.4" x="0" /></layer>
+		<layer p="0.125" py="0.5"><tile sheet="parallax.3" x="0" /></layer>
+		<layer p="0.1875" py="0.625"><tile sheet="parallax.2" x="1" /></layer>
+		<layer p="0.25" py="0.75"><tile sheet="parallax.1" x="1" /></layer>
+		<layer p="0.5" py="1"><tile sheet="parallax.1" x="0" /></layer>
+		<layer type="back" />
+	</parallax>
+	<parallax id="stars.dwarf.orbit" mapBG="0" skyColor="0">
+		<layer p="0" glow="true" max_depth="10000"><tile sheet="{mod:full_version}/space/night_bg.png" x="0" y="0" /></layer>
+		<layer p="0" glow="true" max_depth="10000">
+			<tile id="sun" animation="sun" fps="5" rise="5" set="20" dir="left" pathHeight="96" pathTop="-16" sun="true" />
+		</layer>
+		<layer p="0" py="0.0125" max_depth="10000"><tile sheet="parallax.4" x="1" dy="22" /></layer>
+		<layer p="0" py="0.0125" id="dwarf.land" scroll="0.03125" max_depth="10000"><tile sheet="parallax.2" x="0" dy="22" /></layer>
+		<layer type="back" />
+	</parallax>
+	
+	<planet id="start.dwarf" height="42">
+		<orbit id="start.dwarf.orbit" width="256" height="64" background="stars.dwarf.orbit" name="system.planet.start_orbit{char:b}" type="none">
+			<area id="start.dwarf" x="0" />
+			<spawner id="alien.fighter" time="50000" count="1" fromX="2" toX="254" fromY="10" toY="54" ground="false" />
+			<init><runAreaLoad /><action>area.spawner.spawnAll("alien.fighter")</action></init>
+			<onLoad><music id="orbit" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+		</orbit>
+	</planet>
+	
+	<tile id="basalt.top" sheet="{core}/tiles/tiles.png" x="132"><tile sheet="{core}/tiles/tiles.png" x="131" /></tile>
+	<dig id="basalt.top" cost="3" />
+	
+	<include id="enemies.xml" />
+	
+	<area id="start.dwarf" width="256" height="96" hasO2="false" background="stars.dwarf" planet="start.dwarf" looping="true" name="system.planet.start{char:b}">
+		<tiles id="basalt.top" y="0" /><mine start="0" end="0.01" backTile="desert.scorched" />
+		<tiles id="basalt" start="0" end="0.45" empty="front|back" />
+		<tiles id="obsidian" start="0.45" end="0.9" />
+		<tiles id="bedrock" start="0.9" end="1" />
+		<tiles id="blackstone" y="95" /><ore id="iron" start="0" end="0.4" percent="0.0375" tile="basalt" />
+		<ore id="blood_gem" start="0.2" end="0.45" percent="0.0125" tile="basalt" />
+		<ore id="exotic_matter" start="0.8" end="0.9" percent="0.00125" tile="obsidian" />
+		<ore id="exotic_matter" start="0.9" end="1" percent="0.0025" tile="bedrock" />
+		<ore id="magnegem" start="0.45" end="0.7" percent="0.00125" tile="obsidian" />
+		<ore id="uranium" start="0.7" end="0.9" percent="0.0125" tile="obsidian" />
+		<ore id="titanium" start="0.5" end="0.9" percent="0.0375" tile="obsidian" />
+		<ore id="lava" start="0.6" end="0.8" percent="1" tile="obsidian" />
+		<objects id="magnewyrm" start="0.1" end="0.4" percent="0.0002" tile="basalt" />
+		<spawner id="magnewyrm" time="4000" count="6" fromX="1" toX="94" fromY="3" toY="32" tile="basalt" />
+		<spawner id="magnestone" time="6000" count="5" fromX="2" toX="254" fromY="-10" toY="-3" ground="false" />
+		<init><runAreaLoad /><action>area.spawner.spawnAll("magnestone")</action></init>
+		<onLoad><music id="orbit_nocombat" seconds="1" /></onLoad>
+	</area>
+</data>

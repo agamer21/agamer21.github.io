@@ -1,0 +1,17 @@
+<tilesheet id='kitchen.png' width='45' offsetX="-7" height='64'>
+	<image frame='0' x='0' y='0' width='52' height='49' offsetX='0' offsetY='15' />
+	<image frame='1' x='0' y='49' width='24' height='9' offsetX='7' offsetY='47' />
+	<image frame='2' x='24' y='49' width='24' height='9' offsetX='7' offsetY='47' />
+	<image frame='3' x='0' y='58' width='52' height='53' offsetX='0' offsetY='11' />
+	<image frame='4' x='0' y='111' width='52' height='56' offsetX='0' offsetY='8' />
+	<image frame='5' x='52' y='0' width='52' height='60' offsetX='0' offsetY='4' />
+	<image frame='6' x='52' y='60' width='52' height='62' offsetX='0' offsetY='2' />
+	<image frame='7' x='104' y='0' width='52' height='59' offsetX='0' offsetY='5' />
+	<image frame='8' x='156' y='0' width='52' height='55' offsetX='0' offsetY='9' />
+	<image frame='9' x='52' y='122' width='52' height='53' offsetX='0' offsetY='11' />
+	<image frame='10' x='208' y='0' width='52' height='56' offsetX='0' offsetY='8' />
+	<image frame='11' x='104' y='59' width='52' height='60' offsetX='0' offsetY='4' />
+	<image frame='12' x='156' y='59' width='52' height='62' offsetX='0' offsetY='2' />
+	<image frame='13' x='208' y='59' width='52' height='59' offsetX='0' offsetY='5' />
+	<image frame='14' x='104' y='119' width='52' height='55' offsetX='0' offsetY='9' />
+</tilesheet>

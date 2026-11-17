@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<scenes>
+	<scene id="scavenger">
+		<include id="bunker.xml" includeRoot="true" />
+		<tile id="scavenger" sheet="bunker.png" x="0" />
+		<animation id="scavenger.hand" x="63" count="10"><frame visible="false" length="11" /></animation>
+		<animation id="scavenger.idle" count="21"><append tile="scene.scavenger.scavenger" animation="scene.scavenger.scavenger.hand" /></animation>
+		<animation id="scavenger.talk" x="73" count="21" />
+		
+		<tile id="professor" sheet="bunker.png" x="94" />
+		<animation id="professor.idle" count="6" />
+		<animation id="professor.talk" x="18" count="12" />
+		
+		<tile id="hunter" sheet="bunker.png" x="124" />
+		<animation id="hunter.idle" count="10" />
+		<animation id="hunter.talk" x="10" count="10" />
+		
+		<tile id="bg" sheet="bunker.png" x="21" />
+		<animation id="bg" count="21" />
+		<tile id="fire" sheet="bunker.png" x="42" />
+		<animation id="fire" count="21" />
+		<tile id="hud" sheet="bunker.png" x="100" />
+		<animation id="hud" count="12" />
+		<tile id="com" sheet="bunker.png" x="144" />
+		<animation id="com" count="10" />
+		<layer id="bg" tile="bg" animation="bg" />
+		<layer id="scavenger" tile="scavenger" animation="scavenger.idle" talk="scavenger.talk" />
+		<layer id="professor" tile="professor" animation="professor.idle" talk="professor.talk" />
+		<layer id="hunter" tile="hunter" animation="hunter.idle" talk="hunter.talk" />
+		<layer id="mechanic" tile="scene.mechanic.mechanic" animation="scene.mechanic.mechanic.idle" talk="scene.mechanic.mechanic.talk" x="0" y="0" />
+		<layer id="mr" tile="scene.mirrows.mr" animation="scene.mirrows.mr.idle" talk="scene.mirrows.mr.talk" sfx="talking4" x="0" y="0" />
+		<layer id="mrs" tile="scene.mirrows.mrs" animation="scene.mirrows.mrs.idle" talk="scene.mirrows.mrs.talk" sfx="talking6" x="0" y="0" />
+		<layer id="fire" tile="fire" animation="fire" />
+		<layer id="hud" tile="hud" animation="hud" />
+		<layer id="com" tile="com" animation="com" />
+
+		<show id="keycard">
+			<layer id="bg" />
+			<layer id="scavenger" />
+			<layer id="fire" />
+			<wait seconds="2" />
+			<dialogue section="scavenger" id="distress1" speaker="scavenger" />
+			<dialogue section="scavenger" id="distress2" speaker="player" />
+			<dialogue section="scavenger" id="distress3" speaker="scavenger" />
+			<dialogue section="scavenger" id="distress4" speaker="player" />
+			<dialogue section="scavenger" id="keycard1" speaker="scavenger" />
+			<quest id="keycard">
+				<dialogue section="scavenger" id="keycard2" speaker="scavenger" />
+			</quest>
+			<wait seconds="1" />
+		</show>
+		<show id="first">
+			<layer id="bg" />
+			<layer id="scavenger" />
+			<layer id="fire" />
+			<wait seconds="2" />
+			<dialogue section="scavenger" id="scene1" speaker="scavenger" />
+			<dialogue section="scavenger" id="scene2" speaker="scavenger" if="!getFlag('final_boss_defeat')" />
+			<dialogue section="scavenger" id="scene3" speaker="scavenger" />
+			<wait seconds="1" />
+		</show>
+		<show id="professor">
+			<layer id="bg" />
+			<layer id="professor" />
+			<layer id="hud" />
+			<wait seconds="2" />
+			<dialogue section="professor" id="intro1" speaker="professor" />
+			<dialogue section="professor" id="intro2" speaker="professor" />
+			<dialogue section="professor" id="intro3" speaker="professor" />
+			<dialogue section="professor" id="intro4" speaker="professor" />
+			<dialogue section="professor" id="intro5" speaker="professor" />
+			<wait seconds="1" />
+		</show>
+		<show id="alien_hq">
+			<layer id="bg" />
+			<layer id="professor" />
+			<layer id="hud" />
+			<wait seconds="2" />
+			<dialogue section="professor" id="alien_hq1" speaker="professor" />
+			<dialogue section="professor" id="alien_hq2" speaker="professor" />
+			<wait seconds="1" />
+		</show>
+		<show id="invite_scavenger">
+			<layer id="bg" />
+			<layer id="scavenger" />
+			<layer id="fire" />
+			<wait seconds="2" />
+			<dialogue section="scavenger" id="research1" speaker="player" if="!getFlag('final_boss_defeat')" />
+			<dialogue section="scavenger" id="research2" speaker="scavenger" />
+			<dialogue section="scavenger" id="research3" speaker="scavenger" if="!getFlag('final_boss_defeat')" />
+			<wait seconds="1" />
+		</show>
+		<show id="invite_mirrows">
+			<layer id="bg" />
+			<layer id="mr" /><layer id="mrs" />
+			<wait seconds="2" />
+			<dialogue section="mirrows" id="research1" speaker="mrs" />
+			<choose>
+				<section if="!getGlobal('has_operation_table')">
+					<dialogue section="mirrows" id="research2" speaker="mr" />
+					<item id="operation_table_blueprint" modal="true" if="!player.hasItem('operation_table_blueprint')" />
+				</section>
+				<dialogue section="mirrows" id="research3" speaker="mr" />
+			</choose>
+			<wait seconds="1" />
+		</show>
+		<show id="mirrows_win">
+			<layer id="bg" />
+			<layer id="mr" /><layer id="mrs" />
+			<wait seconds="2" />
+			<dialogue section="mirrows" id="win1" speaker="mrs" />
+			<dialogue section="mirrows" id="win2" speaker="mr" />
+			<dialogue section="mirrows" id="win3" speaker="mrs" />
+			<wait seconds="1" />
+		</show>
+		<show id="invite_hunter">
+			<layer id="bg" />
+			<layer id="hunter" />
+			<layer id="com" />
+			<wait seconds="2" />
+			<dialogue section="hunter" id="research2" speaker="hunter" />
+			<dialogue section="hunter" id="research3" speaker="hunter" />
+			<wait seconds="1" />
+		</show>
+		<show id="invite_mechanic">
+			<layer id="bg" />
+			<layer id="mechanic" />
+			<play object="mechanic" animation="scene.mechanic.mechanic.repair" />
+			<wait seconds="1" />
+			<dialogue section="mechanic" id="research1" speaker="mechanic" />
+			<dialogue section="mechanic" id="research2" speaker="mechanic" />
+			<wait seconds="1" />
+		</show>
+	</scene>
+</scenes>

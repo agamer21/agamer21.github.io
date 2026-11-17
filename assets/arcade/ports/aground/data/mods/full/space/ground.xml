@@ -1,0 +1,4 @@
+<tilesheet id='ground.png' width='768' height='144'>
+	<image frame='0' x='0' y='0' width='768' height='61' offsetX='0' offsetY='83' />
+	<image frame='1' x='0' y='61' width='740' height='56' offsetX='5' offsetY='88' />
+</tilesheet>

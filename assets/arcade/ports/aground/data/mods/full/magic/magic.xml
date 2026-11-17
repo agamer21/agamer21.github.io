@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="parallax/parallax.xml" />
+	<include id="items/items.xml" />
+	<include id="enemies/enemies.xml" />
+	<include id="structures/structures.xml" />
+	<include id="npcs/npcs.xml" />
+	<include id="magic2.xml" />
+	<include id="ship/ship.xml" />
+	<include id="alchemist.xml" />
+	<include id="hq/hq.xml" />
+</data>

@@ -1,0 +1,133 @@
+<sheets>
+<tilesheet id='mecha_dragon_ship.1' sheet='mecha_dragon_ship.png' width='224' height='128' offsetX="-272" offsetY="-144">
+	<image frame='0' x='1066' y='530' width='228' height='139' offsetX='272' offsetY='137' />
+	<image frame='1' x='1042' y='315' width='228' height='145' offsetX='272' offsetY='137' />
+	<image frame='2' x='1270' y='315' width='228' height='145' offsetX='272' offsetY='137' />
+	<image frame='3' x='610' y='530' width='228' height='145' offsetX='272' offsetY='137' />
+	<image frame='4' x='610' y='675' width='228' height='145' offsetX='272' offsetY='137' />
+	<image frame='5' x='610' y='820' width='228' height='145' offsetX='272' offsetY='137' />
+	<image frame='6' x='610' y='965' width='228' height='145' offsetX='272' offsetY='137' />
+	<image frame='7' x='610' y='1110' width='228' height='145' offsetX='272' offsetY='137' />
+	<image frame='8' x='838' y='530' width='228' height='145' offsetX='272' offsetY='137' />
+	<image frame='9' x='838' y='984' width='171' height='130' offsetX='324' offsetY='108' />
+	<image frame='10' x='156' y='1311' width='156' height='51' offsetX='325' offsetY='108' />
+	<image frame='11' x='838' y='1114' width='173' height='128' offsetX='323' offsetY='110' />
+	<image frame='12' x='953' y='250' width='143' height='51' offsetX='324' offsetY='109' />
+	<image frame='13' x='1011' y='945' width='171' height='128' offsetX='324' offsetY='110' />
+	<image frame='14' x='1096' y='250' width='131' height='49' offsetX='325' offsetY='111' />
+	<image frame='15' x='539' y='1036' width='70' height='79' offsetX='424' offsetY='159' />
+	<image frame='16' x='318' y='1259' width='133' height='44' offsetX='325' offsetY='117' />
+	<image frame='17' x='0' y='317' width='317' height='314' offsetX='215' offsetY='54' />
+	<image frame='18' x='637' y='0' width='316' height='313' offsetX='215' offsetY='54' />
+	<image frame='19' x='0' y='945' width='317' height='313' offsetX='215' offsetY='56' />
+	<image frame='20' x='0' y='0' width='318' height='317' offsetX='215' offsetY='54' />
+	<image frame='21' x='318' y='0' width='319' height='315' offsetX='215' offsetY='54' />
+	<image frame='22' x='0' y='631' width='317' height='314' offsetX='215' offsetY='54' />
+</tilesheet>
+<tilesheet id='mecha_dragon_ship.2' sheet='mecha_dragon_ship.png' width='224' height='128' offsetX="-272" offsetY="-144">
+	<image frame='0' x='1620' y='273' width='26' height='41' offsetX='289' offsetY='185' />
+	<image frame='1' x='725' y='1322' width='32' height='43' offsetX='286' offsetY='186' />
+	<image frame='2' x='1601' y='743' width='32' height='43' offsetX='286' offsetY='186' />
+	<image frame='3' x='1254' y='1304' width='32' height='43' offsetX='286' offsetY='186' />
+	<image frame='4' x='1286' y='1304' width='32' height='43' offsetX='286' offsetY='186' />
+	<image frame='5' x='1318' y='1304' width='32' height='43' offsetX='286' offsetY='186' />
+	<image frame='6' x='1616' y='1176' width='32' height='43' offsetX='286' offsetY='186' />
+	<image frame='7' x='1616' y='1219' width='32' height='43' offsetX='286' offsetY='186' />
+	<image frame='8' x='1586' y='1287' width='32' height='43' offsetX='286' offsetY='186' />
+	<image frame='9' x='1498' y='476' width='85' height='45' offsetX='228' offsetY='183' />
+	<image frame='10' x='156' y='1258' width='158' height='53' offsetX='153' offsetY='181' />
+	<image frame='11' x='318' y='1303' width='109' height='40' offsetX='198' offsetY='190' />
+	<image frame='12' x='1563' y='273' width='57' height='31' offsetX='236' offsetY='193' />
+	<image frame='13' x='610' y='1330' width='42' height='19' offsetX='245' offsetY='198' />
+	<image frame='14' x='1355' y='460' width='78' height='67' offsetX='310' offsetY='175' />
+	<image frame='15' x='686' y='1255' width='78' height='67' offsetX='310' offsetY='175' />
+	<image frame='16' x='1563' y='69' width='86' height='68' offsetX='308' offsetY='179' />
+	<image frame='17' x='1042' y='460' width='85' height='68' offsetX='309' offsetY='179' />
+	<image frame='18' x='1127' y='460' width='85' height='68' offsetX='309' offsetY='179' />
+	<image frame='19' x='1563' y='137' width='86' height='68' offsetX='308' offsetY='179' />
+	<image frame='20' x='1270' y='460' width='85' height='68' offsetX='309' offsetY='179' />
+	<image frame='21' x='1563' y='205' width='86' height='68' offsetX='308' offsetY='179' />
+	<image frame='22' x='451' y='1259' width='86' height='68' offsetX='308' offsetY='179' />
+	<image frame='23' x='1563' y='0' width='85' height='69' offsetX='309' offsetY='179' />
+	<image frame='24' x='998' y='301' width='22' height='12' offsetX='299' offsetY='198' />
+	<image frame='25' x='1020' y='301' width='24' height='8' offsetX='294' offsetY='200' />
+	<image frame='26' x='953' y='301' width='45' height='13' offsetX='282' offsetY='195' />
+	<image frame='27' x='1044' y='301' width='22' height='8' offsetX='302' offsetY='197' />
+	<image frame='28' x='451' y='1327' width='57' height='25' offsetX='271' offsetY='196' />
+	<image frame='29' x='1066' y='301' width='22' height='8' offsetX='300' offsetY='211' />
+	<image frame='30' x='1096' y='299' width='12' height='7' offsetX='292' offsetY='212' />
+	<image frame='31' x='1227' y='250' width='65' height='65' offsetX='373' offsetY='170' />
+	<image frame='32' x='1433' y='460' width='64' height='65' offsetX='374' offsetY='170' />
+	<image frame='33' x='1542' y='1287' width='44' height='67' offsetX='388' offsetY='169' />
+	<image frame='34' x='1601' y='675' width='48' height='68' offsetX='384' offsetY='168' />
+	<image frame='35' x='1496' y='1287' width='46' height='70' offsetX='388' offsetY='167' />
+	<image frame='36' x='548' y='807' width='52' height='71' offsetX='383' offsetY='167' />
+	<image frame='37' x='548' y='948' width='49' height='70' offsetX='385' offsetY='167' />
+	<image frame='38' x='1212' y='460' width='49' height='68' offsetX='383' offsetY='168' />
+	<image frame='39' x='548' y='716' width='53' height='74' offsetX='385' offsetY='164' />
+	<image frame='40' x='548' y='878' width='50' height='70' offsetX='382' offsetY='166' />
+	<image frame='41' x='548' y='577' width='58' height='72' offsetX='380' offsetY='166' />
+	<image frame='42' x='537' y='1259' width='73' height='72' offsetX='365' offsetY='166' />
+	<image frame='43' x='764' y='1255' width='66' height='71' offsetX='368' offsetY='166' />
+	<image frame='44' x='610' y='1255' width='76' height='75' offsetX='362' offsetY='164' />
+	<image frame='45' x='539' y='1115' width='67' height='74' offsetX='365' offsetY='165' />
+	<image frame='46' x='539' y='1189' width='66' height='69' offsetX='364' offsetY='168' />
+</tilesheet>
+<tilesheet id='mecha_dragon_ship.3' sheet='mecha_dragon_ship.png' width='95' height='17' offsetX='-153' offsetY='-201'>
+	<image frame='0' x='318' y='1343' width='95' height='17' offsetX='153' offsetY='201' />
+	<image frame='1' x='1493' y='658' width='95' height='17' offsetX='153' offsetY='201' />
+	<image frame='2' x='1011' y='1324' width='95' height='17' offsetX='153' offsetY='201' />
+	<image frame='3' x='1536' y='808' width='110' height='130' offsetX='90' offsetY='138' />
+	<image frame='4' x='1498' y='315' width='134' height='161' offsetX='83' offsetY='130' />
+	<image frame='5' x='838' y='675' width='173' height='177' offsetX='59' offsetY='121' />
+	<image frame='6' x='0' y='1258' width='156' height='107' offsetX='43' offsetY='152' />
+	<image frame='7' x='1496' y='1176' width='120' height='111' offsetX='98' offsetY='152' />
+</tilesheet>
+<tilesheet id='mecha_dragon_ship.4' sheet='mecha_dragon_ship.png' width='35' height='26' offsetX='-254' offsetY='-192'>
+	<image frame='0' x='572' y='1331' width='34' height='25' offsetX='255' offsetY='192' />
+	<image frame='1' x='652' y='1330' width='30' height='21' offsetX='257' offsetY='195' />
+	<image frame='2' x='537' y='1331' width='35' height='26' offsetX='254' offsetY='192' />
+	<image frame='3' x='764' y='1326' width='30' height='20' offsetX='258' offsetY='195' />
+	<image frame='4' x='686' y='1322' width='39' height='40' offsetX='274' offsetY='184' />
+	<image frame='5' x='1583' y='476' width='54' height='49' offsetX='267' offsetY='179' />
+	<image frame='6' x='1187' y='1304' width='67' height='60' offsetX='260' offsetY='177' />
+	<image frame='7' x='508' y='1327' width='27' height='27' offsetX='279' offsetY='191' />
+	<image frame='8' x='427' y='1303' width='24' height='24' offsetX='281' offsetY='193' />
+	<image frame='9' x='427' y='1327' width='23' height='23' offsetX='282' offsetY='194' />
+</tilesheet>
+<tilesheet id='mecha_dragon_ship.5' sheet='mecha_dragon_ship.png' width='69' height='66' offsetX='-362' offsetY='-173'>
+	<image frame='0' x='1359' y='1294' width='69' height='66' offsetX='362' offsetY='173' />
+	<image frame='1' x='1428' y='1294' width='63' height='66' offsetX='365' offsetY='173' />
+	<image frame='2' x='548' y='649' width='59' height='67' offsetX='364' offsetY='170' />
+	<image frame='3' x='1302' y='0' width='261' height='314' offsetX='260' offsetY='55' />
+	<image frame='4' x='825' y='315' width='217' height='203' offsetX='287' offsetY='101' />
+	<image frame='5' x='318' y='315' width='292' height='262' offsetX='241' offsetY='59' />
+	<image frame='6' x='953' y='0' width='349' height='250' offsetX='195' offsetY='69' />
+	<image frame='7' x='318' y='1036' width='221' height='223' offsetX='287' offsetY='90' />
+	<image frame='8' x='610' y='315' width='215' height='215' offsetX='287' offsetY='92' />
+	<image frame='9' x='318' y='577' width='230' height='230' offsetX='281' offsetY='86' />
+	<image frame='10' x='318' y='807' width='230' height='229' offsetX='281' offsetY='87' />
+</tilesheet>
+<tilesheet id='mecha_dragon_ship.6' sheet='mecha_dragon_ship.png' width='224' height='128' offsetX="-272" offsetY="-144">
+	<image frame='0' x='838' y='1242' width='172' height='122' offsetX='286' offsetY='149' />
+	<image frame='1' x='1011' y='1202' width='172' height='122' offsetX='284' offsetY='153' />
+	<image frame='2' x='1364' y='808' width='172' height='122' offsetX='285' offsetY='154' />
+	<image frame='3' x='1187' y='942' width='172' height='122' offsetX='285' offsetY='152' />
+	<image frame='4' x='1359' y='942' width='172' height='122' offsetX='284' offsetY='154' />
+	<image frame='5' x='1187' y='1064' width='172' height='122' offsetX='287' offsetY='153' />
+	<image frame='6' x='1205' y='675' width='198' height='126' offsetX='277' offsetY='148' />
+	<image frame='7' x='1509' y='1064' width='139' height='111' offsetX='296' offsetY='162' />
+	<image frame='8' x='1359' y='1064' width='150' height='112' offsetX='297' offsetY='162' />
+	<image frame='9' x='1531' y='942' width='94' height='115' offsetX='368' offsetY='164' />
+	<image frame='10' x='838' y='852' width='171' height='132' offsetX='306' offsetY='147' />
+	<image frame='11' x='1011' y='808' width='176' height='137' offsetX='305' offsetY='145' />
+	<image frame='12' x='1359' y='1176' width='137' height='118' offsetX='297' offsetY='157' />
+	<image frame='13' x='1403' y='675' width='198' height='126' offsetX='277' offsetY='148' />
+	<image frame='14' x='1493' y='530' width='156' height='128' offsetX='283' offsetY='145' />
+	<image frame='15' x='1011' y='1073' width='164' height='129' offsetX='283' offsetY='145' />
+	<image frame='16' x='1187' y='808' width='177' height='134' offsetX='285' offsetY='145' />
+	<image frame='17' x='1011' y='675' width='194' height='133' offsetX='283' offsetY='146' />
+	<image frame='18' x='1294' y='530' width='199' height='137' offsetX='282' offsetY='145' />
+	<image frame='19' x='1187' y='1186' width='156' height='118' offsetX='283' offsetY='157' />
+</tilesheet>
+</sheets>

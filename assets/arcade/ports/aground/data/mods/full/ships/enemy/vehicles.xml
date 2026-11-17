@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<procedure id="dragon_ship.talk"><choose>
+		<section if="!player.hasSeenItem('dragon_seed')">
+			<section if="area.id == 'dragon_ship.interior'">
+				<dialogue section="dragon_ship" id="ally1" />
+				<dialogue section="dragon_ship" id="ally2" speaker="player" />
+			</section>
+			<dialogue section="dragon_ship" id="ally3" />
+			<choose>
+				<dialogue section="dragon_ship" id="ally4.1" speaker="player" if="getFlag('final_boss_defeat')" />
+				<dialogue section="dragon_ship" id="ally4" speaker="player" />
+			</choose>
+			<dialogue section="dragon_ship" id="ally5" />
+			<dialogue section="dragon_ship" id="ally6" />
+			<dialogue section="dragon_ship" id="ally7" />
+			<choose>
+				<section if="!player.questComplete('spirit_portal')">
+					<dialogue section="dragon_ship" id="ally8" speaker="player" />
+					<dialogue section="dragon_ship" id="ally9" />
+					<item id="dragon_seed" />
+				</section>
+				<action>player.setSeenItem('dragon_seed')</action>
+			</choose>
+		</section>
+		<group>
+			<dialogue section="dragon_ship" id="ally13" />
+			<section>
+				<dialogue section="dragon_ship" id="ally10" />
+				<dialogue section="dragon_ship" id="ally11" />
+			</section>
+			<dialogue section="dragon_ship" id="ally12" />
+		</group>
+	</choose></procedure>
+	<action>function changeRideable(p, area, id){
+		var v = area.vehicle; var o = ObjectInfo.make(id, v.xPos, v.yTile); o.setFuel(o.getMaxFuel()); area.setVehicle(o); o.runEvent(p, "enterInterior");
+	}</action>
+	<vehicle id="dragon_ship.prototype" efficiency="0" defense="7" speed="12" speedY="6" fps="10" shield_cost="1" type="spaceship" blood="magic.explosion.med" attack_move="true" underground="false" flight_height="999" includeName="true" fuelName="rations" fuel_sfx="eat" block_icon="dragon_ship.shields.ico" block_behind="true" block_move="true" blockFuel="true">
+		<repair id="blood_gem" value="250" /><recipe type="dragon_feed" />
+		<dismount><action>if(this.renderer != null) this.renderer.scaleX = 1;</action></dismount>
+		<init><set id="partial" value="0" /><set id="shield_cost" value="Std.parseFloat(this.info.xml.get('shield_cost'))" /></init>
+		<onFrame>
+			if(this.blocking){var f = frames*shield_cost; var of = Math.floor(f); partial += f-of; if(partial >= 1){of++; partial -= 1;} if(of > 0) this.useFuel(of);}
+		</onFrame>
+		<light tile="light.largest" offsetX="-64" />
+		<onDeath><run procedure="dragon_ship.death" /></onDeath>
+		<enterInterior><action>
+			var i = this.getInterior(player, this.info); i.removeObjectsInLayer(ENEMY_LAYER);
+			for(o in i.getObjectsById("enemy_ship.exit")){i.removeObject(o); i.addObject(ObjectInfo.make("ship.exit", o.xPos, o.yTile));}
+			for(o in i.getObjectsById("enemy_ship.exit3")){i.removeObject(o); i.addObject(ObjectInfo.make("ship.exit3", o.xPos, o.yTile));}
+			for(s in i.getStructuresById("enemy_dragon_ship.operate")){i.removeStructure(s, null); getStructure("dragon_ship.operate").build(null, i, s.xPos, s.yPos);}
+		</action></enterInterior>
+		<onTranslate><run procedure="dragon_ship.talk" /></onTranslate>
+	</vehicle>
+
+	<animation id="alien.fighter.fly" equals="alien.fighter.walk" />
+	<animation id="alien.fighter.hover" equals="alien.fighter.walk" />
+	<animation id="alien.fighter.ftl" x="22" count="8">
+		<append tile="alien.fighter" animation="alien.fighter.idle" />
+		<append tile="alien.fighter" animation="alien.fighter.shield" />
+	</animation>
+	<animation id="alien.fighter.fire" x="8" count="8"><append tile="alien.fighter" animation="alien.fighter.idle" behind="true" /></animation>
+	<structure id="ship_cargo2x1" width="32" height="16" name="manage_cargo" fullHeight="true">
+		<operate><action>area.vehicle.manageInventory(player)</action></operate>
+	</structure>
+	<animation id="alien.fighter.mine.fire" x="16" count="6"><append tile="alien.fighter" animation="alien.fighter.idle" behind="true" /></animation>
+	<vehicle id="dragon_fighter" extends="dragon_ship.prototype" tile="alien.fighter" health="1000" max_weight="1600" death_sfx="fighter_death" fuel="12000" title="itemName('world.dragon_fighter', this.name)" allowModifier="true">
+		<interior area="dragon_fighter.interior" offsetX="8" offsetY="9" enterX="3" enterY="4" exitX="2" operateX="4" operateY="3" />
+		<operateHitbox x="36" y="21" width="54" height="62" />
+		<attack type="projectile" damage="30" range="18" repeat="12" animation="fire" cost="10" scaleCost="false" sfx="alien_fighter_attack">
+			<projectile tile="alien.fighter.bolt" animation="single" speed="16" offsetX="-80" hit_sfx="alien_fighter_impact">
+				<hitEffect tile="alien.fighter.bolt" animation="alien.fighter.bolt.impact" color="dd99ff" />
+			</projectile>
+		</attack>
+		<shield tile="alien.fighter" animation="alien.fighter.shield" hit_front="alien.fighter.shield.front" hit_back="alien.fighter.shield.back" hit_sfx="ship_shield" />
+		<enterInterior><action>
+			var i = this.getInterior(player, this.info); var s = i.getStructureById("dragon_fighter.cargo");
+			if(s != null){
+				this.inventory.addAll(s.inventory); i.removeStructure(s, null); getStructure("ship_cargo2x1").build(null, i, s.xPos, s.yPos);
+			}
+		</action></enterInterior>
+		<ability hotkey="8" icon="bombardment.ico" animation="item6" cost="500" available="this.renderer != null && !this.renderer.attacking">
+			<sound id="alien_fighter_mine" object="this" /><action>this.renderer.attacking = true;</action><play object="this" animation="mine.fire" /><action>this.renderer.attacking = false;</action>
+			<projectile tile="alien.mine" animation="alien.mine" speed="3" critical="false" damage="200" dx="-this.getDX()" dy="0" hit_sfx="orb_impact" homing="true" spawner="player" spawnX="(this.xPos+((this.getFacing() == 1)?105:this._width-134))/Tile.SIZE" spawnY="(this.yTile-76)/Tile.SIZE" relative="false" range="60" underwater="true">
+				<hitEffect tile="alien.mine" animation="alien.mine.explode" />
+			</projectile>
+		</ability>
+	</vehicle>
+	<animation id="alien.bomber.fly" equals="alien.bomber.walk" />
+	<animation id="alien.bomber.hover" equals="alien.bomber.walk" />
+	<animation id="alien.bomber.ftl" x="32" count="8">
+		<append tile="alien.bomber" animation="alien.bomber.idle" />
+		<append tile="alien.bomber" animation="alien.bomber.shield" />
+	</animation>
+	<structure id="ship_cargo3x3" extends="ship_cargo2x1" width="48" height="48" />
+	<vehicle id="dragon_bomber" extends="dragon_ship.prototype" tile="alien.bomber" health="3200" max_weight="15000" death_sfx="bomber_death" fuel="40000" title="itemName('world.dragon_bomber', this.name)" cameraY="-50" allowModifier="true">
+		<interior area="dragon_bomber.interior" offsetX="2" offsetY="-4" enterX="2" enterY="7" exitX="1" exitY="-3" operateX="3" operateY="6" />
+		<operateHitbox x="23" y="45" width="122" height="106" />
+		<attack type="projectile" damage="100" range="18" cost="150" scaleCost="false" sfx="alien_bomber_attack" leftRight="true">
+			<projectile tile="alien.bomber.bolt" animation="alien.bomber.bolt" speed="16" offsetX="-240" delay="7" overlap="0.125" hit_sfx="alien_fighter_impact">
+				<hitEffect tile="alien.bomber.bolt" animation="alien.bomber.bolt.impact" color="dd99ff" />
+			</projectile>
+		</attack>
+		<shield tile="alien.bomber" animation="alien.bomber.shield" hit_front="alien.bomber.shield.front" hit_back="alien.bomber.shield.back" hit_sfx="ship_shield" />
+		<enterInterior><action>
+			var i = this.getInterior(player, this.info); var s = i.getStructureById("dragon_bomber.cargo");
+			if(s != null){
+				this.inventory.addAll(s.inventory); i.removeStructure(s, null); getStructure("ship_cargo3x3").build(null, i, s.xPos, s.yPos);
+			} var s = i.getStructureById("dragon_bomber.cargo2");
+			if(s != null){i.removeStructure(s, null); getStructure("ship_cargo3x3").build(null, i, s.xPos, s.yPos);} 
+			if(i.getStructureById("dragon_ship.save") == null){
+				getStructure("dragon_ship.save").build(null, i, 6*Tile.SIZE, 3*Tile.SIZE);
+			}
+		</action></enterInterior>
+		<ability hotkey="8" icon="bombardment.ico" animation="item6" cost="500" available="this.renderer != null && !this.renderer.attacking">
+			<action>this.renderer.attacking = true;</action><play object="this" animation="bomb" /><action>this.renderer.attacking = false;</action>
+			<projectile tile="orbital_projectile" animation="orbital_projectile" speed="3" width="32" height="64" damage="100" dx="0" dy="1" spawnX="(this.getFacing() == 1?(this.xPos+160):(this.xPos+this._width-176))/Tile.SIZE" spawnY="(this.yTile+16)/Tile.SIZE" range="100">
+				<removed><object id="orbital_blast" x="this.tile_x-6" y="this.tile_y+2" /></removed>
+			</projectile>
+		</ability>
+	</vehicle>
+		
+	<animation id="alien.cruiser.fly" equals="alien.cruiser.walk" />
+	<animation id="alien.cruiser.hover" equals="alien.cruiser.walk" />
+	<animation id="alien.cruiser.ftl" x="32" count="8">
+		<append tile="alien.cruiser" animation="alien.cruiser.idle" />
+		<append tile="alien.cruiser.shields" animation="alien.cruiser.shield" />
+	</animation>
+	<animation id="alien.cruiser.mine.fire" x="24" count="8"><append tile="alien.cruiser" animation="alien.cruiser.idle" behind="true" /></animation>
+	<structure id="ship_cargo3x2" extends="ship_cargo2x1" width="48" height="32" />
+	<structure id="ship_cargo6x2" extends="ship_cargo2x1" width="96" height="32" />
+	<vehicle id="dragon_cruiser" extends="dragon_ship.prototype" tile="alien.cruiser" health="8000" max_weight="15000" death_sfx="cruiser_death" fuel="40000" title="itemName('world.dragon_cruiser', this.name)" allowModifier="true">
+		<interior area="dragon_cruiser.interior" offsetX="2" offsetY="-4" enterX="4" enterY="9" exitX="3" exitY="-7" operateX="4" operateY="8" />
+		<operateHitbox x="30" y="94" width="130" height="150" />
+		<attack type="beam" damage="120" range="15" animation="lightning" sfx="alien_crusier_attack" cost="250" scaleCost="false">
+			<pre><play object="this" animation="pre_lightning" /></pre>
+		</attack>
+		<shield tile="alien.cruiser.shields" animation="alien.cruiser.shield" hit_front="alien.cruiser.shield.front" hit_back="alien.cruiser.shield.back" hit_sfx="ship_shield" />
+		<enterInterior><action>
+			var i = this.getInterior(player, this.info); var s = i.getStructureById("dragon_cruiser.cargo");
+			if(s != null){
+				this.inventory.addAll(s.inventory); i.removeStructure(s, null); getStructure("ship_cargo3x2").build(null, i, s.xPos, s.yPos);
+			} var s = i.getStructureById("dragon_cruiser.cargo2");
+			if(s != null){i.removeStructure(s, null); getStructure("ship_cargo6x2").build(null, i, s.xPos, s.yPos);} 
+			if(i.getStructureById("dragon_ship.save") == null){
+				getStructure("dragon_ship.save").build(null, i, 7*Tile.SIZE, 6*Tile.SIZE);
+				getStructure("dragon_ship.save").build(null, i, 14*Tile.SIZE, 6*Tile.SIZE);
+			}
+		</action></enterInterior>
+		<ability hotkey="8" icon="bombardment.ico" animation="item6" cost="2000" available="this.renderer != null && !this.renderer.attacking">
+			<sound id="alien_fighter_mine" object="this" /><action>this.renderer.attacking = true;</action><play object="this" animation="mine.fire" /><action>this.renderer.attacking = false;</action>
+			<projectile tile="alien.mine.large" animation="alien.mine.large" critical="false" speed="5" damage="500" dx="-this.getDX()" dy="0" hit_sfx="orb_impact" homing="true" spawner="player" spawnX="(this.xPos+((this.getFacing() == 1)?261:this._width-261))/Tile.SIZE" spawnY="(this.yTile-285)/Tile.SIZE" relative="false" range="80" underwater="true">
+				<hitEffect object="this" tile="alien.mine.large" animation="alien.mine.large.explode" />
+			</projectile>
+		</ability>
+	</vehicle>
+</data>

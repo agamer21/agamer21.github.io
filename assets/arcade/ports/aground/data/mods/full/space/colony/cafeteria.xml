@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<player id="player.ancient" extends="player.ancient">
+		<modLight id='1' tile='light.largest' color='ccffcc' flicker='true' />
+	</player>
+	<action>
+		var time = 60*5;
+		cafeteria_foods = [
+			{id:"regen_stamina", eat:function(player){player.stats.get("regen_stamina").tempBuff(25, time);}},
+			{id:"mine", eat:function(player){player.stats.get("mine").tempBuff(3, time);}},
+			{id:"toxic", eat:function(player){player.stats.get("regen_health").tempBuff(-5, 60);}},
+			{id:"light", eat:function(player){player.stats.get("light").tempBuff(1, time);}},
+			{id:"regen_power", eat:function(player){player.stats.get("regen_power").tempBuff(50, time);}},
+			{id:"regen_health", eat:function(player){player.stats.get("regen_health").tempBuff(5, time);}},
+			{id:"endurance", eat:function(player){player.stats.get("endurance").tempBuff(10, time);}},
+			{id:"attack", eat:function(player){player.stats.get("attack").tempBuff(3, time);}},
+			{id:"bargaining", eat:function(player){player.stats.get("bargaining").tempBuff(5, time);}},
+			{id:"oxygen", eat:function(player){player.stats.get("oxygen").tempBuff(100, time);}},
+			{id:"knock_out", eat:function(player){player.stats.get("endurance").tempBuff(-10, 60);}},
+			{id:"farsight", eat:function(player){player.stats.get("sight").tempBuff(1, time); player.stats.get("evasion").tempBuff(10, time);}},
+			{id:"porky", eat:function(player){player.stats.get("speed").tempBuff(-1, time); player.stats.get("weight").tempBuff(100, time);}},
+			{id:"reset", eat:function(player){player.skills.reset(); player.stats.get("reset").tempBuff(1, 60);}},
+			{id:"defense", eat:function(player){player.stats.get("defense").tempBuff(3, time);}},
+			{id:"speed", eat:function(player){player.stats.get("speed").tempBuff(3, time);}}
+		];
+		function hasCafeteriaFood(player){
+			for(s in player.stats) if(s.temp_buff_time > 0) return true; return false;
+		}
+	</action>
+	
+	<procedure id="colony.cafeteria">
+		<choose>
+			<dialogue section="warning" id="not_powered" if="!this.isPowered()" />
+			<dialogue section="cafeteria" id="no_order" if="hasCafeteriaFood(player)" />
+			<menu section="cafeteria.names" width="180" closeable="true" scrollRows="9" yalign="0.9" showCoins="true">
+				<dialogue section="cafeteria" id="order" />
+				<choice id="value.id" values="cafeteria_foods.iterator()"><action>setGlobal('order', value.id);</action><choose>
+					<dialogue section="cafeteria" id="no_money" if="player.getCoins() < 500" />
+					<scene id="cafeteria" show="serve" with="fade"><action>player.setFlag('cafeteria.'+value.id, true); player.addCoins(-500); value.eat(player)</action></scene>
+				</choose></choice>
+			</menu>
+		</choose>
+	</procedure>
+	<structure id="colony.cafeteria" tile="colony.cafeteria" fullHeight="true" name="cafeteria" powered="true" dismantleWarning="warning.dismantle_cafeteria">
+		<tile id="colony.cafeteria.sign" name="sign" animation="colony.cafeteria.sign" fps="10" y="0" top="true" />
+		<over><action>var t = this.getTileById("sign"); if(t != null) t.playAnimation("colony.cafeteria.open", false, function(p){p.playAnimation("colony.cafeteria.operate", true);})</action></over>
+		<out><action>var t = this.getTileById("sign"); if(t != null) t.playAnimation("colony.cafeteria.close", false)</action></out>
+		<operate><run procedure="colony.cafeteria" /></operate>
+	</structure>
+				
+	<structure id="colony.cafeteria2" extends="colony.food_market" tile="colony.cafeteria" width="160" height="32" speechX="56" offsetX="-24" offsetY="7" dismantleWarning="">
+		<tile id="colony.waiter_bot" name="waiter" animation="colony.waiter_bot.idle" fps="10" y="0.5" />
+		<initRenderer><action>this.getTileById("bot").x += 112;</action></initRenderer>
+		<tooltip id="food_market" if="player.getCenterX()-this.xPos > 104" />
+		<tooltip id="cafeteria" />
+		<tile id="colony.cafeteria.sign" name="sign" animation="colony.cafeteria.sign" fps="10" y="0" top="true" />
+		<over><action>var t = this.getTileById("sign"); if(t != null) t.playAnimation("colony.cafeteria.open", false, function(p){p.playAnimation("colony.cafeteria.operate", true);})</action></over>
+		<out><action>var t = this.getTileById("sign"); if(t != null) t.playAnimation("colony.cafeteria.close", false)</action></out>
+		<operate><section if="player.getCenterX()-this.xPos <= 104"><run procedure="colony.cafeteria" /><stop /></section></operate>
+	</structure>
+</data>

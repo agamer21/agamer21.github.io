@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="objects.xml" />
+	<tile id="meat_tree" sheet="bg.5" x="0" />
+	<animation id="meat_tree.hit" x="0" count="9" />
+	<animation id="meat_tree.grow" x="9" count="4" />
+	<animation id="meat_tree.idle" x="12" count="9" />
+	<item id="meat_tree_seed" type="animal" cost="200" weight="1" icon="meat_tree_seed.ico" animation="item6" health="80" stamina="160" action="eat" autoEat="10"><action id="plant" sfx="plant_seed" object="meat_tree" /></item>
+	<tree id="meat_tree" health="20" defense="2" loot="wood" min="3" max="5" collect="2" grown="3" speed="0.002" tile="meat_tree" generateO2="0.125">
+		<loot id="meat_tree_seed" /><sound id="death" value="meat_tree_fall" />
+		<idle><object id="meat_tree_wasp" x="this.tile_x" y="this.tile_y-1" pre="true" if="this.isGrown() && area.isActivePlayer() && area.getLiveCount('meat_tree_wasp') < area.getLiveCount('meat_tree')" /></idle>
+		<initRenderer><invokeLater><run object="meat_tree" event="idle" /></invokeLater></initRenderer>
+	</tree>
+	
+	<tile id="acid_raptor" sheet="objects.1" />
+	<animation id="acid_raptor.idle">
+		<frame x="2" y="0" length="4" />
+		<frame x="1" y="0" length="2" />
+		<frame x="2" y="0" length="16" />
+		<frame x="16" count="6" />
+	</animation>
+	<animation id="acid_raptor.walk" x="3" count="8" />
+	<animation id="acid_raptor.pre_fire" x="11" count="1" />
+	<animation id="acid_raptor.pre_attack" x="16" count="1"><append tile="acid_raptor" animation="acid_raptor.pre_fire" /></animation>
+	<animation id="acid_raptor.fire" x="12" count="4"><frame visible="false" /></animation>
+	<animation id="acid_raptor.attack" x="16" count="6"><append tile="acid_raptor" animation="acid_raptor.fire" /></animation>
+	<animation id="acid_raptor.hit" count="1" length="3" x="0" />
+	<hitEffect id="acid" tile="empty" animation="item6" color="99ff66" damage="3" min="5" max="8" />
+	<enemy id="acid_raptor" tile="acid_raptor" health="20" defense="4" range="12" speed="4" type="surface" passFence="true" capture="12" death_sfx="acid_raptor_death">
+		<capture trapped="acid_raptor" minCapture="5" />
+		<lootSet><loot id="dino_dna" count="1" /></lootSet>
+		<lootSet><loot id="meat" count="3" /></lootSet>
+		<attack type="melee" damage="12" range="1.5" hitEffect="acid" cooldown="50" sfx="acid_raptor_attack"><pre><play object="this" animation="pre_attack" /></pre></attack>
+		<onCapture><run procedure="unnature.splicer.enrage" if="!player.hasSeenItem('unnature.splicer')" /></onCapture>
+	</enemy>
+	<familiar id="acid_raptor" type="ground" costPerSecond="0.25">
+		<attack type="melee" damage="12" cost="3" range="1.5" hitEffect="acid" sfx="acid_raptor_attack"><pre><play object="this" animation="pre_attack" /></pre></attack>
+	</familiar>
+	<animation id="acid_raptor.ico" x="0" count="2" length="2"><frame x="0" length="7" /><frame x="2" count="6" /></animation>
+	<item id="acid_raptor" type="animal" cost="0" durability="3000" weight="5" icon="acid_raptor.ico" animation="acid_raptor.ico" slot="familiar">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="acid_raptor" tile="acid_raptor" animation="acid_raptor" />
+		<food id="rat" value="200" />
+		<food id="pig" value="300" />
+		<food id="chicken" value="500" />
+		<food id="cow" value="1000" />
+		<food id="steak" value="125" />
+	</item>
+	<animal id="acid_raptor">
+		<farmable item="dino_dna" min="1" max="1" time="20" />
+		<tile id="acid_raptor" animation="acid_raptor.idle" x="-0.5" y="-0.875" />
+	</animal>
+	
+	<tile id="meat_tree_wasp" sheet="objects.2" />
+	<animation id="meat_tree_wasp.idle" x="10" count="2" />
+	<animation id="meat_tree_wasp.walk" equals="meat_tree_wasp.idle" />
+	<animation id="meat_tree_wasp.attack" count="4" x="5" />
+	<animation id="meat_tree_wasp.hit" count="1" length="3" x="9" />
+	<animation id="meat_tree_wasp.projectile" count="2" x="3" />
+	<enemy id="meat_tree_wasp" tile="meat_tree_wasp" health="6" defense="2" range="5" vrange="6" speed="2" type="surface" passFence="true" flying="true" vertical="true" friendlyFire="false" passEnemies="true" save="false" death_sfx="wasp_death">
+		<cooldown seconds="3"><action if="this.renderer != null && spawner != null">
+			if(Utils.sign(this.getCenterX()-spawner.getCenterX()) != this.getFacing()) this.renderer.flip(); this.run();
+			if(this.tile_y &lt; spawner.tile_y-4) this.renderer.deltaY = 1; else if(this.tile_y > spawner.tile_y) this.renderer.deltaY = -1;
+		</action></cooldown>
+		<attack type="projectile" damage="7" range="6" animation="attack" cooldown="50" height="14" sfx="wasp_attack">
+			<projectile tile="meat_tree_wasp" animation="meat_tree_wasp.projectile" delay="2" speed="2" offsetX="6">
+				<hitEffect tile="meat_tree_wasp" animation="item3" color="ff9999" />
+			</projectile>
+		</attack>
+		<addedToArea><set id="spawner" value="this.findClosestObject(function(o){return o.info.id == 'meat_tree';})" /></addedToArea>
+	</enemy>
+	
+	<tile id="drill_beetle" sheet="objects.3" />
+	<animation id="drill_beetle.attack" x="1" count="6" />
+	<animation id="drill_beetle.dig" equals="drill_beetle.attack" />
+	<animation id="drill_beetle.walk" equals="drill_beetle.attack" />
+	<animation id="drill_beetle.hit" count="1" length="3" x="0" />
+	<enemy id="drill_beetle" tile="drill_beetle" health="50" defense="7" damage="30" type="wyrm" eatTile="unnature.stone" attack_sfx="scrab_attack">
+		<loot id="carapace" /><sound id="death" value="razor_bug_death" />
+	</enemy>
+	
+	<tile id="chimera" sheet="objects.4" />
+	<animation id="chimera.idle" x="23" count="10" />
+	<animation id="chimera.walk" x="14" count="8" />
+	<animation id="chimera.pre_attack" x="0" count="1" length="2" />
+	<animation id="chimera.attack" x="1" count="13" />
+	<animation id="chimera.hit" count="1" length="2" x="22" />
+	<animation id="chimera._fire" x="33" count="3"><frame visible="false" /></animation>
+	<animation id="chimera.fire" x="23" count="4"><append tile="chimera" animation="chimera._fire" /></animation>
+	<tile id="chimera.projectile" sheet="objects.5" />
+	<animation id="chimera.projectile" x="6" count="3" />
+	<enemy id="chimera" tile="chimera" health="200" defense="8" range="12" vrange="12" type="surface" passFence="true" flying="true" vertical="true" friendlyFire="false" passEnemies="true" death_sfx="chimera_death">
+		<sound id="hit" value="chimera_hurt" />
+		<attack type="melee" damage="80" cooldown="50" sfx="chimera_attack"><pre><play object="this" animation="pre_attack" /></pre></attack>
+		<attack type="projectile" damage="30" range="20" animation="fire" cooldown="200" requireTarget="false" sfx="acid_raptor_attack">
+			<projectile tile="chimera.projectile" animation="chimera.projectile" delay="3" speed="2" homing="true" passTile="true" offsetY="-50">
+				<hitEffect tile="chimera.projectile" animation="item6" color="f9fda1" />
+			</projectile>
+		</attack>
+		<onDeath><section if="player.info.id != 'werewolf.colosseum'">
+			<action>player.state.removeEventListener("update_flag", check_splicer_defeat); var t = player.stats.get("timer"); t.removeEventListener("updated", splicer_lab_timer); t.clearTempBuff();</action>
+			<section if="getFlag('splicer_defeat')"><return with="ellipse" /><stop complete="true" /></section>
+			<action>setFlag("splicer_defeat", true);</action><invokeLater seconds="1">
+			<run procedure="unnature.victory.begin" />
+			<dialogue section="unnature" id="lab7" speaker="area.getObject('unnature.ranger2')" />
+			<run procedure="unnature.victory.end" />
+		</invokeLater></section></onDeath>
+	</enemy>
+	
+	<!-- DICEWOLF DRAGONRIDER -->
+	<include id="dice.xml" />
+	<tile id="dice.small" sheet="dice.1" />
+	<animation id="dice.small.idle" count="14" />
+	<animation id="dice.small.talk" count="14" x="14" />
+	<animation id="dice.small.walk" count="9" x="28" />
+	<npc id="dice.small" tile="dice.small" talk_sfx="talking1" action="talk" night="true">
+		<idle class="wander" fromX="48" toX="53" />
+		<operate><section>
+			<dialogue section="unnature" id="dice1" speaker="this" />
+			<dialogue section="unnature" id="dice2" speaker="this" />
+			<dialogue section="unnature" id="dice3" speaker="this" />
+			<object id="dice.large" x="(this.xPos-7)/Tile.SIZE" y="this.yTile/Tile.SIZE" name="dice" />
+			<remove object="this" /><action>dice.renderer.scaleX = this.renderer.scaleX; this.renderer.parent.removeChild(this.renderer);</action>
+			<play object="dice" animation="supersize" modal="true" /><action>dice.playIdle()</action>
+		</section></operate>
+	</npc>
+	
+	<tile id="dice.large" sheet="dice.2" />
+	<animation id="dice.large.idle" x="31" count="12" />
+	<animation id="dice.large.walk" x="43" count="8" />
+	<animation id="dice.large.pre_attack" x="9" count="1" length="3" />
+	<animation id="dice.large.attack1" x="0" count="4" />
+	<animation id="dice.large.attack2" x="4" count="5" />
+	<animation id="dice.large.howl" x="10" count="20" />
+	<animation id="dice.large.hit" count="1" length="2" x="30" />
+	<animation id="dice.large.supersize" x="51" count="39" />
+
+	<tile id="chilling_howl" sheet="dice.3" /><animation id="chilling_howl" count="15" />
+	<animation id="chilling_howl.hit"><frame visible="false" length="48" /></animation>
+	<hitEffect id="chilling_howl" tile="empty" animation="chilling_howl.hit" color="526178" freeze="0.75" />
+	<object id="chilling_howl" tile="chilling_howl" animation="chilling_howl" fps="15" removeOnComplete="true" save="false" layer="npc">
+		<addedToArea><action>
+			count = 0.0; function canDamage(o){
+				return o != spawner &amp;&amp; spawner.projectileCanHurt(o) &amp;&amp; o.attackPower(1, 0, 0, null, false) > 0 &amp;&amp; o.getDefense(false, false, false) &lt; 20;
+			}
+		</action></addedToArea>
+		<onFrame>count += frames; if(count >= 8){var e = ObjectInfo.createHitEffect("chilling_howl", spawner); count -= 8; for(o in this.getOverlappingObjects(canDamage)) if(o.damage(damage, FLAG_IGNORE_DEFENSE|FLAG_HIDE_ATTACKER, spawner) > 0) o.hitEffect(e);}</onFrame>
+	</object>
+	<enemy id="dice.large" tile="dice.large" health="500" speed="2" defense="8" range="8" vrange="8" type="surface" passFence="true" vertical="true" passEnemies="true">
+		<loot id="werewolf_ferocious_head_dna" />
+		<attack type="melee" damage="80" hits="2" range="0.75" animation="attack1">
+			<pre><play object="this" animation="pre_attack" /></pre>
+			<cont animation="attack2" />
+		</attack>
+		<cooldown seconds="2">
+			<!--sound id="chilling_howl" object="this" /--><set id="me" value="this" />
+			<object id="chilling_howl" x="(this.getCenterX()-64)/Tile.SIZE" y="(this.getCenterY()+56)/Tile.SIZE" pre="true">this.vars.set("spawner", me); this.vars.set("damage", 10);</object>
+			<play object="this" animation="howl" /><action>this.playIdle()</action>
+		</cooldown>
+	</enemy>
+</data>

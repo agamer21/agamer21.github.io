@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="dragon_ship.xml" />
+	<tile id="dragon_ship" sheet="dragon_ship.1" />
+	
+	<structure id="dragon_ship.operate" width="32" height="16" name="operate">
+		<operate>
+			<section if="player.hasItem('translation_book') && !player.hasSeenItem('dragon_seed')">
+				<menu section="common" closeable="true" autoselect="true">
+					<dialogue section="player" id="use_translation_book" />
+					<choice id="yes">
+						<action>player.inventory.selectItem(getItem('translation_book'),0,null).use(player)</action><stop />
+					</choice>
+					<choice id="no" />
+				</menu>
+			</section>
+			<action with="ellipse_fast" if="area.vehicle.canMount(player)">var v = area.vehicle; if(v.canMount(player)){v.doExit(player); setGameScale(2); v.doMount(player, true);}</action><stop />
+		</operate>
+	</structure>
+	<structure id="dragon_ship.cargo1" width="48" height="32" name="manage_cargo" fullHeight="true">
+		<operate><action>area.vehicle.manageInventory(player)</action></operate>
+	</structure>
+	<structure id="dragon_ship.cargo2" width="32" height="32" name="manage_cargo" fullHeight="true">
+		<operate><action>area.vehicle.manageInventory(player)</action></operate>
+	</structure>
+	<structure id="dragon_ship.heart" width="64" height="48" name="manage_ship" fullHeight="true">
+		<operate><choose>
+			<run procedure="dragon_ship.translate" if="area.vehicle.getLayer() != NPC_LAYER" />
+			<action>area.vehicle.manageEquipment(player)</action>
+		</choose></operate>
+	</structure>
+	<structure id="dragon_bomber.heart1" extends="dragon_ship.heart" width="96" height="64" />
+	<structure id="dragon_bomber.heart2" extends="dragon_ship.heart" width="80" height="64" />
+	<structure id="dragon_cruiser.heart" extends="dragon_ship.heart" width="160" height="64" />
+	<structure id="dragon_ship.save" width="16" height="16" name="rest" fullHeight="true" allowUnder="true">
+		<operate><action>player.fullRestore();</action><save sleep="true" /></operate>
+	</structure>
+	<structure id="blocker16" width="16" height="16" />
+		
+	<animation id="dragon_ship.interior.idle" x="16" count="8" />
+	<structure id="dragon_ship.interior" tile="dragon_ship" priority="-2" behind="true" remove="false" back="true" />
+	<area id="dragon_ship.interior" name="dragon_ship" shouldLight="false">
+		<action>
+			for(x in 0...9) setTile(x, 9, "empty"); for(y in 5...9) setTile(0, y, "empty");
+			for(y in 7...9) setTile(8, y, "empty"); for(y in 5...8) setTile(9, y, "empty");
+			for(y in 3...6){setTile(2, y, "empty"); setTile(10, y, "empty");}
+			for(y in 1...4){setTile(6, y, "empty"); setTile(9, y, "empty");} setTile(1, 5, "empty");
+			for(x in 3...6) setTile(x, 3, "empty"); for(x in 7...9) setTile(x, 1, "empty");
+			area.floodFill(8, 3, BACK_LAYER, area.addTileIndex("empty"));
+		</action>
+		<structure id="dragon_ship.interior" x="0" y="9" />
+		<structure id="dragon_ship.cargo1" x="5" y="8" />
+		<structure id="dragon_ship.cargo2" x="7" y="6" />
+		<structure id="dragon_ship.heart" x="3" y="6" />
+		<structure id="dragon_ship.operate" x="1" y="7" />
+		<structure id="dragon_ship.save" x="8" y="3" />
+		<object id="ship.exit" x="0" y="8" />
+		<object id="mini_synthesizer" x="4" y="5" />
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<action if="area.getTileString(0,0,BACK_LAYER) == 'empty'">for(y in 0...10) for(x in 0...14) setBack(x, y, null); area.floodFill(8, 3, BACK_LAYER, area.addTileIndex("empty"));</action>
+			<music id="dragon_ship" seconds="1" /><structure id="dragon_ship.save" x="8" y="3" if="area.getStructureById('dragon_ship.save') == null" />
+			<complete quest="dragon_ship" useResources="false" if="player.hasQuest('dragon_ship')" />
+		</onLoad>
+		<onRead><object id="mini_synthesizer" x="4" y="5" if="version < 68" /></onRead>
+	</area>
+	
+	<animation id="dragon_ship.idle" x="8" count="8" length="2" />
+	<animation id="dragon_ship.impulse" x="0" count="8" length="2" />
+	<animation id="dragon_ship.fly" count="8" x="8" length="2">
+		<append tile="dragon_ship" animation="dragon_ship.impulse" />
+	</animation>
+	<animation id="dragon_ship.hover" equals="dragon_ship.fly" />
+	<tile id="dragon_ship.shields" sheet="dragon_ship.2" x="23" />
+	<animation id="dragon_ship.shields" x="8" count="8" glow="true" />
+	<animation id="dragon_ship.shields.front" x="0" count="4" glow="true" />
+	<animation id="dragon_ship.shields.back" x="4" count="4" glow="true" />
+	<animation id="dragon_ship.ftl_bubble" x="16" count="4" repeat="2" length="2" />
+	<animation id="dragon_ship.ftl" count="8" x="8" length="2">
+		<append tile="dragon_ship" animation="dragon_ship.impulse" />
+		<append tile="dragon_ship.shields" animation="dragon_ship.ftl_bubble" />
+	</animation>
+	<procedure id="dragon_ship.death">
+		<choose>
+			<equip id="dragon_backpack" fromInventory="false" name="this.name==null?'':this.name" if="player.equipment.canChangeSlot('back')" />
+			<section><action>old = player.vehicle; player.vehicle = null;</action><item id="dragon_backpack" name="this.name==null?'':this.name" /><action>player.vehicle = old;</action></section>
+		</choose><set id="inv" value="this.inventory" /><object id="ice_chest" x="this.getTileCenterX()" y="this.tile_y">this.inventory.copyFrom(inv); inv.clear();</object>
+	</procedure>
+	<vehicle id="dragon_ship" tile="dragon_ship" efficiency="0" health="2000" defense="7" speed="12" speedY="6" type="spaceship" attack_move="true" blood="magic.explosion.med" underground="false" flight_height="999" max_weight="8000" death_sfx="dragon_death" fuel="20000" title="itemName('world.dragon_ship', this.name)" includeName="true" fuelName="rations" fuel_sfx="eat" block_icon="dragon_ship.shields.ico" block_behind="true" block_move="true" blockFuel="true" equipNone="vehicle.evolve" allowModifier="true">
+		<repair id="blood_gem" value="250" /><recipe type="dragon_feed" />
+		<interior area="dragon_ship.interior" offsetX="0" offsetY="0" enterX="1" enterY="8" exitX="0" operateX="2" operateY="7" />
+		<operateHitbox x="8" y="104" width="60" height="56" />
+		<dismount><action>if(this.renderer != null) this.renderer.scaleX = 1;</action></dismount>
+		<slot id="attack">
+			<window type="recipes" recipes="dragon_ship" none="common.remove" includeStorehouse="true" title="equipment.attack" enabled="var e = this.getEquipment().getItem('attack'); return recipe == null || e == null || e.info != recipe.creates.item;">
+				<action>this.getEquipment().forceEquip("attack", this, recipe == null?null:recipe.creates.asItem())</action>
+			</window><stop />
+		</slot>
+		<init><set id="partial" value="0" /></init>
+		<onFrame>
+			if(this.blocking){var of = Math.floor(frames); partial += frames-of; if(partial >= 1){of++; partial -= 1;} if(of > 0) this.useFuel(of);}
+		</onFrame>
+		<shield tile="dragon_ship.shields" animation="dragon_ship.shields" hit_front="dragon_ship.shields.front" hit_back="dragon_ship.shields.back" hit_sfx="ship_shield" />
+		<light tile="light.largest" offsetX="-64" />
+		<onDeath><run procedure="dragon_ship.death" /></onDeath>
+		<onTranslate><run procedure="dragon_ship.talk" /></onTranslate>
+	</vehicle>
+		
+	<tile id="dragon_ship.cannon" sheet="dragon_ship.2" x="13" />
+	<animation id="equipment.dragon_ship.cannon.idle"><frame visible="false" /></animation>
+	<animation id="equipment.dragon_ship.cannon" x="0" count="10" />
+	
+	<tile id="dragon_ship.cannon.bolt" sheet="dragon_ship.4" x="0" />
+	<animation id="dragon_ship.cannon.bolt" x="0" count="4" />
+	<animation id="dragon_ship.cannon.bolt.impact" x="4" count="4" />
+	
+	<item id="dragon_ship.cannon" type="none" slot="attack" equipOn="dragon_ship" cost="0" power="125" weight="0" range="25" attack="65" icon="dragon_ship.cannon.ico">
+		<projectile tile="dragon_ship.cannon.bolt" animation="dragon_ship.cannon.bolt" speed="16" offsetX="-160" offsetY="-8" delay="3" overlap="0.25" pierce="true">
+			<hitEffect tile="dragon_ship.cannon.bolt" animation="dragon_ship.cannon.bolt.impact" color="ff99ff" />
+		</projectile>
+	</item>
+	<recipe id="dragon_ship.cannon" creates="dragon_ship.cannon" type="dragon_ship"><item id="focus_gem" count="5" /><item id="alter_gem" count="1" /></recipe>
+	
+	<tile id="dragon_ship.gun" sheet="dragon_ship.2" x="0" />
+	<animation id="equipment.dragon_ship.gun.idle"><frame visible="false" /></animation>
+	<animation id="equipment.dragon_ship.gun" x="0" count="5" />
+	
+	<tile id="dragon_ship.gun.bolt" sheet="dragon_ship.3" x="0" />
+	<animation id="dragon_ship.gun.bolt" x="0" count="4" />
+	<animation id="dragon_ship.gun.bolt.impact" x="4" count="4" />
+	
+	<item id="dragon_ship.gun" type="none" slot="attack" equipOn="dragon_ship" cost="0" power="25" weight="0" repeat="12" range="22" attack="20" icon="dragon_ship.gun.ico">
+		<projectile tile="dragon_ship.gun.bolt" animation="dragon_ship.gun.bolt" speed="16" offsetX="0" offsetY="30" delay="1" overlap="0.25">
+			<hitEffect tile="dragon_ship.gun.bolt" animation="dragon_ship.gun.bolt.impact" color="ff99ff" />
+		</projectile>
+	</item>
+	<recipe id="dragon_ship.gun" creates="dragon_ship.gun" type="dragon_ship"><item id="focus_gem" count="5" /><item id="alter_gem" count="1" /></recipe>
+		
+	<tile id="dragon_ship.burst" sheet="dragon_ship.2" x="5" />
+	<animation id="equipment.dragon_ship.burst.idle"><frame visible="false" /></animation>
+	<animation id="equipment.dragon_ship.burst" x="0" count="8" />
+	
+	<tile id="dragon_ship.burst.bolt" sheet="dragon_ship.3" x="8" />
+	<animation id="dragon_ship.burst.bolt" x="0" count="4" />
+	<animation id="dragon_ship.burst.bolt.impact" x="4" count="6" />
+	
+	<hitEffect id="dragon_ship.burst" tile="dragon_ship.burst.bolt" animation="dragon_ship.burst.bolt.impact" color="ff99ff" />
+	<item id="dragon_ship.burst" type="none" slot="attack" equipOn="dragon_ship" cost="0" power="50" weight="0" range="22" attack="20" icon="dragon_ship.burst.ico" fireAll="true">
+		<projectile tile="dragon_ship.burst.bolt" animation="dragon_ship.burst.bolt" speed="12" offsetX="-80" offsetY="-8" delay="4" overlap="0.25" aimY="-0.5" hitEffect="dragon_ship.burst" />
+		<projectile tile="dragon_ship.burst.bolt" animation="dragon_ship.burst.bolt" speed="12" offsetX="-62" offsetY="-16" delay="4" overlap="0.25" aimY="-1" hitEffect="dragon_ship.burst" />
+		<projectile tile="dragon_ship.burst.bolt" animation="dragon_ship.burst.bolt" speed="12" offsetX="-48" offsetY="-18" delay="4" overlap="0.25" aimY="-4" hitEffect="dragon_ship.burst" />
+		<projectile tile="dragon_ship.burst.bolt" animation="dragon_ship.burst.bolt" speed="12" offsetX="-93" offsetY="0" delay="4" overlap="0.25" aimY="-0.125" hitEffect="dragon_ship.burst" />
+        <projectile tile="dragon_ship.burst.bolt" animation="dragon_ship.burst.bolt" speed="12" offsetX="-94" offsetY="24" delay="4" overlap="0.25" aimY="0.125" hitEffect="dragon_ship.burst" />
+	</item>
+	<recipe id="dragon_ship.burst" creates="dragon_ship.burst" type="dragon_ship"><item id="focus_gem" count="5" /><item id="alter_gem" count="1" /></recipe>
+</data>

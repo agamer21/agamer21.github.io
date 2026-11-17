@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<parallax id="colosseum.sky" mapBG="1b6a9d" mapBGHeight="80">
+		<layer p="0" day="true" max_depth="200">
+			<tile sheet="{core}/start/parallax/bg.png" x="0" y="0" />
+			<rect color="438a9e" x="0" y="80" width="256" height="64" />
+		</layer><layer type="back" />
+	</parallax>
+	<structure id="colosseum.drag_factory" tile="drag_factory" animation="drag_factory" if="getMod('full_version') != null" />
+	<area id="colosseum.ice_boss" background="colosseum.sky" shouldLight="false" canFly="false">
+		<appendArea id="colosseum.ice_boss.island" offsetX="12" />
+	</area>
+	<area id="colosseum.ice_boss.island">
+		<shape type="trapezoid">
+			<top y="0" fromX="0" toX="64" />
+			<bottom y="16" fromX="16" toX="48" />
+		</shape>
+		<tiles id="stone" start="0" end="0.5" />
+		<tiles id="magic1.stone" start="0.5" end="1.0" />
+		<tiles id="snow" top="0" />
+		<tiles id="snow_stone" top="1" />
+
+		<objects id="conifer_snow" y="-1" startX="-4" endX="63" minDist="6" maxDist="6" />
+		<objects id="bush_snow" y="-1" fromX="1" toX="64" percent="0.25" />
+		<objects id="red_bush_snow" y="-1" fromX="1" toX="64" percent="0.175"  />
+		
+		<object id="ice_boss" x="28" y="-4" />
+		
+		<structure id="colosseum.drag_factory" x="16" y="3" />
+		<structure id="colosseum_exit" x="1" />
+		<init><runAreaLoad /><run procedure="drag_factory.tiles" /></init>
+		<onLoad><weather type="snow" fromY="-50" toY="0" /></onLoad>
+	</area>
+	<procedure id="colosseum.ice_boss">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 300);
+		var map = new StringMap(); map.set("ice_boss", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("berries"), 5); player.inventory.addItems(getItem("hamburger"), 1);
+		player.stats.get("speed").permaBuff(3); player.stats.get("health").permaBuff(20); player.restoreHealth();</action>
+		<equip id="dragonsword" fromInventory="false" />
+		<equip id="wyrm_drill" fromInventory="false" />
+		<equip id="dragon_armor" fromInventory="false" />
+		<equip id="fire_book" fromInventory="false" />
+		<teleport area="colosseum.ice_boss" x="15" temporary="true" />
+	</procedure>
+</data>

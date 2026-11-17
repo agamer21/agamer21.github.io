@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="glitchcat.xml" />
+	<include id="oldone_form.xml" />
+	
+	<lang id="en_US">
+		<section id="item.names">
+			<text id="oldone_cast">Spellcaster</text>
+			<text id="oldone_mine">Book of Mining</text>
+			<text id="oldone_body">Old One Carapace</text>
+			<text id="cat_arrow">Cat Arrow</text>
+			<text id="cat_ice_arrow">Ice Cat Arrow</text>
+			<text id="cat_fire_arrow">Fire Cat Arrow</text>
+			<text id="cat_water_arrow">Water Cat Arrow</text>
+			<text id="cat_drain_arrow">Drain Cat Arrow</text>
+		</section>
+		<section id="item.descriptions">
+			<text id="oldone_orbs">Spawns an orb that circles you.</text>
+		</section>
+		<section id="quests">
+			<text id="oldone_form">New Genes</text>
+			<text id="glitchcat">Altering Cats</text>
+		</section>
+		<section id="quest.description">
+			<text id="oldone_form">wants to scan DNA she has never seen before.</text>
+			<text id="glitchcat">wants to experiment with [item=alter_gem]s on [item=cat]s.</text>
+		</section>
+		<section id="glitchcat">
+			<text id="quest1">How many creatures can [item=alter_gem]s be used on? I feel like their full potential is untapped.</text>
+			<text id="quest2">I would like to experiment with using an [item=alter_gem] on a creature that doesn’t normally react with them…[pause=1] like a [item=cat].</text>
+			<text id="quest3">Why do [item=alter_gem]s work on some creatures and not others? Is there a way to force it to work?</text>
+			<text id="quest4">Hand me that jar. And that vial. I will not give up until this works!</text>
+			<text id="quest5">.[pause=1].[pause=1].[pause=1]. What happened? Did it work? The [item=cat] and [item=alter_gem] are gone… but what is that strange creature…?</text>
+			<text id="intro1">I aM gLItcH Cat![pause=2] I liKe CaTs.[pause=2] tHiS GaME hAs nOt eNough Cats![pause=2] hElp adD CaTs to gAmE!</text>
+			<text id="intro2">IF you NEEd tO FInD ME, uSe [item=cheeseburger default=CHEeseBurGer].</text>
+			<text id="intro3">noM[pause=2] Nom[pause=2] noM</text>
+			<text id="intro4">moAr [item=cheeseburger default=CHeEseburgERs] pleaSe![pause=2] aNd catS!</text>
+			<text id="title">More Cats!</text>
+			<text id="start_rain">Rain cats and dogs!</text>
+			<text id="end_rain">Enough rain!</text>
+			<text id="ore_to_cat">Mineable Ores Look Like Cats!</text>
+			<text id="select_ore">Select Ore</text>
+		</section>
+		<section id="unnature">
+			<text id="oldone1">I…[pause=2] am having a creative block. I haven’t spliced a truly new creature in months!</text>
+			<text id="oldone2">Maybe what I need is to see something completely different from the genes I have already scanned!</text>
+			<text id="oldone3">This is it! It’s similar to the enemy, but has been changed in strange, almost magical ways. I must experiment immediately!</text>
+			<text id="oldone4">I already added a new form for you to try out. I think you’ll like it!</text>
+			<text id="oldone">Become Old One</text>
+			<text id="max_orbs">You can only have 8 orbs at a time!</text>
+		</section>
+	</lang>
+</data>
+

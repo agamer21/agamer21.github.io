@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<volume name="voyage" value="70" />
+	<music id="start" extends="start">
+		<track id="underwater" if="player.isUnderwater()" />
+	</music>
+	<music id="nightly" extends="nightly">
+		<track id="underwater" if="player.isUnderwater()" />
+	</music>
+	<music id="science1" extends="science1">
+		<track id="underwater" if="player.isUnderwater()" />
+		<track id="desert" x="-1024" width="1120" fade_tiles="3" />
+	</music>
+	<music id="desert" />
+	<music id="magic1" extends="magic1">
+		<track id="underwater" if="player.isUnderwater()" />
+	</music>
+	<music id="encounter" allowOverride="false" />
+	<music id="technically" />
+    <music id="orbit">
+		<track id="orbit_combat" if="area.hasHostile()" />
+		<track id="orbit" />
+	</music>
+	<music id="orbit.start">
+		<track id="encounter" if="area.getObject('alien.bomber') != null" />
+		<track id="orbit_combat" if="area.hasHostile()" />
+		<track id="orbit" />
+	</music>
+	<music id="orbit_combat"><track id="orbit_combat" /></music>
+	<music id="orbit_nocombat"><track id="orbit" /></music>
+	<music id="voyage" />
+	<music id="heights">
+		<track id="underwater" if="player.isUnderwater()" />
+		<track id="heights" />
+	</music>
+	<music id="fish_village" />
+	<music id="magic2">
+        <track id="fish_village" x="100" width="88" y="60" height="32" fade_tiles="3" />
+		<track id="underwater" if="player.isUnderwater()" />
+		<track id="magic2" />
+	</music>
+	<music id="spirit" />
+	<music id="earth" />
+	<music id="earth_ruins" />
+    <music id="alien_hq">
+		<track id="nursery" if="player.isUnderwater()" />
+		<track id="alien_hq" />
+	</music>
+	<music id="colony">
+		<track id="underwater" if="player.isUnderwater()" />
+		<track id="colony" />
+	</music>
+    <music id="dragon_ship" />
+    <music id="final_boss1" />
+    <music id="final_boss2" />
+	<music id="mars" />
+    <music id="minigame_shooter" />
+    <music id="minigame_platformer" />
+    <music id="unnature" />
+	<music id="depths" />
+    <music id="credits" />
+</data>

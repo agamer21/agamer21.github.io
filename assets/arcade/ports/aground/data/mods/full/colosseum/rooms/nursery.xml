@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<parallax id="alien_hq2" extends="alien_hq">
+		<layer type="water" max_depth="80" background="0" />
+	</parallax>
+	<area id="colosseum.nursery.crab" width="30" height="15" tile_anim="cells" background="alien_hq2" tile_break="blood" forceTime="12" canFly="false">
+		<tiles id="cells1" start="0" end="1" /><tiles id="blackstone.ore" y="14" />
+		<tiles id="blackstone.ore" x="0" /><tiles id="blackstone.ore" x="29" />
+		<appendArea id="alien_hq.nursery" offsetX="5" offsetY="0" />
+		<ore id="blood_gem" start="0.6" end="1" percent="0.00625" tile="cells1" />
+		<ore id="alter_gem" start="0.0" end="1" percent="0.00625" tile="cells1" />
+		<ore id="focus_gem" start="0.0" end="0.6" percent="0.0125" tile="cells1" />
+		<structure id="colosseum_exit" x="0" /><init><remove object="area.getObject('alien_hq.nursery.hotspot')" /></init>
+	</area>
+	<procedure id="colosseum.nursery.crab">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 500);
+		var map = new StringMap(); map.set("nursery.crab", 1); setGlobal("killCounts", map); changePlayer("player.colosseum", false); player.stats.get("health").permaBuff(50); player.restoreHealth();
+		player.inventory.addItems(getItem("cheeseburger"), 15); player.inventory.addItems(getItem("battery"), 20); player.stats.get("speed").permaBuff(4);</action>
+		<equip id="spacefarer" fromInventory="false" />
+		<teleport area="colosseum.nursery.crab" x="2" temporary="true" />
+	</procedure>
+</data>

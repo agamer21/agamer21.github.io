@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="fighter.xml" />
+	<tile id="alien.fighter" sheet="fighter.1" />
+	
+	<procedure id="enemy_ship.free">
+		<objects id="npc.alien.fighter" width="4" height="4" count="Utils.min(6, player.getVar('free.dragon_fighter'))" fromX="2" toX="area.getWidth()-2" fromY="10" toY="54" ground="false" />
+		<objects id="npc.alien.bomber" width="4" height="4" count="Utils.min(2, player.getVar('free.dragon_bomber'))" fromX="2" toX="area.getWidth()-2" fromY="10" toY="54" ground="false" />
+		<objects id="npc.alien.cruiser" width="4" height="4" count="Utils.min(1, player.getVar('free.dragon_cruiser'))" fromX="2" toX="area.getWidth()-2" fromY="10" toY="54" ground="false" />
+	</procedure>
+	<procedure id="enemy_ship.talk"><choose>
+		<dialogue section="dragon_ship" id="enemy1" if="area.hasObjectInLayer(ENEMY_LAYER)" />
+		<dialogue section="dragon_ship" id="convince6" if="area.vehicle.vars.exists('free')" />
+		<section>
+			<dialogue section="dragon_ship" id="enemy2" />
+			<dialogue section="dragon_ship" id="enemy3" speaker="player" />
+			<dialogue section="dragon_ship" id="enemy4" />
+			<menu section="dragon_ship" width="160" closeable="true">
+				<choice id="convince">
+					<dialogue section="dragon_ship" id="convince1" speaker="player" />
+					<dialogue section="dragon_ship" id="convince2" />
+					<dialogue section="dragon_ship" id="convince3" speaker="player" />
+					<dialogue section="dragon_ship" id="convince4" />
+					<dialogue section="dragon_ship" id="convince5" />
+					<dialogue section="dragon_ship" id="convince6" />
+					<achievement id="free_ship" />
+					<action>
+						var v = area.vehicle; var id = area.id.substring(0, area.id.length-9); v.vars.set("free", true); v.getRenderer();
+						v.moveTo(v.xPos, -Tile.SIZE, 1.0/8.0, function(){
+							if(v.area != null) v.area.removeObject(v, null); player.addVar("free."+id, 1);
+						}); v.playAnimation("walk", null, true);
+						
+					</action>
+				</choice>
+				<choice id="master">
+					<dialogue section="dragon_ship" id="master1" speaker="player" />
+					<dialogue section="dragon_ship" id="master2" />
+					<dialogue section="dragon_ship" id="master3" speaker="player" />
+					<dialogue section="dragon_ship" id="master4" />
+					<action>changeRideable(player, area, area.id.substring(0, area.id.length-9))</action>
+				</choice>
+			</menu>
+		</section>
+	</choose></procedure>
+	
+	<action>
+		function getOverlappingSpaceship(v, player){
+			if(v == null || v.area == null) return null;
+			return v.area.getActionObject(v.getHitbox(false), null, isSpaceship, 0);
+		}
+	</action>
+	<object id="enemy_ship.exit" extends="ship.exit">
+		<operate>
+			<set id="o" value="getOverlappingSpaceship(area.vehicle, player)" /><section if="o != null">
+				<action>area.vehicle.exit(player); o.onOperate(player);</action><stop />
+			</section>
+		</operate>
+	</object>
+	<object id="enemy_ship.exit3" extends="enemy_ship.exit" height="48" />
+	<object id="ship.exit3" extends="ship.exit" height="48" />
+	<animation id="dragon_fighter.interior.idle" x="30" count="8" offsetX="8" offsetY="-2" />
+	<structure id="dragon_fighter.interior" tile="alien.fighter" priority="-2" behind="true" remove="false" back="true" />
+	<structure id="dragon_fighter.cargo" width="32" height="16" includeInventory="true" name="manage_cargo" fullHeight="true">
+		<addedToArea><action if="built && area.vehicle.info.id == 'alien.fighter'">
+			this.inventory.addItems(getItem("evo_shard"), randInt(2,5));
+			if(random() &lt; 0.5) this.inventory.addItems(getItem("exotic_matter"), 1);
+			this.inventory.addItems(getItem("steak"), randInt(1,5)*5);
+			this.inventory.addItems(getItem("focus_gem"), randInt(0,9));
+			if(random() &lt; 0.5) this.inventory.addItems(getItem("alter_gem"), randInt(0,4)); else this.inventory.addItems(getItem("blood_gem"), randInt(0,4));
+			this.inventory.addItems(getItem("mini_synthesizer"), 1, 400);
+		</action></addedToArea>
+		<operate>
+			<section if="area.hasObjectInLayer(ENEMY_LAYER)">
+				<dialogue section="alien" id="cargo_locked" /><stop />
+			</section>
+			<window type="storehouse" inventory="this.inventory" titleMutable="area.getDisplay()" />
+		</operate>
+	</structure>
+	<procedure id="dragon_ship.translate">
+		<dialogue text="Who is this? What right do you have to command me!?" font="drachenklaue" />
+		<section if="player.hasItem('translation_book')">
+			<menu section="common" closeable="true" autoselect="true">
+				<dialogue section="player" id="use_translation_book" />
+				<choice id="yes">
+					<action>player.inventory.selectItem(getItem('translation_book'),0,null).use(player)</action>
+				</choice>
+				<choice id="no" />
+			</menu>
+		</section>
+	</procedure>
+	<structure id="enemy_dragon_ship.operate" width="32" height="16" name="operate">
+		<operate><run procedure="dragon_ship.translate" /></operate>
+	</structure>
+	<area id="dragon_fighter.interior" name="dragon_fighter" shouldLight="false">
+		<action>
+			for(y in 2...5) for(x in 3...6) setBack(x, y, "empty"); for(x in 6...8) setBack(x, 4, "empty");
+			for(x in 2...8){setTile(x, 1, "empty"); setTile(x, 5, "empty");} setTile(6, 2, "empty");
+			for(y in 2...5) setTile(2, y, "empty"); for(x in 6...8) setTile(x, 3, "empty"); setTile(8, 4, "empty");
+		</action>
+		<structure id="dragon_fighter.interior" x="0" y="5" />
+		<object id="enemy_ship.exit" x="2" y="4" />
+		<structure id="dragon_fighter.cargo" x="6" y="4" />
+		<structure id="enemy_dragon_ship.operate" x="3" y="3" />
+		<object id="hi_alien" x="4" y="3" facing="left" />
+		<onRead><action if="area.vehicle.info.id == 'alien.fighter' && !area.hasObjectInLayer(ENEMY_LAYER)">area.vehicle.enabled = false; area.vehicle._hostile = false;</action></onRead>
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<music id="dragon_ship" seconds="1" /><structure id="dragon_ship.heart" x="5" y="2" if="area.getStructureById('dragon_ship.heart') == null" />
+		</onLoad>
+	</area>
+
+	<animation id="alien.fighter.idle" count="8" />
+	<animation id="alien.fighter.walk" x="22" count="8"><append tile="alien.fighter" animation="alien.fighter.idle" /></animation>
+	<animation id="alien.fighter.main_weap1" x="8" count="2" />
+	<animation id="alien.fighter.main_weap2" x="10" count="2" />
+	<animation id="alien.fighter.main_weap3" x="12" count="2" />
+	<animation id="alien.fighter.main_weap4" x="14" count="2" />
+	<animation id="alien.fighter.fire1" count="2"><append tile="alien.fighter" animation="alien.fighter.main_weap1" /></animation>
+	<animation id="alien.fighter.fire2" x="2" count="2"><append tile="alien.fighter" animation="alien.fighter.main_weap2" /></animation>
+	<animation id="alien.fighter.fire3" x="4" count="2"><append tile="alien.fighter" animation="alien.fighter.main_weap3" /></animation>
+	<animation id="alien.fighter.fire4" x="6" count="2"><append tile="alien.fighter" animation="alien.fighter.main_weap4" /></animation>
+	<animation id="alien.fighter.shield.back" x="50" count="4" glow="true"><frame visible="false" /></animation>
+	<animation id="alien.fighter.shield.front" x="38" count="4" glow="true"><frame visible="false" /></animation>
+	<animation id="alien.fighter.shield" x="42" count="8" glow="true" />
+	<animation id="alien.fighter.mine" x="16" count="6" />
+		
+	<tile id="alien.fighter.bolt" sheet="fighter.2" />
+	<animation id="alien.fighter.bolt.impact" x="1" count="4" />
+		
+	<tile id="alien.mine" sheet="fighter.3" />
+	<animation id="alien.mine.explode" x="0" count="4" />
+	<animation id="alien.mine" x="4" count="4" repeat="40" />
+	<action>
+		function handleAlienShield(e){
+			var this = e.target; var shield = this.getTileById('shield'); if(shield != null){
+				if(this.front_defense == -1) shield.playAnimation('hidden', false);
+				else shield.playAnimation(this.info.id+'.shield', true, null, -0.5, -0.5);
+			}
+		}
+	</action>
+	<object id="alien.mine" tile="alien.mine" animation="alien.mine" layer="top" fps="10" overlapVehicle="true" removeOnComplete="true" save="false" attack_sfx="orb_impact">
+		<over>
+			<hitEffect object="this" tile="alien.mine" animation="alien.mine.explode" />
+			<damage object="player.vehicle == null?player:player.vehicle" attacker="this" damage="200" directional="false" critical="false" /><remove object="this" />
+		</over>
+		<overTile>
+			<hitEffect object="this" tile="alien.mine" animation="alien.mine.explode" /><sound id="orb_impact" object="this" />
+			<action>area.breakBrick(this.tile_x, this.tile_y, 9, 1000, true, this);</action><remove object="this" />
+		</overTile>
+	</object>
+	<enemy id="alien.fighter.base" tile="alien.fighter" animation="alien.fighter" health="600" fps="10" defense="7" type="surface" range="32" speed="5" friendlyFire="false" passEnemies="true" vertical="true" flying="true" blood="magic.explosion.med" death_sfx="fighter_death" ignoreHit="true" soundScale="2">
+		<loot id="evo_shard" count="3" p="1" /><loot id="exotic_matter" p="1" />
+		<attack type="projectile" damage="30" range="18" hits="4" animation="fire1" boundsY="-40" height="10" cooldown="40">
+			<projectile tile="alien.fighter.bolt" animation="single" speed="5" offsetX="-80" hit_sfx="alien_fighter_impact">
+				<hitEffect tile="alien.fighter.bolt" animation="alien.fighter.bolt.impact" color="dd99ff" />
+			</projectile>
+			<pre sfx="alien_fighter_attack" />
+			<cont animation="fire2" />
+			<cont animation="fire3" />
+			<cont animation="fire4" />
+		</attack>
+	</enemy>
+	<enemy id="alien.fighter" extends="alien.fighter.base" cooldownCancelAttack="true" hasO2="true" spaceship="true" color="aaaaff" colorScale="1.5">
+		<tile id="alien.fighter" name="mine" animation="hidden" fps="10" y="0" />
+		<tile id="alien.fighter" name="shield" animation="hidden" fps="10" y="0" />
+		<tile id="alien.fighter" name="shield_hit" animation="hidden" fps="10" y="0" />
+		<playerLeaveInterior><displayAction if="this.interior != null && !this.interior.hasObjectInLayer(ENEMY_LAYER)">
+			this.enabled = false; this._hostile = false; var mine = this.getTileById('mine'); if(mine != null) mine.playAnimation('hidden', true); this.endVulnerable();
+		</displayAction></playerLeaveInterior>
+		<cooldown seconds="4">
+			<stop if="!this.isHostile()" /><set id="_mine" value="this.getTileById('mine')" /><set id="p" value="area.getClosestPlayer(this.getCenterX(), this.getCenterY())" />
+			<section if="_mine != null && p != null">
+				<sound id="alien_fighter_mine" object="this" /><play object="_mine" animation="alien.fighter.mine" offsetX="-0.5" offsetY="-0.5" />
+				<play object="_mine" animation="hidden" loop="true" />
+				<object id="alien.mine" x="(this.xPos+((this.getFacing() == 1)?105:this._width-134))/Tile.SIZE" y="(this.yTile-76)/Tile.SIZE">Movement.seek(this, p, 3);</object>
+			</section>
+		</cooldown>
+		<cooldown seconds="5"><action>if(this.front_defense == -1) this.setVulnerable(100,100); else this.endVulnerable();</action></cooldown>
+		<interior area="dragon_fighter.interior" offsetX="8" offsetY="9" enterX="3" enterY="4" exitX="2" operateX="4" operateY="3" />
+		<tooltip section="structure.tooltip" id="spaceship" if="player.vehicle == null || player.vehicle.info.xml.get('drone') != 'true'" />
+		<operate><action with="ellipse_fast">if(player.vehicle != null) player.vehicle.doDismount(true); this.enter(player)</action><stop/></operate>
+		<blocked><action if="this.front_defense != -1">var shield = this.getTileById("shield_hit"); if(shield != null){shield.setFrame(0); shield.playAnimation(behind?'alien.fighter.shield.back':'alien.fighter.shield.front', false, null, -0.5, -0.5);}</action></blocked>
+		<onTranslate><run procedure="enemy_ship.talk" /></onTranslate>
+		<addEvents>this.addEventListener("update_defense", handleAlienShield);</addEvents>
+	</enemy>
+	<enemy id="npc.alien.fighter" extends="alien.fighter.base" friendly="true">
+		<tooltip />
+	</enemy>
+		
+	<include id="bomber.xml" />
+	<tile id="alien.bomber" sheet="bomber.1" />
+	
+	<animation id="dragon_bomber.interior.idle" x="40" count="8" offsetX="2" offsetY="-7" />
+	<structure id="dragon_bomber.interior" tile="alien.bomber" priority="-2" behind="true" remove="false" back="true" />
+	<structure id="dragon_bomber.cargo" extends="dragon_fighter.cargo" width="48" height="48">
+		<addedToArea><action if="built && area.vehicle.info.id == 'alien.bomber'">
+			this.inventory.addItems(getItem("evo_shard"), randInt(2,5));
+			this.inventory.addItems(getItem("exotic_matter"), 1);
+			this.inventory.addItems(getItem("steak"), randInt(2,5)*5);
+			this.inventory.addItems(getItem("focus_gem"), randInt(0,9));
+			this.inventory.addItems(getItem("alter_gem"), randInt(0,4));
+			this.inventory.addItems(getItem("blood_gem"), randInt(0,4));
+		</action></addedToArea>
+	</structure>
+	<structure id="dragon_bomber.cargo2" width="48" height="48" name="manage_cargo" fullHeight="true">
+		<operate><set id="this" value="area.getStructureById('dragon_bomber.cargo')" /><run structure="dragon_bomber.cargo" event="operate" /></operate>
+	</structure>
+	<area id="dragon_bomber.interior" name="dragon_bomber" shouldLight="false">
+		<action>
+			setTile(20, 6, "empty"); for(y in 2...9) setTile(1, y, "empty"); for(y in 2...7) setTile(21, y, "empty");
+			for(x in 2...4) setTile(x, 2, "empty"); for(x in 2...5) setTile(x, 8, "empty");
+			for(x in 3...6) setTile(x, 1, "empty"); for(x in 4...20) setTile(x, 9, "empty");
+			for(x in 5...12) setTile(x, 0, "empty"); for(x in 11...16) setTile(x, 1, "empty");
+			for(x in 15...21) setTile(x, 2, "empty"); for(y in 6...10) setTile(19, y, "empty");
+			area.floodFill(2, 7, BACK_LAYER, area.addTileIndex("empty"));
+		</action>
+		<structure id="dragon_bomber.interior" x="0" y="11" />
+		<structure id="dragon_bomber.cargo" x="16" y="8" />
+		<structure id="dragon_bomber.cargo2" x="18" y="5" />
+		<object id="enemy_ship.exit" x="1" y="7" />
+		<structure id="enemy_dragon_ship.operate" x="2" y="6" />
+		<structure id="enemy_dragon_ship.operate" x="11" y="6" />
+		<structure id="enemy_dragon_ship.operate" x="14" y="7" />
+		<object id="hi_alien" x="3" y="6" facing="left" />
+		<object id="hi_alien" x="11" y="6" facing="right" />
+		<object id="hi_alien" x="15" y="7" facing="left" />
+		<structure id="blocker16" x="6" y="3" />
+		<onRead><action if="area.vehicle.info.id == 'alien.bomber' && !area.hasObjectInLayer(ENEMY_LAYER)">area.vehicle.enabled = false; area.vehicle._hostile = false;</action></onRead>
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<music id="dragon_ship" seconds="1" /><section if="area.getStructureById('dragon_bomber.heart1') == null">
+				<structure id="dragon_bomber.heart1" x="7" y="4" /><structure id="dragon_bomber.heart2" x="13" y="5" />
+			</section>
+		</onLoad>
+	</area>
+	
+	<animation id="alien.bomber.bg" count="8" />
+	<animation id="alien.bomber.idle" x="16" count="8"><append tile="alien.bomber" animation="alien.bomber.bg" behind="true" /></animation>
+	<animation id="alien.bomber.walk" x="32" count="8"><append tile="alien.bomber" animation="alien.bomber.idle" behind="true" /></animation>
+	<animation id="alien.bomber.attack" x="24" count="8"><append tile="alien.bomber" animation="alien.bomber.idle" behind="true" /></animation>
+	<animation id="alien.bomber._bomb" x="8" count="8" />
+	<animation id="alien.bomber.bomb" x="16" count="8"><append tile="alien.bomber" animation="alien.bomber._bomb" behind="true" /><append tile="alien.bomber" animation="alien.bomber.bg" behind="true" /></animation>
+	<animation id="alien.bomber.shield.back" x="53" count="5" glow="true"><frame visible="false" /></animation>
+	<animation id="alien.bomber.shield.front" x="48" count="5" glow="true"><frame visible="false" /></animation>
+	<animation id="alien.bomber.shield" x="58" count="8" glow="true" />
+		
+	<tile id="alien.bomber.bolt" sheet="bomber.2" />
+	<animation id="alien.bomber.bolt" x="4" count="4" />
+	<animation id="alien.bomber.bolt.impact" x="0" count="4" />
+		
+	<enemy id="alien.bomber.base" tile="alien.bomber" animation="alien.bomber" health="2000" fps="10" defense="7" type="surface" range="22" speed="3" friendlyFire="false" passEnemies="true" vertical="true" flying="true" blood="magic.explosion.lg" death_sfx="bomber_death" ignoreHit="true" soundScale="2">
+		<loot id="exotic_matter" />
+		<attack type="projectile" damage="100" range="18" boundsY="-80" height="40" sfx="alien_bomber_attack" leftRight="true">
+			<projectile tile="alien.bomber.bolt" animation="alien.bomber.bolt" speed="3" offsetX="-240" delay="7" overlap="0.125" hit_sfx="alien_fighter_impact">
+				<hitEffect tile="alien.bomber.bolt" animation="alien.bomber.bolt.impact" color="dd99ff" />
+			</projectile>
+		</attack>
+	</enemy>
+	<enemy id="alien.bomber" extends="alien.bomber.base" cooldownCancelAttack="true" hasO2="true" spaceship="true" color="aaaaff" colorScale="1.5">
+		<tile id="alien.bomber" name="shield" animation="hidden" fps="10" y="0" />
+		<tile id="alien.bomber" name="shield_hit" animation="hidden" fps="10" y="0" />
+		<playerLeaveInterior><displayAction if="this.interior != null && !this.interior.hasObjectInLayer(ENEMY_LAYER)">
+			this.enabled = false; this._hostile = false; this.endVulnerable();
+		</displayAction></playerLeaveInterior>
+		<interior area="dragon_bomber.interior" offsetX="2" offsetY="-4" enterX="2" enterY="7" exitX="1" exitY="-3" operateX="3" operateY="6" />
+		<tooltip section="structure.tooltip" id="spaceship" if="player.vehicle == null || player.vehicle.info.xml.get('drone') != 'true'" />
+		<operate><action with="ellipse_fast">if(player.vehicle != null) player.vehicle.doDismount(true); this.enter(player)</action><stop/></operate>
+		<cooldown seconds="10"><action>if(this.front_defense == -1) this.setVulnerable(100,100); else this.endVulnerable();</action></cooldown>
+		<cooldown seconds="10"><section if="area.id != 'alien_hq.orbit' && this.isHostile()">
+			<play object="this" animation="bomb" /><action>this.playIdle()</action>
+			<projectile tile="orbital_projectile" animation="orbital_projectile" speed="3" width="32" height="64" damage="100" dx="0" dy="1" spawnX="(this.getFacing() == 1?(this.xPos+160):(this.xPos+this._width-176))/Tile.SIZE" spawnY="(this.yTile+16)/Tile.SIZE" range="100">
+				<removed><object id="orbital_blast" x="this.tile_x-6" y="this.tile_y+2" /></removed>
+			</projectile></section>
+		</cooldown>
+		<cooldown seconds="10"><action if="area != null && area.id != 'alien_hq.orbit'">
+			for(o in area.getObjectsById('alien.fighter')){
+				if(o.renderer != null &amp;&amp; Utils.sign(o.getCenterX()-this.getCenterX()) != o.getFacing()) o.renderer.flip(); o.run();
+			}
+		</action></cooldown>
+		<blocked><action if="this.front_defense != -1">var shield = this.getTileById("shield_hit"); if(shield != null){shield.setFrame(0); shield.playAnimation(behind?'alien.bomber.shield.back':'alien.bomber.shield.front', false, null, -0.5, -0.5);}</action></blocked>
+		<onTranslate><run procedure="enemy_ship.talk" /></onTranslate>
+		<addEvents>this.addEventListener("update_defense", handleAlienShield);</addEvents>
+	</enemy>
+	<enemy id="npc.alien.bomber" extends="alien.bomber.base" friendly="true">
+		<tooltip />
+	</enemy>
+		
+	<include id="cruiser.xml" />
+	<tile id="alien.cruiser" sheet="cruiser.1" />
+	<include id="cruiser_shields.xml" includeRoot="true" />
+	<tile id="alien.cruiser.shields" sheet="cruiser_shields.png" />
+	<animation id="dragon_cruiser.interior.idle" x="8" count="8" offsetX="1" offsetY="-7" />
+	<structure id="dragon_cruiser.interior" tile="alien.cruiser" priority="-2" behind="true" remove="false" back="true" />
+	<structure id="dragon_cruiser.cargo" extends="dragon_bomber.cargo" width="48" height="32">
+		<addedToArea><action if="built && area.vehicle.info.id == 'alien.cruiser'">
+			this.inventory.addItems(getItem("evo_shard"), randInt(2,5));
+			this.inventory.addItems(getItem("exotic_matter"), 1);
+			this.inventory.addItems(getItem("steak"), randInt(2,5)*5);
+			this.inventory.addItems(getItem("focus_gem"), randInt(0,9));
+			this.inventory.addItems(getItem("alter_gem"), randInt(0,4));
+			this.inventory.addItems(getItem("blood_gem"), randInt(0,4));
+		</action></addedToArea>
+	</structure>
+	<structure id="dragon_cruiser.cargo2" width="96" height="32" name="manage_cargo" fullHeight="true">
+		<operate><set id="this" value="area.getStructureById('dragon_cruiser.cargo')" /><run structure="dragon_cruiser.cargo" event="operate" /></operate>
+	</structure>
+	<area id="dragon_cruiser.interior" name="dragon_cruiser" shouldLight="false">
+		<action>
+			for(x in 2...26) setTile(x, 0, "empty"); for(x in 25...28) setTile(x, 1, "empty"); for(x in 1...9) setTile(x, 15, "empty");
+			for(x in 8...15) setTile(x, 14, "empty"); for(x in 14...28) setTile(x, 15, "empty"); for(y in 2...15) setTile(27, y, "empty");
+			for(y in 1...6) setTile(1, y, "empty"); for(y in 5...11) setTile(3, y, "empty"); for(y in 10...12) setTile(2, y, "empty");
+			for(y in 11...16) setTile(1, y, "empty"); setTile(2, 1, "empty"); setTile(2, 5, "empty");
+			area.floodFill(7, 7, BACK_LAYER, area.addTileIndex("empty"));
+		</action>
+		<structure id="dragon_cruiser.interior" x="0" y="16" />
+		<structure id="dragon_cruiser.cargo" x="9" y="7" />
+		<structure id="dragon_cruiser.cargo2" x="8" y="9" />
+		<object id="enemy_ship.exit" x="3" y="9" />
+		<object id="enemy_ship.exit3" x="1" y="4" />
+		<object id="enemy_ship.exit3" x="1" y="14" />
+		<structure id="enemy_dragon_ship.operate" x="4" y="8" />
+		<structure id="enemy_dragon_ship.operate" x="16" y="8" />
+		<structure id="enemy_dragon_ship.operate" x="24" y="8" />
+		<object id="hi_alien" x="5" y="8" facing="left" />
+		<object id="hi_alien" x="16" y="8" facing="right" />
+		<object id="hi_alien" x="24" y="8" facing="right" />
+		<object id="dragomech" x="10" y="10" facing="left" />
+		<onRead><action if="area.vehicle.info.id == 'alien.cruiser' && !area.hasObjectInLayer(ENEMY_LAYER)">area.vehicle.enabled = false; area.vehicle._hostile = false;</action></onRead>
+		<structure id="blocker16" x="7" y="6" /><structure id="blocker16" x="14" y="6" />
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<music id="dragon_ship" seconds="1" /><section if="area.getStructureById('dragon_ship.heart') == null">
+				<structure id="dragon_ship.heart" x="3" y="3" /><structure id="dragon_ship.heart" x="3" y="14" />
+				<structure id="dragon_cruiser.heart" x="17" y="4" /><structure id="dragon_cruiser.heart" x="17" y="14" />
+			</section>
+		</onLoad>
+	</area>
+	
+	<tile id="alien.mine.large" sheet="cruiser.2" />
+	<animation id="alien.mine.large.explode" x="0" count="6" />
+	<animation id="alien.mine.large" x="6" count="4" repeat="40" />
+	<object id="alien.mine.large" tile="alien.mine.large" animation="alien.mine.large" layer="top" fps="10" overlapVehicle="true" removeOnComplete="true" save="false" attack_sfx="orb_impact">
+		<over>
+			<hitEffect object="this" tile="alien.mine.large" animation="alien.mine.large.explode" />
+			<damage object="player.vehicle == null?player:player.vehicle" attacker="this" damage="500" directional="false" critical="false" /><remove object="this" />
+		</over>
+	</object>
+	
+	<animation id="alien.cruiser.idle" count="8" />
+	<animation id="alien.cruiser.walk" x="32" count="8"><append tile="alien.cruiser" animation="alien.cruiser.idle" behind="true" /></animation>
+	<animation id="alien.cruiser.pre_lightning" x="16" count="1" glow="true"><append tile="alien.cruiser" animation="single" behind="true" /></animation>
+	<animation id="alien.cruiser.idle2" count="7" x="1" />
+	<animation id="alien.cruiser.lightning" x="17" count="7" glow="true"><append tile="alien.cruiser" animation="alien.cruiser.idle2" behind="true" /></animation>
+	<animation id="alien.cruiser.mine" count="8" x="24" />
+	<animation id="alien.cruiser.shield.back" x="13" count="5" glow="true"><frame visible="false" /></animation>
+	<animation id="alien.cruiser.shield.front" x="8" count="5" glow="true"><frame visible="false" /></animation>
+	<animation id="alien.cruiser.shield" x="0" count="8" glow="true" />
+	<enemy id="alien.cruiser.base" tile="alien.cruiser" animation="alien.cruiser" health="5000" fps="10" defense="7" type="surface" range="30" speed="3" friendlyFire="false" passEnemies="true" vertical="true" flying="true" blood="magic.explosion.lg" death_sfx="cruiser_death" ignoreHit="true" soundScale="2">
+		<loot id="exotic_matter" count="2" />
+		<attack type="beam" damage="120" range="15" sfx="alien_crusier_attack" animation="lightning">
+			<pre><play object="this" animation="pre_lightning" /></pre>
+		</attack>
+	</enemy>
+	<enemy id="alien.cruiser" extends="alien.cruiser.base" cooldownCancelAttack="true" hasO2="true" spaceship="true" kill_achievement="alien_cruiser" color="aaaaff" colorScale="1.5">
+		<tile id="alien.cruiser" name="mine" animation="hidden" fps="10" y="0" />
+		<tile id="alien.cruiser.shields" name="shield" animation="hidden" fps="10" y="0" />
+		<tile id="alien.cruiser.shields" name="shield_hit" animation="hidden" fps="10" y="0" />
+		<playerLeaveInterior><displayAction if="this.interior != null && !this.interior.hasObjectInLayer(ENEMY_LAYER)">
+			this.enabled = false; this._hostile = false; var mine = this.getTileById('mine'); if(mine != null) mine.playAnimation('hidden', true); this.endVulnerable();
+		</displayAction></playerLeaveInterior>
+		<interior area="dragon_cruiser.interior" offsetX="2" offsetY="-12" enterX="4" enterY="9" exitX="3" exitY="-7" operateX="4" operateY="8" />
+		<tooltip section="structure.tooltip" id="spaceship" if="player.vehicle == null || player.vehicle.info.xml.get('drone') != 'true'" />
+		<operate><action with="ellipse_fast">if(player.vehicle != null) player.vehicle.doDismount(true); this.enter(player)</action><stop/></operate>
+		<cooldown seconds="4">
+			<stop if="!this.isHostile()" /><set id="_mine" value="this.getTileById('mine')" /><set id="p" value="area.getClosestPlayer(this.getCenterX(), this.getCenterY())" />
+			<section if="_mine != null && p != null">
+				<sound id="alien_fighter_mine" object="this" /><play object="_mine" animation="alien.cruiser.mine" offsetX="-0.5" offsetY="-0.5" />
+				<play object="_mine" animation="hidden" loop="true" />
+				<object id="alien.mine.large" x="(this.xPos+((this.getFacing() == 1)?261:this._width-261))/Tile.SIZE" y="(this.yTile-285)/Tile.SIZE">Movement.seek(this, p, 5);</object>
+			</section>
+		</cooldown>
+		<cooldown seconds="10"><action>if(this.front_defense == -1) this.setVulnerable(200,200); else this.endVulnerable();</action></cooldown>
+		<blocked><action if="this.front_defense != -1">var shield = this.getTileById("shield_hit"); if(shield != null){shield.setFrame(0); shield.playAnimation(behind?'alien.cruiser.shield.back':'alien.cruiser.shield.front', false, null, -0.5, -0.5);}</action></blocked>
+		<onDeath><run procedure="checkHQVirus" if="player.canCompleteQuest('launch_virus')" /></onDeath>
+		<onTranslate><run procedure="enemy_ship.talk" /></onTranslate>
+		<addEvents>this.addEventListener("update_defense", handleAlienShield);</addEvents>
+	</enemy>
+	<enemy id="npc.alien.cruiser" extends="alien.cruiser.base" friendly="true">
+		<tooltip />
+	</enemy>
+	
+	<include id="vehicles.xml" />
+</data>

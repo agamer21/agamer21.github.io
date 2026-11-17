@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <include id="items/items.xml" />
+    <include id="vehicles/vehicles.xml" />
+    <include id="objects/objects.xml" />
+    <include id="hidden_world/hidden_world.xml" />
+    <include id="npc/npcs.xml" />
+    <include id="en_US.xml" />
+    <include id="ru_RU.xml" includeRoot="true" />
+	<include id="pt_BR.xml" />
+	<include id="de_DE.xml" />
+</data>

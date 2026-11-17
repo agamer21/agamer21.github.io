@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="witch_potion" exp="500" giver="sea_witch"><item id="revitalize_potion" count="1" /></quest>
+	<recipe id="make_wand" creates="wand" type="witch" available="player.questComplete('wand')">
+		<item id="wood" count="1" /><item id="evo_gem" count="1" />
+	</recipe>
+	<recipe id="make_flying_broom" creates="flying_broom" type="witch" available="player.questComplete('wand')">
+		<item id="wood" count="2" /><item id="evo_gem" count="1" /><item id="silk" count="1" /><item id="dark_fur" count="6" />
+	</recipe>
+	<recipe id="make_ftl_broom" creates="ftl_broom" type="witch" available="getFlag('ftl_broom')">
+		<item id="flying_broom" count="1" /><item id="spirit_gem2" count="3" /><item id="magnegem" count="6" /><item id="fish_scale" count="9" />
+	</recipe>
+	<recipe id="make_pumpkin_helm" creates="pumpkin_helm" type="witch" available="getFlag('halloween18')">
+		<item id="jakolantern" count="1" />
+	</recipe>
+	<quest id="wand" exp="1000" giver="sea_witch" recipe="make_wand" />
+	<recipe id="make_witch_hat" creates="witch_hat" type="witch"><item id="dark_fur" count="12" /><item id="focus_gem" count="12" /></recipe>
+	<recipe id="make_robes" creates="robes" type="witch"><item id="dark_fur" count="12" /><item id="spirit_gem" count="6" /></recipe>
+	<include id="witch.xml" />
+	<tile id="sea_witch" sheet="witch.1" />
+	<animation id="sea_witch.walk" x="8" count="6" />
+	<animation id="sea_witch.talk" count="8" />
+	<tile id="sea_witch_swim" sheet="witch.2" />
+	<animation id="sea_witch_swim.idle" count="8" />
+	<animation id="sea_witch_swim.walk" x="8" count="5" />
+	<animation id="sea_witch_swim.talk" x="13" count="8" />
+	<tile id="sea_witch.transform" sheet="witch.3" />
+	<animation id="sea_witch.transform" count="13" />
+	<tile id="sea_witch_cat" sheet="witch.4" />
+	<animation id="sea_witch_cat.swim.idle" count="8" />
+	<animation id="sea_witch_cat.swim.walk" x="8" count="8" />
+	<procedure id="sea_witch">
+		<section if="!player.hasQuest('wand') && player.seen_items.exists('evo_gem') && player.isEquipped('robes')">
+			<dialogue section="witch" id="wand1" speaker="this" />
+			<dialogue section="witch" id="wand2" speaker="this" /><quest id="wand" /><stop />
+		</section>
+		<section if="player.canCompleteQuest('wand')">
+			<dialogue section="witch" id="wand3" speaker="this" />
+			<complete quest="wand" /><item id="wand" modal="true" /><stop />
+		</section>
+		<section if="isDate(10,31,3) && !getFlag('halloween18')">
+			<quest /><action>player.setFlag('halloween18', true);</action>
+			<dialogue section="witch" id="halloween" speaker="this" /><item id="pumpkin_helm" modal="true" /><stop />
+		</section>
+		<section if="player.questComplete('wand') && player.seen_items.exists('spirit_robes') && !getFlag('ftl_broom')">
+			<section if="!player.isEquipped('spirit_robes')"><dialogue section="witch" id="ftl_broom1" speaker="this" /><stop /></section>
+			<quest /><action>setFlag('ftl_broom', true);</action>
+			<dialogue section="witch" id="ftl_broom2" speaker="this" />
+		</section>
+		<section>
+			<choose>
+				<dialogue section="witch" id="ftl_broom3" speaker="this" if="getFlag('ftl_broom')" />
+				<dialogue section="witch" id="robes" speaker="this" />
+			</choose>
+			<window type="craft" includeStorehouse="true"><recipe type="witch" /></window>
+		</section>
+	</procedure>
+	<procedure id="sea_witch.transform">
+		<play object="this" animation="walk" loop="true" />
+		<facing object="this" dir="left" /><lerp object="this" x="0" seconds="1" />
+		<hitEffect object="this" tile="sea_witch.transform" animation="sea_witch.transform" runPaused="true" />
+		<wait seconds="0.25" /><action>this.alpha=0;</action><remove object="this" /><object id="sea_witch.swim" name="sea_witch" x="-0.5" />
+		<wait seconds="0.5" /><lerp object="sea_witch" deltaX="-2" deltaY="1" seconds="0.25" />
+		<remove object="area.getObject('sea_witch_cat')" /><remove object="sea_witch" />
+		<object id="sea_witch.swim" x="155" y="78" area="magic2" />
+		<object id="sea_witch_cat.swim" x="157" y="78" area="magic2" />
+	</procedure>
+	<npc id="sea_witch" tile="sea_witch" action="talk" talk_sfx="talking7" night="true" sleepDay="true">
+		<idle class="wander" toX="15" />
+		<operate>
+			<section if="player.canCompleteQuest('witch_potion')">
+				<complete quest="witch_potion" /><dialogue section="witch" id="potion5" speaker="this" />
+				<dialogue section="witch" id="potion6" speaker="this" />
+				<window type="craft" includeStorehouse="true"><recipe type="witch" /></window>
+			</section>
+			<dialogue section="witch" id="potion4" speaker="this" if="player.hasQuest('witch_potion') && !player.questComplete('witch_potion') && getVar('revitalize_potion') == 0" />
+			<section if="!player.questComplete('witch_potion')">
+				<dialogue section="witch" id="potion1" speaker="this" />
+				<section if="!player.hasQuest('witch_potion')">
+					<dialogue section="witch" id="potion2" speaker="this" />
+					<quest id="witch_potion">
+						<section if="!player.hasItem('revitalize_potion')">
+							<dialogue section="witch" id="potion3" speaker="player" />
+							<dialogue section="witch" id="potion4" speaker="this" />
+						</section>
+					</quest>
+				</section>
+			</section>
+			<section if="getFlag('final_boss_defeat')">
+				<quest /><dialogue section="witch" id="sea5" speaker="this" />
+				<dialogue section="witch" id="sea6" speaker="this" />
+				<run procedure="sea_witch.transform" />
+			</section>
+			<section if="player.questComplete('dragon_ship')">
+				<quest /><dialogue section="witch" id="sea1" speaker="this" />
+				<dialogue section="witch" id="sea2" speaker="this" />
+				<dialogue section="witch" id="sea3" speaker="this" />
+				<run procedure="sea_witch.transform" />
+			</section>
+			<run procedure="sea_witch" />
+		</operate>
+		<light tile="light.small" color="00ae69" />
+	</npc>
+	
+	<procedure id="sea_witch_cat">
+		<section if="isDate(10,31,3)">
+			<sound id="meow" /><dialogue section="witch" id="cat1" speaker="this" />
+			<dialogue section="witch" id="cat2" speaker="this" />
+		</section>
+		<section><action>this.playAnimation("talk")</action><sound id="meow" /></section>
+	</procedure>
+	<npc id="sea_witch_cat" tile="black_cat" animation="black_cat" action="talk" speed="1" night="true" sleepDay="true" behind="true">
+		<idle class="wander" toX="15" />
+		<operate><run procedure="sea_witch_cat" /></operate>
+		<light tile="light.default" color="66fa66" />
+	</npc>
+	
+	<npc id="sea_witch.swim" tile="sea_witch_swim" animation="sea_witch_swim" action="talk" talk_sfx="talking7" waterTint="false" underwaterOnly="true" night="true">
+		<idle class="wander" fromX="155" toX="172" />
+		<operate>
+			<section if="!getFlag('sea_witch.swim')">
+				<action>setFlag('sea_witch.swim', true)</action>
+				<dialogue section="witch" id="sea4" speaker="this" />
+			</section>
+			<run procedure="sea_witch" />
+		</operate>
+	</npc>
+	<npc id="sea_witch_cat.swim" tile="sea_witch_cat" animation="sea_witch_cat.swim" action="talk" speed="1" waterTint="false" underwaterOnly="true" night="true">
+		<idle class="wander" fromX="155" toX="172" />
+		<operate><run procedure="sea_witch_cat" /></operate>
+		<light tile="light.default" color="66fa66" />
+	</npc>
+</data>

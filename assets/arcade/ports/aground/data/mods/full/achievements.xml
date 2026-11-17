@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<procedure id="player.addItem" extends="player.addItem">
+		<achievement id="hybrid_dragon" if="player.hasSeenItem('mecha_dragon')" />
+		<achievement id="enchanted_exo" if="player.hasSeenItem('fire_exo_sword') && player.hasSeenItem('plant_exo_sword') && player.hasSeenItem('water_exo_sword') && player.hasSeenItem('earth_exo_sword') && player.hasSeenItem('ice_exo_sword')" />
+		<achievement id="witch" if="player.hasSeenItem('witch_hat') && player.hasSeenItem('robes') && player.hasSeenItem('flying_broom') && player.hasSeenItem('wand') && player.hasSeenItem('black_cat')" />
+		<achievement id="exo_set" if="player.hasSeenItem('exo_gun') && player.hasSeenItem('exo_sword') && player.hasSeenItem('exo_drill') && player.hasSeenItem('exo_pack') && player.hasSeenItem('exo_armor')" />
+		<action>
+			seen_spellbooks = true; for(i in Item.getAll()) if(i.xml.get("master_spellcaster") == "true" &amp;&amp; !player.hasSeenItem(i.id)) seen_spellbooks = false;
+		</action>
+		<achievement id="master_spellcaster" if="seen_spellbooks" />
+	</procedure>
+	<procedure id="player.changeEquip" extends="player.changeEquip">
+		<achievement id="cyborg2" if="player.hasItem('cyborg_chainsaw') && player.hasItem('cyborg_railgun') && player.hasItem('cyborg_plate') && player.hasItem('cyborg_visor') && player.hasItem('cyborg_core')" />
+	</procedure>
+	<tilesheet id="achievements.png" width="32" height="32" />
+	<achievement id="sub" sheet="achievements.png" locked="9" unlocked="-9" />
+	<achievement id="jeep" sheet="achievements.png" locked="10" unlocked="-9" />
+	<achievement id="jet" sheet="achievements.png" locked="11" unlocked="-9" />
+	<achievement id="com_station" sheet="achievements.png" locked="12" unlocked="-9" hidden="true" />
+	<achievement id="fighter" sheet="achievements.png" locked="13" unlocked="-9" />
+	<achievement id="kraken" sheet="achievements.png" locked="14" unlocked="-9" hidden="true" />
+	<achievement id="hut_upgrade" sheet="achievements.png" locked="15" unlocked="-9" />
+	<achievement id="life_pod" sheet="achievements.png" locked="16" unlocked="-9" hidden="true" />
+	<achievement id="clam_pearl" sheet="achievements.png" locked="17" unlocked="-9" hidden="true"  />
+	<achievement id="pirates" sheet="achievements.png" locked="19" unlocked="-1" />
+	<achievement id="worker_bot" sheet="achievements.png" locked="21" unlocked="-1" />
+	<achievement id="growth" sheet="achievements.png" locked="23" unlocked="-1" />
+	<achievement id="spellbook" sheet="achievements.png" locked="25" unlocked="-1" />
+	<achievement id="evo_gem" sheet="achievements.png" locked="27" unlocked="-1" />
+	<achievement id="ice_boss" sheet="achievements.png" locked="29" unlocked="-1" hidden="true" />
+	<achievement id="dragon_ship" sheet="achievements.png" locked="31" unlocked="-1" hidden="true" />
+	<achievement id="hybrid_dragon" sheet="achievements.png" locked="87" unlocked="+2" />
+	<achievement id="witch" sheet="achievements.png" locked="33" unlocked="-1" hidden="true" />
+	<achievement id="space_station" sheet="achievements.png" locked="35" unlocked="-1" />
+	<achievement id="bombardment" sheet="achievements.png" locked="37" unlocked="-1" hidden="true" />
+	<achievement id="drones" sheet="achievements.png" locked="39" unlocked="-1" hidden="true" />
+	<achievement id="research" sheet="achievements.png" locked="41" unlocked="-1" hidden="true" />
+	<achievement id="alien_locator" sheet="achievements.png" locked="62" unlocked="+3" />
+	<achievement id="dragomech" sheet="achievements.png" locked="42" unlocked="+3" />
+	<achievement id="colony" sheet="achievements.png" locked="49" unlocked="+3" hidden="true" />
+	<achievement id="exo_set" sheet="achievements.png" locked="43" unlocked="+3" hidden="true" />
+	<achievement id="cyborg2" sheet="achievements.png" locked="44" unlocked="+3" />
+	<achievement id="terraformer" sheet="achievements.png" locked="61" unlocked="+3" hidden="true" />
+	<achievement id="museum" sheet="achievements.png" locked="60" unlocked="+3" />
+	<achievement id="exo_pilot" sheet="achievements.png" locked="50" unlocked="+3" hidden="true" />
+	<achievement id="virus" sheet="achievements.png" locked="48" unlocked="+3" hidden="true" />
+	<achievement id="free_ship" sheet="achievements.png" locked="67" unlocked="+6" hidden="true" />
+	<achievement id="spirit_portal" sheet="achievements.png" locked="66" unlocked="+6" hidden="true" />
+	<achievement id="spirit_tree" sheet="achievements.png" locked="68" unlocked="+6" hidden="true" />
+	<achievement id="hq_structures" sheet="achievements.png" locked="70" unlocked="+6" hidden="true" />
+	<achievement id="master_spellcaster" sheet="achievements.png" locked="71" unlocked="+6" />
+	<achievement id="magne_queen_drill" sheet="achievements.png" locked="69" unlocked="+6" hidden="true" />
+	<achievement id="alien_cruiser" sheet="achievements.png" locked="56" unlocked="+3" />
+	<achievement id="nursery_crab" sheet="achievements.png" locked="54" unlocked="+3" hidden="true" />
+	<achievement id="final_boss" sheet="achievements.png" locked="55" unlocked="+3" hidden="true" />
+	<achievement id="splicer" sheet="achievements.png" locked="79" unlocked="-1" hidden="true" />
+	<achievement id="draconian_wizard" sheet="achievements.png" locked="81" unlocked="-1" hidden="true" />
+	<achievement id="hidden_world" sheet="achievements.png" locked="86" unlocked="+2" hidden="true" />
+	<achievement id="enchanted_exo" sheet="achievements.png" locked="83" unlocked="+2" hidden="true" />
+	<achievement id="dragon_sanctuary" sheet="achievements.png" locked="82" unlocked="+2" hidden="true" />
+</data>

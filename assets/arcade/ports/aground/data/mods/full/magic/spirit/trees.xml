@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="tree.xml" includeRoot="true" />
+	<tile id="spirit_tree" sheet="tree.png" />
+	<animation id="spirit_tree.bg" x="19" count="1" />
+	<animation id="spirit_tree.fg" x="20" count="1" />
+	<animation id="spirit_tree.fg.hit" x="8" count="8" />
+	
+	<tree id="spirit_tree" defense="2" health="20" loot="wood" min="4" max="6" collect="2" grown="3" speed="0.002" tile="spirit_tree" glow="true" />
+	
+	<animation id="spirit_tree_fire.hit" x="21" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="ff6611" colorScale="1.4" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg.hit" color="ff6611" colorScale="1.4" /></animation>
+	<animation id="spirit_tree_fire.grow" x="16" count="3" color="ff6611" colorScale="1.4"><frame x="18" /></animation>
+	<animation id="spirit_tree_fire.idle" x="21" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="ff6611" colorScale="1.4" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg" color="ff6611" colorScale="1.4" /></animation>
+	<tree id="spirit_tree_fire" extends="spirit_tree" loot="spirit_arrow.fire" element="fire" />
+	
+	<animation id="spirit_tree_water.hit" x="45" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="1199ff" colorScale="1.4" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg.hit" color="1199ff" colorScale="1.4" /></animation>
+	<animation id="spirit_tree_water.grow" x="16" count="3" color="1199ff" colorScale="1.4"><frame x="18" /></animation>
+	<animation id="spirit_tree_water.idle" x="45" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="1199ff" colorScale="1.4" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg" color="1199ff" colorScale="1.4" /></animation>
+	<tree id="spirit_tree_water" extends="spirit_tree" loot="spirit_arrow.water" element="water" />
+	
+	<animation id="spirit_tree_plant.hit" x="37" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="99ff11" colorScale="1.4" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg.hit" color="99ff11" colorScale="1.4" /></animation>
+	<animation id="spirit_tree_plant.grow" x="16" count="3" color="99ff11" colorScale="1.4"><frame x="18" /></animation>
+	<animation id="spirit_tree_plant.idle" x="37" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="99ff11" colorScale="1.4" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg" color="99ff11" colorScale="1.4" /></animation>
+	<tree id="spirit_tree_plant" extends="spirit_tree" loot="spirit_arrow.plant" element="plant" />
+	
+	<animation id="spirit_tree_earth.hit" x="0" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="ffcc11" colorScale="1.4" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg.hit" color="ffcc11" colorScale="1.4" /></animation>
+	<animation id="spirit_tree_earth.grow" x="16" count="3" color="ffcc11" colorScale="1.4"><frame x="18" /></animation>
+	<animation id="spirit_tree_earth.idle" x="0" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="ffcc11" colorScale="1.4" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg" color="ffcc11" colorScale="1.4" /></animation>
+	<tree id="spirit_tree_earth" extends="spirit_tree" loot="spirit_arrow.earth" element="earth" />
+	
+	<animation id="spirit_tree_ice.hit" x="29" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="99ccff" colorScale="2" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg.hit" color="99ccff" colorScale="2" /></animation>
+	<animation id="spirit_tree_ice.grow" x="16" count="3" color="99ccff" colorScale="2"><frame x="18" /></animation>
+	<animation id="spirit_tree_ice.idle" x="29" count="8"><append tile="spirit_tree" animation="spirit_tree.bg" color="99ccff" colorScale="2" behind="true" /><append tile="spirit_tree" animation="spirit_tree.fg" color="99ccff" colorScale="2" /></animation>
+	<tree id="spirit_tree_ice" extends="spirit_tree" loot="spirit_arrow.ice" element="ice" />
+	
+	<item id="spirit_arrow" name="spirit_arrow" type="none" cost="0" weight="0.25" icon="spirit_arrow.ico" animation="item3" attack="12" spirit="2" action="fire" with="bow" tintProjectile="true">
+		<projectile tile="spirit_arrow" animation="item3" glow="true" speed="3" offsetY="4" hit_sfx="bullet" homing="true" pierce="true" passTile="true" knockback="5" />
+	</item>
+	<item id="spirit_arrow.fire" type="equipment" extends="spirit_arrow" element="fire" color="ff6611" colorScale="1" />
+	<item id="spirit_arrow.water" type="equipment" extends="spirit_arrow" element="water" color="1199ff" colorScale="1" />
+	<item id="spirit_arrow.plant" type="equipment" extends="spirit_arrow" element="plant" color="99ff11" colorScale="1" />
+	<item id="spirit_arrow.earth" type="equipment" extends="spirit_arrow" element="earth" color="ffcc11" colorScale="1" />
+	<item id="spirit_arrow.ice" type="equipment" extends="spirit_arrow" element="ice" color="99ccff" colorScale="1.4" />
+</data>

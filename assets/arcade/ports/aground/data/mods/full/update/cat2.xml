@@ -1,0 +1,5 @@
+<tilesheet id='cat2.png' width='16' height='16'>
+	<image frame='0' x='0' y='15' width='10' height='7' offsetX='5' offsetY='9' />
+	<image frame='1' x='0' y='0' width='12' height='7' offsetX='3' offsetY='9' />
+	<image frame='2' x='0' y='7' width='10' height='8' offsetX='3' offsetY='1' />
+</tilesheet>

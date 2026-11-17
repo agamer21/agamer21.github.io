@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <include id="npc.xml" />
+
+  <scene id="scavenger" extends="scavenger">
+    <layer id="alchemist" tile="scene.alchemist.alchemist" animation="scene.alchemist.alchemist.idle" talk="scene.alchemist.alchemist.talk" x="-10" y="0" flip="true" />
+    <show id="invite_alchemist">
+      <layer id="bg" />
+      <layer id="alchemist" />
+      <wait seconds="2" />
+      <dialogue section="alchemist" id="research1" speaker="alchemist" />
+      <dialogue section="alchemist" id="research2" speaker="alchemist" />
+      <wait seconds="1" />
+    </show>
+    <show id="alchemist_bombardment">
+      <layer id="bg" />
+      <layer id="alchemist" />
+      <wait seconds="1" />
+      <choose>
+        <dialogue section="alchemist" id="bombardment1.3" speaker='alchemist' if="player.questComplete('bombardment_shield')"/>
+        <section>
+          <dialogue section="alchemist" id="bombardment1.2" speaker='alchemist' />
+          <dialogue section="alchemist" id="bombardment2" speaker='alchemist' />
+        </section>
+      </choose>
+      <dialogue section="alchemist" id="bombardment3" speaker='alchemist' />
+      <dialogue section="alchemist" id="bombardment4" speaker='alchemist' />
+      <item id="lab_blueprint" modal="true" />
+      <item id="wyrm_pen_blueprint" modal="true" />
+      <wait seconds="1" />
+    </show>
+  </scene>
+
+  <tile id="scene.teacher.teacher" sheet="npc.2" />
+  <animation id="scene.teacher.teacher.idle" x="0" count="24"/>
+  <animation id="scene.teacher.teacher.talk" x="24" count="24"/>
+
+  <scene id="teacher">
+    <layer id="teacher" tile="teacher" animation="teacher.idle" talk="teacher.talk" x="0" y="0" />
+    <tile id="bg" sheet="npc.2" x="48" />
+    <layer id="bg" tile="bg" />
+	<layer id="black" color="000000" width="256" height="144" />
+    <show id="intro">
+      <layer id="bg"/>
+      <layer id="teacher"/>
+      <wait seconds="2" />
+      <dialogue section="draconian" id="intro1" speaker="teacher"/>
+      <dialogue section="draconian" id="intro2" speaker="teacher"/>
+      <dialogue section="draconian" id="intro3" speaker="teacher"/>
+      <choose>
+        <dialogue section="draconian" id="intro4.2" speaker="teacher" if="getFlag('final_boss_defeat')"/>
+        <section>
+          <dialogue section="draconian" id="intro4.1" speaker="teacher"/>
+          <dialogue section="draconian" id="intro5" speaker="teacher"/>
+        </section>
+      </choose>
+	<complete quest="teacher.monolith" />
+      <wait seconds="1" />
+    </show>
+    <show id="projector">
+      <layer id="bg"/>
+      <layer id="teacher"/>
+      <scene id="colony" show="projector_alien" />
+      <scene id="colony" show="projector_colony2" />
+      <scene id="colony" show="projector_colony" />
+      <scene id="aliens" show="projector" />
+      <layer id="black" /><lerp object="black" alpha="0" seconds="0.5" /><wait seconds="1" />
+      <dialogue section="draconian" id="win" speaker="teacher" />
+      <wait seconds="1" />
+      <credits />
+    </show>
+    <show id="info">
+      <layer id="bg"/>
+      <layer id="teacher"/>
+      <wait seconds="2" />
+      <menu section="draconian" width="180" closeable="true">
+        <dialogue section="draconian" id="info" speaker="teacher" />
+        <choice id="teachers">
+          <dialogue section="depths" id="tablet1" speaker="teacher" />
+          <dialogue section="draconian" id="teachers1" speaker="teacher" />
+          <dialogue section="draconian" id="teachers2" speaker="teacher" />
+          <dialogue section="draconian" id="teachers3" speaker="teacher" />
+        </choice>
+        <choice id="aliens">
+          <dialogue section="draconian" id="aliens1" speaker="teacher" />
+          <dialogue section="draconian" id="aliens2" speaker="teacher" />
+          <dialogue section="draconian" id="aliens3" speaker="teacher" />
+          <dialogue section="draconian" id="aliens4" speaker="teacher" />
+        </choice>
+        <choice id="dishonored_one" if="!player.questComplete('monoliths')">
+          <dialogue section="draconian" id="dishonored_one1" speaker="teacher" />
+          <dialogue section="depths" id="tablet2" speaker="teacher" />
+          <dialogue section="draconian" id="dishonored_one2" speaker="teacher" />
+          <dialogue section="draconian" id="dishonored_one3" speaker="teacher" />
+          <dialogue section="draconian" id="dishonored_one4" speaker="teacher" />
+          <dialogue section="depths" id="tablet6" speaker="teacher" />
+          <dialogue section="draconian" id="dishonored_one5" speaker="teacher" />
+          <dialogue section="draconian" id="dishonored_one6" speaker="teacher" />
+          <dialogue section="draconian" id="dishonored_one7" speaker="teacher" />
+        </choice>
+        <choice id="exotic_gas" if="player.hasQuest('exotic_gas') || player.hasSeenItem('exotic_gas')">
+          <dialogue section="draconian" id="exotic_gas1" speaker="teacher" />
+          <dialogue section="draconian" id="exotic_gas2" speaker="teacher" />
+          <dialogue section="draconian" id="exotic_gas3" speaker="teacher" />
+        </choice>
+      </menu>
+      <wait seconds="1" />
+    </show>
+  </scene>
+
+  <scene id="colony" extends="colony">
+    <tile id="atmos" sheet="{mod:full_version}/space/colony/parallax256.png" x="0" />
+    <tile id="ground" sheet="{mod:full_version}/space/colony/parallax.png" x="1" />
+    <tile id="clouds" sheet="{mod:full_version}/space/colony/parallax.png" x="0" />
+    <layer id="atmos" tile="atmos" />
+    <layer id="ground" tile="ground" />
+    <layer id="clouds" tile="clouds" />
+
+    <layer id="fighter2" tile="fighter" animation="fighter.hover" />
+    <layer id="science2" tile="science_ship" animation="science_ship.hover" />
+    <layer id="exo_fighter4" tile="exo_fighter" animation="exo_fighter.hover" />
+    <layer id="exo_fighter5" tile="exo_fighter" animation="exo_fighter.hover" />
+    <layer id="exo_fighter6" tile="exo_fighter" animation="exo_fighter.hover" />
+    <layer id="exo_fighter7" tile="exo_fighter" animation="exo_fighter.hover" />
+    <layer id="colony_ship" tile="colony_ship" animation="colony_ship.hover" />
+
+    <layer id="cruiser" tile="alien.cruiser" animation="alien.cruiser.hover" />
+    <layer id="cruiser2" tile="alien.cruiser" animation="alien.cruiser.hover" />
+    <layer id="bomber" tile="alien.bomber" animation="alien.bomber.hover" />
+    <layer id="bomber2" tile="alien.bomber" animation="alien.bomber.hover" />
+    <layer id="alien_fighter" tile="alien.fighter" animation="alien.fighter.hover" />
+    <layer id="alien_fighter2" tile="alien.fighter" animation="alien.fighter.hover" />
+    <layer id="alien_fighter3" tile="alien.fighter" animation="alien.fighter.hover" />
+    <layer id="alien_fighter4" tile="alien.fighter" animation="alien.fighter.hover" />
+    <layer id="alien_fighter5" tile="alien.fighter" animation="alien.fighter.hover" />
+	  
+	<layer id="black" color="000000" width="256" height="144" />
+
+    <show id="projector_colony">
+      <layer id="space" />
+      <layer id="atmos" /><layer id="ground" /><layer id="clouds" />
+      <displayAction>atmos.y = 22;</displayAction><displayAction>ground.y = 22;</displayAction><displayAction>clouds.y = 22;</displayAction>
+      <layer id="colony_ship" /><layer id="science2" /><layer id="exo_fighter6" /><layer id="exo_fighter7" />
+      <displayAction>colony_ship.scaleX = -0.1; colony_ship.scaleY = 0.1; colony_ship.x = 270; colony_ship.y = 80;</displayAction>
+      <displayAction>science2.scaleX = -0.25; science2.scaleY = 0.25; science2.x = 340; science2.y = 10;</displayAction>
+      <displayAction>exo_fighter6.scaleX = -0.25; exo_fighter6.scaleY = 0.25; exo_fighter6.x = 150; exo_fighter6.y = 10;</displayAction>
+      <displayAction>exo_fighter7.scaleX = -0.25; exo_fighter7.scaleY = 0.25; exo_fighter7.x = 70; exo_fighter7.y = 90;</displayAction>
+      <layer id="fighter" /><layer id="fighter2" /><layer id="science" />
+      <displayAction>fighter.scaleX = -0.5; fighter.scaleY = 0.5; fighter.x = 230; fighter.y = 40;</displayAction>
+      <displayAction>fighter2.scaleX = -0.5; fighter2.scaleY = 0.5; fighter2.x = 380; fighter2.y = 20;</displayAction>
+      <displayAction>science.scaleX = -0.5; science.scaleY = 0.5; science.x = 100; science.y = 5;</displayAction>
+      <layer id="exo_fighter" /><layer id="exo_fighter2" /><layer id="exo_fighter3" /><layer id="exo_fighter4" /><layer id="exo_fighter5" />
+      <displayAction>exo_fighter.scaleX = -0.5; exo_fighter.scaleY = 0.5; exo_fighter.x = 30; exo_fighter.y = 60;</displayAction>
+      <displayAction>exo_fighter2.scaleX = -0.5; exo_fighter2.scaleY = 0.5; exo_fighter2.x = 240; exo_fighter2.y = 10;</displayAction>
+      <displayAction>exo_fighter3.scaleX = -0.5; exo_fighter3.scaleY = 0.5; exo_fighter3.x = 130; exo_fighter3.y = 80;</displayAction>
+      <displayAction>exo_fighter4.scaleX = -0.5; exo_fighter4.scaleY = 0.5; exo_fighter4.x = 280; exo_fighter4.y = 70;</displayAction>
+      <displayAction>exo_fighter5.scaleX = -0.5; exo_fighter5.scaleY = 0.5; exo_fighter5.x = 430; exo_fighter5.y = 50;</displayAction>
+
+	  <layer id="black" /><lerp object="black" alpha="0" seconds="0.5" />
+      <wait seconds="1"/>
+      <lerp object="fighter" x="30/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="fighter2" x="180/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="science" x="-100/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="exo_fighter" x="-170/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="exo_fighter2" x="40/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="exo_fighter3" x="-70/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="exo_fighter4" x="80/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="exo_fighter5" x="230/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="colony_ship" x="170/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="science2" x="240/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="exo_fighter6" x="50/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="exo_fighter7" x="-20/Tile.SIZE" modal="false" seconds="4" />
+      <wait seconds="5"/><lerp object="black" alpha="1" seconds="0.5" />
+    </show>
+    <show id="projector_colony2">
+      <layer id="command_ship.bg" />
+      <layer id="president" />
+	  <layer id="black" /><lerp object="black" alpha="0" seconds="0.5" />
+      <wait seconds="1"/>
+      <dialogue section="colony" id="projector1" speaker="president" />
+      <dialogue section="colony" id="projector2" speaker="player" />
+      <dialogue section="colony" id="projector3" speaker="president" />
+      <dialogue section="colony" id="projector4" speaker="player" />
+      <dialogue section="colony" id="projector5" speaker="president" />
+      <dialogue section="colony" id="projector6" speaker="player" />
+      <dialogue section="colony" id="projector7" speaker="president" />
+      <wait seconds="1"/><lerp object="black" alpha="1" seconds="0.5" />
+    </show>
+    <show id="projector_alien">
+      <layer id="space" />
+      <layer id="alien_hq" /><displayAction>alien_hq.y = 22;</displayAction>
+      <layer id="cruiser" /><layer id="cruiser2" /><layer id="bomber" /><layer id="bomber2" />
+      <layer id="alien_fighter" /><layer id="alien_fighter2" /><layer id="alien_fighter3" /><layer id="alien_fighter4" /><layer id="alien_fighter5" />
+      <displayAction>cruiser.scaleX = 0.25; cruiser.scaleY = 0.25; cruiser.x = 20; cruiser.y = 5;</displayAction>
+      <displayAction>cruiser2.scaleX = 0.25; cruiser2.scaleY = 0.25; cruiser2.x = 300; cruiser2.y = 30;</displayAction>
+      <displayAction>bomber.scaleX = 0.25; bomber.scaleY = 0.25; bomber.x = 170; bomber.y = 70;</displayAction>
+      <displayAction>bomber2.scaleX = 0.1; bomber2.scaleY = 0.1; bomber2.x = 250; bomber2.y = 10;</displayAction>
+      <displayAction>alien_fighter.scaleX = 0.25; alien_fighter.scaleY = 0.25; alien_fighter.x = 70; alien_fighter.y = 100;</displayAction>
+      <displayAction>alien_fighter2.scaleX = 0.25; alien_fighter2.scaleY = 0.25; alien_fighter2.x = 280; alien_fighter2.y = 110;</displayAction>
+      <displayAction>alien_fighter3.scaleX = 0.25; alien_fighter3.scaleY = 0.25; alien_fighter3.x = 200; alien_fighter3.y = 20;</displayAction>
+      <displayAction>alien_fighter4.scaleX = 0.1; alien_fighter4.scaleY = 0.1; alien_fighter4.x = 150; alien_fighter4.y = 50;</displayAction>
+      <displayAction>alien_fighter5.scaleX = 0.1; alien_fighter5.scaleY = 0.1; alien_fighter5.x = 300; alien_fighter5.y = 120;</displayAction>
+
+      <wait seconds="1"/>
+      <lerp object="cruiser" x="-180/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="cruiser2" x="100/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="bomber" x="-30/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="bomber2" x="150/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="alien_fighter" x="-130/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="alien_fighter2" x="80/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="alien_fighter3" x="0/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="alien_fighter4" x="50/Tile.SIZE" modal="false" seconds="4" />
+      <lerp object="alien_fighter5" x="200/Tile.SIZE" modal="false" seconds="4" />
+      <wait seconds="5"/>
+      <call id="president" incoming="true" />
+      <call id="president" end="true" />
+	  <layer id="black" /><displayAction>black.alpha = 0;</displayAction><lerp object="black" alpha="1" seconds="0.5" />
+    </show>
+  </scene>
+
+  <scene id="aliens" extends="aliens">
+	<layer id="black" color="000000" width="256" height="144" />
+    <show id="projector">
+      <layer id="final_boss_stage1" />
+      <layer id="black" /><lerp object="black" alpha="0" seconds="0.5" /><wait seconds="1"/>
+      <dialogue section="alien" id="final_boss1" speaker="final_boss_stage1"/>
+      <dialogue section="alien" id="projector1" speaker="final_boss_stage1"/>
+      <dialogue section="alien" id="projector2" speaker="final_boss_stage1"/>
+      <dialogue section="alien" id="projector3" speaker="player"/>
+      <dialogue section="alien" id="projector4" speaker="final_boss_stage1"/>
+      <wait seconds="1"/><lerp object="black" alpha="1" seconds="0.5" />
+    </show>
+  </scene>
+<npc id="nursery_crab_npc" tile="nursery.crab" animation="nursery.crab" night="true"/>
+  <procedure id="hybrid_win">
+    <remove object="player.areas.get('alien_hq').getObject('final_boss.hotspot')"/>
+    <remove object="player.areas.get('alien_hq').getObject('final_boss')"/>
+	<remove object="player.areas.get('alien_hq').getObject('final_boss.stage2')"/>
+	<remove object="player.areas.get('alien_hq').getObject('alien_hq.nursery.hotspot')"/>
+  <set id="nursery" value="player.areas.get('alien_hq').getObject('nursery.crab')"/>
+  <section if="nursery != null">
+    <object id="nursery_crab_npc" x="nursery.tile_x" y="nursery.tile_y" area="alien_hq"/>
+    <remove object="nursery"/>
+   </section>
+    <object id="final_boss_npc" x="121.75" y="77.25" area="alien_hq"/>
+    <action>setFlag('final_boss_defeat', true); setFlag('hybrid_win',true); setFlag('alien_hq.open', true); setFlag('aliens.hostile',false); setFlag('exiled_win', true); player.areas.get('alien_hq.orbit').removeObjectsInLayer(ENEMY_LAYER);</action><run procedure="endgame" />
+  </procedure>
+
+  <tile id="bombard_shield_scene" sheet="npc.3" x="0" />
+  <animation id="bombardment_shield_scene" x="0" count="3" length="2"/>
+
+  <scene id="start.space" extends="start.space">
+    <layer id="bombard_shield_scene" tile="bombard_shield_scene" animation="bombardment_shield_scene"/>
+    <layer id="orbital_blast" tile="orbital_blast" animation="orbital_blast"/>
+      <tile id="earth_atmos" sheet="{mod:full_version}/space/sol/bg.2" />
+      <tile id="earth_ground" sheet="{mod:full_version}/space/sol/bg.3" x="1" />
+      <tile id="earth_clouds" sheet="{mod:full_version}/space/sol/bg.3" x="0" />
+      <layer id="earth_atmos" tile="earth_atmos" />
+      <layer id="earth_ground" tile="earth_ground" />
+      <layer id="earth_clouds" tile="earth_clouds" />
+    <show id="activate_shield">
+      <layer id="bg" />
+      <layer id="atmos" />
+      <layer id="ground" />
+      <layer id="clouds" />
+      <layer id="bombard_shield_scene" />
+      <action>ground.x = -32*Tile.SIZE; clouds.x = -32*Tile.SIZE; bombard_shield_scene.y = 40; bombard_shield_scene.alpha = 0;</action>
+      <lerp object="clouds" x="0" y="0" seconds="300" modal="false" />
+      <lerp object="ground" x="0" y="0" seconds="1200" modal="false" />
+      <wait seconds="1"/>
+      <lerp object="bombard_shield_scene" alpha="1" seconds="3"/>
+      <dialogue section="hybrid" id="shield_active" />
+    </show>
+      <show id="activate_shield_earth">
+        <layer id="bg" />
+        <layer id="earth_atmos" />
+        <layer id="earth_ground" />
+        <layer id="earth_clouds" />
+        <layer id="bombard_shield_scene" />
+        <action>earth_ground.x = -32*Tile.SIZE; earth_clouds.x = -32*Tile.SIZE; bombard_shield_scene.y = 20; bombard_shield_scene.alpha = 0;</action>
+        <lerp object="earth_clouds" x="0" y="0" seconds="300" modal="false" />
+        <lerp object="earth_ground" x="0" y="0" seconds="1200" modal="false" />
+        <wait seconds="1"/>
+        <lerp object="bombard_shield_scene" alpha="1" seconds="3"/>
+        <dialogue section="hybrid" id="shield_active" />
+      </show>
+    <show id="hybrid_bombardment">
+      <layer id="bg" />
+      <layer id="atmos" />
+      <layer id="ground" />
+      <layer id="clouds" />
+      <layer id="bombard_shield_scene" />
+      <displayAction>ground.x = -32*Tile.SIZE; clouds.x = -32*Tile.SIZE; bombard_shield_scene.y = 40;</displayAction>
+      <lerp object="clouds" x="0" y="0" seconds="300" modal="false" />
+      <lerp object="ground" x="0" y="0" seconds="1200" modal="false" />
+      <layer id="bomber" />
+      <displayAction>bomber.x = 100; bomber.y = 150; bomber.scaleX = bomber.scaleY = 1;</displayAction>
+      <lerp object="bomber" x="-3" y="-7" seconds="20" />
+      <play object="bomber" animation="alien.bomber.bomb" />
+      <layer id="bomb" />
+      <lerp object="bomb" deltaY="1" modal="false" seconds="2" />
+      <lerp object="bomber" deltaY="-6" modal="false" seconds="2"/>
+      <lerp object="atmos" deltaY="-0.5" modal="false" seconds="2"/>
+      <lerp object="ground" deltaY="-0.5" modal="false" seconds="2"/>
+      <lerp object="clouds" deltaY="-0.5" modal="false" seconds="2"/>
+      <lerp object="bombard_shield_scene" deltaY="-0.5" modal="false" seconds="2"/>
+      <wait seconds="2" />
+      <hide id="bomb" />
+      <layer id="orbital_blast" />
+      <wait seconds="1" />
+      <hide id="orbital_blast" />
+      <wait seconds="1" />
+    </show>
+  </scene>
+
+  <parallax id="stars" extends="stars">
+    <layer p="0" py="0.0125" id="bombardment_shield" scroll="0.0078125" max_depth="10000" onTop="true" if="player.questComplete('bombardment_shield')"><tile id="bombard_shield_scene" animation="bombardment_shield_scene" offsetY="40"/></layer>
+  </parallax>
+    <parallax id="earth.orbit" extends="earth.orbit">
+      <layer p="0" py="0.0125" id="bombardment_shield" scroll="0.0078125" max_depth="10000" onTop="true" if="player.questComplete('bombardment_shield2')"><tile id="bombard_shield_scene" animation="bombardment_shield_scene" offsetY="40"/></layer>
+    </parallax>
+
+  <scene id="mechanic" extends="mechanic">
+    <layer id="alchemist" tile="scene.alchemist.alchemist" animation="scene.alchemist.alchemist.idle" talk="scene.alchemist.alchemist.talk" x="40" y="0"/>
+    <show id="hybrid_research">
+      <layer id="bg_mirrows" />
+			<layer id="mr" /><layer id="mrs" />
+      <layer id="alchemist" />
+      <wait seconds="1" />
+      <choose>
+        <dialogue section="hybrid" id="hybrid_research1.1" speaker="mr" if="player.questComplete('mirrows2')"/>
+        <dialogue section="hybrid" id="hybrid_research1.2" speaker="alchemist"/>
+      </choose>
+      <dialogue section="hybrid" id="hybrid_research2" speaker="alchemist"/>
+      <dialogue section="hybrid" id="hybrid_research3" speaker="mrs"/>
+      <wait seconds="1" />
+    </show>
+  </scene>
+</data>

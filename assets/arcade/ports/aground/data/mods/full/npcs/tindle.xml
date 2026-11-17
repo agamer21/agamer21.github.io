@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="tindle.monolith" giver="tindle" exp="2000">
+		<script id="player.areas.get('science3').getStructureById('depths.monolith.off') == null?1:0" tile="bone_shard.ico" name="quests.activate_monoliths" count="1" />
+	</quest>
+	<tile id="tindle" sheet="backer.1" x="20" />
+	<animation id="tindle.idle" count="4"><frame x="4" length="16" /></animation>
+	<animation id="tindle.talk" x="5" count="12" />
+	<animation id="tindle.walk" x="17" count="4" />
+	<structure id="tindle.store" tile="empty" type="market" restock="5000" price="2">
+		<item id="health_potion" min="1" max="4" />
+		<item id="stamina_potion" min="1" max="4" />
+		<item id="attack_potion" min="5" max="10" />
+		<item id="defense_potion" min="5" max="10" />
+		<item id="speed_potion" min="1" max="4" />
+		<item id="endurance_potion" min="1" max="4" />
+		<item id="staff" min="1" max="1" />
+		<item id="focus_gem" min="20" max="40" />
+		<item id="alter_gem" min="10" max="20" />
+		<item id="blood_gem" min="5" max="10" />
+		<item id="dragonblood" min="5" max="10" />
+		<item id="spirit_gem" min="5" max="10" />
+		<item id="fire_book" min="1" max="1" />
+		<item id="water_book" min="1" max="1" />
+		<item id="plant_book" min="1" max="1" />
+		<item id="earth_book" min="1" max="1" />
+		<item id="ice_book" min="1" max="1" />
+		<item id="shield_book" min="1" max="1" />
+		<select count="3">
+			<item id="heal_book" min="1" max="1" />
+			<item id="light_book" min="1" max="1" />
+			<item id="water_barrier_book" min="1" max="1" />
+			<item id="plant_feed_book" min="1" max="1" />
+			<item id="summon_golem_book" min="1" max="1" />
+			<item id="time_book" min="1" max="1" />
+			<item id="teleport_book" min="1" max="1" />
+		</select>
+		<buy type="potion" /><buy type="resource" /><buy type="spellbook" />
+	</structure>
+	<npc id="tindle" tile="tindle" action="talk" talk_sfx="talking2" night="true">
+		<idle class="wander" />
+		<operate>
+			<section if="area.getStructureById('depths.monolith.off') != null && !player.hasQuest('tindle.monolith')"><quest /><scene id="tindle" show="intro" with="fade" /></section>
+			<section if="player.canCompleteQuest('tindle.monolith')">
+				<complete quest="tindle.monolith" /><dialogue section="depths" id="tindle8" speaker='this' />
+				<dialogue section="depths" id="tindle9" speaker='this' /><action>setFlag("tindle", true)</action>
+				<action>area.getStructureById("tindle.store").onOperate(player)</action>
+			</section>
+			<choose if="player.areas.get('science3').getStructureById('depths.monolith.off') == null">
+				<section if="!getFlag('tindle')">
+					<action>setFlag("tindle", true)</action><quest /><scene id="tindle" show="no_monolith" with="fade" />
+				</section>
+				<section>
+					<dialogue section="depths" id="tindle9" speaker='this' /><action>area.getStructureById("tindle.store").onOperate(player)</action>
+				</section>
+			</choose>
+			<dialogue section="depths" id="tindle7" speaker='this' />
+		</operate>
+	</npc>
+	<procedure id="tindle.clouds_bg">
+		<displayAction>clouds_bg.x = 0;</displayAction><lerp object="clouds_bg" xPos="256" modal="unpaused" seconds="128" /><run procedure="tindle.clouds_bg" />
+	</procedure>
+	<procedure id="tindle.clouds_mg">
+		<displayAction>clouds_mg.x = 0;</displayAction><lerp object="clouds_mg" xPos="256" modal="unpaused" seconds="64" /><run procedure="tindle.clouds_mg" />
+	</procedure>
+	<procedure id="tindle.clouds_fg">
+		<displayAction>clouds_fg.x = 0;</displayAction><lerp object="clouds_fg" xPos="256" modal="unpaused" seconds="32" /><run procedure="tindle.clouds_fg" />
+	</procedure>
+	<procedure id="tindle.bg">
+		<layer id="bg" /><layer id="sky" />
+		<layer id="clouds_bg" /><invokeLater seconds="0" paused="true"><run procedure="tindle.clouds_bg" /></invokeLater>
+		<layer id="clouds_mg" /><invokeLater seconds="0" paused="true"><run procedure="tindle.clouds_mg" /></invokeLater>
+		<layer id="clouds_fg" /><invokeLater seconds="0" paused="true"><run procedure="tindle.clouds_fg" /></invokeLater>
+	</procedure>
+	<scene id="tindle">
+		<layer id="bg" y="80" color="438a9e" width="256" height="64" />
+		<tile id="sky" sheet="{core}/start/parallax/bg.png" x="0" y="0" />
+		<layer id="sky" tile="sky" />
+		<tile id="clouds_bg" sheet="{mod:full_version}/science2/parallax/clouds.png" x="0"><tile sheet="{mod:full_version}/science2/parallax/clouds.png" x="0" offsetX="-256" /></tile>
+		<tile id="clouds_mg" sheet="{mod:full_version}/science2/parallax/clouds.png" x="3"><tile sheet="{mod:full_version}/science2/parallax/clouds.png" x="3" offsetX="-256" /></tile>
+		<tile id="clouds_fg" sheet="{mod:full_version}/science2/parallax/clouds.png" x="2"><tile sheet="{mod:full_version}/science2/parallax/clouds.png" x="2" offsetX="-256" /></tile>
+		<layer id="clouds_bg" tile="clouds_bg" y="16" /><layer id="clouds_mg" tile="clouds_mg" y="32" /><layer id="clouds_fg" tile="clouds_fg" y="64" />
+		<animation id="tindle.idle" count="20" />
+		<animation id="tindle.talk" x="20" count="10" />
+		<tile id="tindle" sheet="backer.2" />
+		<layer id="tindle" tile="tindle" animation="tindle.idle" talk="tindle.talk" sfx="talking2" />
+		<show id="intro">
+			<run procedure="tindle.bg" />
+			<layer id="tindle" />
+			<wait seconds="2" />
+			<dialogue section="depths" id="tindle1" speaker='tindle' />
+			<dialogue section="depths" id="tindle2" speaker='tindle' />
+			<dialogue section="depths" id="tindle3" speaker='tindle' />
+			<dialogue section="depths" id="tindle4" speaker='tindle' />
+			<dialogue section="depths" id="tindle5" speaker='tindle' />
+			<dialogue section="depths" id="tindle6" speaker='tindle' />
+			<quest id="tindle.monolith" />
+			<wait seconds="1" />
+		</show>
+		<show id="no_monolith">
+			<run procedure="tindle.bg" />
+			<layer id="tindle" />
+			<wait seconds="2" />
+			<dialogue section="depths" id="tindle10" speaker='tindle' />
+			<dialogue section="depths" id="tindle11" speaker='tindle' />
+			<dialogue section="depths" id="tindle12" speaker='tindle' />
+			<wait seconds="1" />
+		</show>
+	</scene>
+	<object id="tindle.hotspot" width="128" height="64">
+		<out>
+			<set id="o" value="area.getObject('tindle')" />
+			<remove object="o" if="o != null && getFlag('tindle')" />
+		</out>
+		<over><section if="area.getObject('tindle') == null && getFlag('tindle')">
+			<object id="tindle" x="62" y="-29" />
+			<action>tindle.alpha = 0;</action><lerp object="tindle" alpha="1" seconds="0.25" modal="false" />
+		</section></over>
+	</object>
+</data>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="colosseum.alien.bomber" width="576" height="64" background="stars" type="none" forceTime="12" planet="start" hasO2="false" looping="true" dropoff="0">
+		<object id="fighter" x="256" y="20" />
+		<object id="alien.bomber" x="256" y="55" />
+		<spawner id="alien.fighter" time="8000" count="4" fromX="192" toX="320" fromY="30" toY="50" ground="false" />
+		<structure id="colosseum_exit" x="120" />
+		<init>
+			<action>
+				area.spawner.spawnAll('alien.fighter'); o = area.getObject('fighter'); o.inventory.addItems(getItem("titanium"), 4); o.inventory.addItems(getItem("fighter.gun"), 1);
+				var a = o.getInterior(player, o.info); for(o in a.getObjectsById('power_core.slot')) o.health = 1;
+				getStructure("colosseum_exit2").build(null, a, 4*Tile.SIZE, 4*Tile.SIZE);
+				var o; while((o = a.getObject('ship.bed')) != null) a.removeObject(o);
+			</action>
+			<equip id="fighter.cannon" to="o" fromInventory="false" /><runAreaLoad />
+		</init>
+		<onLoad>
+			<radar tile="orbit.radar" animation="orbit.radar" padding="2" />
+			<action>var o = area.getObject('alien.bomber'); if(o != null &amp;&amp; !o.enabled) player.addKillCount('alien.bomber', 1);</action>
+			<music id="spirit" seconds="1" />
+		</onLoad>
+		<connection area="stop" dir="down" fromY="64" toY="64" />
+		<connection area="stop" dir="up" fromY="0" toY="0" />
+	</area>
+	<procedure id="colosseum.alien.bomber">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 500);
+		var map = new StringMap(); map.set("alien.bomber", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); setGlobal("achievement", "bombardment"); player.inventory.addItems(getItem("hamburger"), 4);
+		player.inventory.addItems(getItem("laser_gun"), 1); player.inventory.addItems(getItem("missile"), 20);
+		player.inventory.addItems(getItem("battery"), 10); player.stats.get("speed").permaBuff(2);</action>
+		<equip id="rocket_launcher" fromInventory="false" />
+		<equip id="energy_shield" fromInventory="false" />
+		<equip id="laser_drill" fromInventory="false" />
+		<equip id="space_armor" fromInventory="false" />
+		<equip id="space_helm" fromInventory="false" />
+		<equip id="antigrav_pack" fromInventory="false" />
+		<teleport area="colosseum.alien.bomber" x="0" temporary="true" /><action>area.getObject('fighter').enter(player)</action><move object="player" x="5.5" y="4" />
+	</procedure>
+</data>

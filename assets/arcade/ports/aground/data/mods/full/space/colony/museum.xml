@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="museum_sheet.xml" />
+	<tile id="colony.museum.doorh1" sheet="museum_sheet.1" />
+	<tile id="colony.museum.doorh2" sheet="museum_sheet.1" x="1" />
+	<tile id="colony.museum.doorv1" sheet="museum_sheet.2" />
+	<tile id="colony.museum.doorv2" sheet="museum_sheet.2" x="1" />
+	<tile id="curator" sheet="museum_sheet.3" />
+	<animation id="curator.idle">
+		<frame x="0" length="4" />
+		<frame x="1" length="2" />
+		<frame x="0" length="16" />
+	</animation>
+	<animation id="curator.talk" x="2" count="8" />
+	<animation id="curator.walk" x="10" count="10" />
+	<include id="equip.xml" includeRoot="true" />
+	<tile id="hoarder_hat" sheet="equip.png" x="58" offsetX="8" />
+	<animation id="equipment.hoarder_hat.idle" count="1" x="6" />
+	<animation id="equipment.hoarder_hat.hit" count="6" x="0" />
+	<item id="hoarder_hat" type="tool" cost="0" weight="5" slot="head" capacity="200" defense="1" action="equip" icon="hoarder_hat.ico" animation="item2" fps="1" hair="9">
+		<light tile="light.headlamp" offsetX="-61" />
+	</item>
+	<tile id="hoarder_gun" sheet="equip.png" x="65" offsetX="-5" offsetY="1" />
+	<animation id="equipment.hoarder_gun.idle" equals="equipment.revolver.idle" />
+	<animation id="equipment.hoarder_gun" equals="equipment.revolver" />
+	<item id="hoarder_gun" type="equipment" slot="weapon" cost="0" weight="10" attack="6" capacity="200" stamina="1" range="12" icon="hoarder_gun.ico" projectile="bullet" sfx="revolver" movement_walk="walk_rswing" arms="revolver.arms" group="revolver">
+		<action id="equip" /><action id="setProjectile" />
+	</item>
+	<tile id="hoarder_armor" sheet="equip.png" x="0" offsetX="-6" offsetY="2" />
+	<animation id="equipment.hoarder_armor.idle" x="47" count="1" />
+	<animation id="equipment.hoarder_armor.walk" x="48" count="10" />
+	<animation id="equipment.hoarder_armor.hit" x="41" count="6" />
+	<animation id="equipment.hoarder_armor.death" x="0" count="41" />
+	<item id="hoarder_armor" type="equipment" slot="armor" cost="0" weight="15" defense="8" capacity="200" action="equip" icon="hoarder_armor.ico" />
+	<animation id="equipment.hoarder_shield.idle" count="6" offsetX="0" offsetY="4">
+		<frame x="5" length="20" offsetX="0" offsetY="4" />
+	</animation>
+	<item id="hoarder_shield" type="equipment" slot="shield" use="block" cost="0" weight="20" capacity="200" defense="100" icon="hoarder_shield.ico" animation="shield" action="equip" movement_walk="walk_lswing" />
+	<tile id="hoarder_backpack" sheet="equip.png" x="74" offsetX="8" />
+	<animation id="equipment.hoarder_backpack.idle" equals="single" />
+	<item id="hoarder_backpack" type="tool" slot="back" action="equip" cost="0" weight="5" capacity="1200" icon="hoarder_backpack.ico" />
+	<action>curator_rewards = ['hoarder_hat', 'hoarder_gun', 'hoarder_armor', 'hoarder_backpack', 'hoarder_shield'];</action>
+	<npc id="curator" tile="curator" action="talk" talk_sfx="talking4" night="true">
+		<idle class="wander" toX="7" />
+		<operate>
+			<section if="!getFlag('curator_intro')">
+				<action>setFlag('curator_intro', true);</action><quest />
+				<scene id="colony" show="museum" with="fade" showToAll="true" />
+			</section>
+			<section>
+				<action>
+					count = 0; total = 0; reward = null;
+					for(s in area.getStructuresById("museum.case")){
+						total++; if(Item.getParameter(s.name, 'c') == '0') count++;
+					} ct = 0; for(i in curator_rewards){
+						ct++; if(count &lt; ct*10) break;
+						if(!player.seen_items.exists(i)){reward = i; break;}
+					}
+				</action>
+				<section if="count == 0"><dialogue section="museum" id="curator4" speaker='this' /><stop /></section>
+				<dialogue eval="'museum.curator_complete{count:'+count+'}{total:'+total+'}'" speaker="this" />
+				<choose>
+					<section if="reward != null">
+						<dialogue eval="ct == 5?'museum.curator_reward_complete':'museum.curator_reward{count:'+(ct*10)+'}'" speaker="this" />
+						<item eval="reward" />
+					</section>
+					<group>
+						<choose>
+							<dialogue section="museum" id="curator_all" speaker='this' if="count == total" />
+							<dialogue section="museum" id="curator_50" speaker='this' if="count >= 40" />
+							<dialogue section="museum" id="curator_40" speaker='this' if="count >= 30" />
+							<dialogue section="museum" id="curator_30" speaker='this' if="count >= 20" />
+							<dialogue section="museum" id="curator_20" speaker='this' if="count >= 10" />
+							<dialogue section="museum" id="curator_10" speaker='this' />
+						</choose>
+						<section if="count >= 10">
+							<dialogue section="museum" id="buy1" speaker='this' />
+							<window type="shop" title="museum.buy">
+								<action>
+									for(i in curator_rewards) if(player.seen_items.exists(i)) evalXml("&lt;item id='"+i+"' cost='50000' /&gt;");
+								</action>
+							</window>
+						</section>
+					</group>
+				</choose>
+			</section>
+		</operate>
+	</npc>
+	<structure id="colony.museum.bg" image="museum_bg.png" width="368" height="272" priority="-2" back="true" remove="false" />
+	<structure id="colony.museum.exit" extends="earth.door" animation="earth.door" type="none">
+		<operate><return with="ellipse" /></operate>
+	</structure>
+	<animation id="colony.museum.computer.idle" x="37" count="10" offsetY="-16" /><structure id="colony.museum.computer" tile="earth.doodad" animation="colony.museum.computer" name="read" height="16" remove="false" />
+	<structure id="colony.museum.mined" extends="colony.museum.computer">
+		<operate><action>ct = 0; for(v in player.state.tiles) ct += v;</action><dialogue eval="'museum.mined{count:'+Utils.addCommas(ct)+'}'" /></operate>
+	</structure>
+	<structure id="colony.museum.killed" extends="colony.museum.computer">
+		<operate><action>ct = 0; for(v in player.state.enemies) ct += v;</action><dialogue eval="'museum.killed{count:'+Utils.addCommas(ct)+'}'" /></operate>
+	</structure>
+	<structure id="colony.museum.crops" extends="colony.museum.computer">
+		<operate><action>ct = 0; for(a in player.areas) for(s in a.getStructures()) if(s.info.xml.nodeName() == "crop") ct++;</action><dialogue eval="'museum.crops{count:'+Utils.addCommas(ct)+'}'" /></operate>
+	</structure>
+	<structure id="colony.museum.caught" extends="colony.museum.computer">
+		<operate><action>ct = 0; for(f in player.state.flags.keys()) if(f.substring(0,8) == "capture.") ct++;</action><dialogue eval="'museum.caught{count:'+Utils.addCommas(ct)+'}'" /></operate>
+	</structure>
+	<structure id="colony.museum.read" extends="colony.museum.computer">
+		<operate><action>ct = 0; for(f in player.state.flags.keys()) if(f.substring(f.length-5,f.length) == ".read") ct++;</action><dialogue eval="'museum.read{count:'+Utils.addCommas(ct)+'}'" /></operate>
+	</structure>
+	<structure id="colony.museum.history" extends="colony.museum.computer" type="dialogue" />
+	<area id="colony.museum" shouldLight="false" powered="true" type="none" external="colony.orbit.station">
+		<structure id="colony.museum.bg" x="0" y="16" />
+		<tiles from="museum_tiles.png" x="0" y="0"><tile id="empty" color="000000" /><tile id="no_place" color="ff0000" layer="back" /></tiles>
+		<action>for(y in 0...17) for(x in 0...23) area.setLit(x, y);</action>
+		<structure id="museum.case" x="2" y="3" name="iwheat,c750&" />
+		<structure id="museum.case" x="2" y="4" name="iwood,c750&" />
+		<structure id="museum.case" x="2" y="5" name="ifruit,c500&" />
+		<structure id="museum.case" x="2" y="6" name="isteak,c250&" />
+		<structure id="museum.case" x="5" y="3" name="ieggs,c250&" />
+		<structure id="museum.case" x="5" y="4" name="icheese,c100&" />
+		<structure id="museum.case" x="5" y="5" name="isugar,c100&" />
+		<structure id="museum.case" x="5" y="6" name="icotton,c100&" />
+		<structure id="museum.case" x="5" y="7" name="irice,c100&" />
+		<structure id="museum.case" x="5" y="8" name="isushi,c25&" />
+		<structure id="colony.museum.crops" x="1" y="7" />
+		
+		<structure id="museum.case" x="9" y="3" name="irat,c25&" />
+		<structure id="museum.case" x="9" y="4" name="ipig,c25&" />
+		<structure id="museum.case" x="9" y="5" name="ichicken,c25&" />
+		<structure id="museum.case" x="9" y="6" name="icow,c25&" />
+		<structure id="museum.case" x="9" y="7" name="ispider,c15&" />
+		<structure id="museum.case" x="12" y="3" name="icat,c10&" />
+		<structure id="museum.case" x="12" y="4" name="iwolf,c10&" />
+		<structure id="museum.case" x="12" y="5" name="iwyrm,c10&" />
+		<structure id="museum.case" x="12" y="6" name="ielectric_eel,c10&" />
+		<structure id="museum.case" x="12" y="7" name="igolem,c10&" />
+		<structure id="colony.museum.caught" x="8" y="8" />
+		
+		<structure id="museum.case" x="16" y="3" name="icoal,c500&" />
+		<structure id="museum.case" x="17" y="3" name="iiron,c250&" />
+		<structure id="museum.case" x="18" y="3" name="isulfur,c250&" />
+		<structure id="museum.case" x="19" y="3" name="iquartz,c150&" />
+		<structure id="museum.case" x="20" y="3" name="ioil,c150&" />
+		<structure id="museum.case" x="16" y="6" name="igold,c100&" />
+		<structure id="museum.case" x="17" y="6" name="idiamond,c100&" />
+		<structure id="museum.case" x="18" y="6" name="ititanium,c100&" />
+		<structure id="museum.case" x="19" y="6" name="iuranium,c100&" />
+		<structure id="museum.case" x="20" y="6" name="ichromium,c50&" />
+		<structure id="colony.museum.mined" x="15" y="8" />
+		
+		<structure id="museum.case" x="18" y="11" name="ifocus_gem,c250&" />
+		<structure id="museum.case" x="18" y="12" name="ialter_gem,c150&" />
+		<structure id="museum.case" x="18" y="13" name="iblood_gem,c100&" />
+		<structure id="museum.case" x="21" y="11" name="ispirit_gem,c50&" />
+		<structure id="museum.case" x="21" y="12" name="imagnegem,c50&" />
+		<structure id="museum.case" x="21" y="13" name="ievo_gem,c15&" />
+		<structure id="colony.museum.read" x="18" y="15" />
+		
+		<structure id="museum.case" x="9" y="11" name="ifire_tusk,c150&" />
+		<structure id="museum.case" x="10" y="11" name="iyeti_fur,c150&" />
+		<structure id="museum.case" x="11" y="11" name="iplant_eye,c100&" />
+		<structure id="museum.case" x="12" y="11" name="idragonblood,c100&" />
+		<structure id="museum.case" x="13" y="11" name="isilk,c50&" />
+		<structure id="museum.case" x="9" y="14" name="ihorn,c50&" />
+		<structure id="museum.case" x="10" y="14" name="ihelium_sac,c50&" />
+		<structure id="museum.case" x="11" y="14" name="iink,c50&" />
+		<structure id="museum.case" x="12" y="14" name="ifish_scale,c50&" />
+		<structure id="museum.case" x="13" y="14" name="ifin,c50&" />
+		<structure id="museum.case" x="16" y="11" name="icarapace,c25&" />
+		<structure id="museum.case" x="16" y="12" name="ipearl,c25&" />
+		<structure id="museum.case" x="16" y="13" name="iice_heart,c25&" />
+		<structure id="museum.case" x="16" y="14" name="ialien_heart,c25&" />
+		<structure id="colony.museum.killed" x="8" y="15" />
+		
+		<structure id="colony.museum.history" x="5" y="9" dialogue="museum.history1" />
+		<structure id="colony.museum.history" x="12" y="8" dialogue="museum.history2" />
+		<structure id="colony.museum.history" x="12" y="15" dialogue="museum.history3" />
+		<structure id="colony.museum.history" x="15" y="15" dialogue="museum.history4" />
+		<structure id="colony.museum.history" x="17" y="8" dialogue="museum.history5" />
+		<structure id="colony.museum.history" x="20" y="1" dialogue="museum.history6" />
+		<structure id="colony.museum.history" x="20" y="15" dialogue="museum.history7" />
+		
+		<structure id="colony.museum.exit" x="4" y="15" />
+		
+		<object id="curator" x="3" y="12" />
+		
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<tile id="colony.museum.doorh1" x="3" y="10" top="true" />
+			<tile id="colony.museum.doorh2" x="10" y="9" top="true" />
+			<tile id="colony.museum.doorh2" x="19" y="9" top="true" />
+			<tile id="colony.museum.doorv1" x="7" y="0" top="true" />
+			<tile id="colony.museum.doorv1" x="14" y="0" top="true" />
+			<tile id="colony.museum.doorv2" x="7" y="12" top="true" />
+		</onLoad>
+	</area>
+</data>

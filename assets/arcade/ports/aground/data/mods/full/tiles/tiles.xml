@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="water_block" sheet="tiles.png" />
+	<animation id="water_block" equals="item8" />
+	
+	<tile id="evo_shard" animateSub="true">
+		<tile sheet="tiles.png" p="1" x="8" y="0" />
+		<tile sheet="tiles.png" p="1" x="17" y="0" />
+		<tile sheet="tiles.png" p="1" x="26" y="0" />
+		<tile sheet="tiles.png" p="1" x="35" y="0" />
+	</tile>
+
+	<tile id="grass.scorched" sheet="{core}/tiles/tiles.png" x="1"><tile sheet="tiles.png" x="44" /></tile>
+	<dig id="grass.scorched" cost="0" />
+	<tile id="grass.scorchedt" sheet="{core}/tiles/tiles.png" x="1"><tile sheet="tiles.png" x="45" /></tile>
+	<dig id="grass.scorchedt" cost="0" />
+	
+	<tile id="sci1.grass.scorched" sheet="{core}/tiles/tiles.png" x="128"><tile sheet="tiles.png" x="44" /></tile>
+	<dig id="sci1.grass.scorched" cost="0" />
+	<tile id="sci1.grass.scorchedt" sheet="{core}/tiles/tiles.png" x="128"><tile sheet="tiles.png" x="45" /></tile>
+	<dig id="sci1.grass.scorchedt" cost="0" />
+	
+	<tile id="steel_ladder"><tile sheet="tiles.png" x="46" /></tile>
+	<tile id="steel_walkway"><tile sheet="tiles.png" x="47" /></tile>
+	<dig id="steel_ladder" cost="-2" collect_rail="ladder" />
+	<dig id="steel_walkway" cost="-2" back="null"><onDig><action>player.addItem("walkway")</action></onDig></dig>
+	<tile id="grass_walkway"><tile sheet="tiles.png" x="48" offsetY="-1" /></tile>
+	<dig id="grass_walkway" cost="-2" back="null" grass="true"><onDig><action>player.addItem("grass_walkway")</action></onDig></dig>
+	
+	<tile id="exotic_matter" sheet="tiles.png" x="49" />
+	<tile id="magnegem" sheet="tiles.png" x="58" />
+	<tile id="chromium" sheet="tiles.png" x="150" />
+	<tile id="concrete">
+		<tile sheet="tiles.png" x="67" p="1" />
+		<tile sheet="tiles.png" x="68" p="1" />
+		<tile sheet="tiles.png" x="69" p="1" />
+		<tile sheet="tiles.png" x="70" p="1" />
+		<tile sheet="tiles.png" x="71" p="1" />
+		<tile sheet="tiles.png" x="72" p="1" />
+		<tile sheet="tiles.png" x="73" p="1" />
+		<tile sheet="tiles.png" x="74" p="1" />
+		<tile sheet="tiles.png" x="75" p="1" />
+		<tile sheet="tiles.png" x="76" p="1" />
+		<tile sheet="tiles.png" x="77" p="1" />
+		<tile sheet="tiles.png" x="78" p="1" />
+		<tile sheet="tiles.png" x="79" p="1" />
+		<tile sheet="tiles.png" x="80" p="1" />
+		<tile sheet="tiles.png" x="81" p="1" />
+		<tile sheet="tiles.png" x="82" p="1" />
+		<tile sheet="tiles.png" x="83" p="1" />
+		<tile sheet="tiles.png" x="84" p="1" />
+		<tile sheet="tiles.png" x="85" p="1" />
+		<tile sheet="tiles.png" x="86" p="1" />
+		<tile sheet="tiles.png" x="87" p="1" />
+		<tile sheet="tiles.png" x="88" p="1" />
+		<tile sheet="tiles.png" x="89" p="1" />
+		<tile sheet="tiles.png" x="90" p="1" />
+		<tile sheet="tiles.png" x="91" p="1" />
+		<tile sheet="tiles.png" x="92" p="1" />
+		<tile sheet="tiles.png" x="93" p="1" />
+		<tile sheet="tiles.png" x="94" p="1" />
+		<tile sheet="tiles.png" x="95" p="1" />
+		<tile sheet="tiles.png" x="96" p="1" />
+		<tile sheet="tiles.png" x="97" p="1" />
+		<tile sheet="tiles.png" x="98" p="1" />
+		<tile sheet="tiles.png" x="99" p="1" />
+		<tile sheet="tiles.png" x="100" p="1" />
+		<tile sheet="tiles.png" x="101" p="1" />
+		<tile sheet="tiles.png" x="102" p="1" />
+	</tile>
+	<dig id="concrete" cost="5" />
+	<tile id="subway" stride="4" strideWidth="4"><tile sheet="tiles.png" x="103" /></tile>
+	<dig id="subway" cost="6" />
+	
+	<tile id="ruin.wall" stride="4"><tile sheet="tiles32.png" x="0" y="0" /></tile>
+	<tile id="ruin.floor" stride="2">
+		<tile sheet="tiles32.png" p="20" x="4" y="0" />
+		<tile sheet="tiles32.png" p="1" x="6" y="0" />
+	</tile>
+	<tile id="lab.floor1" stride="2"><tile sheet="tiles32.png" x="4" y="2" /></tile>
+	<tile id="lab.floor2" stride="2"><tile sheet="tiles32.png" x="6" y="2" /></tile>
+	
+	<tile id="earth.door" sheet="tiles.png" x="119" />
+	
+	<tile id="ship.grate" sheet="tiles.png" x="124" />
+	<tile id="ship.floor" sheet="tiles.png" x="125" />
+	
+	<tile id="cells1" sheet="tiles.png" x="126" />
+	<tile id="cells2" sheet="tiles.png" x="134" />
+	<tile id="cells3" sheet="tiles.png" x="142" />
+	<dig id="cells1" cost="4" />
+	<dig id="cells2" cost="6" />
+	<dig id="cells3" cost="8" />
+	
+	<tile id="spirit_ladder"><tile sheet="tiles.png" x="159" /></tile>
+	
+	<tile id="moissanite" sheet="tiles.png" x="160" />
+</data>

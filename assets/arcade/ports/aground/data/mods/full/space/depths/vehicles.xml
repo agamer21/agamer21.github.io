@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="submersible" sheet="objects.5" x="0" y="0" />
+	<animation id="submersible.hatch.open" x="17" count="1" />
+	<animation id="submersible.hatch.closed" x="10" count="1" />
+	<animation id="submersible.idle.base" x="19" count="6">
+		<append tile="submersible" animation="submersible.arm.idle" behind="true" />
+	</animation>
+	<animation id="submersible.empty" x="18" count="1">
+		<append tile="submersible" animation="submersible.arm.idle" behind="true" />
+		<append tile="submersible" animation="submersible.hatch.open" behind="true" />
+	</animation>
+	<animation id="submersible.mount" x="11" count="6" reverse="true">
+		<append tile="submersible" animation="submersible.idle.base" />
+	</animation>
+	<animation id="submersible.dismount" x="11" count="6">
+		<append tile="submersible" animation="submersible.idle.base" />
+	</animation>
+	<animation id="submersible.arm.idle" x="9" count="1" />
+	<animation id="submersible.idle" x="10" count="1" length="6">
+		<append tile="submersible" animation="submersible.idle.base" />
+	</animation>
+	<animation id="submersible.move" x="25" count="10">
+		<append tile="submersible" animation="submersible.idle" behind="true" />
+	</animation>
+	<animation id="submersible.collect.base" x="19" count="6">
+		<append tile="submersible" animation="submersible.hatch.closed" />
+	</animation>
+	<animation id="submersible.collect" x="0" count="10">
+		<append tile="submersible" animation="submersible.collect.base" />
+	</animation>
+	<animation id="equipment.torpedo_launcher.submersible.idle"><frame visible="false" /></animation>
+	<animation id="equipment.torpedo_launcher.submersible" tile="submersible" x="35" count="16" />
+	<vehicle id="submersible" tile="submersible" health="1000" defense="8" speed="6" speedY="4" max_depth="200" type="submarine" title="vehicle.submersible" oxygen="200" max_weight="2000" attack_move="true" death_sfx="explosion" accessObject="true" dive_sfx="submarine_submerge" walk_sfx="submarine_move" collect_sfx="submarine_arm" item="submersible" tilesBehind="true" underwaterDismount="true">
+		<slot id="attack" /><slot id="defend" /><light tile="light.headlamp" offsetX="-61" />
+		<repair id="moissanite" value="500" /><player x="20" y="38" animation="idle" />
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="submersible" value="this.health"><parameter id="l" value="this.equipment.getItemId('attack')" /><parameter id="p" value="this.equipment.getItemId('defend')" /><parameter id="o" value="Std.string(this.oxygen)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<mount><action>setGameScale(2)</action></mount>
+		<onDismount><window type="prompt" message="warning.sub_exit" if="return this.tile_y > player.max_depth.get()" on="no"><stop /></window></onDismount>
+	</vehicle>
+	<item id="submersible" name="vehicle.submersible" type="object" cost="0" weight="100" icon="submersible.ico" durability="1000" durabilityName="common.health" durabilityIcon="vehicle_health" desc="item.descriptions.sub">
+		<action id="plant" name="vehicle.deploy" object="submersible" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underwater="only">
+			<action>
+				object.setHealth(this.getFeed()); p = Item.getParameter(this.getNameStr(), "l"); d = Item.getParameter(this.getNameStr(), "p");
+				o = Item.getParameter(this.getNameStr(), "o"); if(o != null) object.loseOxygen(object.oxygen-Std.parseInt(o));
+			</action>
+			<equip eval="p" to="object" fromInventory="false" if="p != null" /><equip eval="d" to="object" fromInventory="false" if="d != null" />
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="moissanite" value="500" />
+	</item>
+	<recipe id="submersible" object="submersible" description="item.descriptions.sub" type="sub_pen" available="player.questComplete('submersible')">
+		<item id="ship_parts" count="5" />
+		<item id="moissanite" count="8" />
+		<item id="diamond" count="8" />
+		<item id="power_core" count="1" />
+	</recipe>
+	<hitEffect id="torpedo2_dmg" extends="explosion" damage="24" damageName="vehicle.damage_bonus" />
+	<tile id="torpedo2" sheet="objects.6" />
+	<item id="torpedo2" type="equipment" cost="750" weight="2" icon="torpedo2.ico" attack="20" with="torpedo_launcher">
+		<projectile tile="torpedo2" animation="item8" speed="4" offsetY="-2" hitEffect="torpedo2_dmg" knockback="10" breakTile="5" breakPower="100" hit_sfx="torpedo" />
+	</item>
+	<recipe id="craft_torpedo2" creates="torpedo2" type="sub_pen" available="player.questComplete('submersible')">
+		<item id="gold_bar" count="1" />
+		<item id="crystal_shard" count="1" />
+		<item id="uranium" count="1" />
+	</recipe>
+	
+	<hitEffect id="mega_freeze_dmg" extends="freeze" damage="24" damageName="vehicle.damage_bonus" element="ice" />
+	<hitEffect id="mega_splash_dmg" extends="splash" damage="24" damageName="vehicle.damage_bonus" element="water" />
+	<item id="ice_torpedo2" extends="torpedo2" attack="24" color="6699ff" colorScale="3" element="ice">
+		<projectile tile="torpedo2" animation="item8" speed="4" offsetY="-2" color="6699ff" colorScale="3" hitEffect="mega_freeze_dmg" knockback="10" breakTile="5" breakPower="100" />
+	</item>
+	<item id="fire_torpedo2" extends="torpedo2" attack="24" color="ff9911" colorScale="2" element="fire">
+		<projectile tile="torpedo2" animation="item8" speed="4" offsetY="-2" color="ff9911" colorScale="2" hitEffect="torpedo2_dmg" glow="true" knockback="10" breakTile="5" breakPower="100" />
+	</item>
+	<item id="water_torpedo2" extends="torpedo2" attack="24" color="3333ff" colorScale="3" element="water">
+		<projectile tile="torpedo2" animation="item8" speed="4" offsetY="-2" color="3333ff" colorScale="3" hitEffect="mega_splash_dmg" knockback="20" breakTile="5" breakPower="100" />
+	</item>
+	<recipe id="make_torpedo2" creates="ice_torpedo2" type="enchantments">
+		<item id="torpedo2" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	<recipe id="make_fire_torpedo2" creates="fire_torpedo2" type="enchantments">
+		<item id="torpedo2" count="1" />
+		<item id="fire_tusk" count="1" />
+	</recipe>
+	<recipe id="make_water_torpedo2" creates="water_torpedo2" type="enchantments">
+		<item id="torpedo2" count="1" />
+		<item id="fire_tusk" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	
+	<animation id="item13" count="13" />
+	<item id="sonar" type="equipment" slot="defend" equipOn="submersible" cost="0" weight="0" icon="sonar.ico" animation="item13">
+		<onEquip><radar id="sonar" tile="orbit.radar" animation="orbit.radar" padding="2" overwrite="true" centerOn="player" scale="16" structureId="spirit_detector_structure" objectId="spirit_detector_object" /></onEquip>
+		<onUnequip><radar id="sonar" hide="true" /></onUnequip>
+	</item>
+	<recipe id="craft_sonar" creates="sonar" type="sub_pen" available="player.questComplete('submersible')">
+		<item id="ship_parts" count="1" />
+		<item id="moissanite" count="1" />
+		<item id="crystal_shard" count="8" />
+	</recipe>
+</data>

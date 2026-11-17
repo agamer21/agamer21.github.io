@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="colosseum.draconian_wizard" background="depths" width="32" height="16" forceTime="12">
+		<tiles id="depths.grass" y="0" />
+		<tiles id="depths.dirt" start="0" end="1" empty="true" />
+		<shore x="-1" top="sand_top" bottom="sand" flip="true" dock="dock_empty" trans1="depths.dirt_sand1" trans2="depths.dirt_sand2" />
+		<shore x="32" top="sand_top" bottom="sand" dock="dock_empty_flip" trans1="depths.dirt_sand1" trans2="depths.dirt_sand3" />
+		<action>
+			for(x in -8...40) setTile(x, 15, "blackstone");
+			for(y in -15...16){setTile(-9, y, "empty"); setTile(40, y, "empty");}
+		</action>
+		<object id="draconian_wizard" x="10" />
+		<structure id="colosseum_exit" x="0" />
+	</area>
+	<procedure id="colosseum.draconian_wizard">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 500);
+		var map = new StringMap(); map.set("draconian_wizard", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("hamburger"), 2); player.inventory.addItems(getItem("cake"), 10); player.inventory.addItems(getItem("missile"), 10);
+		player.inventory.addItems(getItem("battery"), 4); player.inventory.addItems(getItem("rocket_launcher"), 1); player.stats.get("speed").permaBuff(4);</action>
+		<equip id="exo_sword" fromInventory="false" />
+		<equip id="hoarder_shield" fromInventory="false" />
+		<equip id="laser_drill" fromInventory="false" />
+		<equip id="space_armor" fromInventory="false" />
+		<equip id="space_helm" fromInventory="false" />
+		<equip id="jetpack" fromInventory="false" />
+		<teleport area="colosseum.draconian_wizard" x="2" temporary="true" />
+	</procedure>
+</data>

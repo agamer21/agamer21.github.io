@@ -1,0 +1,26 @@
+<tilesheet id='bigdrill.png' width='64' height='32'>
+	<image frame='0' x='0' y='0' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='1' x='0' y='32' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='2' x='0' y='64' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='3' x='0' y='96' width='62' height='32' offsetX='1' offsetY='0' />
+	<image frame='4' x='0' y='128' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='5' x='63' y='0' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='6' x='126' y='0' width='62' height='32' offsetX='1' offsetY='0' />
+	<image frame='7' x='63' y='32' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='8' x='126' y='32' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='10' x='63' y='64' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='11' x='63' y='96' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='12' x='63' y='128' width='63' height='32' offsetX='0' offsetY='0' />
+	<image frame='13' x='126' y='64' width='64' height='32' offsetX='0' offsetY='0' />
+	<image frame='14' x='126' y='96' width='64' height='32' offsetX='0' offsetY='0' />
+	<image frame='15' x='126' y='128' width='64' height='32' offsetX='0' offsetY='0' />
+	<image frame='17' x='188' y='0' width='7' height='17' offsetX='53' offsetY='8' />
+	<image frame='18' x='189' y='32' width='6' height='21' offsetX='55' offsetY='5' />
+	<image frame='19' x='190' y='64' width='4' height='21' offsetX='57' offsetY='3' />
+	<image frame='20' x='190' y='96' width='4' height='18' offsetX='57' offsetY='1' />
+	<image frame='21' x='190' y='128' width='5' height='16' offsetX='57' offsetY='0' />
+	<image frame='22' x='188' y='17' width='3' height='3' offsetX='59' offsetY='8' />
+	<image frame='23' x='191' y='17' width='2' height='3' offsetX='60' offsetY='3' />
+	<image frame='9' equals='0' offsetX='0' offsetY='0' />
+	<image frame='16' equals='15' offsetX='0' offsetY='0' />
+</tilesheet>

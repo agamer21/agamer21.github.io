@@ -1,0 +1,24 @@
+<sheets>
+<tilesheet id='ruins.1' sheet='ruins.png' width='288' height='96'>
+	<image frame='0' x='0' y='96' width='257' height='90' offsetY='6' />
+	<image frame='1' x='0' y='267' width='167' height='48' offsetY='48' />
+	<image frame='2' x='265' y='225' width='250' height='67' offsetY='29' />
+	<image frame='3' x='265' y='292' width='214' height='33' offsetY='63' />
+	<image frame='4' x='265' y='96' width='263' height='67' offsetY='29' />
+	<image frame='5' x='265' y='0' width='191' height='96' offsetY='0' />
+	<image frame='6' x='0' y='0' width='265' height='96' offsetY='0' />
+	<image frame='7' x='265' y='163' width='272' height='62' offsetY='34' />
+	<image frame='8' x='0' y='186' width='232' height='81' offsetY='15' />
+</tilesheet>
+<tilesheet id='ruins.2' sheet='ruins.png' width='96' height='96'>
+	<image frame='0' x='534' y='0' width='71' height='89' offsetX='4' offsetY='0' />
+	<image frame='1' x='167' y='267' width='89' height='55' offsetX='6' offsetY='16' />
+	<image frame='2' x='576' y='225' width='47' height='81' offsetX='12' offsetY='7' />
+	<image frame='3' x='232' y='186' width='33' height='61' offsetX='24' offsetY='17' />
+	<image frame='4' x='456' y='0' width='78' height='89' offsetX='8' offsetY='5' />
+	<image frame='5' x='515' y='225' width='61' height='78' offsetX='16' offsetY='11' />
+	<image frame='6' x='586' y='96' width='47' height='60' offsetX='22' offsetY='19' />
+	<image frame='7' x='528' y='96' width='58' height='49' offsetX='15' offsetY='21' />
+	<image frame='8' x='537' y='163' width='85' height='25' offsetX='2' offsetY='24' />
+</tilesheet>
+</sheets>

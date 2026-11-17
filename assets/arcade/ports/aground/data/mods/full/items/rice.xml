@@ -1,0 +1,20 @@
+<tilesheet id='rice.png' width='120' height='48'>
+	<image frame='0' x='0' y='0' width='116' height='11' offsetX='2' offsetY='37' />
+	<image frame='1' x='116' y='0' width='116' height='11' offsetX='2' offsetY='37' />
+	<image frame='2' x='0' y='11' width='116' height='14' offsetX='2' offsetY='34' />
+	<image frame='3' x='0' y='25' width='116' height='18' offsetX='2' offsetY='30' />
+	<image frame='4' x='0' y='43' width='116' height='21' offsetX='2' offsetY='27' />
+	<image frame='5' x='0' y='64' width='116' height='21' offsetX='2' offsetY='27' />
+	<image frame='6' x='0' y='85' width='116' height='26' offsetX='2' offsetY='22' />
+	<image frame='7' x='0' y='111' width='116' height='26' offsetX='2' offsetY='22' />
+	<image frame='8' x='116' y='25' width='116' height='26' offsetX='2' offsetY='22' />
+	<image frame='9' x='116' y='51' width='116' height='27' offsetX='2' offsetY='21' />
+	<image frame='10' x='116' y='78' width='116' height='25' offsetX='2' offsetY='23' />
+	<image frame='11' x='0' y='137' width='116' height='19' offsetX='2' offsetY='29' />
+	<image frame='12' x='116' y='11' width='116' height='13' offsetX='2' offsetY='35' />
+	<image frame='13' x='116' y='103' width='116' height='13' offsetX='2' offsetY='35' />
+	<image frame='14' x='116' y='116' width='116' height='11' offsetX='2' offsetY='37' />
+	<image frame='15' x='116' y='127' width='116' height='11' offsetX='2' offsetY='37' />
+	<image frame='16' x='116' y='138' width='116' height='11' offsetX='2' offsetY='37' />
+	<image frame='17' x='116' y='149' width='116' height='11' offsetX='2' offsetY='37' />
+</tilesheet>

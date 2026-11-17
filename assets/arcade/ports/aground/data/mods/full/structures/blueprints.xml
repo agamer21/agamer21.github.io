@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<item id="factory_upgrade" type="blueprint" cost="8000" weight="0" icon="blueprint.ico">
+		<action id="upgrade" upgrade="factory" structure="car_factory">
+			<item id="ship_parts" count="1" />
+			<item id="steel_bar" count="10" />
+		</action>
+	</item>
+	<item id="airport_blueprint" type="blueprint" cost="8000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="airport">
+			<item id="ship_parts" count="1" />
+			<item id="steel_bar" count="20" />
+			<item id="silicon" count="5" />
+			<item id="uranium" count="1" />
+		</action>
+	</item>
+	<item id="hut_upgrade" type="blueprint" cost="5000" weight="0" icon="blueprint.ico" achievement="hut_upgrade">
+		<action id="upgrade" upgrade="hut" structure="house">
+			<item id="wood" count="5" />
+			<item id="coal" count="5" />
+			<item id="sulfur" count="2" />
+			<item id="quartz" count="2" />
+		</action>
+	</item>	
+	<item id="house_kitchen" type="blueprint" cost="5000" weight="0" icon="blueprint.ico" dismantle="true">
+		<action id="upgrade" upgrade="kitchen2" structure="house_kitchen">
+			<constraint enabled="s != null && (s.info.id == 'house' || s.info.id == 'space_house')" x="s.xPos+s.info.width" fail="warning.structure_adjacent_right{structure:[structure=house]}">
+				s = area.getStructureInTile(tile_x-3, tile_y);
+			</constraint>
+			<item id="wood" count="5" />
+			<item id="coal" count="5" />
+			<item id="sulfur" count="2" />
+			<item id="quartz" count="2" />
+		</action>
+	</item>
+	<item id="nuclear_plant_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico">
+		<action id="upgrade" upgrade="power_plant" structure="nuclear_plant">
+			<item id="steel_bar" count="10" />
+			<item id="titanium" count="5" />
+			<item id="silicon" count="5" />
+		</action>
+	</item>
+	<item id="operation_table_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="operation_table" underground="true">
+			<item id="ship_parts" count="1" />
+			<item id="steel_bar" count="5" />
+			<item id="silicon" count="5" />
+			<item id="uranium" count="1" />
+		</action>
+	</item>
+	<item id="sub_pen_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="sub_pen" underground="true" onWater="true">
+			<item id="steel_bar" count="16" /><item id="uranium" count="2" /><item id="silicon" count="6" />
+		</action>
+	</item>
+	<item id="advanced_lab_blueprint" type="blueprint" cost="12000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="advanced_lab" underground="true">
+			<item id="ship_parts" count="1" />
+			<item id="steel_bar" count="10" />
+			<item id="silicon" count="10" />
+			<item id="uranium" count="2" />
+		</action>
+	</item>
+	<item id="teleportal_blueprint" type="blueprint" cost="12000" weight="0" icon="teleportal.ico">
+		<action id="build" structure="teleportal" underground="true">
+			<areaConstraint enabled="!player.inDungeon() && !player.inTempArea() && area.getSystem() != null" fail="warning.no_place" />
+			<item id="ship_parts" count="1" />
+			<item id="steel_bar" count="5" />
+			<item id="silicon" count="5" />
+			<item id="uranium" count="1" />
+		</action>
+	</item>
+</data>

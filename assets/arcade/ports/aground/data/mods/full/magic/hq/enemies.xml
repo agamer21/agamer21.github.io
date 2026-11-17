@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="dragomech.xml" />
+	<tile id="dragomech" sheet="dragomech.1" />
+	<animation id="dragomech.body" count="10" /><animation id="dragomech.arm" x="20" count="1" />
+	<animation id="dragomech.wings" x="37" count="1" /><animation id="dragomech.wings.fx" x="38" count="10" />
+	<animation id="dragomech.wings.open" x="48" count="1" length="10"><append tile="dragomech" animation="dragomech.wings.fx" /></animation>
+	<animation id="dragomech.idle" x="22" count="1" length="10"><append tile="dragomech" animation="dragomech.body" behind="true" /><append tile="dragomech" animation="dragomech.arm" behind="true" /></animation>
+	<animation id="dragomech.walk" x="23" count="6"><append tile="dragomech" animation="dragomech.body" behind="true" /><append tile="dragomech" animation="dragomech.arm" behind="true" /></animation>
+	<animation id="dragomech.fly" x="21" count="1" length="10"><append tile="dragomech" animation="dragomech.body" behind="true" /><append tile="dragomech" animation="dragomech.arm" behind="true" /></animation>
+	<animation id="dragomech.hover" equals="dragomech.fly" /><animation id="dragomech.arm.preattack" x="10" count="3" /><animation id="dragomech.arm.attack" x="13" count="7" />
+	<animation id="dragomech.preattack" x="22" count="1" length="3"><append tile="dragomech" animation="dragomech.body" behind="true" /><append tile="dragomech" animation="dragomech.arm.preattack" behind="true" /></animation>
+	<animation id="dragomech.attack" x="22" count="1" length="7"><append tile="dragomech" animation="dragomech.body" behind="true" /><append tile="dragomech" animation="dragomech.arm.attack" behind="true" /></animation>
+	<animation id="dragomech._mine" x="29" count="8" /><animation id="dragomech.back_arm.idle" equals="single" />
+	<animation id="dragomech.move" equals="dragomech.walk" />
+	<animation id="dragomech.mine" equals="dragomech.attack" />
+	<animation id="dragomech.mine.fire" x="29" count="8"><append tile="dragomech" animation="dragomech.idle" behind="true" /></animation>
+	<animation id="dragomech.breath" equals="dragomech.idle" />
+	<tile id="dragomech.back_arm" sheet="dragomech.3" /><animation id="dragomech.back_arm.preattack" x="1" count="2" />
+	<animation id="dragomech.back_arm.attack" x="3" count="7"><frame x="1" count="2" reverse="true" /></animation>
+	<object id="dragomech.back_arm" tile="dragomech.back_arm" layer="enemy" offsetX="38" renderer="attack" behind="true" color="aaaaff" colorScale="1.5">
+		<over><section if="this.renderer.animation == 'dragomech.back_arm.idle' && this.parent.isHostile()">
+			<attack type="melee" damage="30" afterAnimation="dragomech.back_arm.idle" target="player" canFlip="false"><pre><play object="this" animation="dragomech.back_arm.preattack" /></pre></attack>
+		</section></over>
+		<overSecond><run object="dragomech.back_arm" event="over" /></overSecond>
+	</object>
+	<tile id="dragomech.head" sheet="dragomech.2" /><animation id="dragomech.head.idle" count="10" /><animation id="dragomech.head.attack" equals="dragomech.head.idle" />
+	<enemy id="dragomech.head" tile="dragomech.head" type="surface" canFlip="false" speed="0" health="30" defense="7" fps="10" ignoreHit="true" death_sfx="alien_death" blood="magic.explosion.sm" element="fire" friendlyFire="false" offsetY="-58" color="aaaaff" colorScale="1.5" hostileFlag="aliens.hostile">
+		<loot id="fire_gem" />
+		<attack type="breath" damage="12" range="9" repeat="2" sfx="dragon_atk">
+			<projectile tile="fire" glow="true" speed="2" frames="8" breakTile="2" breakPower="4" scaleTo="2" offsetX="-12" offsetY="3" hitEffect="fire_med" color="f9be0b" colorScale="2">
+				<light tile="light.small" color="cc5500" />
+			</projectile>
+		</attack>
+	</enemy>
+	<enemy id="dragomech.head2" extends="dragomech.head" offsetX="-2" flip="true" />
+	<animation id="dragomech_orb.idle" x="4" count="8" repeat="10" />
+	<object id="dragomech_orb" tile="magic_orb" animation="dragomech_orb.idle" layer="player" save="false" width="16" height="16" overlapVehicle="true" removeOnComplete="true" attack_sfx="orb_impact">
+		<over>
+			<hitEffect object="this" tile="magic_orb" animation="magic_orb.impact" />
+			<damage object="player" attacker="this" damage="25" directional="false" /><remove object="this" />
+		</over>
+	</object>
+	<enemy id="dragomech" tile="dragomech" health="300" defense="7" fps="10" type="surface" ignoreHit="true" range="8" vrange="8" flying="true" vertical="true" cooldownCancelAttack="true" friendlyFire="false" passEnemies="true" death_sfx="alien_death" blood="magic.explosion.med" flyAnim="true" alignCenter="false" element="fire" kill_achievement="dragomech" color="aaaaff" colorScale="1.5" hostileFlag="aliens.hostile">
+		<loot id="evo_shard" count="3" />
+		<tile id="dragomech" name="wings" animation="dragomech.wings" fps="10" y="0" offsetX="-0.5" offsetY="-0.5" behind="true" color="aaaaff" colorScale="1.5" />
+		<tile id="dragomech" name="mine" animation="hidden" fps="10" y="0" />
+		<object id="dragomech.back_arm" /><object id="dragomech.head" /><object id="dragomech.head2" />
+		<attack type="melee" damage="25" ignoreArmor="true" range="2" height="20" boundsY="-10">
+			<pre><play object="this" animation="preattack" /></pre>
+		</attack>
+		<positionChanged><action if="this.area != null">
+			var wings = this.getTileById("wings"); if(wings != null) wings.playAnimation(this.area.emptyTile(this.tile_x, Math.ceil((this.yTile+1)/Tile.SIZE))?'dragomech.wings.open':'dragomech.wings', true, null, -0.5, -0.5);
+		</action></positionChanged>
+		<cooldown seconds="4">
+			<stop if="!this.isHostile()" /><set id="p" value="area.getClosestPlayer(this.getCenterX(), this.getCenterY())" />
+			<set id="_mine" value="this.getTileById('mine')" />
+			<section if="_mine != null && p != null">
+				<sound id="orb_spawn" object="this" /><play object="_mine" animation="dragomech._mine" offsetX="-0.5" offsetY="-0.5" />
+				<play object="_mine" animation="hidden" loop="true" />
+				<object id="dragomech_orb" x="(this.xPos+((this.getFacing() == 1)?-8:this._width-3))/Tile.SIZE" y="(this.yTile-49)/Tile.SIZE">Movement.seek(this, p, 3);</object>
+			</section>
+		</cooldown>
+	</enemy>
+	
+	<vehicle id="ride_dragomech" tile="dragomech" health="500" fuel="12000" efficiency="0" defense="7" fps="10" speed="4" type="spaceship" tooltip="structure.tooltip.operate" canJump="false" blood="magic.explosion.med" title="itemName('item.names.dragomech', this.name)" includeName="true" underwater="true" flight_height="999" max_weight="4000" death_sfx="alien_death" icon="dragomech.ico" block_icon="adult_dragon.ico" flyMove="false" element="fire" tilesBehind="true" allowModifier="true" mine="9" mine_fuel="1" showMine="true" item="dragomech">
+		<repair id="blood_gem" value="250" /><recipe type="dragon_feed" />
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="dragomech" value="this.health" name="this.name"><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<tile id="dragomech" name="wings" animation="dragomech.wings" fps="10" y="0" />
+		<tile id="dragomech.head" animation="dragomech.head.idle" fps="10" y="-19/Tile.SIZE" />
+		<attack type="beam" damage="25" cut="25" ignoreArmor="true" range="2" top="-35" bottom="-10" cost="0.25" overlap="0.125">
+			<pre><play object="this" animation="preattack" /></pre>
+		</attack>
+		<positionChanged><action if="this.area != null && this.renderer != null">
+			var wings = this.getTileById("wings"); if(wings != null) wings.playAnimation(this.area.emptyTile(this.tile_x, Math.ceil((this.yTile+1)/Tile.SIZE))?'dragomech.wings.open':'dragomech.wings', true, null);
+		</action></positionChanged>
+		<attack useDefend="true" type="breath" damage="12" range="9" repeat="2" sfx="dragon_atk" element="fire" cost="3" animation="breath">
+			<projectile tile="fire" glow="true" speed="2" frames="8" breakTile="2" breakPower="4" scaleTo="2" offsetX="-12" offsetY="-38" hitEffect="fire_med" color="f9be0b" colorScale="2" underwater="false">
+				<light tile="light.small" color="cc5500" />
+			</projectile>
+		</attack>
+		<mount><action>setGameScale(2)</action></mount>
+		<light tile="light.largest" color="ff9898" flicker="true" />
+		<ability hotkey="8" icon="bombardment.ico" animation="item6" cost="50" available="this.renderer != null && !this.renderer.attacking">
+			<sound id="orb_spawn" object="this" /><action>this.renderer.attacking = true;</action><play object="this" animation="mine.fire" /><action>this.renderer.attacking = false;</action>
+			<projectile tile="magic_orb" animation="magic_orb.idle" speed="3" critical="false" width="16" height="16" damage="25" dx="this.getDX()" dy="0" hit_sfx="orb_impact" homing="true" spawner="player" spawnX="(this.xPos+((this.getFacing() == 1)?-8:this._width-3))/Tile.SIZE" spawnY="(this.yTile-49)/Tile.SIZE" relative="false" range="60" underwater="true">
+				<hitEffect tile="magic_orb" animation="magic_orb.impact" />
+			</projectile>
+		</ability>
+		<onTranslate if="player.hasSeenItem('dragon_seed')"><run procedure="dragon_ship.talk" /></onTranslate>
+	</vehicle>
+		
+	<item id="dragomech" type="animal" cost="0" weight="100" icon="dragomech.ico" durability="500" durabilityName="common.health" durabilityIcon="vehicle_health" canModify="true" element="fire">
+		<action id="plant" name="vehicle.deploy" object="ride_dragomech" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" on_air="true" underground="true" underwater="true">
+			<action>
+				object.setHealth(this.getFeed()); object.name = this.getNameStr(); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+			</action>
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" /><action id="rename" />
+		<food id="blood_gem" value="250" />
+	</item>
+	
+	<include id="boss1.xml" />
+	<tile id="final_boss" sheet="boss1.1" />
+	<tile id="final_boss.launcher" sheet="boss1.2" x="1" />
+	<tile id="final_boss.arm" sheet="boss1.2" />
+	<tile id="final_boss.claw" sheet="boss1.3" />
+	<tile id="final_boss.projectile" sheet="boss1.4" />
+	<animation id="final_boss.idle" equals="item10" />
+	<animation id="final_boss.fire.left" x="10" count="6"><frame visible="false" length="4" /></animation>
+	<animation id="final_boss.fire.right" x="10" count="6" rotate="180"><frame visible="false" length="4" /></animation>
+	<animation id="final_boss.fire.up" x="10" count="6" rotate="90"><frame visible="false" length="4" /></animation>
+	<animation id="final_boss.fire.down" x="10" count="6" rotate="270"><frame visible="false" length="4" /></animation>
+	<animation id="final_boss.fire_left" count="10"><append tile="final_boss" animation="final_boss.fire.left" /></animation>
+	<animation id="final_boss.fire_right" count="10"><append tile="final_boss" animation="final_boss.fire.right" /></animation>
+	<animation id="final_boss.fire_up" count="10"><append tile="final_boss" animation="final_boss.fire.up" /></animation>
+	<animation id="final_boss.fire_down" count="10"><append tile="final_boss" animation="final_boss.fire.down" /></animation>
+	<animation id="final_boss.projectile" count="4" />
+	<animation id="final_boss.projectile.impact" x="4" count="6" />
+	<enemy id="final_boss.arm" tile="final_boss.arm" health="15" defense="10" canFlip="false" canCritical="false" overlapVehicle="true" element="fire">
+		<over><damage object="player" attacker="this" damage="25" directional="false" critical="false" /></over>
+	</enemy>
+	<enemy id="final_boss.claw" tile="final_boss.claw" extends="final_boss.arm" offsetX="-36" offsetY="36" />
+	<enemy id="final_boss.claw_flip" tile="final_boss.claw" extends="final_boss.arm" offsetX="4" offsetY="36" facing="right" />
+	<animation id="final_boss.launcher.idle" equals="item6" />
+	<enemy id="final_boss.launcher" tile="final_boss.launcher" health="25" defense="10" canFlip="false" canCritical="false" overlapVehicle="true" range="3" offset="Math.PI*0.25" inFront="true" element="fire" save="false">
+		<init><action>var b = area.getObject('final_boss'); if(b == null) b = area.getObject('colosseum.final_boss'); if(b != null) Movement.circle(this, b, Std.parseFloat(this.info.xml.get("range")), 1, false, 0, 0, area.getObjectsById(this.info.id).indexOf(this)*Math.PI*0.5+eval(this.info.xml.get("offset")));</action></init>
+		<over><damage object="player" attacker="this" damage="25" directional="false" critical="false" /></over>
+		<cooldown seconds="8" randomOffset="true">
+			<set id="p" value="area.getClosestPlayer(this.getCenterX(), this.getCenterY())" />
+			<object id="dragomech_orb" x="(this.xPos+8)/Tile.SIZE" y="(this.yTile-8)/Tile.SIZE" if="p != null">Movement.seek(this, p, 3);</object>
+		</cooldown>
+	</enemy>
+	<enemy id="final_boss.launcher2" extends="final_boss.launcher" range="4.5" offset="0" />
+	<object id="light_orb_end" extends="light_orb2" save="false">
+		<overlap object="final_boss"><remove object="this" /></overlap>
+		<overlap object="colosseum.final_boss"><remove object="this" /></overlap>
+	</object>
+	<enemy id="final_boss" tile="final_boss" health="400" defense="10" canFlip="false" canCritical="false" bgm="final_boss1" cooldownCancelAttack="true" type="surface" speed="0" death_sfx="kraken_death" soundScale="2" ignoreHit="true" friendlyFire="false" fps="10" knockback="false">
+		<arm id="final_boss.arm" x="7" y="-158" length="7" diameter="20" end="final_boss.claw" angle="225" angleDelta="50" regrow="3" />
+		<arm id="final_boss.arm" x="160" y="-158" length="7" diameter="20" end="final_boss.claw_flip" angle="315" angleDelta="50" regrow="3" />
+		<arm id="final_boss.arm" x="7" y="-7" length="7" diameter="20" end="final_boss.claw" angle="135" angleDelta="50" regrow="3" />
+		<arm id="final_boss.arm" x="160" y="-7" length="7" diameter="20" end="final_boss.claw_flip" angle="45" angleDelta="50" regrow="3" />
+		<hitbox x="69" y="69" width='64' height='64' />
+		<init>
+			<set id="count" value="0" /><set id="me" value="this" />
+			<repeat count="4" if="area.getObject('final_boss.launcher') == null"><object id="final_boss.launcher" x="0" /></repeat>
+			<repeat count="4" if="area.getObject('final_boss.launcher2') == null"><object id="final_boss.launcher2" x="0" /></repeat>
+		</init>
+		<onDeath>
+			<shake count="10" dx="2" seconds="2" />
+			<scene id="aliens" show="final_boss2" with="fade" showToAll="true">
+				<remove objectsById="final_boss.launcher" /><remove objectsById="final_boss.launcher2" />
+			</scene>
+			<object id="final_boss.stage2" x="(this.xPos+78)/Tile.SIZE" y="(this.yTile-78)/Tile.SIZE">if(this.renderer != null) this.renderer.scaleX = this.getFacing();</object>
+		</onDeath>
+		<loseHealth>
+			<set id="old" value="this" /><set id="this" value="area.getObject('final_boss.hotspot')" /><run object="final_boss.hotspot" event="over" if="this != null && area.isActivePlayer()" /><set id="this" value="old" />
+		</loseHealth>
+		<cooldown seconds="2">
+			<set id="parent" value="this" />
+			<object id="light_orb_end" x="0" y="this.getTileCenterY()">Movement.seek(this, parent, 15);</object>
+			<object id="light_orb_end" x="255" y="this.getTileCenterY()">Movement.seek(this, parent, 15);</object>
+		</cooldown>
+		<cooldown seconds="60"><set id="me" value="this" /><choose>
+			<repeat count="4" if="area.getObject('final_boss.launcher') == null"><object id="final_boss.launcher" x="0" /></repeat>
+			<repeat count="4" if="area.getObject('final_boss.launcher2') == null"><object id="final_boss.launcher2" x="0" /></repeat>
+		</choose></cooldown>
+		<cooldown seconds="1">
+			<choose>
+				<attack type="projectile" damage="100" range="20" animation="fire_left" if="count == 0">
+					<projectile tile="final_boss.projectile" animation="final_boss.projectile" speed="5" offsetX="-100" delay="3" overlap="0.125" knockback="32" critical="false" fire_sfx="plasma_cannon">
+						<hitEffect tile="final_boss.projectile" animation="final_boss.projectile.impact" color="dd99ff" />
+					</projectile>
+				</attack>
+				<attack type="projectile" damage="100" range="20" animation="fire_up" angle="90" if="count == 1">
+					<projectile tile="final_boss.projectile" animation="final_boss.projectile" speed="5" offsetY="-100" delay="3" overlap="0.125" critical="false" rotate="90" fire_sfx="plasma_cannon">
+						<hitEffect tile="final_boss.projectile" animation="final_boss.projectile.impact" color="dd99ff" />
+					</projectile>
+				</attack>
+				<attack type="projectile" damage="100" range="20" animation="fire_right" angle="180" if="count == 2">
+					<projectile tile="final_boss.projectile" animation="final_boss.projectile" speed="5" offsetX="100" delay="3" overlap="0.125" knockback="32" critical="false" fire_sfx="plasma_cannon">
+						<hitEffect tile="final_boss.projectile" animation="final_boss.projectile.impact" color="dd99ff" />
+					</projectile>
+				</attack>
+				<attack type="projectile" damage="100" range="20" animation="fire_down" angle="270">
+					<projectile tile="final_boss.projectile" animation="final_boss.projectile" speed="5" offsetY="100" delay="3" overlap="0.125" critical="false" rotate="270" fire_sfx="plasma_cannon">
+						<hitEffect tile="final_boss.projectile" animation="final_boss.projectile.impact" color="dd99ff" />
+					</projectile>
+				</attack>
+			</choose><action>count++; if(count >= 4) count = 0;</action>
+		</cooldown>
+	</enemy>
+	
+	<animation id="aura.fire" count="10" glow="true" color="ee3333" />
+	<animation id="aura.water" count="10" glow="true" color="2233ff" />
+	<animation id="aura.plant" count="10" glow="true" color="22ff33" />
+	<animation id="aura.earth" count="10" glow="true" color="eecc33" />
+	<animation id="aura.ice" count="10" glow="true" color="2233ff" colorScale="4" />
+	<enemy id="fire_bird_end" extends="fire_bird" health="30" defense="5" vertical="true" friendlyFire="false" passEnemies="true">
+		<tile id="sun" animation="aura.fire" alpha="0.5" fps="10" y="0" offsetX="-0.5" offsetY="-0.5" behind="true" />
+		<attack type="projectile" damage="15" range="8" animation="fire">
+			<projectile tile="fireball_small" animation="fireball_small" speed="3" offsetY="4" hitEffect="fire_sm_dot" fire_sfx="fireball" knockback="5">
+				<light tile="light.small" color="cc5500" />
+			</projectile>
+		</attack>
+	</enemy>
+	<enemy id="snaptopus_end" extends="snaptopus" type="surface" underwater="true" vertical="true" passEnemies="true">
+		<tile id="sun" animation="aura.water" alpha="0.5" fps="10" y="0" offsetX="-0.5" offsetY="-0.5" behind="true" />
+	</enemy>
+	<enemy id="crawler_end" extends="crawler2" health="60" damage="20" vertical="true" passEnemies="true">
+		<tile id="sun" animation="aura.plant" alpha="0.5" fps="10" y="0" offsetX="-0.5" offsetY="-0.5" behind="true" />
+	</enemy>
+	<enemy id="golem_end" extends="purple_golem" defense="6" health="60" damage="15" passEnemies="true">
+		<tile id="sun" animation="aura.earth" alpha="0.5" fps="10" y="0" offsetX="-0.5" offsetY="-0.5" behind="true" />
+	</enemy>
+	<enemy id="icer_end" extends="icer" defense="5" health="40" damage="15" passEnemies="true">
+		<tile id="sun" animation="aura.ice" alpha="0.5" fps="10" y="0" offsetX="-0.5" offsetY="-0.5" behind="true" />
+		<attack type="melee" damage="20" hitEffect="freeze" />
+	</enemy>
+	<include id="boss2.xml" includeRoot="true" />
+	<tile id="final_boss.stage2" sheet="boss2.png" />
+	<animation id="final_boss.stage2.legs" count="12" />
+	<animation id="final_boss.stage2.idle" x="13" count="12" />
+	<animation id="final_boss.stage2.walk" equals="final_boss.stage2.idle" />
+	<animation id="final_boss.stage2.fire" x="96" count="12" />
+	<animation id="final_boss.stage2.earth" x="84" count="6"><frame x="90" count="6" repeat="100" /></animation>
+	<animation id="final_boss.stage2.ice" x="108" count="4"><frame x="112" count="8" repeat="100" /></animation>
+	<animation id="final_boss.stage2.cast.fire" x="37" count="12" />
+	<animation id="final_boss.stage2.cast.water" x="73" count="11" />
+	<animation id="final_boss.stage2.cast.ice" x="49" count="12" />
+	<animation id="final_boss.stage2.cast.earth" x="25" count="12" />
+	<animation id="final_boss.stage2.cast.plant" x="61" count="12" />
+	<object id="final_boss.mine" extends="alien.mine">
+		<over><stop if="this.alpha < 1" /></over>
+		<initRenderer><displayAction>this.alpha = 0;</displayAction><lerp object="this" alpha="1" seconds="2" modal="false" /></initRenderer>
+	</object>
+	<procedure id="final_boss.orbs">
+        <set id="orbs" value="[]" if="!exists('orbs')" />
+		<action if="this.area != null">
+			for(i in 0...4){
+				var o = getObject("final_boss.mine").create(0, 0);
+				area.addObject(o); Movement.circle(o, this, 2, 1, false, 0, 0, i*Math.PI/2); orbs.push(o);
+			}
+		</action>
+	</procedure>
+	<enemy id="final_boss.stage2" tile="final_boss.stage2" health="1500" defense="10" fps="10" type="surface" bgm="final_boss2" ignoreHit="true" range="18" vrange="18" vertical="true" speed="1" friendlyFire="false" passEnemies="true" death_sfx="alien_death" blood="magic.explosion.med" needsAttack="false" kill_achievement="final_boss" knockback="false">
+		<lootSet><loot id="alien_heart" /></lootSet>
+		<lootSet><loot id="exotic_matter" count="3" /></lootSet>
+		<tile id="final_boss.stage2" animation="final_boss.stage2.legs" fps="10" y="0" offsetX="-0.5" offsetY="-0.5" />
+		<tile id="final_boss.stage2" name="fx" animation="hidden" fps="10" y="0" />
+		<tile id="final_boss.stage2" name="cast" animation="hidden" fps="10" y="0" />
+		<init><set id="hpps" value="Math.round(this.getMaxHealth()/10)" /><action>
+			elements = [getElement("fire"), getElement("water"), getElement("ice"), getElement("earth"), getElement("plant")]; this.changeTint(0x7e13cb, 1.5); hp = this.getMaxHealth();
+			colors = [0xff3333, 0x3333ff, 0x33ffff, 0xffcc33, 0x33ff33]; fx = ["final_boss.stage2.fire", "hidden", "final_boss.stage2.ice", "final_boss.stage2.earth", "hidden"]; current = 0;
+			if(hp > this.getHealth()){
+				var ct = Math.ceil((hp-this.getHealth())/hpps); hp -= ct*hpps; current = (ct-1)%elements.length; this.element = elements[current]; this.changeTint(colors[current], 1.5);
+				var tile = this.getTileById("fx"); if(tile != null) tile.playAnimation(fx[current], true, null, -0.5, -0.5); current++; if(current >= elements.length) current = 0;
+			}
+		</action></init>
+		<onDeath>
+			<action if="exists('orbs')">while(orbs.length > 0) area.removeObject(orbs.pop());</action>
+			<shake count="10" dx="2" seconds="2" />
+			<scene id="aliens" show="final_boss3" with="fade" showToAll="true">
+				<remove objectsById="fire_bird_end" />
+				<remove objectsById="snaptopus_end" />
+				<remove objectsById="crawler_end" />
+				<remove objectsById="golem_end" />
+				<remove objectsById="icer_end" />
+			</scene>
+			<invokeLater seconds="1">
+				<section if="player.questComplete('launch_virus') && area.getObject('nursery.crab') != null">
+					<call id="president" incoming="true" />
+					<call id="president" end="true" />
+					<scene id="colony" show="boss_defeat" with="fade" showToAll="true" />
+				</section>
+			</invokeLater>
+		</onDeath>
+		<loseHealth><action if="var c = this.getTileById('cast'); return hp > this.getHealth() && (c == null || c.animation == 'hidden')">
+			this.element = elements[current]; this.changeTint(colors[current], 1.5, 15); hp -= hpps;
+			var tile = this.getTileById("fx"); if(tile != null) tile.playAnimation(fx[current], true, null, -0.5, -0.5); current++; if(current >= elements.length) current = 0;
+			if(hp &lt; hpps*5 &amp;&amp; area.isActivePlayer()){
+				var id = null; if(this.element.id == 'fire') id = "fire_bird_end";
+				else if(this.element.id == 'water') id = "snaptopus_end";
+				else if(this.element.id == 'plant') id = "crawler_end";
+				else if(this.element.id == 'earth') id = "golem_end";
+				else if(this.element.id == 'ice') id = "icer_end";
+				var o = getObject(id); if(o != null){
+					function addObject(o){area.addObject(o); if(o.renderer != null){o.renderer.alpha = 0; o.renderer.lerp(new AlphaKeyframe(1), 10);}}
+					addObject(o.create(Math.round((this.xPos-32)/Tile.SIZE)*Tile.SIZE, this.tile_y*Tile.SIZE));
+					addObject(o.create(Math.round((this.xPos+this._width+32)/Tile.SIZE)*Tile.SIZE, this.tile_y*Tile.SIZE));
+					addObject(o.create(Math.round((this.xPos-32)/Tile.SIZE)*Tile.SIZE, Math.round((this.yTop()+Tile.SIZE)/Tile.SIZE)*Tile.SIZE));
+					addObject(o.create(Math.round((this.xPos+this._width+32)/Tile.SIZE)*Tile.SIZE, Math.round((this.yTop()+Tile.SIZE)/Tile.SIZE)*Tile.SIZE));
+				}
+			}
+		</action></loseHealth>
+		<cooldown seconds="5">
+			<set id="cast" value="this.getTileById('cast')" />
+			<stop if="this.element == null || cast == null" />
+			<play object="cast" animation="'final_boss.stage2.cast.'+this.element.id" offsetX="-0.5" offsetY="-0.5" />
+			<play object="cast" animation="hidden" loop="true" />
+			<choose>
+				<section if="this.element.id == 'fire'"><action>spawner = this; count = 15; damage = 40;</action><run procedure="spell.meteor.multi" /></section>
+				<section if="this.element.id == 'water'"><action>spawner = this;</action><object id="spell.flood" x="(this.getCenterX()-72)/Tile.SIZE" y="(this.getCenterY()+64)/Tile.SIZE" pre="true">this.vars.set("spawner", spawner); this.vars.set("damage", 10);</object></section>
+				<section if="this.element.id == 'plant'"><action>spawner = this;</action><object id="spell.growth" x="(this.getCenterX()-72)/Tile.SIZE" y="(this.getCenterY()+64)/Tile.SIZE" pre="true">this.vars.set("spawner", spawner); this.vars.set("damage", 48);</object></section>
+				<section if="this.element.id == 'earth'"><action>spawner = this; x = 0; count = 4; side = 1; centerX = spawner.getCenterX(); damage = 50;</action><run procedure="spell.earth.multi" /></section>
+				<section if="this.element.id == 'ice'">
+					<projectile spawner="this" damage="60" range="18" dx="this.getDX()" tile="spell.tornado" animation="spell.tornado" speed="2" element="ice" homing="true" pierce="true" passTile="true" hitEffect="freeze">
+						<spawn><run procedure="spell.tornado.form" /></spawn>
+					</projectile>
+				</section>
+			</choose>
+		</cooldown>
+		<cooldown seconds="1">
+			<set id="orbs" value="orbs.filter(function(o){return o.area != null;})" if="orbs.length > 0" />
+			<action if="orbs.length > 0 && orbs[0].alpha >= 1">var p = area.getClosestPlayer(this.getCenterX(), this.getCenterY()); if(p != null) Movement.seek(orbs.shift(), p, 3+random()*3);</action>
+		</cooldown>
+		<cooldown seconds="10">
+			<run procedure="final_boss.orbs" if="!exists('orbs') || orbs.length == 0" />
+		</cooldown>
+	</enemy>
+</data>

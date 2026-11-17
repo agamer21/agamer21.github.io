@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="colosseum.yeti" width="32" height="8" background="sky" forceTime="12">
+		<tiles id="stone" start="0" end="1" />
+		<tiles id="snow" top="0" />
+		<tiles id="snow_stone" top="1" />
+		<tiles id="bedrock" x="0" />
+		<tiles id="bedrock" x="31" />
+		<tiles id="bedrock" y="7" />
+		<objects id="ice_bush" y="-1" fromX="0" toX="31" percent="0.25" />
+		<objects id="yeti" fromX="0" toX="31" count="1" y="-1" />
+		<structure id="colosseum_exit" x="13" y="6" />
+		<mine x="15" y="6" light="3" /><mine x="16" y="6" light="3" /><mine x="15" y="5" light="3" /><mine x="16" y="5" light="3" />
+		<init><runAreaLoad /></init>
+		<onLoad><weather type="snow" fromY="-50" toY="0" /></onLoad>
+	</area>
+	<procedure id="colosseum.yeti">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 20);
+		var map = new StringMap(); map.set("yeti", 1); setGlobal("killCounts", map); changePlayer("player.colosseum", false);
+		player.inventory.addItems(getItem("arrow"), 10); player.inventory.addItems(getItem("bow"), 1);
+		player.inventory.addItems(getItem("berries"), 10); player.inventory.addItems(getItem("meat"), 5);</action>
+		<equip id="steel_sword" fromInventory="false" />
+		<equip id="steel_pickaxe" fromInventory="false" />
+		<equip id="steel_armor" fromInventory="false" />
+		<equip id="kite_shield" fromInventory="false" />
+		<teleport area="colosseum.yeti" x="15.5" y="6" temporary="true" />
+	</procedure>
+</data>

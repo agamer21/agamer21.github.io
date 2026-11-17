@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="objects.xml" />
+	<tile id="magnewyrm" sheet="objects.1" />
+	<animation id="magnewyrm.idle" count="1" x="17" />
+	<animation id="magnewyrm.walk" count="6" x="17" />
+	<animation id="magnewyrm.dig" count="8" x="8" />
+	<animation id="magnewyrm.attack" equals="magnewyrm.dig" />
+	<animation id="magnewyrm.hit" count="1" x="16" length="3" />
+	<animation id="magnewyrm.projectile" x="4" count="4" />
+	<animation id="magnewyrm.projectile.impact" x="0" count="4" />
+	<enemy id="magnewyrm" tile="magnewyrm" health="20" defense="6" damage="20" capture="20" type="wyrm" eatTile="basalt" death_sfx="magnestone_death" attack_sfx="wyrm_attack">
+		<loot id="magnegem" /><capture trapped="magnewyrm" minCapture="5" />
+		<attack type="projectile" damage="20" range="8" animation="attack">
+			<projectile tile="magnewyrm" animation="magnewyrm.projectile" speed="3" glow="true" fire_sfx="fireball" knockback="5" underwater="true">
+				<hitEffect tile="magnewyrm" animation="magnewyrm.projectile.impact" color="ff99ff" /><light tile="light.small" color="ff99ff" />
+			</projectile>
+		</attack>
+	</enemy>
+	
+	<tile id="magnestone" sheet="objects.2" />
+	<animation id="magnestone.idle" count="12" x="0" />
+	<animation id="magnestone.walk" equals="magnestone.idle" />
+	<animation id="magnestone.attack" equals="magnestone.idle" />
+	<animation id="magnestone.hit" count="1" x="12" length="3" />
+	<tile id="magnestone.projectile" sheet="objects.3" />
+	<animation id="magnestone.projectile" x="6" count="5" />
+	<animation id="magnestone.projectile.impact" x="0" count="6" />
+	<enemy id="magnestone" tile="magnestone" health="70" fps="10" defense="6" capture="30" type="surface" range="16" vertical="true" flying="true" friendlyFire="false" passEnemies="true" death_sfx="magnestone_death">
+		<loot id="magnegem" /><capture trapped="magnestone" minCapture="5" />
+		<attack type="projectile" damage="30" range="12" animation="attack" sfx="magnestone_attack">
+			<projectile tile="magnestone.projectile" animation="magnestone.projectile" speed="3" glow="true" hit_sfx="magnestone_impact" knockback="5" underwater="true">
+				<hitEffect tile="magnestone.projectile" animation="magnestone.projectile.impact" color="ff99ff" /><light tile="light.small" color="ff99ff" />
+			</projectile>
+		</attack>
+	</enemy>
+</data>

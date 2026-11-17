@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="sub.xml" includeRoot="true" />
+	<tile id="sub" sheet="sub.png" x="0" y="0" />
+	<animation id="sub.empty" x="24" count="1">
+		<append tile="sub" animation="sub.arm.idle" />
+	</animation>
+	<animation id="sub.mount" x="21" count="4" reverse="true">
+		<append tile="sub" animation="sub.lights" />
+		<append tile="sub" animation="sub.arm.idle" />
+	</animation>
+	<animation id="sub.dismount" x="21" count="4">
+		<append tile="sub" animation="sub.arm.idle" />
+	</animation>
+	<animation id="sub.arm.idle" x="0" count="1" />
+	<animation id="sub.lights" x="20" count="1" glow="true" />
+	<animation id="sub.idle" x="21" count="1">
+		<append tile="sub" animation="sub.lights" />
+		<append tile="sub" animation="sub.arm.idle" />
+	</animation>
+	<animation id="sub.bubbles" x="10" count="10" />
+	<animation id="sub.move" x="21" count="1" length="10">
+		<append tile="sub" animation="sub.bubbles" />
+		<append tile="sub" animation="sub.lights" />
+		<append tile="sub" animation="sub.arm.idle" />
+	</animation>
+	<animation id="sub.arm.collect" x="0" count="10" />
+	<animation id="sub.collect" x="21" count="1" length="10">
+		<append tile="sub" animation="sub.lights" />
+		<append tile="sub" animation="sub.arm.collect" />
+	</animation>
+	<tile id="torpedo_launcher" sheet="sub.png" x="25" />
+	<animation id="equipment.torpedo_launcher.idle"><frame visible="false" /></animation>
+	<animation id="equipment.torpedo_launcher" x="0" count="15" />
+	<tilesheet id="torpedo.png" width="20" height="5" />
+	<tile id="torpedo" sheet="torpedo.png" />
+	<animation id="torpedo">
+		<frame x="0" offsetX="-1" offsetY="-1" />
+		<frame x="1" offsetY="-1" /><frame x="2" />
+		<frame x="3" offsetX="-1" /><frame x="4" offsetX="-1" offsetY="-1" />
+		<frame x="5" count="2" /><frame x="7" offsetY="-1" />
+	</animation>
+	<vehicle id="sub" tile="sub" health="500" defense="4" speed="3" speedY="2" type="submarine" title="vehicle.submarine" fuel="2000" oxygen="200" max_weight="750" attack_move="true" death_sfx="explosion" accessObject="true" dive_sfx="submarine_submerge" walk_sfx="submarine_move" collect_sfx="submarine_arm" item="sub">
+		<slot id="attack" /><light tile="light.headlamp" offsetX="-61" />
+		<repair id="titanium" value="250" />
+		<onEmpty>
+			<section if="player.hasContact('mirrows') && !getFlag('sub_empty')">
+				<action>setFlag('sub_empty', true)</action>
+				<call id="mirrows" incoming="true"><caller id="mirrow_d" npc="mirrow_d.npc" /></call>
+				<dialogue section="mirrows" id="sub_empty1" speaker="mirrow_d" />
+				<dialogue section="mirrows" id="sub_empty2" speaker="mirrow_d" />
+				<call id="mirrows" end="true" />
+			</section>
+		</onEmpty>
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="sub" value="this.health"><parameter id="p" value="this.equipment.getItemId('attack')" /><parameter id="f" value="Std.string(this.fuel)" /><parameter id="o" value="Std.string(this.oxygen)" /></item>
+			</section></invokeLater>
+		</listItem>
+	</vehicle>
+	<item id="sub" name="vehicle.submarine" type="object" cost="0" weight="100" icon="sub.ico" durability="500" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="sub" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underwater="only">
+			<action>
+				object.setHealth(this.getFeed()); p = Item.getParameter(this.getNameStr(), "p");
+				f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+				o = Item.getParameter(this.getNameStr(), "o"); if(o != null) object.loseOxygen(object.oxygen-Std.parseInt(o));
+			</action>
+			<equip eval="p" to="object" fromInventory="false" if="p != null" />
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="titanium" value="250" />
+	</item>
+	
+	<include id="jeep.xml" includeRoot="true" />
+	<tile id="jeep" sheet="jeep.png" x="0" y="0" />
+	<animation id="jeep.empty" x="6" count="1" />
+	<animation id="jeep.idle" equals="jeep.empty" />
+	<animation id="jeep.move" count="6" />
+	<tile id="jeep_gun" sheet="jeep.png" x="7" />
+	<animation id="equipment.jeep_gun.idle" x="0" count="1" />
+	<animation id="equipment.jeep_gun" x="1" count="6" />
+	<vehicle id="jeep" tile="jeep" health="1000" defense="3" speed="5" title="vehicle.jeep" fuel="5000" max_weight="2000" attack_move="true" death_sfx="explosion" bgm="voyage" item="jeep">
+		<repair id="steel_bar" value="100" />
+		<slot id="attack" /><light tile="light.headlamp" offsetX="-61" />
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="jeep" value="this.health"><parameter id="p" value="this.equipment.getItemId('attack')" /><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+	</vehicle>
+	<item id="jeep" name="vehicle.jeep" type="object" cost="0" weight="50" icon="jeep.ico" durability="1000" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="jeep" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true">
+			<action>
+				object.setHealth(this.getFeed()); p = Item.getParameter(this.getNameStr(), "p");
+				f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+			</action>
+			<equip eval="p" to="object" fromInventory="false" if="p != null" />
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="steel_bar" value="100" />
+	</item>
+	
+	<include id="jet.xml" includeRoot="true" />
+	<tile id="jet" sheet="jet.png" x="0" y="0" />
+	<animation id="jet.empty" x="39" count="1" />
+	<animation id="jet.mount" x="30" count="10" reverse="true" />
+	<animation id="jet.dismount" x="30" count="10" />
+	<animation id="jet.idle" x="30" count="1" />
+	<animation id="jet.fly" x="0" count="10" />
+	<animation id="jet.hover" x="10" count="10" />
+	<animation id="jet.takeoff" x="20" count="10" />
+	<animation id="jet.land" x="20" count="10" reverse="true" />
+	<tile id="jet_gun" sheet="jet.png" x="46" />
+	<animation id="equipment.jet_gun.idle" x="6" count="1" />
+	<animation id="equipment.jet_gun" x="0" count="6" />
+	<tile id="missile_launcher" sheet="jet.png" x="40" />
+	<animation id="equipment.missile_launcher.idle" x="2" count="1" />
+	<animation id="equipment.missile_launcher" x="0" count="6" shift="3" />
+	<tilesheet id="missile.png" width="17" height="5" />
+	<tile id="missile" sheet="missile.png" />
+	<animation id="missile" count="3" />
+	<vehicle id="jet" tile="jet" health="1000" defense="4" speed="8" speedY="3" efficiency="0.5" type="flying" title="vehicle.jet" attack_move="true" underground="false" flight_height="20" fuel="5000" max_weight="1000" death_sfx="explosion" bgm="voyage" takeoff_sfx="jet_takeoff" land_sfx="jet_land" walk_sfx="jet_fly" hoverWalk="true" item="jet">
+		<repair id="titanium" value="250" />
+		<slot id="attack" /><slot id="engine" none="vehicle.default_engine" /><fuel id="refined_oil" fuel="500" />
+		<light tile="light.headlamp" offsetX="-61" />
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="jet" value="this.health"><parameter id="l" value="this.equipment.getItemId('attack')" /><parameter id="p" value="this.equipment.getItemId('engine')" /><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+	</vehicle>
+	<item id="jet" name="vehicle.jet" type="object" cost="0" weight="100" icon="jet.ico" durability="1000" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="jet" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false">
+			<action>
+				object.setHealth(this.getFeed()); p = Item.getParameter(this.getNameStr(), "l"); d = Item.getParameter(this.getNameStr(), "p");
+				f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+			</action>
+			<equip eval="p" to="object" fromInventory="false" if="p != null" /><equip eval="d" to="object" fromInventory="false" if="d != null" />
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="titanium" value="250" />
+	</item>
+	
+	<include id="bigdrill.xml" includeRoot="true" />
+	<tile id="bigdrill" sheet="bigdrill.png" x="0" y="0" />
+	<animation id="bigdrill.empty" x="16" count="1" />
+	<animation id="bigdrill.smoke" x="17" count="8" />
+	<animation id="bigdrill.mount" x="9" count="8" reverse="true" />
+	<animation id="bigdrill.dismount" x="9" count="8">
+		<append tile="bigdrill" animation="bigdrill.smoke" />
+	</animation>
+	<animation id="bigdrill.idle" equals="single" />
+	<animation id="bigdrill.move" x="1" count="8"><append tile="tank" animation="tank.smoke" /></animation>
+	<vehicle id="bigdrill" tile="bigdrill" health="1000" defense="3" speed="3" type="mining" title="vehicle.bigdrill" fuel="5000" max_weight="2000" death_sfx="explosion" mine="5" hitDamage="4" mine_fuel="1" item="bigdrill">
+		<repair id="steel_bar" value="100" /><fuel id="refined_oil" fuel="500" />
+		<light tile="light.headlamp" offsetX="-61" />
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="bigdrill" value="this.health"><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+	</vehicle>
+	<item id="bigdrill" name="vehicle.bigdrill" type="object" cost="0" weight="100" icon="bigdrill.ico" durability="1000" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="bigdrill" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true">
+			<action>object.setHealth(this.getFeed()); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));</action>
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="steel_bar" value="100" />
+	</item>
+	
+	<include id="patrol_boat.xml" includeRoot="true" />
+	<tile id="patrol_boat" sheet="patrol_boat.png" x="0" y="0" />
+	<animation id="patrol_boat.empty" x="16" count="1" />
+	<animation id="patrol_boat.idle" equals="patrol_boat.empty" />
+	<animation id="patrol_boat.waves" x="0" count="8" offsetY="-2" />
+	<animation id="patrol_boat.move" x="8" count="8">
+		<append tile="patrol_boat" animation="patrol_boat.waves" />
+	</animation>
+	<tile id="patrol_boat_gun" sheet="patrol_boat.png" x="17" />
+	<animation id="equipment.patrol_boat_gun.idle" x="8" count="1" />
+	<animation id="equipment.patrol_boat_gun" x="0" count="8" />
+	<tile id="patrol_boat_launcher" sheet="patrol_boat.png" x="26" />
+	<animation id="equipment.patrol_boat_launcher.idle" x="4" count="1" />
+	<animation id="equipment.patrol_boat_launcher" x="0" count="8" shift="3" />
+	<vehicle id="patrol_boat" tile="patrol_boat" health="1000" defense="3" speed="4" type="boat" waterLine="34" title="vehicle.patrol_boat" attack_move="true" fuel="5000"  max_weight="3000" death_sfx="explosion" tilesBehind="true" bgm="voyage" item="patrol_boat">
+		<player x="35" y="8" />
+		<repair id="steel_bar" value="100" /><fuel id="coal" fuel="50" /><fuel id="refined_oil" fuel="500" />
+		<slot id="attack" /><light tile="light.headlamp" offsetX="-61" />
+		<listItem title="vehicle.pack_up">
+			<section if="!player.vehicle.canDismount()"><action>player.showWarning(getText("vehicle.boat_pack_up"))</action><stop /></section>
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="patrol_boat" value="this.health"><parameter id="p" value="this.equipment.getItemId('attack')" /><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+	</vehicle>
+	<item id="patrol_boat" name="vehicle.patrol_boat" type="object" cost="0" weight="100" icon="patrol_boat.ico" durability="1000" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="patrol_boat" onGrass="false" onWater="true" overlapBlueprints="true" overlapStructures="true" removeBushes="false">
+			<action>
+				object.setHealth(this.getFeed()); p = Item.getParameter(this.getNameStr(), "p");
+				f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+			</action>
+			<equip eval="p" to="object" fromInventory="false" if="p != null" />
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="steel_bar" value="100" />
+	</item>
+	
+	<recipe id="craft_patrol_boat_gun" creates="patrol_boat_gun" type="dock" available="player.questComplete('factory')" first="true">
+		<type id="dock2" />
+		<item id="steel_bar" count="2" /><item id="titanium" count="1" />
+	</recipe>
+	<recipe id="patrol_boat" object="patrol_boat" description="item.descriptions.patrol_boat" type="dock" available="player.questComplete('factory')" first="true">
+		<type id="dock2" />
+		<item id="steel_bar" count="9" />
+		<item id="titanium" count="2" />
+		<item id="silicon" count="3" />
+	</recipe>
+</data>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tilesheet id="cp.png" width="16" height="10" />
+	<tile id="colosseum.points" sheet="cp.png" /><animation id="colosseum.points" count="6" />
+	<tilesheet id="bg.png" width="256" height="128" />
+	<tile id="colosseum.cap" sheet="bg.png" />
+	<tile id="colosseum.stack" sheet="bg.png" y="1" />
+	<structure id="colosseum.cap" tile="colosseum.cap" priority="-2" behind="true" remove="false">
+		<addedToArea><action if="built">
+			var tx = this.tile_x; var ty = this.tile_y;
+			for(y in 0...4){setBack(tx+1, ty-y, "empty"); setBack(tx+14, ty-y, "empty"); setBack(tx+6+y, ty, "empty");}
+			for(x in 0...5){setTile(tx+2+x, ty-3, "empty"); setTile(tx+9+x, ty-3, "empty");}
+			for(x in 1...13) setTile(tx+x+1, ty+1, "empty");
+		</action></addedToArea>
+	</structure>
+	<structure id="colosseum.stack" tile="colosseum.stack" extends="colosseum.cap" />
+	<tilesheet id="stairs.png" width="20" height="63" />
+	<tile id="colosseum.stairs_l" sheet="stairs.png" />
+	<tile id="colosseum.stairs_r" sheet="stairs.png" x="1" />
+	<structure id="colosseum.stairs_l" tile="colosseum.stairs_l" remove="false">
+		<addedToArea><action>
+			var tx = this.tile_x; var ty = this.tile_y; for(y in 0...4) setBack(tx, ty-y, "empty"); setTile(tx, ty-3, null);
+		</action></addedToArea>
+	</structure>
+	<structure id="colosseum.stairs_l.off" tile="colosseum.stairs_l" remove="false" name="activate" alpha="0.3">
+		<operate>
+			<set id="points" value="player.getVar('cp')" />
+			<choose>
+				<section if="points >= 100">
+					<menu section="common" showCoins="true">
+						<dialogue title="colosseum.build_staircase{points:100}" />
+						<choice id="yes">
+							<action>player.setVar('cp', points-100)</action>
+							<remove structure="area.getStructureInTile(1, Math.floor(this.yPos/Tile.SIZE))" />
+							<remove structure="area.getStructureInTile(15, Math.floor(this.yPos/Tile.SIZE))" />
+							<structure eval="this.info.id.substr(0,-4)" x="10/Tile.SIZE" y="this.yPos/Tile.SIZE" />
+							<structure eval="this.info.id.substr(0,-4)" x="226/Tile.SIZE" y="this.yPos/Tile.SIZE" />
+						</choice>
+						<choice id="no" />
+					</menu>
+				</section>
+				<dialogue title="colosseum.fail_staircase{points:100}" />
+			</choose>
+		</operate>
+	</structure>
+	<structure id="colosseum.stairs_r" tile="colosseum.stairs_r" extends="colosseum.stairs_l" />
+	<structure id="colosseum.stairs_r.off" tile="colosseum.stairs_r" extends="colosseum.stairs_l.off" />
+	<include id="spirit_door.xml" />
+	<tile id="spirit_door" sheet="spirit_door.1" />
+	<animation id="spirit_door.idle" x="8" count="8" />
+	<structure id="spirit_door" tile="spirit_door" name="enter" type="door" renderer="spirit" remove="false">
+		<addedToArea><action>if(built) this.clearInvisibleBlocks()</action></addedToArea>
+	</structure>
+	<structure id="spirit_door_exit" tile="spirit_door" animation="spirit_door" name="enter" remove="false">
+		<operate><return with="ellipse" /></operate>
+	</structure>
+	<structure id="colosseum_exit" tile="spirit_door" animation="spirit_door" name="enter" remove="false">
+		<operate><run procedure="colosseum.return" with="ellipse" /></operate>
+	</structure>
+	<tile id="spirit_door2" sheet="spirit_door.2" />
+	<animation id="spirit_door2.idle" x="0" count="8" />
+	<structure id="colosseum_exit2" extends="colosseum_exit" tile="spirit_door2" animation="spirit_door2" />
+	<animation id="boss_room.idle"><frame visible="false" /></animation>
+	<animation id="boss_room.active" x="0" count="8" />
+	<structure id="boss_room" tile="spirit_door" includeName="true" remove="false" reloadRenderer="true">
+		<tooltip id="enter" if="getObject(this.name) != null" />
+		<tile eval="'colosseum.'+this.name" x="3" y="12/Tile.SIZE" offsetX="-0.5" offsetY="-1" animationEval="'colosseum.'+this.name+'.idle'" name="boss" color="ffff33" colorScale="1.25" tint="player.getFlag('colosseum.'+this.name)" />
+		<operate>
+			<section with="ellipse">
+				<action>setGlobal('aliens.hostile.original', getFlag('aliens.hostile')); setFlag("aliens.hostile", true);</action>
+				<run eval="'colosseum.'+this.name" if="getObject(this.name) != null" /><action>player.gui.coins.changeCurrency("colosseum.points", "var:cp"); player.setDifficulty(DifficultyMode.DEFAULT);</action>
+			</section>
+		</operate>
+		<over><action if="getObject(this.name) != null">
+			this.loopAnimation("active"); var boss = this.getTileById("boss"); if(boss != null) boss.playAnimation('colosseum.'+this.name, true, null, -0.5, -1);
+		</action></over>
+		<out><action if="getObject(this.name) != null">
+			this.loopAnimation("idle"); var boss = this.getTileById("boss"); if(boss != null) boss.playAnimation('colosseum.'+this.name+'.idle', true, null, -0.5, -1);
+		</action></out>
+		<hitbox x="24" y="0" width="48" height="48" />
+		<addedToArea><displayAction>player.state.addEventListener("update_flag", boss_room_tint);</displayAction></addedToArea>
+		<removedFromArea><displayAction>player.state.removeEventListener("update_flag", boss_room_tint);</displayAction></removedFromArea>
+		<init><displayAction>
+			function boss_room_tint(e){
+				var boss = this.getTileById("boss"); if(boss == null) return;
+				if(player.getFlag('colosseum.'+this.name)) setSpriteColor(boss, 0xffff33, 255.0/1.25); else setSpriteColor(boss, 0xffffff);
+			}
+		</displayAction></init>
+	</structure>
+	<include id="tiles.xml" />
+	<tile id="colosseum.minotaur" sheet="tiles.3" x="20" />
+	<animation id="colosseum.minotaur" count="5" />
+	<tile id="colosseum.yeti" sheet="tiles.3" x="36" />
+	<animation id="colosseum.yeti" count="10" />
+	<tile id="colosseum.bandit_combo" sheet="tiles.2" x="0" />
+	<tile id="colosseum.bandits" sheet="tiles.1" x="0" />
+	<animation id="colosseum.bandit2" count="16" repeat="15" />
+	<animation id="colosseum.bandit3" x="16" count="20" repeat="12" />
+	<animation id="colosseum.bandit4" x="36" count="10" repeat="24" />
+	<animation id="colosseum.bandit_combo" count="15" repeat="16" offsetX="-32">
+		<append tile="colosseum.bandits" animation="colosseum.bandit2" x="0" />
+		<append tile="colosseum.bandits" animation="colosseum.bandit3" x="16" />
+		<append tile="colosseum.bandits" animation="colosseum.bandit4" x="32" />
+	</animation>
+	<animation id="colosseum.bandit2.idle" count="1" />
+	<animation id="colosseum.bandit3.idle" x="16" count="1" />
+	<animation id="colosseum.bandit4.idle" x="36" count="1" />
+	<animation id="colosseum.bandit_combo.idle" count="1" offsetX="-32">
+		<append tile="colosseum.bandits" animation="colosseum.bandit2.idle" x="0" />
+		<append tile="colosseum.bandits" animation="colosseum.bandit3.idle" x="16" />
+		<append tile="colosseum.bandits" animation="colosseum.bandit4.idle" x="32" />
+	</animation>
+	<tile id="colosseum.adult_dragon" sheet="tiles.8" x="0" offsetY="16" />
+	<animation id="colosseum.adult_dragon" count="18" />
+	<tile id="colosseum.wyrm_queen" sheet="tiles.5" x="0" />
+	<animation id="colosseum.wyrm_queen" count="20" />
+	<tile id="colosseum.golemech" sheet="tiles.3" x="0" />
+	<animation id="colosseum.golemech" count="12" />
+	<tile id="colosseum.mirrows" sheet="tiles.2" x="15" />
+	<tile id="colosseum.mirrow_d" sheet="tiles.3" x="25" />
+	<animation id="colosseum.mirrow_d" count="11" repeat="12" />
+	<animation id="colosseum.mirrows" count="12" repeat="11" offsetX="16">
+		<append tile="colosseum.mirrow_d" animation="colosseum.mirrow_d" x="-16" y="-16" />
+	</animation>
+	<animation id="colosseum.mirrows.idle" count="1" offsetX="16">
+		<append tile="colosseum.mirrow_d" animation="single" x="-16" y="-16" />
+	</animation>
+	<tile id="colosseum.alien" sheet="tiles.1" x="46" />
+	<animation id="colosseum.alien" count="8" />
+	<tile id="colosseum.pirate_ship1" sheet="tiles.1" x="54" />
+	<tile id="colosseum.pirate_ship2" sheet="tiles.2" x="27" />
+	<animation id="colosseum.pirate_ship2" repeat="19" count="8" />
+	<animation id="colosseum.pirate_ship1" count="19" repeat="8" offsetX="-16">
+		<append tile="colosseum.pirate_ship2" animation="colosseum.pirate_ship2" x="0" />
+	</animation>
+	<animation id="colosseum.pirate_ship1.idle" count="1" offsetX="-16">
+		<append tile="colosseum.pirate_ship2" animation="single" x="0" />
+	</animation>
+	<tile id="colosseum.kraken" sheet="tiles.3" x="12" />
+	<animation id="colosseum.kraken" count="8" />
+	<tile id="colosseum.plant_boss" sheet="tiles.7" x="0" offsetX="-12" />
+	<animation id="colosseum.plant_boss" count="8" />
+	<tile id="colosseum.ice_boss" sheet="tiles.6" x="0" offsetX="-12" />
+	<animation id="colosseum.ice_boss" count="8" />
+		
+	<tile id="colosseum.alien.bomber" sheet="tiles.9" x="0" />
+	<animation id="colosseum.alien.bomber" count="8" />
+	<tile id="colosseum.nursery.crab" sheet="tiles.3" x="68" />
+	<animation id="colosseum.nursery.crab" count="8" />
+	<tile id="colosseum.final_boss" sheet="tiles.3" x="46" />
+	<animation id="colosseum.final_boss" count="12" />
+	<tile id="colosseum.megolemech" sheet="tiles.3" x="58" />
+	<animation id="colosseum.megolemech" count="10" />
+		
+	<tile id="colosseum.draconian_wizard" sheet="tiles.10" x="0" />
+	<animation id="colosseum.draconian_wizard" count="8" />
+	<tile id="colosseum.chimera" sheet="tiles.11" x="0" />
+	<animation id="colosseum.chimera" count="8" />
+	<tile id="colosseum.dragomech" sheet="tiles.12" x="0" />
+	<animation id="colosseum.dragomech" count="10" />
+		
+	<tile id="beastmaster" sheet="tiles.4" x="0" />
+	<animation id="beastmaster.idle" count="10" />
+	<animation id="beastmaster.talk" x="10" count="10" />
+	<procedure id="beastmaster_recipes">
+		<item id="spirit_gem" cost="100" />
+		<item id="fire_gem" cost="200" />
+		<item id="water_gem" cost="200" />
+		<item id="ice_gem" cost="200" />
+		<item id="earth_gem" cost="200" />
+		<item id="plant_gem" cost="200" />
+		<item id="spirit_armor" cost="500" />
+		<item id="spirit_bow" cost="1000" />
+		<item id="spirit_scythe" cost="1000" />
+		<item id="spirit_cape" cost="1000" />
+		<item id="spirit_box" cost="2000" if="player.getItemCount('spirit_box') == 0" />
+	</procedure>
+	<npc id="beastmaster" tile="beastmaster" action="talk" talk_sfx="talking1" indicatorX="-8" structurePriority="true">
+		<operate>
+			<section if="!getFlag('beastmaster')">
+				<quest /><dialogue section="beastmaster" id="intro1" speaker="this" />
+				<dialogue section="beastmaster" id="intro2" speaker="this" />
+				<dialogue section="beastmaster" id="intro3" speaker="this" />
+				<dialogue section="beastmaster" id="intro4" speaker="this" /><action>setFlag('beastmaster', true)</action>
+			</section>
+			<group>
+				<menu section="beastmaster" closeable="true" cols="2">
+					<dialogue section="beastmaster" id="learn_boss" />
+					<choice id="minotaur"><dialogue section="beastmaster" id="minotaur1" speaker="this" /></choice>
+					<choice id="yeti"><dialogue section="beastmaster" id="yeti1" speaker="this" /></choice>
+					<choice id="bandits"><dialogue section="beastmaster" id="bandits1" speaker="this" /></choice>
+					<choice id="dragon"><dialogue section="beastmaster" id="dragon1" speaker="this" /></choice>
+					<choice id="wyrm_queen"><dialogue section="beastmaster" id="wyrm_queen1" speaker="this" /></choice>
+					<choice id="golemech"><dialogue section="beastmaster" id="golemech1" speaker="this" /></choice>
+					<choice id="oldone"><dialogue section="beastmaster" id="oldone1" speaker="this" /></choice>
+					<choice id="mirrows"><dialogue section="beastmaster" id="mirrows1" speaker="this" /></choice>
+					<choice id="pirates"><dialogue section="beastmaster" id="pirates1" speaker="this" /></choice>
+					<choice id="kraken"><dialogue section="beastmaster" id="kraken1" speaker="this" /></choice>
+					<choice id="plant_boss"><dialogue section="beastmaster" id="plant_boss1" speaker="this" /></choice>
+					<choice id="ice_boss"><dialogue section="beastmaster" id="ice_boss1" speaker="this" /></choice>
+				</menu>
+				<section if="player.getVar('cp') > 0">
+					<dialogue section="beastmaster" id="points" speaker="this" />
+					<window type="shop" title="beastmaster.buy" currency="var:cp" currencyIcon="colosseum.points" name="colosseum.points">
+						<run procedure="beastmaster_recipes" />
+					</window>
+				</section>
+			</group>
+		</operate>
+	</npc>
+	
+	<procedure id="spirit_world_hidden"><action>
+		if(player.viewHiddenEq.get()){setSpriteColor(getParallax(), 0xffffff); setSpriteColor(area.renderer, 0xffffff);}
+		else {setSpriteColor(getParallax(), 0x666666); setSpriteColor(area.renderer, 0);}
+	</action></procedure>
+	<procedure id="colosseum.new_rooms">
+		<structure id="boss_room" x="32/Tile.SIZE" y="-21">this.name = 'alien.bomber'; this.updateRenderer();</structure>
+		<structure id="boss_room" x="128/Tile.SIZE" y="-21">this.name = 'nursery.crab'; this.updateRenderer();</structure>
+		<structure id="boss_room" x="32/Tile.SIZE" y="-29">this.name = 'final_boss'; this.updateRenderer();</structure>
+		<structure id="boss_room" x="128/Tile.SIZE" y="-29">this.name = 'megolemech'; this.updateRenderer();</structure>
+		<run procedure="colosseum.new_rooms2" />
+	</procedure>
+	<procedure id="colosseum.new_rooms2">
+		<structure id="boss_room" x="3/Tile.SIZE" y="-25">this.name = 'chimera'; this.updateRenderer();</structure>
+		<structure id="boss_room" x="155/Tile.SIZE" y="-25">this.name = 'draconian_wizard'; this.updateRenderer();</structure>
+		<structure id="boss_room" x="80/Tile.SIZE" y="-25-12/Tile.SIZE">this.name = 'dragomech'; this.updateRenderer();</structure>
+	</procedure>
+	<area id="colosseum.arena" canFly="false" canPlace="false" background="spirit" shouldLight="false" viewHidden="true" placeLadder="false" name="world.spirit">
+		<structure id="colosseum.stack" x="0" />
+		<structure id="colosseum.stack" x="0" y="-9" />
+		<structure id="colosseum.stack" x="0" y="-17" />
+		<structure id="colosseum.cap" x="0" y="-25" />
+		<action>for(x in 0...2) setTile(7+x, -28, "empty");</action>
+		<structure id="colosseum.stairs_l.off" x="10/Tile.SIZE" y="-5" />
+		<structure id="colosseum.stairs_r.off" x="226/Tile.SIZE" y="-5" />
+		<structure id="colosseum.stairs_l.off" x="10/Tile.SIZE" y="-13" />
+		<structure id="colosseum.stairs_r.off" x="226/Tile.SIZE" y="-13" />
+		<structure id="colosseum.stairs_l.off" x="10/Tile.SIZE" y="-21" />
+		<structure id="colosseum.stairs_r.off" x="226/Tile.SIZE" y="-21" />
+		<structure id="spirit_door_exit" x="80/Tile.SIZE" y="-1-12/Tile.SIZE" />
+		<structure id="boss_room" x="3/Tile.SIZE">this.name = 'minotaur';</structure>
+		<structure id="boss_room" x="155/Tile.SIZE">this.name = 'yeti';</structure>
+		<structure id="boss_room" x="32/Tile.SIZE" y="-5">this.name = 'bandit_combo';</structure>
+		<structure id="boss_room" x="128/Tile.SIZE" y="-5">this.name = 'adult_dragon';</structure>
+		<structure id="boss_room" x="3/Tile.SIZE" y="-9">this.name = 'wyrm_queen';</structure>
+		<structure id="boss_room" x="155/Tile.SIZE" y="-9">this.name = 'golemech';</structure>
+		<structure id="boss_room" x="80/Tile.SIZE" y="-9-12/Tile.SIZE">this.name = 'alien';</structure>
+		<structure id="boss_room" x="32/Tile.SIZE" y="-13">this.name = 'mirrows';</structure>
+		<structure id="boss_room" x="128/Tile.SIZE" y="-13">this.name = 'pirate_ship1';</structure>
+		<structure id="boss_room" x="3/Tile.SIZE" y="-17">this.name = 'kraken';</structure>
+		<structure id="boss_room" x="155/Tile.SIZE" y="-17">this.name = 'plant_boss';</structure>
+		<structure id="boss_room" x="80/Tile.SIZE" y="-17-12/Tile.SIZE">this.name = 'ice_boss';</structure>
+		<run procedure="colosseum.new_rooms" />
+		<object id="beastmaster" x="9" />
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<action>player.gui.coins.changeCurrency("colosseum.points", "var:cp")</action><music id="spirit" seconds="1" />
+			<action if="area.isEmptyTile(0,0)">for(x in 0...16) setTile(x, 0, "blackstone")</action>
+			<section if="area.getStructureById('colosseum.cap').tile_y == -17">
+				<remove structure="area.getStructureById('colosseum.cap')" />
+				<structure id="colosseum.stack" x="0" y="-17" />
+				<structure id="colosseum.cap" x="0" y="-25" />
+				<structure id="colosseum.stairs_l.off" x="10/Tile.SIZE" y="-21" />
+				<structure id="colosseum.stairs_r.off" x="226/Tile.SIZE" y="-21" />
+				<action>for(x in 0...2){setTile(7+x, -20, null); setTile(7+x, -28, "empty");}</action>
+				<run procedure="colosseum.new_rooms" />
+			</section>
+			<action>left = null; right = null; for(s in area.getStructures()) if(s.name == "final_boss") left = s; else if(s.name == "megolemech") right = s;</action>
+			<section if="left.tile_y == -25">
+				<remove structure="left" /><remove structure="right" />
+				<structure id="boss_room" x="32/Tile.SIZE" y="-29">this.name = 'final_boss'; this.updateRenderer();</structure>
+				<structure id="boss_room" x="128/Tile.SIZE" y="-29">this.name = 'megolemech'; this.updateRenderer();</structure>
+				<run procedure="colosseum.new_rooms2" />
+			</section>
+		</onLoad>
+		<onLeave><action>player.gui.coins.changeCurrency("coins", "coins"); setGameTime(24);</action></onLeave>
+		<updateHidden><run procedure="spirit_world_hidden" /></updateHidden>
+	</area>
+	<include id="rooms/rooms.xml" />
+</data>

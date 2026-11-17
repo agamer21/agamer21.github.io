@@ -1,0 +1,9 @@
+<tilesheet id='generator.png' width='32' height='24' offsetY="-40">
+	<image frame='0' x='0' y='0' width='32' height='23' offsetX='0' offsetY='41' />
+	<image frame='1' x='0' y='23' width='32' height='39' offsetX='0' offsetY='25' />
+	<image frame='2' x='0' y='62' width='32' height='45' offsetX='0' offsetY='19' />
+	<image frame='3' x='32' y='62' width='32' height='46' offsetX='0' offsetY='18' />
+	<image frame='4' x='32' y='0' width='32' height='23' offsetX='0' offsetY='41' />
+	<image frame='5' x='32' y='23' width='32' height='32' offsetX='0' offsetY='32' />
+	<image frame='6' equals='4' offsetX='0' offsetY='41' />
+</tilesheet>

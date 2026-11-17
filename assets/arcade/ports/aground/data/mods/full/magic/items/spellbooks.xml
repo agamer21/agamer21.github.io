@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="spellbook.ico" sheet="equip.2" x="41" />
+	<animation id="spellbook.ico" count="32" />
+	<animation id="spellbook.letters" x="-29" count="13">
+		<frame visible="false" /><frame x="-16" count="16" /><frame visible="false" length="2" />
+	</animation>
+	<animation id="magic_book.ico">
+		<frame visible="false" length="32" />
+		<append tile="spellbook.ico" animation="spellbook.ico" color="5a1f7c" colorScale="2.4" />
+		<append tile="spellbook.ico" animation="spellbook.letters" color="ff99ff" colorScale="2.4" />
+	</animation>
+	<animation id="fire_book.ico">
+		<frame visible="false" length="32" />
+		<append tile="spellbook.ico" animation="spellbook.ico" color="ff6611" colorScale="1.4" />
+		<append tile="spellbook.ico" animation="spellbook.letters" color="ff9999" colorScale="2.4" />
+	</animation>
+	<animation id="water_book.ico">
+		<frame visible="false" length="32" />
+		<append tile="spellbook.ico" animation="spellbook.ico" color="1199ff" colorScale="1.4" />
+		<append tile="spellbook.ico" animation="spellbook.letters" color="9999ff" colorScale="2.4" />
+	</animation>
+	<animation id="plant_book.ico">
+		<frame visible="false" length="32" />
+		<append tile="spellbook.ico" animation="spellbook.ico" color="99ff11" colorScale="1.4" />
+		<append tile="spellbook.ico" animation="spellbook.letters" color="99ff99" colorScale="2.4" />
+	</animation>
+	<animation id="earth_book.ico">
+		<frame visible="false" length="32" />
+		<append tile="spellbook.ico" animation="spellbook.ico" color="ffcc11" colorScale="1.4" />
+		<append tile="spellbook.ico" animation="spellbook.letters" color="ffff99" colorScale="2.4" />
+	</animation>
+	<animation id="ice_book.ico">
+		<frame visible="false" length="32" />
+		<append tile="spellbook.ico" animation="spellbook.ico" color="99ccff" colorScale="2" />
+		<append tile="spellbook.ico" animation="spellbook.letters" color="99ffff" colorScale="2.4" />
+	</animation>
+	<itemtype id="spellbook" icon="teleport_book" before="blueprint" />
+	
+	<tile id="spellbook" sheet="equip.1" x="17" offsetX="6" />
+	<tile id="fire_book" equals="spellbook" />
+	<tile id="water_book" equals="spellbook" />
+	<tile id="plant_book" equals="spellbook" />
+	<tile id="earth_book" equals="spellbook" />
+	<tile id="ice_book" equals="spellbook" />
+	<tile id="teleport_book" equals="spellbook" />
+	<tile id="water_barrier_book" equals="spellbook" />
+	<tile id="plant_feed_book" equals="spellbook" />
+	<tile id="summon_golem_book" equals="spellbook" />
+	<tile id="time_book" equals="spellbook" />
+	<tile id="light_book" equals="spellbook" />
+	<tile id="heal_book" equals="spellbook" />
+	<tile id="shield_book" equals="spellbook" />
+	<animation id="equipment.fire_book.idle" x="0" count="1" color="ff6611" colorScale="1.4" />
+	<animation id="equipment.water_book.idle" x="0" count="1" color="1199ff" colorScale="1.4" />
+	<animation id="equipment.plant_book.idle" x="0" count="1" color="99ff11" colorScale="1.4" />
+	<animation id="equipment.earth_book.idle" x="0" count="1" color="ffcc11" colorScale="1.4" />
+	<animation id="equipment.ice_book.idle" x="0" count="1" color="99ccff" colorScale="2" />
+	<animation id="equipment.magic_book.idle" x="0" count="1" color="5a1f7c" colorScale="2.4" />
+	<tile id="fire_book.cast" sheet="equip.3" x="6" offsetX="-8" />
+	<tile id="water_book.cast" sheet="equip.3" x="40" offsetX="-8" />
+	<tile id="plant_book.cast" sheet="equip.3" x="34" offsetX="-8" />
+	<tile id="earth_book.cast" sheet="equip.3" x="0" offsetX="-8" />
+	<tile id="ice_book.cast" sheet="equip.3" x="28" offsetX="-8" />
+	<animation id="spellbook" x="1" count="8"><frame x="9" count="6" /><frame x="1" count="8" reverse="true" /></animation>
+	<animation id="spellbook.cast"><frame visible="false" length="8" /><frame count="6" glow="true" /><frame visible="false" length="8" /></animation>
+	<animation id="equipment.fire_book">
+		<frame visible="false" length="22" /><append tile="spellbook" animation="spellbook" color="ff6611" colorScale="1.4" />
+		<append tile="fire_book.cast" animation="spellbook.cast" />
+	</animation>
+	<animation id="equipment.water_book">
+		<frame visible="false" length="22" /><append tile="spellbook" animation="spellbook" color="1199ff" colorScale="1.4" />
+		<append tile="water_book.cast" animation="spellbook.cast" />
+	</animation>
+	<animation id="equipment.plant_book">
+		<frame visible="false" length="22" /><append tile="spellbook" animation="spellbook" color="99ff11" colorScale="1.4" />
+		<append tile="plant_book.cast" animation="spellbook.cast" />
+	</animation>
+	<animation id="equipment.earth_book">
+		<frame visible="false" length="22" /><append tile="spellbook" animation="spellbook" color="ffcc11" colorScale="1.4" />
+		<append tile="earth_book.cast" animation="spellbook.cast" />
+	</animation>
+	<animation id="equipment.ice_book">
+		<frame visible="false" length="22" /><append tile="spellbook" animation="spellbook" color="99ccff" colorScale="2" />
+		<append tile="ice_book.cast" animation="spellbook.cast" />
+	</animation>
+	<animation id="equipment.magic_book" x="1" count="8" color="5a1f7c" colorScale="2.4"><frame x="9" count="6" /><frame x="1" count="8" reverse="true" /></animation>
+	<tile id="vine_projectile" sheet="equip.1" x="32" />
+	<animation id="vine_projectile" x="6" count="4" />
+	<animation id="vine_projectile.impact" x="0" count="6" />
+	<tile id="rock_projectile" sheet="equip.1" x="7" />
+	<animation id="rock_projectile" x="6" count="4" />
+	<animation id="rock_projectile.impact" x="0" count="6" />
+	
+	<item id="fire_book" type="spellbook" equip_fps="30" cost="5000" slot="shield" use="attack" weight="2" attack="8" stamina="20" range="12" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="fire_book.ico" element="fire" action="equip" delay="5" staminaStat="spellcast" bindStaff="true" canModify="false">
+		<projectile tile="fire" animation="item8" glow="true" offsetY="2" speed="3" scaleTo="3" fire_sfx="fireball" hitEffect="fire_med_dot" hitTrees="true" leftRight="true" color="f9be0b" colorScale="2">
+			<light tile="light.small" color="cc5500" />
+		</projectile>
+	</item>
+	<item id="water_book" type="spellbook" equip_fps="30" cost="5000" slot="shield" use="attack" weight="2" attack="11" stamina="20" range="4" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="water_book.ico" element="water" underwater="true" action="equip" delay="5" staminaStat="spellcast" bindStaff="true" canModify="false">
+		<projectile tile="water_elemental" animation="splash" speed="2" fire_sfx="fireball" knockback="15" hitEffect="splash" />
+	</item>
+	<hitEffect id="vines" tile="vine_projectile" animation="vine_projectile.impact" color="99ff11" sfx="plant_effect" />
+	<item id="plant_book" type="spellbook" equip_fps="30" cost="5000" slot="shield" use="attack" weight="2" attack="8" stamina="20" range="12" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="plant_book.ico" element="plant" underwater="true" action="equip" delay="5" staminaStat="spellcast" bindStaff="true" canModify="false">
+		<projectile tile="vine_projectile" animation="vine_projectile" speed="2" fire_sfx="fireball" hpSteal="1" hit_sfx="attack" hitEffect="vines" />
+	</item>
+	<item id="earth_book" type="spellbook" equip_fps="30" cost="5000" slot="shield" use="attack" weight="2" attack="8" stamina="20" range="8" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="earth_book.ico" element="earth" underwater="true" action="equip" delay="5" staminaStat="spellcast" bindStaff="true" canModify="false">
+		<projectile tile="rock_projectile" animation="rock_projectile" speed="2" fire_sfx="fireball" knockback="10" hit_sfx="attack" critical="true">
+			<hitEffect tile="rock_projectile" animation="rock_projectile.impact" color="ffcc11" />
+		</projectile>
+	</item>
+	<item id="ice_book" type="spellbook" equip_fps="30" cost="5000" slot="shield" use="attack" weight="2" attack="8" stamina="20" range="8" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="ice_book.ico" element="ice" underwater="true" action="equip" delay="5" staminaStat="spellcast" bindStaff="true" canModify="false">
+		<projectile tile="snowball" animation="snowball" speed="3" fire_sfx="fireball" passTile="true" hitEffect="freeze" />
+	</item>
+	<procedure id="player.teleport_out">
+		<sound id="teleport_book" /><action>player.renderer.useItem(this)</action>
+		<wait seconds="0.3" modal="false" />
+		<hitEffect object="player" tile="alchemist" animation="alchemist.teleport" runPaused="true" />
+		<lerp object="player" alpha="0" seconds="0.5" modal="true" />
+	</procedure>
+	<procedure id="player.teleport_in">
+		<action>player.renderer.alpha = 0;</action>
+		<hitEffect object="player" tile="alchemist" animation="alchemist.teleport" runPaused="true" />
+		<lerp object="player" alpha="1" seconds="0.5" modal="true" />
+	</procedure>
+	<object id="teleport.beacon" tile="alchemist" animation="alchemist.teleport_cycle" alpha="0.5" action="common.remove" layer="npc">
+		<operate><remove object="this" /></operate>
+	</object>
+	<item id="teleport_book" type="spellbook" behindPlayer="false" equip_anim="equipment.magic_book" cost="6000" stamina="100" weight="2" icon="spellbook.ico" master_spellcaster="true" animation="magic_book.ico" use_stamina="true" staminaStat="spellcast" underwater="true" canModify="false">
+		<use slot="shield" /><action id="use" name="cast">
+			<stop if="player.renderer.equipComplete != null" />
+			<set id="sleep" value="player.findClosestStructure(Area.isSleep)" />
+			<set id="exit" value="area.getExit()" />
+			<set id="beacon" value="player.getNPC('teleport.beacon')" /><choose>
+			<dialogue section="warning" id="no_use_vehicle" if="player.vehicle != null" />
+			<dialogue section="warning" id="teleport_blocked" if="area.getCustomFlag('blockTeleport')" />
+			<section if="player.inDungeon()">
+				<action>player.loseStamina(this.getStamina(player))</action><stop if="player.area == null" /><run procedure="player.teleport_out" /><section with="fade"><return /><run procedure="player.teleport_in" /></section>
+			</section>
+			<section if="exit != null">
+				<action>player.loseStamina(this.getStamina(player))</action><stop if="player.area == null" /><run procedure="player.teleport_out" /><section with="fade"><teleport area="exit.area" x="exit.x" y="exit.y" /><run procedure="player.teleport_in" /></section>
+			</section>
+			<section if="beacon != null && beacon.area != null">
+				<action>player.loseStamina(this.getStamina(player))</action><stop if="player.area == null" /><run procedure="player.teleport_out" /><section with="fade"><action>player.doTeleport(null, beacon.xPos, beacon.yTile, false, beacon.area);</action><run procedure="player.teleport_in" /></section>
+			</section>
+			<section if="sleep != null">
+				<action>player.loseStamina(this.getStamina(player))</action><stop if="player.area == null" /><run procedure="player.teleport_out" /><section with="fade"><move object="player" structure="sleep" /><run procedure="player.teleport_in" /></section>
+			</section>
+			<dialogue section="warning" id="teleport_fail" />
+		</choose></action>
+	</item>
+	
+	<item id="water_barrier_book" type="spellbook" behindPlayer="false" equip_anim="equipment.water_book" cost="6000" stamina="100" weight="2" icon="spellbook.ico" master_spellcaster="true" animation="water_book.ico" use_stamina="true" staminaStat="spellcast" underwater="true" element="water" canModify="false">
+		<use slot="shield" /><action id="use" name="cast"><choose>
+			<stop if="player.renderer.equipComplete != null" />
+			<dialogue section="warning" id="no_use_vehicle" if="player.vehicle != null" />
+			<section if="area.getTile(player.tile_x, player.tile_y, BACK_LAYER) != null">
+				<action>player.renderer.useItem(this)</action>
+				<wait seconds="0.3" modal="false" />
+				<choose>
+					<action if="area.isWaterBlock(player.tile_x, player.tile_y)">player.loseStamina(Math.round(this.getStamina(player)/10)); if(player.area != null) area.removeWaterBlock(player.tile_x, player.tile_y);</action>
+					<action>player.loseStamina(this.getStamina(player)); if(player.area != null) area.setWaterBlock(player.tile_x, player.tile_y);</action>
+				</choose>
+				<wait seconds="0.3" modal="false" />
+			</section>
+			<dialogue section="warning" id="no_use" />
+		</choose></action>
+	</item>
+	
+	<item id="plant_feed_book" type="spellbook" behindPlayer="false" equip_anim="equipment.plant_book" cost="6000" stamina="200" weight="2" icon="spellbook.ico" master_spellcaster="true" animation="plant_book.ico" use_stamina="true" staminaStat="spellcast" underwater="true" element="plant" canModify="false">
+		<use slot="shield" /><action id="use" name="cast">
+			<stop if="player.renderer.equipComplete != null" />
+			<section if="player.vehicle != null"><dialogue section="warning" id="no_use_vehicle" /><stop /></section>
+			<window type="items" title="common.hotkey" equipment="true" damagedOnly="true" filter="function(i){if(i.getDurability() <= 0 || i.xml.get('plant_book') == 'false') return false; var d = i.xml.get('durabilityName'); return i.xml.get('plant_book') == 'true' || d == 'common.enchantment' || d == 'common.feed' || (d == null && i.type.id == 'animal');}">
+				<action>player.renderer.useItem(this)</action>
+				<wait seconds="0.3" modal="false" />
+				<action>item.repair(name, value, inventory); player.loseStamina(this.getStamina(player));</action>
+				<wait seconds="0.3" modal="false" />
+			</window>
+		</action>
+	</item>
+	
+	<object id="summon_golem" tile="golem" animation="golem.form" layer="top" fps="10" removeOnComplete="true" save="false" />
+
+	<item id="summon_golem_book" type="spellbook" behindPlayer="false" equip_anim="equipment.earth_book" cost="6000" stamina="100" weight="2" icon="spellbook.ico" master_spellcaster="true" animation="earth_book.ico" use_stamina="true" staminaStat="spellcast" underwater="true" element="earth" canModify="false">
+		<use slot="shield" /><action id="use" name="cast">
+			<stop if="player.renderer.equipComplete != null" />
+			<section if="player.vehicle != null"><dialogue section="warning" id="no_use_vehicle" /><stop /></section>
+			<action>player.renderer.useItem(this)</action>
+			<wait seconds="0.3" modal="false" />
+			<action>player.loseStamina(this.getStamina(player));</action><stop if="player.area == null" />
+			<object id="summon_golem" x="player.tile_x" y="player.tile_y" />
+			<action>summon_golem.alpha = 0;</action><lerp object="summon_golem" alpha="1" seconds="0.1" />
+			<wait seconds="0.3" modal="false" />
+			<action>player.addItem("golem");</action><equip id="golem" ifEmpty="true" />
+		</action>
+	</item>
+	
+	<item id="time_book" type="spellbook" behindPlayer="false" equip_anim="equipment.ice_book" cost="6000" stamina="20" weight="2" icon="spellbook.ico" master_spellcaster="true" animation="ice_book.ico" use_stamina="true" staminaStat="spellcast" underwater="true" element="ice" canModify="false">
+		<use slot="shield" /><action id="use" name="cast">
+			<stop if="player.renderer.equipComplete != null" />
+			<section if="player.vehicle != null"><dialogue section="warning" id="no_use_vehicle" /><stop /></section>
+			<window type="count" title="common.set_time" min="0" max="24" value="Math.round(getGameTime())">
+				<action>player.renderer.useItem(this)</action>
+				<action>setBGMSpeed(0.5)</action><setTime value="value" frames="80" forwards="false"><action>setBGMSpeed(1)</action></setTime>
+				<action>player.loseStamina(this.getStamina(player));</action>
+			</window>
+		</action>
+	</item>
+	
+	<animation id="light_orb.idle" x="4" count="8" repeat="37" />
+	<object id="light_orb" tile="magic_orb" animation="light_orb.idle" fps="10" layer="top" removeOnComplete="true" save="false" width="16" height="16" color="ffff33">
+		<light tile="light.largest" color="fae1b5" flicker="true" />
+	</object>
+	
+	<item id="light_book" type="spellbook" behindPlayer="false" equip_anim="equipment.fire_book" cost="6000" stamina="30" weight="2" icon="spellbook.ico" master_spellcaster="true" animation="fire_book.ico" use_stamina="true" staminaStat="spellcast" underwater="true" element="fire" canModify="false">
+		<stat id="sight" value="1" time="30" /><use slot="shield" /><action id="use" name="cast">
+			<stop if="player.renderer.equipComplete != null" />
+			<section if="player.vehicle != null"><dialogue section="warning" id="no_use_vehicle" /><stop /></section>
+			<sound id="light_book" /><action>player.renderer.useItem(this)</action>
+			<wait seconds="0.3" modal="false" />
+			<object id="light_orb" x="player.tile_x" y="player.tile_y" />
+			<action>Movement.seek(light_orb, player, 6, false, Tile.SIZE, 0, Tile.SIZE*2); player.applyMod(this); player.loseStamina(this.getStamina(player));</action>
+			<wait seconds="0.3" modal="false" />
+		</action>
+	</item>
+	
+	<animation id="temp_heal_circle" count="6" repeat="25" glow="true" />
+	<object id="temp_heal_circle" extends="heal_circle" animation="temp_heal_circle" removeOnComplete="true" save="false" />
+	<item id="heal_book" type="spellbook" behindPlayer="false" equip_anim="equipment.magic_book" cost="6000" stamina="100" weight="2" icon="spellbook.ico" animation="magic_book.ico" use_stamina="true" staminaStat="spellcast" underwater="true" canModify="false">
+		<use slot="shield" /><action id="use" name="cast">
+			<stop if="player.renderer.equipComplete != null" />
+			<section if="player.vehicle != null"><dialogue section="warning" id="no_use_vehicle" /><stop /></section>
+			<action>player.renderer.useItem(this)</action>
+			<wait seconds="0.3" modal="false" />
+			<object id="temp_heal_circle" x="player.tile_x-0.5" y="player.tile_y+0.5" />
+			<action>player.loseStamina(this.getStamina(player));</action>
+			<wait seconds="0.3" modal="false" />
+		</action>
+	</item>
+	
+	<animation id="equipment.shield_book.idle" x="7" count="8" color="5a1f7c" colorScale="2.4">
+		<append tile="magic_shield" animation="magic_shield" offsetX="-0.5" offsetY="-0.5" x="8" y="8" />
+	</animation>
+	<animation id="equipment.shield_book.carry.idle" equals="equipment.magic_book.idle" />
+	
+	<item id="shield_book" type="spellbook" slot="shield" use="block" block="stamina" omnidirectional="true" blockIgnoreArmor="true" cost="5000" weight="2" icon="spellbook.ico" master_spellcaster="true" animation="magic_book.ico" action="equip" movement_walk="walk_lswing" underwater="true" loop="shield_book" staminaStat="spellcast" canModify="false" />
+	
+	<recipe id="craft_fire_book" creates="fire_book" type="spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="fire_tusk" count="6" />
+	</recipe>
+	<recipe id="craft_water_book" creates="water_book" type="spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="fin" count="6" />
+	</recipe>
+	<recipe id="craft_plant_book" creates="plant_book" type="spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="plant_eye" count="6" />
+	</recipe>
+	<recipe id="craft_earth_book" creates="earth_book" type="spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="blood_gem" count="6" />
+	</recipe>
+	<recipe id="craft_ice_book" creates="ice_book" type="spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="yeti_fur" count="6" />
+	</recipe>
+	<recipe id="craft_shield_book" creates="shield_book" type="spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="focus_gem" count="6" />
+	</recipe>
+	
+	<recipe id="craft_heal_book" creates="heal_book" type="spellbook" achievement="spellbook" available="getFlag('heal_book')">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="alter_gem" count="6" />
+	</recipe>
+	<recipe id="craft_light_book" creates="light_book" type="spellbook" achievement="spellbook" available="getFlag('sea_witch')">
+		<type id="hq_spellbook" />
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="horn" count="6" />
+	</recipe>
+	<recipe id="craft_water_barrier_book" creates="water_barrier_book" type="spellbook" achievement="spellbook" available="getFlag('sea_witch')">
+		<type id="hq_spellbook" />
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="helium_sac" count="6" />
+	</recipe>
+	<recipe id="craft_plant_feed_book" creates="plant_feed_book" type="spellbook" achievement="spellbook" available="getFlag('sea_witch')">
+		<type id="hq_spellbook" />
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="tree_seed" count="6" />
+	</recipe>
+	<recipe id="craft_summon_golem_book" creates="summon_golem_book" type="spellbook" achievement="spellbook" available="getFlag('sea_witch')">
+		<type id="hq_spellbook" />
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="diamond" count="6" />
+	</recipe>
+	<recipe id="craft_time_book" creates="time_book" type="spellbook" achievement="spellbook" available="getFlag('sea_witch')">
+		<type id="hq_spellbook" />
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="ice_heart" count="6" />
+	</recipe>
+	<recipe id="craft_teleport_book" creates="teleport_book" type="spellbook" achievement="spellbook" available="getFlag('sea_witch')">
+		<type id="hq_spellbook" />
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="spirit_gem" count="6" />
+	</recipe>
+	
+	<!-- Tier 3 Spellbooks -->
+	
+	<include id="tier3.xml" />
+	<tile id="spell.meteor" sheet="tier3.2" />
+	<animation id="spell.meteor.impact" x="4" count="6" glow="true" />
+	<object id="spell.meteor.impact" tile="spell.meteor" animation="spell.meteor.impact" layer="top" fps="10" removeOnComplete="true" save="false">
+		<addedToArea><action>
+			count = 0.0; function canDamage(o){
+				return o != spawner &amp;&amp; spawner.projectileCanHurt(o) &amp;&amp; o.attackPower(1, 1, 0, null, false) > 0 &amp;&amp; o.getDefense(false, false, false) &lt; 20;
+			}
+		</action></addedToArea>
+		<onFrame>count += frames; if(count >= 8){var fire = getElement("fire"); count -= 8; for(o in this.getOverlappingObjects(canDamage, null, 0, 8)) o.damage(damage, FLAG_IGNORE_DEFENSE|FLAG_HIDE_ATTACKER, spawner, fire);}</onFrame>
+	</object>
+	<procedure id="spell.meteor">
+		<projectile tile="spell.meteor" animation="item4" speed="3" damage="damage" cut="damage" dx="-1" dy="1" spawner="spawner" spawnX="randInt(0, 12)" spawnY="-5" range="16" element="fire" glow="true">
+			<removed><action>damage = this.damage; s = this.spawner;</action><object id="spell.meteor.impact" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE-1" pre="true">this.vars.set("spawner", s); this.vars.set("damage", Math.round(damage/5));</object></removed>
+		</projectile>
+	</procedure>
+	<procedure id="spell.meteor.multi">
+		<run procedure="spell.meteor" /><invokeLater seconds="0.1" if="count > 0"><action>count--;</action><run procedure="spell.meteor.multi" /></invokeLater>
+	</procedure>
+		
+	<tile id="meteor_book" equals="spellbook" />
+	<item id="meteor_book" type="spellbook" equip_anim="equipment.fire_book" equip_fps="30" cost="10000" slot="shield" attack="16" cut="16" use="attack" weight="2" stamina="100" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="fire_book.ico" element="fire" action="equip" staminaStat="spellcast" delay="5" bindStaff="true" canModify="false">
+		<doAttack><action>spawner = player; count = 20; damage = this.attack;</action><run procedure="spell.meteor.multi" /></doAttack>
+	</item>
+	
+	<tile id="spell.tier3" sheet="tier3.5" />
+	<tile id="spell.rain" sheet="tier3.5" x="42" animateSub="true"><tile sheet="tier3.5" x="18" /></tile>
+	<animation id="spell.flood" x="30" count="12" repeat="2" />
+	<animation id="spell.rain" count="12" />
+	<object id="spell.flood" tile="spell.tier3" animation="spell.flood" fps="15" removeOnComplete="true" save="false" layer="item">
+		<tile id="spell.rain" animation="spell.rain" top="true" y="0" offsetX="-0.5" offsetY="-0.5" fps="15" />
+		<addedToArea><action>
+			count = 0.0; function canDamage(o){
+				return o != spawner &amp;&amp; spawner.projectileCanHurt(o) &amp;&amp; o.attackPower(1, 0, 0, null, false) > 0 &amp;&amp; o.getDefense(false, false, false) &lt; 20;
+			}
+		</action></addedToArea>
+		<initRenderer><action>this.alpha = 0;</action><lerp object="this" alpha="1" seconds="0.125" /></initRenderer>
+		<onFrame>count += frames; if(count >= 8){var water = getElement("water"); count -= 8; for(o in this.getOverlappingObjects(canDamage)) o.damage(damage, FLAG_IGNORE_DEFENSE|FLAG_HIDE_ATTACKER, spawner, water);}</onFrame>
+	</object>
+		
+	<tile id="flood_book" equals="spellbook" />
+	<item id="flood_book" type="spellbook" equip_anim="equipment.water_book" equip_fps="30" cost="10000" slot="shield" use="attack" weight="2" stamina="100" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="water_book.ico" element="water" action="equip" staminaStat="spellcast" delay="5" bindStaff="true" canModify="false">
+		<doAttack><object id="spell.flood" x="(player.getCenterX()-72)/Tile.SIZE" y="(player.getCenterY()+64)/Tile.SIZE" pre="true">this.vars.set("spawner", player); this.vars.set("damage", 3);</object></doAttack>
+	</item>
+	
+	<animation id="spell.vines" x="10" count="8"><frame count="6" repeat="2" /></animation>
+	<animation id="spell.vines.grow" x="6" count="4" />
+	<tile id="spell.flower" sheet="tier3.1" />
+	<animation id="spell.flower" x="6" count="4"><frame count="6" repeat="2" /></animation>
+	<procedure id="spell.flower">
+		<action>dx = this.getCenterX()-parent.getCenterX()+(random()*80-40); dy = this.getCenterY()-parent.getCenterY()+(random()*80-40); var div = 1.0/Math.sqrt(dx*dx+dy*dy); dx *= div; dy *= div;</action>
+		<projectile tile="spore" animation="spore" speed="1" range="14" damage="damage" dx="dx" dy="dy" spawner="spawner" spawnX="this.xPos/Tile.SIZE" spawnY="this.yTile/Tile.SIZE" relative="false" hit_sfx="attack" passTile="true" element="plant">
+			<hitEffect tile="spore" animation="spore.impact" color="66ff00" />
+		</projectile>
+	</procedure>
+	<object id="spell.flower" tile="spell.flower" animation="spell.flower" fps="15" removeOnComplete="true" save="false" layer="enemy">
+		<addedToArea><set id="count" value="-4-random()*12" /></addedToArea>
+		<onFrame>count += frames; if(count >= 12){count -= 12; runProcedure("spell.flower");}</onFrame>
+	</object>
+	<object id="spell.growth" tile="spell.tier3" animation="hidden" fps="15" save="false" layer="enemy">
+		<initRenderer><play object="this" animation="spell.vines.grow" /><action>
+			function canDamage(o){
+				return o != spawner &amp;&amp; spawner.projectileCanHurt(o) &amp;&amp; o.attackPower(1, 0, 0, null, false) > 0;
+			} var plant = getElement("plant"); var dmg = 0; for(o in this.getOverlappingObjects(canDamage)) dmg += o.damage(damage, 0, spawner, plant);
+			if(dmg > 0 &amp;&amp; spawner != null) spawner.stealHealth(dmg); var flowers = [42, 78, 49, 47, 80, 28, 112, 47, 118, 78, 112, 112, 80, 137, 48, 112];
+			var len = flowers.length>>1; var sx = this.xPos; var sy = this.yTop(); for(i in 0...len){
+				var x = flowers[2*i]; var y = flowers[2*i+1]; var o = ObjectInfo.make("spell.flower", sx+x-8, sy+y-8); o.vars.set("spawner", spawner); o.vars.set("damage", damage); o.vars.set("parent", this); this.area.addObject(o);
+			}
+		</action><play object="this" animation="spell.vines" /><remove object="this" /></initRenderer>
+	</object>
+	<tile id="growth_book" equals="spellbook" />
+	<item id="growth_book" type="spellbook" equip_anim="equipment.plant_book" equip_fps="30" cost="10000" slot="shield" attack="16" hpSteal="1" use="attack" underwater="true" weight="2" stamina="100" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="plant_book.ico" element="plant" action="equip" staminaStat="spellcast" delay="5" bindStaff="true" canModify="false">
+		<doAttack><action>attack = this.attack;</action><object id="spell.growth" x="(player.getCenterX()-72)/Tile.SIZE" y="(player.getCenterY()+64)/Tile.SIZE" pre="true">this.vars.set("spawner", player); this.vars.set("damage", attack);</object></doAttack>
+	</item>
+	
+	<tile id="spell.earth" sheet="tier3.3" /><animation id="spell.earth" x="4" count="8" />
+	<object id="spell.earth" tile="spell.earth" animation="hidden" fps="15" save="false" layer="enemy">
+		<initRenderer><play object="this" animation="item4" /><action>
+			function canDamage(o){
+				return o != spawner &amp;&amp; spawner.projectileCanHurt(o) &amp;&amp; o.attackPower(1, 0, 0, null, false) > 0;
+			} var earth = getElement("earth"); for(o in this.getOverlappingObjects(canDamage, null, 0.125)) o.damage(damage, FLAG_CRITICAL, spawner, earth);
+		</action><play object="this" animation="spell.earth" /><remove object="this" /></initRenderer>
+	</object>
+	<procedure id="spell.earth.multi">
+		<action>cx = Math.round(centerX/Tile.SIZE-1)+2*x*side; cy = spawner.tile_y+1;</action>
+		<object id="spell.earth" x="cx" y="cy" pre="true" if="!area.emptyTile(cx, cy) && !area.emptyTile(cx+1, cy)">this.vars.set("spawner", spawner); this.vars.set("damage", damage);</object>
+		<action>side = -side; if(side == -1){count--; x++;}</action><invokeLater seconds="0.1" if="count > 0"><run procedure="spell.earth.multi" /></invokeLater>
+	</procedure>
+	<tile id="spikes_book" equals="spellbook" />
+	<item id="spikes_book" type="spellbook" equip_anim="equipment.earth_book" equip_fps="30" cost="10000" slot="shield" attack="20" critical="true" use="attack" underwater="true" weight="2" stamina="100" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="earth_book.ico" element="earth" action="equip" staminaStat="spellcast" delay="5" bindStaff="true" canModify="false">
+		<canAttack enabled="!area.emptyTile(player.tile_x, player.tile_y+1)" fail="warning.cast_ground" />
+		<doAttack>
+			<action>spawner = player; x = 0; count = 4; side = 1; damage = this.attack; centerX = spawner.getCenterX();</action><run procedure="spell.earth.multi" />
+		</doAttack>
+	</item>
+	
+	<tile id="spell.tornado" sheet="tier3.4" />
+	<animation id="spell.tornado" count="4" />
+	<animation id="spell.tornado.form" x="4" count="4" />
+	<tile id="tornado_book" equals="spellbook" />
+	<procedure id="spell.tornado.form">
+		<action>this.renderer.stopped = true;</action><play object="this" animation="spell.tornado.form" />
+		<action>this.renderer.stopped = false;</action><play object="this" animation="spell.tornado" loop="true" />
+	</procedure>
+	<item id="tornado_book" type="spellbook" equip_anim="equipment.ice_book" equip_fps="30" cost="10000" slot="shield" attack="20" cut="10" range="18" use="attack" underwater="true" weight="2" stamina="100" icon="spellbook.ico" master_spellcaster="true" movement_walk="walk_lswing" animation="ice_book.ico" element="ice" action="equip" staminaStat="spellcast" delay="5" bindStaff="true" canModify="false">
+		<projectile tile="spell.tornado" animation="spell.tornado" speed="2" element="ice" homing="true" pierce="true" passTile="true" hitEffect="freeze" offsetY="-16">
+			<spawn><run procedure="spell.tornado.form" /></spawn>
+		</projectile>
+	</item>
+		
+	<recipe id="craft_meteor_book" creates="meteor_book" type="hq_spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="fire_gem" count="6" />
+		<item id="evo_gem" count="1" defineLater="true" />
+	</recipe>
+	<recipe id="craft_flood_book" creates="flood_book" type="hq_spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="water_gem" count="6" />
+		<item id="evo_gem" count="1" defineLater="true" />
+	</recipe>
+	<recipe id="craft_growth_book" creates="growth_book" type="hq_spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="plant_gem" count="6" />
+		<item id="evo_gem" count="1" defineLater="true" />
+	</recipe>
+	<recipe id="craft_spikes_book" creates="spikes_book" type="hq_spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="earth_gem" count="6" />
+		<item id="evo_gem" count="1" defineLater="true" />
+	</recipe>
+	<recipe id="craft_tornado_book" creates="tornado_book" type="hq_spellbook" achievement="spellbook">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="ice_gem" count="6" />
+		<item id="evo_gem" count="1" defineLater="true" />
+	</recipe>
+		
+	<procedure id="translation_book"><set id="o" value="player.getActionObject(false)" /><set id="s" value="player.getCurrentStructure()" /><choose>
+		<run object="o.info.id" event="onTranslate" if="o != null && hasXmlElement(o.info.xml.elementsNamed('onTranslate'))" />
+		<run structure="s.info.id" event="onTranslate" if="s != null && hasXmlElement(s.info.xml.elementsNamed('onTranslate'))" />
+		<run object="area.vehicle.info.id" event="onTranslate" if="area.vehicle != null && hasXmlElement(area.vehicle.info.xml.elementsNamed('onTranslate'))" />
+		<dialogue section="player" id="no_translate" />
+	</choose></procedure>
+	<tile id="translation_book" equals="teleport_book" />
+	<item id="translation_book" type="spellbook" behindPlayer="false" equip_anim="equipment.magic_book" cost="7500" weight="2" icon="spellbook.ico" animation="magic_book.ico" master_spellcaster="true" underwater="true" stamina="10" use_stamina="true" staminaStat="spellcast" canModify="false">
+		<use slot="shield" /><action id="use" name="cast">
+			<section if="player.vehicle != null"><action>player.loseStamina(this.getStamina(player));</action><stop if="player.area == null" /><choose>
+				<run object="player.vehicle.info.id" event="onTranslate" if="hasXmlElement(player.vehicle.info.xml.elementsNamed('onTranslate'))" />
+				<dialogue section="player" id="no_translate" />
+				</choose><stop />
+			</section>
+			<stop if="player.renderer.equipComplete != null" />
+			<action>player.loseStamina(this.getStamina(player)); player.renderer.useItem(this)</action><stop if="player.area == null" />
+			<wait seconds="0.3" modal="false" />
+			<run procedure="translation_book" />
+		</action>
+	</item>
+		
+	<recipe id="craft_translation_book" creates="translation_book" type="spellbook" achievement="spellbook" available="player.hasQuest('spirit_portal')">
+		<type id="hq_spellbook" />
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="dark_fur" count="6" />
+		<item id="evo_gem" count="1" defineLater="true" />
+	</recipe>
+		
+	<tile id="staff" sheet="equip.5" x="18" offsetX="-8" offsetY="-8" />
+	<animation id="staff.gem.idle" x="15" count="1" glow="true" />
+	<animation id="staff.cast" x="0" count="6" glow="true"><frame visible="false" length="2" /></animation>
+	<animation id="staff.gem.cast">
+		<frame x="15" length="2" offsetY="-1" glow="true" /><frame x="15" length="3" glow="true" /><frame x="15" offsetY="-1" glow="true" /><frame x="15" length="2" glow="true" />
+		<append tile="staff" animation="staff.cast" />
+	</animation>
+	<animation id="staff.cast.fx"><frame visible="false" length="2" /><frame x="0" count="6" glow="true" /></animation>
+	<animation id="equipment.staff.idle" x="14" count="1"><append tile="staff" animation="staff.gem.idle" color="5a1f7c" colorScale="2.4" /></animation>
+	<animation id="equipment.staff" x="6" count="8"><append tile="staff" animation="staff.gem.cast" color="5a1f7c" colorScale="2.4" /><append tile="ice_book.cast" animation="staff.cast.fx" color="5a1f7c" colorScale="2.4" /></animation>
+	<animation id="equipment.fire_staff.idle" x="14" count="1"><append tile="staff" animation="staff.gem.idle" color="ff6611" colorScale="1.4" /></animation>
+	<animation id="equipment.fire_staff" x="6" count="8"><append tile="staff" animation="staff.gem.cast" color="ff6611" colorScale="1.4" /><append tile="fire_book.cast" animation="staff.cast.fx" /></animation>
+	<animation id="equipment.water_staff.idle" x="14" count="1"><append tile="staff" animation="staff.gem.idle" color="1199ff" colorScale="1.4" /></animation>
+	<animation id="equipment.water_staff" x="6" count="8"><append tile="staff" animation="staff.gem.cast" color="1199ff" colorScale="1.4" /><append tile="water_book.cast" animation="staff.cast.fx" /></animation>
+	<animation id="equipment.plant_staff.idle" x="14" count="1"><append tile="staff" animation="staff.gem.idle" color="99ff11" colorScale="1.4" /></animation>
+	<animation id="equipment.plant_staff" x="6" count="8"><append tile="staff" animation="staff.gem.cast" color="99ff11" colorScale="1.4" /><append tile="plant_book.cast" animation="staff.cast.fx" /></animation>
+	<animation id="equipment.earth_staff.idle" x="14" count="1"><append tile="staff" animation="staff.gem.idle" color="ffcc11" colorScale="1.4" /></animation>
+	<animation id="equipment.earth_staff" x="6" count="8"><append tile="staff" animation="staff.gem.cast" color="ffcc11" colorScale="1.4" /><append tile="earth_book.cast" animation="staff.cast.fx" /></animation>
+	<animation id="equipment.ice_staff.idle" x="14" count="1"><append tile="staff" animation="staff.gem.idle" color="99ccff" colorScale="2" /></animation>
+	<animation id="equipment.ice_staff" x="6" count="8"><append tile="staff" animation="staff.gem.cast" color="99ccff" colorScale="2" /><append tile="ice_book.cast" animation="staff.cast.fx" /></animation>
+	
+	<animation id="staff.ico" count="1"><append tile="staff.gem.ico" animation="single" color="5a1f7c" colorScale="2.4" /></animation>
+	<animation id="staff.fire.ico" count="1"><append tile="staff.gem.ico" animation="single" color="ff6611" colorScale="1.4" /></animation>
+	<animation id="staff.water.ico" count="1"><append tile="staff.gem.ico" animation="single" color="1199ff" colorScale="1.4" /></animation>
+	<animation id="staff.plant.ico" count="1"><append tile="staff.gem.ico" animation="single" color="99ff11" colorScale="1.4" /></animation>
+	<animation id="staff.earth.ico" count="1"><append tile="staff.gem.ico" animation="single" color="ffcc11" colorScale="1.4" /></animation>
+	<animation id="staff.ice.ico" count="1"><append tile="staff.gem.ico" animation="single" color="99ccff" colorScale="2" /></animation>
+		
+	<item id="staff.fire" type="none"><modifiers equip_anim="equipment.fire_staff" element="fire" animation="staff.fire.ico"><light tile="light.large" color="ff3333" offsetX="-16" /></modifiers></item>
+	<item id="staff.water" type="none"><modifiers equip_anim="equipment.water_staff" element="water" animation="staff.water.ico"><light tile="light.large" color="6666ff" offsetX="-16" /></modifiers></item>
+	<item id="staff.ice" type="none"><modifiers equip_anim="equipment.ice_staff" element="ice" animation="staff.ice.ico"><light tile="light.large" color="33ffff" offsetX="-16" /></modifiers></item>
+	<item id="staff.earth" type="none"><modifiers equip_anim="equipment.earth_staff" element="earth" animation="staff.earth.ico"><light tile="light.large" color="ffcc33" offsetX="-16" /></modifiers></item>
+	<item id="staff.plant" type="none"><modifiers equip_anim="equipment.plant_staff" element="plant" animation="staff.plant.ico"><light tile="light.large" color="33ff33" offsetX="-16" /></modifiers></item>
+		
+	<item id="staff" type="spellbook" cost="2500" weight="2" slot="weapon" movement_walk="walk_rswing" icon="staff.ico" animation="staff.ico" attack="10" spirit="2" underwater="true" stamina="20" staminaStat="spellcast" sfx="fireball" melee_range="0.75" knockback="5" canModify="false">
+		<action id="equip" /><action id="use" name="actions.bind_spellbook" closeWindow="false">
+			<window type="items" title="actions.bind_spellbook" equipment="true" incNone="true" filter="function(i){return i.xml.get('bindStaff') == 'true';}">
+				<action>
+					setName(item == null?null:Item.setParameter(Item.setParameter(name, "m", item.xml.exists("element")?"staff."+item.xml.get("element"):null), "u", item.id));
+					if(player.vehicle != null){if(player.vehicle.renderer != null) player.vehicle.renderer.equipmentChanged(player);} else if(player.renderer != null) player.renderer.equipmentChanged();
+				</action>
+			</window>
+		</action><light tile="light.large" color="ff33ff" offsetX="-16" />
+	</item>
+				
+	<recipe id="make_staff" creates="staff" type="hq_spellbook">
+		<type id="no_uncraft" /><item id="wood" count="1" /><item id="evo_gem" count="1" defineLater="true"  /><item id="fish_scale" count="3" />
+	</recipe>
+				
+	<tile id="beacon_book" equals="teleport_book" />
+	<item id="beacon_book" type="spellbook" behindPlayer="false" equip_anim="equipment.magic_book" cost="11000" weight="2" icon="spellbook.ico" animation="magic_book.ico" underwater="true" stamina="200" use_stamina="true" staminaStat="spellcast" canModify="false">
+		<use slot="shield" /><action id="use" name="cast">
+			<stop if="player.renderer.equipComplete != null" />
+			<section if="player.vehicle != null"><dialogue section="warning" id="no_use_vehicle" /><stop /></section>
+			<section if="player.inDungeon() || area.getExit() != null"><dialogue section="warning" id="no_use" /><stop /></section>
+			<action>player.loseStamina(this.getStamina(player)); player.renderer.useItem(this)</action><stop if="player.area == null" />
+			<wait seconds="0.3" modal="false" />
+			<set id="beacon" value="player.getNPC('teleport.beacon')" /><remove object="beacon" if="beacon != null" />
+			<object id="teleport.beacon" x="player.xPos/16" y="player.yTile/16" />
+		</action>
+	</item>
+				
+	<recipe id="craft_beacon_book" creates="beacon_book" type="hq_spellbook" achievement="spellbook" available="player.seen_items.exists('beacon_book')">
+		<item id="fish_scale" count="6" />
+		<item id="ink" count="6" />
+		<item id="magnegem" count="6" />
+		<item id="evo_gem" count="1" defineLater="true" />
+	</recipe>
+</data>

@@ -1,0 +1,56 @@
+<sheets>
+<tilesheet id='cruiser.1' sheet='cruiser.png' width='508' height='278' offsetX='-261' offsetY='-65'>
+	<image frame='0' x='0' y='0' width='508' height='278' offsetX='261' offsetY='65' />
+	<image frame='1' x='508' y='0' width='508' height='278' offsetX='261' offsetY='65' />
+	<image frame='2' x='1016' y='0' width='508' height='278' offsetX='261' offsetY='65' />
+	<image frame='3' x='0' y='278' width='508' height='278' offsetX='261' offsetY='65' />
+	<image frame='4' x='508' y='278' width='508' height='278' offsetX='261' offsetY='65' />
+	<image frame='5' x='1016' y='278' width='508' height='278' offsetX='261' offsetY='65' />
+	<image frame='6' x='0' y='556' width='508' height='278' offsetX='261' offsetY='65' />
+	<image frame='7' x='508' y='556' width='508' height='278' offsetX='261' offsetY='65' />
+	<image frame='8' x='1016' y='556' width='453' height='269' offsetX='273' offsetY='68' />
+	<image frame='9' x='0' y='834' width='453' height='268' offsetX='273' offsetY='69' />
+	<image frame='10' x='0' y='1369' width='453' height='262' offsetX='273' offsetY='75' />
+	<image frame='11' x='0' y='1631' width='453' height='261' offsetX='273' offsetY='76' />
+	<image frame='12' x='453' y='834' width='453' height='261' offsetX='273' offsetY='76' />
+	<image frame='13' x='906' y='834' width='453' height='261' offsetX='273' offsetY='76' />
+	<image frame='14' x='453' y='1095' width='453' height='261' offsetX='273' offsetY='76' />
+	<image frame='15' x='0' y='1102' width='453' height='267' offsetX='273' offsetY='71' />
+	<image frame='16' x='1359' y='834' width='187' height='147' offsetX='271' offsetY='117' />
+	<image frame='17' x='906' y='1095' width='455' height='199' offsetX='9' offsetY='115' />
+	<image frame='18' x='453' y='1356' width='448' height='226' offsetX='3' offsetY='114' />
+	<image frame='19' x='453' y='1582' width='451' height='219' offsetX='7' offsetY='117' />
+	<image frame='20' x='906' y='1294' width='447' height='200' offsetX='17' offsetY='115' />
+	<image frame='21' x='906' y='1494' width='404' height='166' offsetX='47' offsetY='116' />
+	<image frame='22' x='453' y='1801' width='424' height='180' offsetX='34' offsetY='117' />
+	<image frame='23' x='1469' y='556' width='88' height='148' offsetX='363' offsetY='116' />
+	<image frame='24' x='1174' y='1660' width='263' height='57' offsetX='424' offsetY='40' />
+	<image frame='25' x='906' y='1660' width='268' height='82' offsetX='420' offsetY='13' />
+	<image frame='26' x='0' y='1892' width='260' height='95' offsetX='419' offsetY='0' />
+	<image frame='27' x='1310' y='1494' width='235' height='79' offsetX='432' offsetY='0' />
+	<image frame='28' x='1361' y='1222' width='129' height='68' offsetX='461' offsetY='0' />
+	<image frame='29' x='1469' y='704' width='82' height='70' offsetX='475' offsetY='0' />
+	<image frame='30' x='1353' y='1421' width='70' height='64' offsetX='487' offsetY='2' />
+	<image frame='31' x='1488' y='1095' width='67' height='64' offsetX='490' offsetY='2' />
+	<image frame='32' x='260' y='1892' width='169' height='84' offsetX='464' offsetY='171' />
+	<image frame='33' x='1359' y='981' width='169' height='84' offsetX='464' offsetY='171' />
+	<image frame='34' x='1310' y='1573' width='169' height='84' offsetX='464' offsetY='171' />
+	<image frame='35' x='1174' y='1717' width='169' height='84' offsetX='464' offsetY='171' />
+	<image frame='36' x='1174' y='1801' width='169' height='84' offsetX='464' offsetY='171' />
+	<image frame='37' x='1174' y='1885' width='169' height='84' offsetX='464' offsetY='171' />
+	<image frame='38' x='1343' y='1717' width='169' height='84' offsetX='464' offsetY='171' />
+	<image frame='39' x='1343' y='1801' width='169' height='84' offsetX='464' offsetY='171' />
+</tilesheet>
+<tilesheet id='cruiser.2' sheet='cruiser.png' width='64' height='64' offsetX='-32' offsetY='-32'>
+	<image frame='0' x='1034' y='1742' width='115' height='127' offsetX='7' offsetY='0' />
+	<image frame='1' x='1034' y='1869' width='120' height='121' offsetX='6' offsetY='2' />
+	<image frame='2' x='906' y='1866' width='127' height='121' offsetX='1' offsetY='6' />
+	<image frame='3' x='906' y='1742' width='128' height='124' offsetX='0' offsetY='2' />
+	<image frame='4' x='1361' y='1095' width='127' height='127' offsetX='1' offsetY='1' />
+	<image frame='5' x='1353' y='1294' width='126' height='127' offsetX='0' offsetY='1' />
+	<image frame='6' x='1490' y='1222' width='67' height='64' offsetX='30' offsetY='32' />
+	<image frame='7' x='1479' y='1294' width='64' height='67' offsetX='32' offsetY='31' />
+	<image frame='8' x='1479' y='1361' width='67' height='64' offsetX='31' offsetY='32' />
+	<image frame='9' x='1479' y='1425' width='64' height='67' offsetX='32' offsetY='30' />
+</tilesheet>
+</sheets>

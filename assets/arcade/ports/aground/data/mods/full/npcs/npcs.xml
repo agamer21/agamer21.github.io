@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="mirrows.xml" />
+	<include id="mechanic.xml" />
+	<include id="fisherman.xml" />
+	
+	<tile id="builder.upgrade" sheet="npc.png" x="0" />
+	<tile id="miner.upgrade" sheet="npc.png" x="27" />
+	<tile id="farmer.upgrade" sheet="npc.png" x="47" />
+	<tile id="trader.upgrade" sheet="npc.png" x="71" />
+	<animation id="miner.upgrade.mine" count="1" length="10" x="19">
+		<append tile="steel_pickaxe" animation="equipment.iron_pickaxe" offsetX="-0.25" offsetY="-0.25" behind="true" />
+	</animation>
+	
+	<tile id="builder.upgrade2" sheet="npc2.png" x="0" />
+	<tile id="miner.upgrade2" sheet="npc2.png" x="27" />
+	<tile id="farmer.upgrade2" sheet="npc2.png" x="57" />
+	<tile id="trader.upgrade2" sheet="npc2.png" x="81" />
+	<animation id="miner.upgrade2.pickaxe" shift="2">
+		<frame x="20" offsetX="-4" /><frame x="21" count="4" offsetX="-7" /><frame x="25" count="5" />
+	</animation>
+	<animation id="miner.upgrade2.mine" count="1" length="10" x="19">
+		<append tile="miner.upgrade2" animation="miner.upgrade2.pickaxe" behind="true" />
+	</animation>
+	
+	<include id="backer.xml" />
+	<include id="tindle.xml" />
+	
+	<tile id="backer.mini" sheet="backer.1" />
+	<tile id="backer.tom" sheet="backer.1" x="10" />
+	<animation id="backer.mini.idle">
+		<frame x="0" length="4" />
+		<frame x="1" length="2" />
+		<frame x="0" length="12" />
+	</animation>
+	<animation id="backer.mini.talk" x="2" count="8" />
+	<procedure id="backer.tom_mini">
+		<set id="tom" value="area.getObject('backer.tom')" />
+		<set id="mini" value="area.getObject('backer.mini')" />
+		<action>lockNPC(tom); lockNPC(mini);</action>
+		<dialogue section="colony" id="tom_mini1" speaker="tom" />
+		<dialogue section="colony" id="tom_mini2" speaker="mini" />
+		<dialogue section="colony" id="tom_mini3" speaker="tom" />
+		<dialogue section="colony" id="tom_mini4" speaker="mini" />
+		<dialogue section="colony" id="tom_mini5" speaker="tom" />
+	</procedure>
+	<npc id="backer.mini" tile="backer.mini" action="talk" talk_sfx="talking7">
+		<operate><run procedure="backer.tom_mini" /></operate>
+	</npc>
+	<npc id="backer.tom" tile="backer.tom" animation="backer.mini" action="talk" talk_sfx="talking4">
+		<operate><run procedure="backer.tom_mini" /></operate>
+	</npc>
+	<structure id="backer.tent" name="tent" tile="tent" destroyRemove="true">
+		<operate><action>player.restoreStamina();</action><save sleep="true" /></operate>
+	</structure>
+</data>

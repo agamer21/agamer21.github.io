@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="colosseum.adult_dragon" background="start" forceTime="12">
+		<shape type="trapezoid">
+			<top y="-16" fromX="11" toX="29" />
+			<bottom y="-6" fromX="8" toX="31" />
+		</shape>
+		<shape type="trapezoid" bottom="10">
+			<top y="-6" fromX="2" toX="31" />
+			<bottom y="-1" fromX="0" toX="32" />
+		</shape>
+		<tiles id="stone" start="0" end="1" />
+		<tiles id="snow" top="0" />
+		<tiles id="snow_stone" top="1" />
+		<tiles id="blackstone" y="9" />
+		<action>
+		for(y in 8...13) for(x in 20...31) mine(x, y-16);
+		for(x in 22...28) mine(x, 7-16); for(y in 9...12) mine(19, y-16);
+		for(y in 0...10) setTile(-1, y, "blackstone");
+		</action>
+		<object id="adult_dragon" x="23.5" y="-4" />
+		<structure id="dragon_lair" x="21" y="-3" />
+		<object id="conifer_snow" x="2" y="-7" />
+		<objects id="conifer_snow" y="-17" startX="7" endX="28" minDist="6" maxDist="6" />
+		<objects id="bush_snow" y="-17" fromX="12" toX="29" percent="0.25" />
+		<objects id="red_bush_snow" y="-17" fromX="12" toX="29" percent="0.175"  />
+		<shore x="32" height="10" top="sand_top" bottom="sand" dock="dock_empty_flip" />
+		<appendArea id="mountain.rocks" offsetX="32" offsetY="0" />
+		<structure id="colosseum_exit" x="3" y="-7" />
+		<init><runAreaLoad /></init>
+		<onLoad><weather type="snow" fromY="-50" toY="isDate(12,27,7)?-1:-10" /></onLoad>
+	</area>
+	<procedure id="colosseum.adult_dragon">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 50);
+		var map = new StringMap(); map.set("adult_dragon", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("berries"), 10);
+		player.setHotkey(1, getItem("attack_potion").asItem());
+		player.inventory.addItems(getItem("attack_potion"), 5); player.inventory.addItems(getItem("meat"), 5);</action>
+		<equip id="steel_sword" fromInventory="false" />
+		<equip id="steel_pickaxe" fromInventory="false" />
+		<equip id="steel_armor" fromInventory="false" />
+		<equip id="kite_shield" fromInventory="false" />
+		<teleport area="colosseum.adult_dragon" x="5" y="-7" temporary="true" />
+	</procedure>
+</data>

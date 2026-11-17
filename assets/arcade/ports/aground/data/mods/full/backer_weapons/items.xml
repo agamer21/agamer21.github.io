@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mod>
+	<include id="sheet.xml" />
+	<tilesheet id="items.png" width="16" height="10" />
+	<tile id="laser_sword.ico" sheet="items.png" x="0" />
+	<item id="laser_sword" type="equipment" cost="1500" slot="weapon" weight="5" icon="laser_sword.ico" animation="item6" attack="11" power="40" stamina="1" action="equip" movement_walk="walk_rswing" underwater="true" arms="equipment.arms" sounds="sword" />
+	<tile id="laser_sword" sheet="sheet.1" x="7" offsetX="-14" offsetY="-8" />
+	<animation id="equipment.laser_sword" x="0" count="10" shift="2" />
+	<animation id="equipment.laser_sword.idle" x="10" count="4" />
+	
+	<tile id="laser_whip.ico" sheet="items.png" x="6" />
+	<item id="laser_whip" type="equipment" cost="1500" slot="weapon" weight="5" icon="laser_whip.ico" attack="10" power="40" stamina="1" action="equip" movement_walk="walk_rswing" underwater="true" arms="equipment.arms" melee_range="1.55" knockback="5" />
+	<tile id="laser_whip" sheet="sheet.1" x="21" offsetX="-17" offsetY="-8" />
+	<animation id="equipment.laser_whip" x="0" count="10" shift="2" />
+	<animation id="equipment.laser_whip.idle" x="10" count="4" />
+	
+	<tile id="seeking_missile.ico" sheet="items.png" x="7" />
+	<tile id="seeking_missile" sheet="sheet.2" />
+	<item id="seeking_missile" type="equipment" cost="400" weight="2" icon="seeking_missile.ico" attack="12" action="fire" with="rocket_launcher">
+		<projectile tile="seeking_missile" animation="item4" speed="3" offsetY="7" offsetX="-16" hitEffect="explosion_dmg" knockback="10" breakTile="5" breakPower="100" homing="true" />
+	</item>
+	
+	<tile id="boomerang.ico" sheet="items.png" x="8" />
+	<tile id="boomerang.projectile" sheet="sheet.3" x="6" />
+	<object id="boomerang.projectile" tile="boomerang.projectile" animation="item4" fps="10" layer="top" save="false" width="16" height="16" item="boomerang">
+		<over><invokeLater if="spawner == player"><remove object="this" /><action>player.renderer.sprite.active.alpha = 1; player.renderer.useItem(getItem(this.info.xml.get("item"))); player.renderer.sprite.active.setFrame(16);</action>
+		<wait seconds="0.3" modal="false" /><action>getItem(this.info.xml.get("item")).xml.set('unequip', 'true'); player.equipment.increaseValue(player, "weapon", -1);</action></invokeLater></over>
+	</object>
+	<item id="boomerang" type="equipment" cost="50" slot="weapon" weight="5" range="5" icon="boomerang.ico" attack="2" stamina="5" action="equip" movement_walk="walk_rswing" durability="1" breakable="false" durabilityName="common.uses" alwaysFire="true">
+		<use><action>getItem(this.info.id).xml.set('unequip', 'false');</action></use>
+		<projectile tile="boomerang.projectile" animation="item4" speed="3" offsetY="2" delay="2" homing="true" pierce="true">
+			<spawn><action>player.renderer.sprite.active.alpha = 0;</action></spawn>
+			<removed>
+				<object id="boomerang.projectile" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE" name="p" />
+				<action>Movement.seek(p, player, 8); p.vars.set("spawner", player);</action>
+			</removed>
+		</projectile>
+		<onEquip><action>getItem(this.info.id).xml.set('unequip', 'true');</action></onEquip>
+	</item>
+	<tile id="boomerang" sheet="sheet.1" x="0" offsetX="-16" offsetY="-8" />
+	<animation id="glow6" count="6" glow="true" />
+	<animation id="equipment.boomerang" x="0" count="2"><frame visible="false" length="2" /><frame x="2" count="5" /></animation>
+	<animation id="equipment.boomerang.idle" x="35" count="1" />
+	
+	<tile id="fire_boomerang.projectile" sheet="sheet.3" x="0" />
+	<object id="fire_boomerang.projectile" extends="boomerang.projectile" tile="fire_boomerang.projectile" animation="glow6" color="ff9911" colorScale="1.5" item="fire_boomerang" />
+	
+	<tile id="fire_boomerang.ico" sheet="items.png" x="9" />
+	<item id="fire_boomerang" icon="fire_boomerang.ico" animation="item6" extends="boomerang" attack="6" color="ff9911" colorScale="1.5" element="fire">
+		<projectile tile="fire_boomerang.projectile" animation="glow6" speed="3" color="ff9911" colorScale="1.5" offsetY="2" delay="2" homing="true" pierce="true" hitEffect="fire_med_dot">
+			<spawn><action>player.renderer.sprite.active.alpha = 0;</action></spawn>
+			<removed>
+				<object id="fire_boomerang.projectile" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE" name="p" />
+				<action>Movement.seek(p, player, 8); p.vars.set("spawner", player);</action>
+			</removed>
+		</projectile>
+	</item>
+	<tile id="fire_boomerang" sheet="sheet.1" x="36" offsetX="-16" offsetY="-8" />
+	<animation id="equipment.fire_boomerang" x="4" count="2" glow="true"><frame visible="false" length="2" /><frame x="6" count="4" glow="true" /></animation>
+	<animation id="equipment.fire_boomerang.idle" x="0" count="4" glow="true" />
+	
+	<object id="water_boomerang.projectile" extends="fire_boomerang.projectile" color="4444ff" item="water_boomerang" />
+	<item id="water_boomerang" extends="fire_boomerang" color="4444ff" element="water" underwater="true">
+		<projectile tile="fire_boomerang.projectile" animation="glow6" speed="3" color="4444ff" colorScale="1.5" offsetY="2" delay="2" homing="true" pierce="true" hitEffect="splash" knockback="10">
+			<spawn><action>player.renderer.sprite.active.alpha = 0;</action></spawn>
+			<removed>
+				<object id="water_boomerang.projectile" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE" name="p" />
+				<action>Movement.seek(p, player, 8); p.vars.set("spawner", player);</action>
+			</removed>
+		</projectile>
+	</item>
+	
+	<object id="ice_boomerang.projectile" extends="fire_boomerang.projectile" color="55bbff" item="ice_boomerang" />
+	<item id="ice_boomerang" extends="fire_boomerang" color="55bbff" element="ice">
+		<projectile tile="fire_boomerang.projectile" animation="glow6" speed="3" color="55bbff" colorScale="1.5" offsetY="2" delay="2" homing="true" pierce="true" hitEffect="freeze">
+			<spawn><action>player.renderer.sprite.active.alpha = 0;</action></spawn>
+			<removed>
+				<object id="ice_boomerang.projectile" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE" name="p" />
+				<action>Movement.seek(p, player, 8); p.vars.set("spawner", player);</action>
+			</removed>
+		</projectile>
+	</item>
+	
+	<object id="plant_boomerang.projectile" extends="fire_boomerang.projectile" color="55dd11" item="plant_boomerang" />
+	<item id="plant_boomerang" extends="fire_boomerang" color="55dd11" element="plant">
+		<equipCost stamina="-4" daylight="true" /><light tile="light.default" color="bafa66" offsetX="-16" />
+		<projectile tile="fire_boomerang.projectile" animation="glow6" speed="3" color="55dd11" colorScale="1.5" offsetY="2" delay="2" homing="true" pierce="true" hitEffect="vines">
+			<spawn><action>player.renderer.sprite.active.alpha = 0;</action></spawn>
+			<removed>
+				<object id="plant_boomerang.projectile" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE" name="p" />
+				<action>Movement.seek(p, player, 8); p.vars.set("spawner", player);</action>
+			</removed>
+		</projectile>
+	</item>
+	
+	<animation id="glow4" count="4" glow="true" />
+	<object id="fire_boomerang2.projectile" extends="boomerang.projectile" animation="glow4" color="fff07e" colorScale="2.5" item="fire_boomerang2" />
+	<item id="fire_boomerang2" name="item.names.fire_boomerang" extends="boomerang" attack="6" color="fff07e" colorScale="2.5" element="fire">
+		<projectile tile="boomerang.projectile" animation="glow4" speed="3" color="fff07e" colorScale="2.5" offsetY="2" delay="2" homing="true" pierce="true" hitEffect="fire_med_dot">
+			<spawn><action>player.renderer.sprite.active.alpha = 0;</action></spawn>
+			<removed>
+				<object id="fire_boomerang2.projectile" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE" name="p" />
+				<action>Movement.seek(p, player, 8); p.vars.set("spawner", player);</action>
+			</removed>
+		</projectile>
+	</item>
+	
+	<object id="water_boomerang2.projectile" extends="fire_boomerang2.projectile" color="090Eff" colorScale="11" item="water_boomerang2" />
+	<item id="water_boomerang2" name="item.names.water_boomerang" extends="fire_boomerang2" color="090Eff" colorScale="11" element="water" underwater="true">
+		<projectile tile="boomerang.projectile" animation="glow4" speed="3" color="090Eff" colorScale="11" offsetY="2" delay="2" homing="true" pierce="true" hitEffect="splash" knockback="10">
+			<spawn><action>player.renderer.sprite.active.alpha = 0;</action></spawn>
+			<removed>
+				<object id="water_boomerang2.projectile" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE" name="p" />
+				<action>Movement.seek(p, player, 8); p.vars.set("spawner", player);</action>
+			</removed>
+		</projectile>
+	</item>
+	
+	<object id="ice_boomerang2.projectile" extends="fire_boomerang2.projectile" color="0B33ff" colorScale="18" item="ice_boomerang2" />
+	<item id="ice_boomerang2" name="item.names.ice_boomerang" extends="fire_boomerang2" color="0B33ff" colorScale="18" element="ice">
+		<projectile tile="boomerang.projectile" animation="glow4" speed="3" color="0B33ff" colorScale="18" offsetY="2" delay="2" homing="true" pierce="true" hitEffect="freeze">
+			<spawn><action>player.renderer.sprite.active.alpha = 0;</action></spawn>
+			<removed>
+				<object id="ice_boomerang2.projectile" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE" name="p" />
+				<action>Movement.seek(p, player, 8); p.vars.set("spawner", player);</action>
+			</removed>
+		</projectile>
+	</item>
+	
+	<object id="plant_boomerang2.projectile" extends="fire_boomerang2.projectile" color="55ff55" colorScale="3" item="plant_boomerang2" />
+	<item id="plant_boomerang2" name="item.names.plant_boomerang" extends="fire_boomerang2" color="55ff55" colorScale="3" element="plant">
+		<equipCost stamina="-4" daylight="true" /><light tile="light.default" color="bafa66" offsetX="-16" />
+		<projectile tile="boomerang.projectile" animation="glow4" speed="3" color="55ff55" colorScale="3" offsetY="2" delay="2" homing="true" pierce="true" hitEffect="vines">
+			<spawn><action>player.renderer.sprite.active.alpha = 0;</action></spawn>
+			<removed>
+				<object id="plant_boomerang2.projectile" x="this.xPos/Tile.SIZE" y="this.yPos/Tile.SIZE" name="p" />
+				<action>Movement.seek(p, player, 8); p.vars.set("spawner", player);</action>
+			</removed>
+		</projectile>
+	</item>
+	
+	<tile id="leechweap.ico" sheet="items.png" x="15" />
+	<item id="leechweap" type="animal" cost="0" slot="weapon" weight="5" icon="leechweap.ico" attack="10" stamina="20" hpSteal="1" noKill="true" action="equip" movement_walk="walk_rswing" underwater="true" melee_range="1" />
+	<tile id="leechweap" sheet="sheet.4" x="0" offsetX="-8" />
+	<animation id="equipment.leechweap" x="9" count="3"><frame x="1" count="8" /></animation>
+	<animation id="equipment.leechweap.idle" equals="single" />
+	<item id="leechweap2" extends="leechweap" name="item.names.leechweap" color="99ff99" />
+	
+	<enemy id="leech" extends="leech" capture="20"><capture trapped="leechweap2" minCapture="2" /></enemy>
+	
+	<recipe id="craft_laser_sword" creates="laser_sword" type="advanced_lab">
+		<parameter id="c" value="99ffff" /><item id="ship_parts" count="2" />
+	</recipe>
+	<recipe id="craft_boomerang" creates="boomerang" type="workbench">
+		<item id="wood" count="10" />
+	</recipe>
+	<recipe id="make_ice_boomerang" creates="ice_boomerang2" type="enchantments">
+		<item id="boomerang" count="1" />
+		<item id="blood_gem" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	<recipe id="make_fire_boomerang" creates="fire_boomerang2" type="enchantments">
+		<item id="boomerang" count="1" />
+		<item id="blood_gem" count="1" />
+		<item id="fire_tusk" count="1" />
+	</recipe>
+	<recipe id="make_water_boomerang" creates="water_boomerang2" type="enchantments">
+		<item id="boomerang" count="1" />
+		<item id="blood_gem" count="1" />
+		<item id="fire_tusk" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	<recipe id="make_plant_boomerang" creates="plant_boomerang2" type="enchantments">
+		<item id="boomerang" count="1" />
+		<item id="blood_gem" count="1" />
+		<item id="plant_eye" count="1" />
+	</recipe>
+</mod>

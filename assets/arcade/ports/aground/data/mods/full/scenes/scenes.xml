@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<procedure id="science1_end" />
+	<procedure id="magic1_end" />
+	<include id="house_interior.xml" />
+	<include id="alchemist.xml" />
+</data>

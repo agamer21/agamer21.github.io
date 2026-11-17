@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="spirit_portal" exp="2000" giver="exiled" achievement="spirit_portal">
+		<item id="translation_book" count="1" consume="false" />
+		<item id="dragon_seed" count="1" hidden="true" />
+	</quest>
+	<quest id="magne_queen_drill" recipe="craft_magne_queen_drill" exp="4000" giver="exiled" achievement="magne_queen_drill" />
+	<include id="exiled.xml" includeRoot="true" />
+	<tilesheet id='exiled.1' sheet='exiled.png' width='16' height='16'>
+		<image frame='0' x='5' y='6' width='16' height='16' offsetX='0' offsetY='0' />
+	</tilesheet>
+	<tile id="exiled.ico" sheet="exiled.1" />
+	<tile id="exiled" sheet="exiled.png" />
+	<animation id="exiled.idle" equals="item8" />
+	<animation id="exiled.talk" equals="item8" />
+	<animation id="exiled.walk" equals="item8" />
+	<npc id="exiled" tile="exiled" action="talk" animation="exiled" night="true" canBombard="false" icon="exiled.ico">
+		<operate>
+			<dialogue text="Oh no. If word gets out that there's actually an alien on mars... I guess it doesn't matter now with the Earth more or less destroyed..." font="drachenklaue" speaker='this' if="!player.hasQuest('lab')" />
+			<choose if="getFlag('final_boss_defeat') && player.questComplete('spirit_portal')">
+				<section if="!getFlag('exiled_win') && !getFlag('hybrid_win')">
+					<quest /><action>setFlag('exiled_win', true)</action><scene id="aliens" show="exiled_win" with="fade" showToAll="true" />
+				</section>
+				<group>
+					<dialogue section="exiled" id="win3" speaker="this" />
+					<scene id="aliens" show="exiled_info" with="fade" />
+				</group>
+			</choose>
+			<section if="!getFlag('exiled_intro')"><quest /><action>setFlag('exiled_intro', true)</action><complete quest="exiled" if="player.hasQuest('exiled')" />
+				<dialogue text="Oh no. If word gets out that there's actually an alien on mars... I guess it doesn't matter now with the Earth more or less destroyed... Might as well talk to it." font="drachenklaue" speaker='this' />
+				<scene id="aliens" show="exiled" with="fade" showToAll="true" />
+			</section>
+			<section if="!player.questComplete('dragon_ship')">
+				<dialogue section="exiled" id="ship1" speaker="this" />
+				<dialogue section="exiled" id="ship2" speaker="this" />
+				<choose>
+					<section if="getFlag('final_boss_defeat') && !getFlag('exiled_evo_chamber')">
+						<quest /><dialogue section="exiled" id="evo_chamber" speaker="this" />
+						<structure id="evo_chamber" x="88" y="5" /><action>setFlag('exiled_evo_chamber', true);</action>
+					</section>
+					<dialogue section="exiled" id="spells2" speaker="this" />
+				</choose>
+			</section>
+			<section if="!getFlag('sea_witch')">
+				<dialogue section="exiled" id="spells1" speaker="this" />
+				<dialogue section="exiled" id="spells2" speaker="this" />
+			</section>
+			<section if="!player.hasQuest('spirit_portal')">
+				<dialogue section="exiled" id="spells3" speaker="this" />
+				<dialogue section="exiled" id="spells4" speaker="this" />
+				<quest id="spirit_portal">
+					<dialogue section="exiled" id="recipe" />
+				</quest>
+			</section>
+			<choose if="player.canCompleteQuest('spirit_portal')">
+				<section if="player.viewHidden.get()">
+					<complete quest="spirit_portal" />
+					<dialogue section="exiled" id="dragon_seed1" speaker="this" />
+					<structure id="spirit_door" x="89" y="5" var="spirit_door"><teleport area="spirit" x="4" y="6" /></structure>
+					<action>spirit_door.renderer.alpha = 0;</action><lerp object="spirit_door" alpha="1" seconds="1" modal="true" />
+					<dialogue section="exiled" id="dragon_seed2" speaker="this" />
+				</section>
+				<section><quest /><dialogue section="exiled" id="dragon_seed3" speaker="this" /></section>
+			</choose>
+			<dialogue section="exiled" id="spirit_hq" speaker="this" if="player.hasQuest('spirit_hq') && !player.hasQuest('activate_hq_structures')" />
+			<section if="!getFlag('final_boss_defeat') && player.questComplete('activate_hq_structures') && !player.hasQuest('magne_queen_drill')">
+				<dialogue section="exiled" id="magnequeen1" speaker="this" />
+				<dialogue section="exiled" id="magnequeen2" speaker="this" />
+				<dialogue section="exiled" id="magnequeen3" speaker="this" />
+				<set id="wasBombardment" value="getFlag('bombardment')" />
+				<run procedure="bombardment.init" if="!getFlag('bombardment')" />
+				<set id="o" value="player.areas.get('start.orbit').getObject('alien.bomber')" />
+				<section if="o != null && !o.enabled"><remove object="o" /><set id="o" value="null" /></section>
+				<object id="alien.bomber" x="256" y="55" area="start.orbit" if="o == null" />
+				<objects id="alien.fighter" count="6" fromX="2" toX="574" fromY="10" toY="54" width="4" height="4" ground="false" area="start.orbit" />
+				<objects id="alien.cruiser" count="2" fromX="2" toX="574" fromY="10" toY="54" width="4" height="4" ground="false" area="start.orbit" />
+				<choose>
+					<dialogue section="exiled" id="magnequeen4.2" speaker="this" if="wasBombardment" />
+					<dialogue section="exiled" id="magnequeen4.1" speaker="this" />
+				</choose>
+				<dialogue section="exiled" id="magnequeen5" speaker="this" />
+				<dialogue section="exiled" id="magnequeen6" speaker="this" />
+				<quest id="magne_queen_drill" ask="false" />
+				<dialogue section="exiled" id="magnequeen7" speaker="this" /><item id="magnetrap" />
+			</section>
+			<section if="player.canCompleteQuest('magne_queen_drill')">
+				<complete quest="magne_queen_drill" />
+				<dialogue section="exiled" id="magnequeen8" speaker="this" />
+				<item id="magne_queen_drill" />
+				<dialogue section="exiled" id="magnequeen9" speaker="this" />
+			</section>
+			<group if="player.hasItem('translation_book') && !player.hasSeenItem('dragon_seed')">
+				<dialogue section="exiled" id="spells5" speaker="this" />
+				<dialogue section="exiled" id="spells6" speaker="this" />
+			</group>
+			<group>
+				<dialogue section="exiled" id="leader" speaker="this" if="player.questComplete('magne_queen_drill')" />
+				<scene id="aliens" show="exiled_info" with="fade" />
+			</group>
+		</operate>
+	</npc>
+</data>

@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tilesheet id="items.png" width="16" height="10" />
+	<tile id="pearl.ico" sheet="items.png" x="0" />
+	<tile id="fin.ico" sheet="items.png" x="1" />
+	<tile id="ship_parts.ico" sheet="items.png" x="2" />
+	<tile id="power_core_parts.ico" sheet="items.png" x="3" />
+	<tile id="power_core.ico" sheet="items.png" x="4" />
+	<tile id="sub.ico" sheet="items.png" x="8" />
+	<tile id="jeep.ico" sheet="items.png" x="9" />
+	<tile id="jet.ico" sheet="items.png" x="10" />
+	<tile id="bigdrill.ico" sheet="items.png" x="46" />
+	<tile id="torpedo_launcher.ico" sheet="items.png" x="11" />
+	<tile id="torpedo.ico" sheet="items.png" x="12" />
+	<tile id="jeep_gun.ico" sheet="items.png" x="13" />
+	<tile id="jet_gun.ico" sheet="items.png" x="14" />
+	<tile id="missile_launcher.ico" sheet="items.png" x="17" />
+	<tile id="missile.ico" sheet="items.png" x="18" />
+	<tile id="com_device.ico" sheet="items.png" x="19" />
+	<tile id="patrol_boat.ico" sheet="items.png" x="63" />
+	
+	<item id="pearl" type="potion" cost="800" weight="2" icon="pearl.ico">
+		<action id="transform" into="clam_gun" />
+	</item>
+	<item id="fin" type="potion" cost="400" weight="2" icon="fin.ico"><modifiers efficiency="2" /></item>
+	<item id="fire_gem" extends="fire_gem">
+		<modifyTransform from="dragon" to="young_dragon" />
+		<modifyTransform from="young_dragon" to="adult_dragon" />
+	</item>
+	
+	<item id="ship_parts" type="resource" cost="600" weight="20" icon="ship_parts.ico" />
+	<item id="power_core_parts" type="resource" cost="400" weight="20" icon="power_core_parts.ico" />
+	<animation id="power_core.on" equals="item4" />
+	<item id="power_core" type="object" cost="2000" weight="20" icon="power_core.ico" animation="item4" underground="true" object="powerplant" tile="power_core">
+		<action id="place"><placeCost><item id="ship_parts" count="1" /></placeCost></action>
+		<operate>
+			<menu section="common" closeable="true" width="120" autoselect="true">
+				<choice id="recharge_batteries"><action>player.restorePower()</action></choice>
+				<choice id="actions.collect"><action>this.doCollect(player);</action></choice>
+			</menu><stop />
+		</operate>
+	</item>
+	
+	<tile id="exotic_matter.ico" sheet="items.png" x="235" />
+	<item id="exotic_matter" type="resource" cost="1000" weight="2" icon="exotic_matter.ico" animation="item10" />
+	
+	<tile id="o2_canister.ico" sheet="items.png" x="250" />
+	<item id="o2_canister" type="tool" cost="200" weight="4" icon="o2_canister.ico" animation="item4" action="eat" eat="common.use_count" oxygen="100" />
+	
+	<tile id="magnegem.ico" sheet="items.png" x="254" />
+	<item id="magnegem" type="resource" cost="600" weight="5" icon="magnegem.ico" animation="item12" />
+	
+	<tile id="chromium.ico" sheet="items.png" x="468" />
+	<item id="chromium" type="resource" cost="750" weight="5" icon="chromium.ico" animation="item6" />
+	
+	<item id="torpedo" type="equipment" cost="300" weight="2" icon="torpedo.ico" attack="8" with="torpedo_launcher">
+		<projectile tile="torpedo" animation="torpedo" speed="4" offsetY="-2" hitEffect="explosion_dmg" knockback="10" breakTile="5" breakPower="100" hit_sfx="torpedo" />
+	</item>
+	<item id="torpedo_launcher" type="equipment" slot="attack" equipOn="sub" cost="750" weight="30" range="14" icon="torpedo_launcher.ico" projectile="torpedo" delay="10" sfx="torpedo_launcher" underwater="true">
+		<equipOn id="submersible" append=".submersible" projY="-24" delay="12" /><action id="setProjectile" />
+	</item>
+	
+	<hitEffect id="freeze_dmg" extends="freeze" damage="12" damageName="vehicle.damage_bonus" element="ice" />
+	<hitEffect id="splash_dmg" extends="splash" damage="12" damageName="vehicle.damage_bonus" element="water" />
+	<item id="ice_torpedo" extends="torpedo" attack="10" color="6699ff" colorScale="3" element="ice">
+		<projectile tile="torpedo" animation="torpedo" speed="4" offsetY="-2" color="6699ff" colorScale="3" hitEffect="freeze_dmg" knockback="10" breakTile="5" breakPower="100" />
+	</item>
+	<item id="fire_torpedo" extends="torpedo" attack="10" color="ff9911" colorScale="2" element="fire">
+		<projectile tile="torpedo" animation="torpedo" speed="4" offsetY="-2" color="ff9911" colorScale="2" hitEffect="explosion_dmg" glow="true" knockback="10" breakTile="5" breakPower="100" />
+	</item>
+	<item id="water_torpedo" extends="torpedo" attack="10" color="3333ff" colorScale="3" element="water">
+		<projectile tile="torpedo" animation="torpedo" speed="4" offsetY="-2" color="3333ff" colorScale="3" hitEffect="splash_dmg" knockback="20" breakTile="5" breakPower="100" />
+	</item>
+	<recipe id="make_torpedo" creates="ice_torpedo" type="enchantments">
+		<item id="torpedo" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	<recipe id="make_fire_torpedo" creates="fire_torpedo" type="enchantments">
+		<item id="torpedo" count="1" />
+		<item id="fire_tusk" count="1" />
+	</recipe>
+	<recipe id="make_water_torpedo" creates="water_torpedo" type="enchantments">
+		<item id="torpedo" count="1" />
+		<item id="fire_tusk" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	
+	<item id="jeep_gun" type="equipment" slot="attack" equipOn="jeep" cost="300" weight="20" range="16" icon="jeep_gun.ico" delay="-2" speed="4" sfx="machine_gun" repeat="8" projectile="bullet" group="revolver" offsetY="-3">
+		<action id="setProjectile" />
+	</item>
+	
+	<item id="jet_gun" type="equipment" slot="attack" equipOn="jet" cost="300" weight="20" range="18" icon="jet_gun.ico" delay="-2" speed="6" sfx="machine_gun" repeat="8" projectile="bullet" group="revolver" offsetY="-3" animation="item3">
+		<action id="setProjectile" />
+	</item>
+	<item id="missile" type="equipment" cost="300" weight="2" icon="missile.ico" attack="8" action="fire" with="rocket_launcher">
+		<projectile tile="missile" animation="missile" speed="4" offsetY="7" offsetX="-16" hitEffect="explosion_dmg" knockback="10" breakTile="5" breakPower="100" />
+	</item>
+	<item id="missile_launcher" type="equipment" slot="attack" equipOn="jet" cost="500" weight="30" range="14" icon="missile_launcher.ico" speed="6" projectile="missile" delay="4" group="rocket_launcher" sfx="missile">
+		<action id="setProjectile" />
+	</item>
+	
+	<hitEffect id="fire_lg_dmg" extends="fire_lg" damage="4" min="3" max="5" element="fire" />
+	<item id="ice_missile" extends="missile" attack="10" color="6699ff" colorScale="3" element="ice">
+		<projectile tile="missile" animation="missile" speed="4" offsetY="7" offsetX="-16" color="6699ff" colorScale="3" hitEffect="freeze_dmg" knockback="10" breakTile="5" breakPower="100" />
+	</item>
+	<item id="fire_missile" extends="missile" attack="10" color="ff9911" colorScale="2" element="fire">
+		<projectile tile="missile" animation="missile" speed="4" offsetY="7" offsetX="-16" color="ff9911" colorScale="2" hitEffect="fire_lg_dmg" knockback="10" glow="true" breakTile="5" breakPower="100" />
+	</item>
+	<item id="water_missile" extends="missile" attack="10" color="3333ff" colorScale="3" element="water">
+		<projectile tile="missile" animation="missile" speed="4" offsetY="7" offsetX="-16" color="3333ff" colorScale="3" hitEffect="splash_dmg" knockback="20" breakTile="5" breakPower="100" />
+	</item>
+	<recipe id="make_ice_missile" creates="ice_missile" type="enchantments">
+		<item id="missile" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	<recipe id="make_fire_missile" creates="fire_missile" type="enchantments">
+		<item id="missile" count="1" />
+		<item id="fire_tusk" count="1" />
+	</recipe>
+	<recipe id="make_water_missile" creates="water_missile" type="enchantments">
+		<item id="missile" count="1" />
+		<item id="fire_tusk" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	
+	<animation id="item10" count="10" />
+	<item id="com_device" type="tool" cost="0" weight="0" icon="com_device.ico" animation="item10" canStore="false" syncPlayers="true">
+		<action id="use"><window type="contacts" /></action>
+	</item>
+	
+	<tile id="rocket_launcher.ico" sheet="items.png" x="29" />
+	<item id="rocket_launcher" type="equipment" slot="weapon" cost="500" weight="20" stamina="1" range="14" icon="rocket_launcher.ico" projectile="missile" offsetY="-4" offsetX="16" sfx="missile">
+		<action id="equip" /><action id="setProjectile" />
+	</item>
+	<include id="weps.xml" includeRoot="true" />
+	<tile id="rocket_launcher" sheet="weps.png" x="0" />
+	<animation id="equipment.rocket_launcher.idle" x="5" count="1" />
+	<animation id="equipment.rocket_launcher" count="6" />
+	
+	<tile id="water_pump.ico" sheet="items.png" x="59" />
+	<item id="water_pump" type="tool" slot="back" action="equip" cost="500" weight="0" capacity="200" icon="water_pump.ico" animation="item4">
+		<pump storage="power" cost="2" />
+	</item>
+	<tile id="water_pump" sheet="weps.png" x="84" offsetX="16" />
+	<animation id="equipment.water_pump.idle" x="0" count="1" />
+	<animation id="equipment.water_pump" x="1" count="6" />
+	
+	<autotile id="cable">
+		<tile neighbors="top" x="1">
+			<tile neighbors="left" x="0" offsetY="16" />
+			<tile neighbors="right" x="0" offsetY="16" />
+		</tile>
+		<tile x="0" offsetY="16" />
+	</autotile>
+	<autotile id="cable2">
+		<tile neighbors="top" x="1">
+			<tile neighbors="left" x="0" offsetY="18" />
+			<tile neighbors="right" x="0" offsetY="18" />
+		</tile>
+		<tile x="0" offsetY="18" />
+	</autotile>
+	<tile id="cable"><tile sheet="{core}/tiles/tiles.png" x="142" autotile="cable"><neighbor id="cable_rail" /></tile></tile>
+	<tile id="cable.ico" sheet="{core}/tiles/tiles.png" x="142" offsetY="3" />
+	<item id="cable" type="object" cost="10" weight="1" icon="cable.ico" powered="true">
+		<action id="place_rail" name="place" rail="cable"><tile id="rail" rail="cable_rail" /></action>
+	</item>
+	<tile id="cable_rail">
+		<tile sheet="{core}/tiles/tiles.png" x="142" autotile="cable2"><neighbor id="cable" /></tile>
+		<tile sheet="{core}/items/rails.png" x="0" autotile="rail"><neighbor id="rail" /></tile>
+	</tile>
+	<ore id="cable_rail" rail="rail" /><item id="cable_rail" type="none" cost="0" weight="0" rail="cable_rail" powered="true">
+		<collectRail item="rail" /><collectRail item="cable" />
+	</item>
+	
+	<tile id="generator.ico" sheet="items.png" x="30" />
+	<include id="generator.xml" includeRoot="true" />
+	<tile id="generator" sheet="generator.png" />
+	<animation id="generator.off" count="1" />
+	<animation id="generator.on" x="1" count="6" />
+	<item id="generator" type="object" cost="1000" weight="40" icon="generator.ico" action="place" underground="true" durability="1000" durabilityName="common.fuel" object="powerplant" tile="generator">
+		<recipe type="powerplant" />
+		<listItem icon="power" title="common.recharge_batteries" enabled="this.getFuel() > 0" fail="warning.not_powered">
+			<action>player.restorePowerFrom(this, 25)</action>
+		</listItem>
+		<action id="feed" alt="feed_all" alt_name="fuel_all" name="common.fuel" full="warning.max_fuel" auto="common.auto_fuel" select="common.add_fuel" sfx="fuel" />
+		<food id="coal" value="20" /><food id="refined_oil" value="200" />
+	</item>
+	
+	<tile id="ink.ico" sheet="items.png" x="31" />
+	<item id="ink" type="potion" cost="750" weight="1" icon="ink.ico" animation="item6" />
+	
+	<tile id="jet_engine.ico" sheet="items.png" x="37" /><animation id="item9" count="9" />
+	<item id="jet_engine" type="equipment" slot="engine" equipOn="jet" cost="1000" weight="30" icon="jet_engine.ico" animation="item9" flight_height="36" />
+	
+	<include id="power.xml" />
+	<tile id="battery_unit" sheet="power.2" />
+	<animation id="battery_unit.off" count="1" />
+	<animation id="battery_unit.on" x="1" count="6" />
+	<tile id="battery_unit.ico" sheet="items.png" x="47" />
+	<item id="battery_unit" type="object" cost="200" weight="4" icon="battery_unit.ico" action="place" durability="1000" fuelName="power" underground="true" durabilityName="common.power" object="powerplant" tile="battery_unit" powerCost="10">
+		<listItem icon="power" title="common.recharge_batteries" enabled="this.getFuel() > 0" fail="warning.not_powered">
+			<action>player.restorePowerFrom(this, 1)</action>
+		</listItem>
+		<listItem icon="battery.ico" title="vehicle.battery" enabled="player.getPower() > 0" fail="warning.power">
+			<action>var p = this.getMaxFuel()-this.getFuel(); var pp = player.getPower(); if(p > pp) p = pp; player.losePower(p); this.addFuel(p);</action>
+		</listItem>
+		<action id="use" name="common.recharge">
+			<action>var p = maxDurability-durability; var pp = player.getPower(); if(p > pp) p = pp; player.losePower(p); setDurability(durability+p);</action>
+		</action>
+	</item>
+	
+	<tile id="solar_generator.ico" sheet="items.png" x="48" />
+	<tile id="solar_generator" sheet="power.1" />
+	<animation id="solar_generator.off" count="1" />
+	<animation id="solar_generator.on" x="1" count="9" />
+	<item id="solar_generator" type="object" cost="1250" weight="20" icon="solar_generator.ico" action="place" durability="10" fuelName="power" durabilityName="common.power" object="powerplant" tile="solar_generator">
+		<listItem icon="power" title="common.recharge_batteries" enabled="this.getFuel() > 0" fail="warning.not_powered">
+			<action>player.restorePowerFrom(this, 25)</action>
+		</listItem>
+		<equipCost durability="-1" daylight="true" />
+	</item>
+	
+	<tile id="laser_gun.ico" sheet="items.png" x="113" />
+	<tile id="laser_gun" sheet="weps.png" x="97" />
+	<animation id="equipment.laser_gun.idle" x="6" count="1" />
+	<animation id="equipment.laser_gun.fire" x="0" count="6" glow="true" offsetX="-1" offsetY="1" />
+	<animation id="equipment.laser_gun" x="6" count="1" length="6">
+		<append tile="laser_gun" animation="equipment.laser_gun.fire" behind="true" />
+	</animation>
+	<tile id="laser_bolt" sheet="weps.png" x="91" offsetX="8" offsetY="8" />
+	<animation id="laser_bolt" x="3" count="3" glow="true" />
+	<animation id="laser_bolt.impact" x="0" count="3" glow="true" />
+	<item id="laser_gun" type="equipment" slot="weapon" cost="1500" repeat="12" weight="8" attack="8" power="25" range="8" icon="laser_gun.ico" movement_walk="walk_rswing" durability="8" breakable="false" durabilityName="common.cooldown" durabilityWarning="warning.laser_gun" underwater="true" sfx="laser">
+		<action id="equip" /><equipCost durability="-2" />
+		<projectile tile="laser_bolt" animation="laser_bolt" speed="5" offsetY="6">
+			<hitEffect tile="laser_bolt" animation="laser_bolt.impact" color="ff9999" />
+		</projectile>
+	</item>
+	
+	<tile id="rice.ico" sheet="items.png" x="49" />
+	<tile id="cooking_oil.ico" sheet="items.png" x="50" />
+	<tile id="fried_rice.ico" sheet="items.png" x="51" />
+	<tile id="bacon.ico" sheet="items.png" x="52" />
+	<tile id="fried_chicken.ico" sheet="items.png" x="53" />
+	<tile id="fried_eel.ico" sheet="items.png" x="54" />
+	<tile id="ice_cream.ico" sheet="items.png" x="55" />
+	<tile id="sushi.ico" sheet="items.png" x="56" />
+	
+	<item id="rice" type="food" cost="20" weight="1" stamina="10%" icon="rice.ico" />
+	<item id="cooking_oil" type="resource" cost="100" weight="1" icon="cooking_oil.ico" />
+	<item id="fried_rice" type="food" cost="150" weight="1" stamina="50%" icon="fried_rice.ico" />
+	<item id="bacon" type="food" cost="200" weight="1" health="35%" icon="bacon.ico">
+		<stat id="trap" value="1" time="60" />
+	</item>
+	<item id="fried_chicken" type="food" cost="250" weight="1" health="50%" stamina="35%" icon="fried_chicken.ico" />
+	<item id="fried_eel" type="food" cost="400" weight="1" health="100%" icon="fried_eel.ico" />
+	<item id="ice_cream" type="food" cost="200" weight="1" stamina="450" icon="ice_cream.ico" />
+	<item id="sushi" type="food" cost="300" weight="1" health="300" icon="sushi.ico" >
+		<stat id="fishing" value="1" time="60" />
+	</item>
+	
+	<recipe id="cook_fried_rice" creates="fried_rice" type="kitchen3">
+		<item id="rice" count="2" /><item id="eggs" count="1" /><item id="cooking_oil" count="1" />
+	</recipe>
+	<recipe id="cook_bacon" creates="bacon" type="kitchen3">
+		<item id="pig" count="1" /><item id="cooking_oil" count="1" />
+	</recipe>
+	<recipe id="cook_fried_chicken" creates="fried_chicken" type="kitchen3">
+		<item id="chicken" count="1" /><item id="cooking_oil" count="1" /><item id="wheat" count="1" /><item id="eggs" count="1" />
+	</recipe>
+	<recipe id="cook_fried_eel" creates="fried_eel" type="kitchen3">
+		<item id="electric_eel" count="1" /><item id="cooking_oil" count="1" />
+	</recipe>
+	<recipe id="cook_ice_cream" creates="ice_cream" type="kitchen3">
+		<item id="milk" count="2" /><item id="eggs" count="2" /><item id="sugar" count="2" />
+	</recipe>
+	<recipe id="cook_sushi" creates="sushi" type="kitchen2" available="player.questComplete('sushi')">
+		<item id="toothfish" count="1" /><item id="rockfish" count="1" /><item id="coral_cod" count="1" /><item id="rice" count="1" />
+	</recipe>
+	
+	<include id="farm.xml" />
+	
+	<tile id="clock_dial" sheet="clock.png" />
+	<tile id="clock_top" sheet="clock.png" x="1" offsetY="8" />
+	<tile id="clock.ico" sheet="items.png" x="58" />
+	<item id="clock" type="tool" cost="500" weight="1" icon="clock.ico">
+		<onGet><clock hand="clock_dial" top="clock_top" rotations="8" /></onGet>
+		<onLose><clock remove="true" /></onLose>
+	</item>
+	
+	<tile id="patrol_boat_gun.ico" sheet="items.png" x="64" />
+	<item id="patrol_boat_gun" type="equipment" slot="attack" equipOn="patrol_boat" cost="300" weight="20" range="14" speed="3" icon="patrol_boat_gun.ico" delay="-2" sfx="machine_gun" repeat="8" projectile="bullet" group="revolver" offsetY="-5" offsetX="-12">
+		<action id="setProjectile" />
+	</item>
+	<tile id="patrol_boat_launcher.ico" sheet="items.png" x="65" />
+	<item id="patrol_boat_launcher" type="equipment" slot="attack" equipOn="patrol_boat" cost="500" weight="30" range="14" speed="2" icon="patrol_boat_launcher.ico" projectile="missile" delay="4" group="rocket_launcher" offsetY="-9" sfx="missile">
+		<action id="setProjectile" />
+	</item>
+	
+	<animation id="item8" count="8" />
+	<tile id="laser_drill.ico" sheet="items.png" x="66" />
+	<tile id="laser_drill" sheet="weps.png" x="12" />
+	<animation id="laser_drill.on" count="6" glow="true" />
+	<animation id="equipment.laser_drill" x="6" count="1" length="6">
+		<append tile="laser_drill" animation="laser_drill.on" behind="true" />
+	</animation>
+	<animation id="equipment.laser_drill.idle" x="6" count="1" />
+	<item id="laser_drill" type="equipment" slot="pickaxe" cost="1500" power="3" weight="10" mine="5" breakPower="2" icon="laser_drill.ico" animation="item8" behindPlayer="false" action="equip" movement_walk="walk_lswing" arms="drill.arms" hideOffhand="true" loop="laserdrill" />
+	
+	<animation id="item7" count="7" />
+	<tile id="energy_shield.ico" sheet="items.png" x="74" />
+	<tile id="energy_shield" sheet="weps.png" x="6" />
+	<animation id="equipment.energy_shield.idle" count="6" />
+	<item id="energy_shield" type="equipment" slot="shield" use="block" block="power" blockCost="5" cost="650" weight="6" icon="energy_shield.ico" animation="item7" action="equip" movement_walk="walk_lswing" loop="energy_shield" />
+	
+	<tile id="antigrav_pack.ico" sheet="items.png" x="81" />
+	<item id="antigrav_pack" type="tool" slot="back" action="equip" cost="5500" weight="0" capacity="400" icon="antigrav_pack.ico" animation="item6">
+		<flight height="20" cost="0" speed="4" maxWeight="1000"><equipCost storage="power" cost="8" /></flight><equipCost storage="power" cost="2" />
+	</item>
+	<tile id="antigrav_pack" sheet="weps.png" x="19" />
+	<animation id="equipment.antigrav_pack.idle" x="5" count="6" offsetX="16" />
+	<animation id="equipment.antigrav_pack.fly.self" count="5" offsetX="16" offsetY="4" />
+	<animation id="equipment.antigrav_pack.hover.self" equals="equipment.antigrav_pack.fly.self" />
+	
+	<tile id="space_helm.ico" sheet="items.png" x="87" />
+	<animation id="space_helm.acquire" x="0" count="12" color="1466f6" />
+	<animation id="space_helm.identify" x="12" count="5" color="1466f6" />
+	<item id="space_helm" fps="1" type="equipment" cost="1500" slot="head" oxygen="100" defense="1" action="equip" weight="1" icon="space_helm.ico" animation="item6" hair="false">
+		<light tile="light.strong" color="98ffff" flicker="true" /><identify tile="cyborg.identify" acquire="space_helm.acquire" animation="space_helm.identify" color="146699" />
+		<equipCost storage="power" cost="2" />
+	</item>
+	<tile id="space_helm" sheet="weps.png" x="30" />
+	<animation id="equipment.space_helm.idle" x="48" count="6" length="15" />
+	<animation id="equipment.space_helm.hit" x="42" count="6" />
+	<animation id="equipment.space_helm.death" x="0" count="42" offsetX="12" />
+	
+	<tile id="space_armor.ico" sheet="items.png" x="114" />
+	<item id="space_armor" fps="1" type="equipment" cost="1750" slot="armor" defense="6" action="equip" weight="10" icon="space_armor.ico" animation="item4">
+		<equipCost storage="power" cost="-20" daylight="true" />
+	</item>
+	<tile id="space_armor" sheet="weps.png" x="104" />
+	<animation id="equipment.space_armor.idle" x="47" count="6" length="4" />
+	<animation id="equipment.space_armor.walk" x="53" count="10" />
+	<animation id="equipment.space_armor.hit" x="41" count="6" />
+	<animation id="equipment.space_armor.death" x="0" count="41" />
+	
+	<tile id="nuclear_generator.ico" sheet="items.png" x="94" />
+	<tile id="nuclear_generator" sheet="power.3" />
+	<animation id="nuclear_generator.off" count="1" />
+	<animation id="nuclear_generator.on" x="1" count="8" />
+	<item id="nuclear_generator" type="object" cost="2500" weight="40" icon="nuclear_generator.ico" action="place" underground="true" durability="6000" durabilityName="common.fuel" object="powerplant" tile="nuclear_generator">
+		<recipe type="nuclear_plant" /><recipe id="pp_battery" />
+		<listItem icon="power" title="common.recharge_batteries" enabled="this.getFuel() > 0" fail="warning.not_powered">
+			<action>player.restorePowerFrom(this, 25)</action>
+		</listItem>
+		<action id="feed" alt="feed_all" alt_name="fuel_all" name="common.fuel" full="warning.max_fuel" auto="common.auto_fuel" select="common.add_fuel" sfx="fuel" />
+		<food id="uranium" value="2000" />
+	</item>
+	
+	<recipe id="craft_laser_drill" creates="laser_drill" type="advanced_lab">
+		<item id="ship_parts" count="2" />
+	</recipe>
+	<recipe id="craft_laser_gun" creates="laser_gun" type="advanced_lab">
+		<item id="ship_parts" count="2" />
+	</recipe>
+	<recipe id="craft_energy_shield" creates="energy_shield" type="advanced_lab">
+		<item id="ship_parts" count="1" />
+	</recipe>
+	<recipe id="craft_antigrav_pack" creates="antigrav_pack" type="advanced_lab">
+		<item id="jetpack" count="1" />
+		<item id="ship_parts" count="2" />
+		<item id="titanium" count="4" />
+		<item id="silicon" count="4" />
+	</recipe>
+	<recipe id="craft_space_armor" creates="space_armor" type="advanced_lab">
+		<item id="ship_parts" count="1" />
+		<item id="silicon" count="5" />
+		<item id="titanium_armor" count="1" />
+	</recipe>
+	<recipe id="craft_space_helm" creates="space_helm" type="advanced_lab">
+		<item id="titanium" count="1" />
+		<item id="steel_bar" count="3" />
+		<item id="silicon" count="2" />
+		<item id="ship_parts" count="1" />
+	</recipe>
+	<recipe id="craft_jet_engine" creates="jet_engine" type="advanced_lab">
+		<item id="titanium" count="1" />
+		<item id="steel_bar" count="3" />
+		<item id="silicon" count="2" />
+		<item id="ship_parts" count="1" />
+	</recipe>
+	<recipe id="craft_o2_canister" creates="o2_canister" type="advanced_lab">
+		<item id="titanium" count="1" /><item id="helium_sac" count="1" />
+	</recipe>
+	
+	<include id="bots.xml" />
+	
+	<tile id="teleportal.ico" sheet="items.png" x="93" />
+	<tile id="drone.scout.ico" sheet="items.png" x="109" />
+	
+	<include id="nuke_blast.xml" includeRoot="true" />
+	<tile id="nuke_blast" sheet="nuke_blast.png" />
+	<animation id="nuke_blast" count="24" />
+	<object id="nuke_blast" tile="nuke_blast" animation="nuke_blast" layer="top" fps="10" removeOnComplete="true" save="false">
+		<addedToArea><action>
+			count = 0.0; function canDamage(o){
+				return o.attackPower(1, 1, 0, null, false) > 0 &amp;&amp; o.getDefense(false, false, false) &lt; 16;
+			} function damageTile(x, y){area.breakBrick(x, y, 5, 12, true, spawner); return false;}
+		</action><sound id="nuclear_missile" /></addedToArea>
+		<onFrame>count += frames; if(count >= 8){count -= 8; for(o in this.getOverlappingObjects(canDamage, damageTile)) o.damage(2, FLAG_IGNORE_DEFENSE|FLAG_HIDE_ATTACKER, spawner);}</onFrame>
+	</object>
+	
+	<tile id="nuke.ico" sheet="items.png" x="118" />
+	<tilesheet id="nuke.png" width="22" height="7" />
+	<tile id="nuke" sheet="nuke.png" />
+	<item id="nuke" type="equipment" cost="1000" weight="3" icon="nuke.ico" animation="item6" attack="16" action="fire" with="rocket_launcher">
+		<projectile tile="nuke" animation="missile" speed="4" offsetY="7" offsetX="-16" knockback="10">
+			<onHit><object id="nuke_blast" x="this.tile_x-3" y="this.tile_y" /><action>nuke_blast.vars.set("spawner", this.spawner);</action></onHit>
+		</projectile>
+	</item>
+		
+	<tile id="ladder.ico" sheet="items.png" x="231" />
+	<item id="ladder" type="object" cost="150" weight="5" icon="ladder.ico" tile="steel_ladder" max_height="40" underwater="true">
+		<action id="use" name="place"><stop if="!Action.accessArea(player, this.xml.get('underwater') == 'true')" /><set id="warning" value="null" /><choose>
+			<set id="warning" value="getText('warning.place_height')" if="Area.getXML(area.id).get('placeLadder') == 'false'" />
+			<set id="warning" value="getText('warning.structure_surface')" if="!area.emptyTile(player.tile_x, player.tile_y)" />
+			<set id="warning" value="getText('warning.structure_overlap')" if="area.overlapsStructure(player.tile_x, player.tile_y) || Action.hasBlueprintInTile(area, player.tile_x, player.tile_y)" />
+			<set id="warning" value="getText('warning.place_height')" if="area.isOrbit() || player.tile_y < -Std.parseInt(this.xml.get('max_height'))" />
+			<action>setBack(player.tile_x, player.tile_y, this.xml.get('tile')); area.removeObjects(Area.getTileRect(player.tile_x, player.tile_y, 1, 4), BUSH_LAYER); Action.showMessage(getText('common.placed{item:'+this.getName().get()+'}')); consume(); area.setLit(player.tile_x, player.tile_y);</action>
+		</choose><action if="warning != null">Action.showPlaceWarning(player, getTile(this.xml.get('tile')), null, player.tile_x*Tile.SIZE, player.tile_y*Tile.SIZE, warning)</action></action>
+	</item>
+	<tile id="walkway.ico" sheet="items.png" x="232" />
+	<item id="walkway" type="object" cost="150" weight="5" icon="walkway.ico" tile="steel_walkway" max_height="40" underwater="true">
+		<action id="use" name="place"><stop if="!Action.accessArea(player, this.xml.get('underwater') == 'true')" />
+			<set id="x" value="player.tile_x+player.getDX()" /><set id="y" value="Math.ceil(player.yTile/Tile.SIZE)+1" /><set id="warning" value="null" /><choose>
+			<set id="warning" value="getText('warning.place_height')" if="Area.getXML(area.id).get('placeLadder') == 'false'" />
+			<set id="warning" value="getText('warning.structure_surface')" if="!area.emptyTile(x, y)" />
+			<set id="warning" value="getText('warning.structure_overlap')" if="area.overlapsStructure(x, y) || Action.hasBlueprintInTile(area, x, y)" />
+			<set id="warning" value="getText('warning.place_height')" if="area.isOrbit() || y < -Std.parseInt(this.xml.get('max_height'))" />
+			<action>setTile(x, y, this.xml.get('tile')); area.removeObjects(Area.getTileRect(x, y, 1, 4), BUSH_LAYER); Action.showMessage(getText('common.placed{item:'+this.getName().get()+'}')); consume(); area.setLit(x, y);</action>
+		</choose><action if="warning != null">Action.showPlaceWarning(player, getTile(this.xml.get('tile')), null, x*Tile.SIZE, y*Tile.SIZE, warning)</action></action>
+	</item>
+	<tile id="grass_walkway.ico" sheet="items.png" x="234" />
+	<item id="grass_walkway" extends="walkway" icon="grass_walkway.ico" tile="grass_walkway" underwater="false" />
+	<recipe id="craft_ladder" creates="ladder" type="factory">
+		<item id="steel_bar" count="2" />
+	</recipe>
+	<recipe id="craft_walkway" creates="walkway" type="factory">
+		<item id="steel_bar" count="2" />
+	</recipe>
+	<recipe id="craft_grass_walkway" creates="grass_walkway" type="factory">
+		<item id="walkway" count="1" /><item id="fertilizer" count="2" />
+	</recipe>
+	
+	<tile id="mini_synthesizer.ico" sheet="items.png" x="273" />
+	<animation id="mini_synthesizer.off" count="6" />
+	<animation id="mini_synthesizer.on" count="6" x="6" />
+	<item id="mini_synthesizer" type="object" cost="0" weight="10" icon="mini_synthesizer.ico" animation="mini_synthesizer.off" action="place" underground="true" durability="500" durabilityName="common.fuel" object="smelter" smelt_sfx="magic">
+		<recipe type="magic_fuel" />
+		<recipe type="magic_farm" />
+	</item>
+			
+	<tile id="dragon_backpack.ico" sheet="items.png" x="285" />
+	<item id="dragon_backpack" type="tool" slot="back" cost="0" weight="60" canJump="true" durability="2000" durabilityName="common.feed" breakable="false" icon="dragon_backpack.ico" animation="item8" durabilityWarning="common.hungry{item:[item=dragon_backpack]}">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" /><action id="transform" into="ancient_dragon" />
+		<flight height="999" cost="0" speed="7" maxWeight="2000"><equipCost durability="2" /></flight>
+		<food id="rat" value="200" />
+		<food id="pig" value="300" />
+		<food id="chicken" value="500" />
+		<food id="cow" value="1000" />
+		<food id="steak" value="125" />
+		<food id="coal" value="125" />
+	</item>
+	<item id="alter_gem" extends="alter_gem" extendAppend="true">
+		<action extends="transform_other"><transform from="ancient_dragon" to="dragon_backpack" enabled="player.questComplete('dragon_ship')" /></action>
+	</item>
+	<include id="dragon_pack.xml" includeRoot="true" />
+	<tile id="dragon_backpack" sheet="dragon_pack.png" offsetX="8" />
+	<animation id="equipment.dragon_backpack.idle" count="8" />
+	<animation id="equipment.dragon_backpack.fly.self" x="8" count="8" />
+	<animation id="equipment.dragon_backpack.hover.self" equals="equipment.dragon_backpack.fly.self" />
+	<animation id="equipment.dragon_backpack.warp" x="16" count="8" />
+	<animation id="equipment.dragon_backpack.ftl" x="24" count="8"><append tile="dragon_backpack" animation="equipment.dragon_backpack.warp" /></animation>
+			
+	<tile id="steel_fence.ico" sheet="items.png" x="293" />
+	<item id="steel_fence" type="object" cost="150" weight="5" icon="steel_fence.ico" action="place" underground="true" desc="item.descriptions.fence_underground" />
+	<itemObject id="steel_fence" blocking="true" />
+	<recipe id="craft_steel_fence" creates="steel_fence" type="factory">
+		<item id="steel_bar" count="2" />
+	</recipe>
+			
+	<tile id="ai_core.ico" sheet="items.png" x="303" />
+	<item id="ai_core" type="resource" cost="1000" weight="10" icon="ai_core.ico" />
+			
+	<tile id="spacefarer.ico" sheet="items.png" x="304" /><animation id="item31" count="31" />
+	<animation id="spacefarer.acquire" x="0" count="12" color="cccc66" />
+	<animation id="spacefarer.identify" x="12" count="5" color="cccc66" />
+	<item id="spacefarer" type="equipment" cost="13000" slot="armor" use="block" block="power" blockCost="5" omnidirectional="true" repeat="8" attack="8" range="8" underwater="true" canJump="true" oxygen="100" power="5" defense="7" mine="7" capacity="400" action="equip" weight="10" icon="spacefarer.ico" animation="item31" hair="false" behindPlayer="false" beard="false" blockLoop="energy_shield" mineLoop="auto_suit_drill">
+		<light tile="light.strong" color="ffff98" flicker="true" /><identify tile="cyborg.identify" acquire="spacefarer.acquire" animation="spacefarer.identify" color="cccc66" />
+		<use slot="head" /><use slot="weapon" /><use slot="shield" /><use slot="pickaxe" /><use slot="back" />
+		<flight height="999" cost="0" speed="5" maxWeight="1000"><equipCost storage="power" cost="10" /></flight>
+		<projectile tile="spacefarer" animation="spacefarer.bolt" speed="5" offsetY="2" fire_sfx="laser" delay="10">
+			<hitEffect tile="war_bot.bolt" animation="war_bot.bolt.impact" color="9999ff" />
+		</projectile>
+	</item>
+	<include id="spacefarer.xml" includeRoot="true" />
+	<tile id="spacefarer" sheet="spacefarer.png" />
+	<animation id="equipment.spacefarer.idle" x="85" count="1" />
+	<animation id="equipment.spacefarer.walk" x="86" count="10" />
+	<animation id="equipment.spacefarer.hit" x="47" count="6" />
+	<animation id="equipment.spacefarer.death" x="6" count="41" />
+	<animation id="equipment.spacefarer.antigrav" count="6" glow="true" />
+	<animation id="equipment.spacefarer.fly.self" x="85" count="1" length="6"><append tile="spacefarer" animation="equipment.spacefarer.antigrav" behind="true" /></animation>
+	<animation id="equipment.spacefarer.hover.self" equals="equipment.spacefarer.fly.self" />
+	<animation id="equipment.spacefarer.pickaxe" x="53" count="3" glow="true" />
+	<animation id="equipment.spacefarer.weapon" x="64" count="11" />
+	<animation id="equipment.spacefarer.weapon.loop" x="60" count="4" />
+	<animation id="equipment.spacefarer.shield" x="75" count="10" glow="true" />
+	<animation id="equipment.spacefarer.shield.idle" equals="equipment.spacefarer.shield" />
+	<animation id="equipment.spacefarer.ftl.engage" x="104" count="8">
+		<append tile="spacefarer" animation="equipment.spacefarer.idle" behind="true" />
+		<frame x="96" count="8" repeat="5" />
+	</animation>
+	<animation id="equipment.spacefarer.ftl.disengage">
+		<frame x="96" count="8" /><frame x="104" count="8" reverse="true" /><frame visible="false" length="32" /><append tile="spacefarer" animation="equipment.spacefarer.idle" behind="true" />
+	</animation>
+	<animation id="equipment.spacefarer.ftl" x="96" count="8"><append tile="spacefarer" animation="equipment.spacefarer.idle" behind="true" /><append tile="dragon_backpack" animation="equipment.dragon_backpack.warp" x="-32" y="-16" /></animation>
+	<animation id="spacefarer.bolt" x="56" count="4" />
+			
+	<recipe id="craft_spacefarer" creates="spacefarer" type="drone_lab">
+        <item id="ai_core" count="1" />
+        <item id="ship_parts" count="6" />
+        <item id="titanium" count="10" />
+        <item id="antigrav_pack" count="1" />
+	</recipe>
+			
+	<tile id="keycard.ico" sheet="items.png" x="335" />
+	<item id="keycard" type="tool" cost="0" weight="0" icon="keycard.ico" />
+	<item id="keycard1" extends="keycard" color="ffffaa" colorScale="1.25" canStore="false" />
+	
+	<tile id="disabled_keycard.ico" sheet="items.png" x="336" />
+	<item id="disabled_keycard" type="tool" cost="0" weight="0" icon="disabled_keycard.ico" />
+			
+	<tile id="drone_control.ico" sheet="items.png" x="337" />
+	<item id="drone_control" type="tool" cost="0" weight="0" icon="drone_control.ico" animation="item8" canStore="false">
+		<action id="use"><stop if="!Action.accessArea(player, true, player.vehicle != null && (player.vehicle.info.interior != null || player.vehicle.isDrone()))" /><set id="drones" value="[]" global="true" /><action>
+			player.getAllObjects(function(o){if(o.info.xml.get("droneControl") == this.id &amp;&amp; o.area.isVisitable(player)) drones.push(o);});
+			var str = '&lt;window type="craft" title="vehicle.select_drone">'; var len = drones.length;
+			for(i in 0...len){
+				var d = drones[i]; str += '&lt;listItem icon="'+d.info.getDisplayTile()+'" title=">>'+d.getTitle(player).get()+'">&lt;action>d = getGlobal("drones")['+i+'];&lt;/action>&lt;closeWindows modal="true" />&lt;action>if(player.vehicle != null) player.vehicle.dismountInterior(); d.onOperate(player)&lt;/action>&lt;tooltip>';
+				str += '&lt;option title="vehicle.area{area:'+d.area.getDisplay().get()+'}" size="small" />';
+				str += '&lt;option title="vehicle.position{x:'+d.tile_x+'}{y:'+d.tile_y+'}" size="small" />';
+				str += '&lt;/tooltip>&lt;/listItem>';
+			} evalXml(str+'&lt;/window>&lt;set id="drones" value="null" global="true" />');
+		</action></action>
+	</item>
+		
+	<tile id="carapace.ico" sheet="items.png" x="480" />
+	<item id="carapace" type="potion" cost="750" weight="5" icon="carapace.ico" />
+		
+	<tile id="blueprint_paper.ico" sheet="items.png" x="345" />
+	<item id="blueprint_paper" type="blueprint" cost="0" weight="0" icon="blueprint_paper.ico" showCount="true" syncPlayers="false" />
+		
+	<tile id="ilaser_trap.ico" sheet="items.png" x="575" />
+	<animation id="ilaser_trap" x="5" length="4" count="1"><frame x="0" count="5" /><frame x="5" length="14" /></animation>
+	<animation id="ilaser_trap.place" x="5" count="1" />
+	<animation id="ilaser_trap.spring" equals="item6" />
+	<item id="ilaser_trap" type="object" cost="600" weight="1" icon="ilaser_trap.ico" animation="ilaser_trap" action="place" object="trap" damage="20" sfx="laser_traps" />
+	<itemObject id="ilaser_trap" tile="earth.traps" />
+		
+	<recipe id="craft_laser_trap" creates="ilaser_trap" type="drone_lab">
+        <item id="ship_parts" count="1" />
+	</recipe>
+		
+	<tile id="earth_key.ico" sheet="items.png" x="587" />
+	<item id="earth_key" type="tool" cost="0" weight="5" icon="earth_key.ico" animation="item6" />
+	<recipe id="craft_earth_key" creates="earth_key" type="golem_factory"><item id="earth_gem" count="1" /><item id="diamond" count="5" /><item id="blood_gem" count="3" /></recipe>
+		
+	<tile id="moissanite.ico" sheet="items.png" x="646" />
+	<item id="moissanite" type="resource" cost="750" weight="5" icon="moissanite.ico" animation="item9" />
+		
+	<tile id="bone_shard.ico" sheet="items.png" x="655" />
+	<item id="bone_shard" type="potion" cost="0" weight="2" icon="bone_shard.ico"><modifiers cut="3" /></item>
+	<tile id="crystal_shard.ico" sheet="items.png" x="656" />
+	<item id="crystal_shard" type="potion" cost="0" weight="2" icon="crystal_shard.ico"><modifiers attack="2" /></item>
+			
+	<tile id="water_helm.ico" sheet="items.png" x="124" />
+	<tile id="evo_shard.ico" sheet="items.png" x="134" />
+	<tile id="evo_gem.ico" sheet="items.png" x="145" />
+		
+	<tile id="crawler.ico" sheet="items.png" x="156" />
+	<tile id="fire_boar.ico" sheet="items.png" x="160" />
+	<tile id="yeti.ico" sheet="items.png" x="170" />
+	<tile id="shark.ico" sheet="items.png" x="171" />
+	<tile id="shadow_cat.ico" sheet="items.png" x="172" />
+	<tile id="icer.ico" sheet="items.png" x="180" />
+	<tile id="fire_bird.ico" sheet="items.png" x="192" />
+	<tile id="helium_pack.ico" sheet="items.png" x="193" />
+	<tile id="fire_trap.ico" sheet="items.png" x="194" />
+	<tile id="water_trap.ico" sheet="items.png" x="195" />
+	<tile id="earth_trap.ico" sheet="items.png" x="196" />
+	<tile id="plant_trap.ico" sheet="items.png" x="197" />
+	<tile id="ice_trap.ico" sheet="items.png" x="198" />
+	<tile id="coral_bow.ico" sheet="items.png" x="199" />
+	<tile id="coral_sword.ico" sheet="items.png" x="200" />
+	<tile id="clam.ico" sheet="items.png" x="201" />
+	<tile id="blue_claw.ico" sheet="items.png" x="202" />
+	<tile id="fish_scale.ico" sheet="items.png" x="203" />
+	<tile id="stat.spellcast" sheet="items.png" x="211" />
+	<tile id="enchanted_net.ico" sheet="items.png" x="212" />
+	<tile id="scale_fish.ico" sheet="items.png" x="213" />
+	<tile id="snaptopus.ico" sheet="items.png" x="214" />
+	<tile id="queen_drill.ico" sheet="items.png" x="215" />
+	<tile id="ancient_dragon2.ico" sheet="items.png" x="216" />
+	<tile id="golemech.ico" sheet="items.png" x="217" />
+	<tile id="wand.ico" sheet="items.png" x="218" />
+	<tile id="flying_broom.ico" sheet="items.png" x="219" />
+	<tile id="robes.ico" sheet="items.png" x="220" />
+	<tile id="witch_hat.ico" sheet="items.png" x="221" />
+	<tile id="black_cat.ico" sheet="items.png" x="222" />
+	<tile id="pumpkin_helm.ico" sheet="items.png" x="223" />
+	<tile id="scale_mail.ico" sheet="items.png" x="230" />
+	<tile id="minotaur.ico" sheet="items.png" x="233" />
+	<tile id="fighter.shields.ico" sheet="items.png" x="245" />
+	<tile id="fighter.cannon.ico" sheet="items.png" x="246" />
+	<tile id="fighter.gun.ico" sheet="items.png" x="247" />
+	<tile id="fighter.launcher.ico" sheet="items.png" x="248" />
+	<tile id="antimatter_missile.ico" sheet="items.png" x="249" />
+	<tile id="escort_fighter.ico" sheet="items.png" x="266" />
+	<tile id="jumpship.ico" sheet="items.png" x="267" />
+	<tile id="dragon_ship.ico" sheet="items.png" x="268" />
+	<tile id="dragon_ship.shields.ico" sheet="items.png" x="269" />
+	<tile id="dragon_ship.gun.ico" sheet="items.png" x="270" />
+	<tile id="dragon_ship.burst.ico" sheet="items.png" x="271" />
+	<tile id="dragon_ship.cannon.ico" sheet="items.png" x="272" />
+			
+	<tile id="drone.ship.ico" sheet="items.png" x="294" />
+	<tile id="drone.sub.ico" sheet="items.png" x="295" />
+	<tile id="drone.drill.ico" sheet="items.png" x="296" />
+	<tile id="drone.sub.fire.ico" sheet="items.png" x="297" />
+	<tile id="research_lab.ico" sheet="items.png" x="346" />
+	<tile id="dragon_fighter.ico" sheet="items.png" x="347" />
+	<tile id="dragon_bomber.ico" sheet="items.png" x="348" />
+	<tile id="dragon_cruiser.ico" sheet="items.png" x="349" />
+	<tile id="bombardment.ico" sheet="items.png" x="350" />
+	<tile id="magic_seed.ico" sheet="items.png" x="356" />
+	<animation id="fire_seed.ico" x="0" count="19" color="ff1111" colorScale="1.2" />
+	<animation id="water_seed.ico" x="0" count="19" color="1199ff" colorScale="1.4" />
+	<animation id="plant_seed.ico" x="0" count="19" color="11ff11" />
+	<animation id="earth_seed.ico" x="0" count="19" color="ffcc11" colorScale="1.4" />
+	<animation id="ice_seed.ico" x="0" count="19" color="99ccff" colorScale="2" />
+	<animation id="magic_seed.ico" x="0" count="19" color="5a1f7c" colorScale="2.4" />
+	<tile id="hq_seed.ico" sheet="items.png" x="375" />
+	<animation id="hq_seed.ico" count="24" />
+	<tile id="cyborg_plate.ico" sheet="items.png" x="399" />
+	<tile id="cyborg_visor.ico" sheet="items.png" x="405" />
+	<tile id="cyborg_railgun.ico" sheet="items.png" x="406" />
+	<tile id="cyborg_chainsaw.ico" sheet="items.png" x="410" />
+	<tile id="cyborg_core.ico" sheet="items.png" x="414" />
+	<tile id="exo_armor.ico" sheet="items.png" x="422" />
+	<tile id="stealth_helm.ico" sheet="items.png" x="426" />
+	<tile id="exo_drill.ico" sheet="items.png" x="434" />
+	<tile id="exo_gun.ico" sheet="items.png" x="438" />
+	<tile id="exo_sword.ico" sheet="items.png" x="439" />
+	<tile id="exo_pack.ico" sheet="items.png" x="443" />
+	<tile id="alien_locator.ico" sheet="items.png" x="451" />
+		
+	<tile id="exo_fighter.ico" sheet="items.png" x="463" />
+	<tile id="exo_mech.ico" sheet="items.png" x="464" />
+	<tile id="exo_mech.chainsaw.ico" sheet="items.png" x="465" />
+	<tile id="exo_mech.gun.ico" sheet="items.png" x="466" />
+	<tile id="dragomech.ico" sheet="items.png" x="467" />
+		
+	<tile id="alien_heart.ico" sheet="items.png" x="474" />
+		
+	<tile id="stat.regen_power" sheet="items.png" x="481" />
+	<tile id="stat.oxygen" sheet="items.png" x="482" />
+	<tile id="stat.light" sheet="items.png" x="483" />
+		
+	<tile id="hoarder_gun.ico" sheet="items.png" x="484" />
+	<tile id="hoarder_shield.ico" sheet="items.png" x="485" />
+	<tile id="hoarder_armor.ico" sheet="items.png" x="491" />
+	<tile id="hoarder_hat.ico" sheet="items.png" x="492" />
+	<tile id="hoarder_backpack.ico" sheet="items.png" x="494" />
+		
+	<tile id="magne_queen_drill.ico" sheet="items.png" x="495" />
+	<tile id="staff.ico" sheet="items.png" x="496" />
+	<tile id="staff.gem.ico" sheet="items.png" x="497" />
+		
+	<tile id="venatrix_seed.ico" sheet="items.png" x="498" />
+	<tile id="spirit_arrow.ico" sheet="items.png" x="504" />
+	<tile id="storehouse_seed.ico" sheet="items.png" x="507" />
+	<tile id="spirit_fox.ico" sheet="items.png" x="527" />
+	<tile id="spirit_fish.ico" sheet="items.png" x="528" />
+	<tile id="spirit_robes.ico" sheet="items.png" x="529" />
+	<tile id="spirit_gem2.ico" sheet="items.png" x="530" />
+	<tile id="spirit_glaive.ico" sheet="items.png" x="538" />
+		
+	<tile id="magnetrap.ico" sheet="items.png" x="539" />
+	<tile id="magic_wyrm.ico" sheet="items.png" x="546" />	
+	<tile id="magnewyrm.ico" sheet="items.png" x="554" />
+	<tile id="carapace_armor.ico" sheet="items.png" x="560" />
+	<tile id="magnestone.ico" sheet="items.png" x="561" />
+	<tile id="mars_fish.ico" sheet="items.png" x="573" />
+	<tile id="element_table.ico" sheet="items.png" x="574" />
+	<tile id="ftl_broom.ico" sheet="items.png" x="581" />
+	<tile id="exo_shields.ico" sheet="items.png" x="582" />
+	<tile id="exo_mech.light.ico" sheet="items.png" x="586" />
+		
+	<tile id="mega_earth_armor.ico" sheet="items.png" x="593" />
+	<tile id="mega_earth_helm.ico" sheet="items.png" x="599" />
+	<tile id="mega_earth_axe.ico" sheet="items.png" x="605" />
+		
+	<tile id="megolemech.ico" sheet="items.png" x="608" />
+	<tile id="megolemech_flame.ico" sheet="items.png" x="609" />
+	<tile id="golemlaser.ico" sheet="items.png" x="610" />
+	<tile id="shovel2.ico" sheet="items.png" x="611" />
+		
+	<tile id="meat_tree_seed.ico" sheet="items.png" x="612" />
+	<tile id="werewolf_paws.ico" sheet="items.png" x="618" />
+	<tile id="werewolf_body.ico" sheet="items.png" x="619" />
+	<tile id="werewolf_head.ico" sheet="items.png" x="620" />
+	<tile id="unnature_dna.ico" sheet="items.png" x="621" />
+	<tile id="werewolf_claws.ico" sheet="items.png" x="622" />
+	<tile id="dexterous_paws.ico" sheet="items.png" x="628" />
+	<tile id="werewolf_heal_body.ico" sheet="items.png" x="634" />
+	<tile id="werewolf_stealth_body.ico" sheet="items.png" x="635" />
+	<tile id="werewolf_cunning_head.ico" sheet="items.png" x="636" />
+	<tile id="werewolf_ferocious_head.ico" sheet="items.png" x="637" />
+	<tile id="acid_raptor.ico" sheet="items.png" x="638" />
+	<tile id="submersible.ico" sheet="items.png" x="657" />
+	<tile id="torpedo2.ico" sheet="items.png" x="658" />
+	<tile id="sonar.ico" sheet="items.png" x="659" />
+	<tile id="dragon_armor2.ico" sheet="items.png" x="672" />
+	<tile id="wyrm_queen.ico" sheet="items.png" x="682" />
+	<tile id="advanced_net.ico" sheet="items.png" x="683" />
+		
+	<include id="adv/items.xml" />
+</data>

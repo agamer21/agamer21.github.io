@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="sheet.xml" includeRoot="true" />
+	<tile id="pilot" sheet="sheet.png" />
+	<tile id="pilot.ico" sheet="sheet.png" offsetY="-6" />
+	<item id="npc.pilot" icon="pilot.ico" type="none" />
+	
+	<quest id="exo_fighter" giver="pilot" exp="4000" achievement="exo_pilot">
+		<item id="exo_fighter" count="1" defineLater="true" />
+	</quest>
+	<quest id="virus" giver="president" exp="4000">
+		<item id="alien_heart" count="5" defineLater="true" />
+		<item id="exo_drill" count="1" consume="false" allowEquipped="true" />
+	</quest>
+	<quest id="exo_factory" giver="president" exp="4000">
+		<item id="chromium" count="5" />
+		<item id="ship_parts" count="3" />
+		<item id="ai_core" count="3" />
+	</quest>
+	<procedure id="checkHQVirus">
+		<complete quest="launch_virus" /><call id="president" incoming="true" />
+		<call id="president" end="true" />
+		<scene id="colony" show="launch_virus" with="fade" showToAll="true"><action>setFlag('alien_hq.open', true);</action></scene>
+		<action>getParallaxLayer("hq").getChildAt(0).playAnimation("alien_hq.orbit.open", false, function(p){p.playAnimation("alien_hq.orbit.cycle", true);});</action>
+	</procedure>
+	<quest id="launch_virus" giver="president" exp="4000" achievement="virus">
+		<script id="var p = area.getPlanet(); return (p != null && p.id == 'alien_hq')?1:0;" tile="alien_hq.nav" tileScale="0.25" offsetX="-2" offsetY="-1" name="quests.alien_hq" count="1" />
+		<script id="var o = player.areas.get('alien_hq.orbit').getObject('alien.cruiser'); return (o == null || !o.enabled)?1:0" objectTile="alien.cruiser" name="quests.defeat_cruisers" count="1" />
+	</quest>
+	<animation id="pilot.idle">
+		<frame x="0" y="0" length="4" />
+		<frame x="1" y="0" length="2" />
+		<frame x="0" y="0" length="32" />
+	</animation>
+	<animation id="pilot.walk" count="5" x="14" />
+	<animation id="pilot.talk" count="12" x="2" />
+	<object id="colony.plate" tile="colony.plate" waiter_clear="true" save="false" />
+	<object id="colony.food1" tile="colony.food1" eaten="colony.plate" save="false" />
+	<object id="colony.food2" tile="colony.food2" eaten="colony.plate" save="false" />
+	<object id="colony.food3" tile="colony.food3" eaten="colony.plate" save="false" />
+	<object id="colony.cup" tile="colony.cup" waiter_clear="true" save="false" />
+	<object id="colony.drink1" tile="colony.drink1" eaten="colony.cup" save="false" />
+	<object id="colony.drink2" tile="colony.drink2" eaten="colony.cup" save="false" />
+	<object id="colony.drink3" tile="colony.drink3" eaten="colony.cup" save="false" />
+	<object id="colony.drink4" tile="colony.drink4" eaten="colony.cup" save="false" />
+	<action>
+	function findColonyTableSeat(o){
+		if(o.area == null) return [o.tile_x, o.tile_y]; var _waiter = o.area.getObject('colony.waiter_bot'); var waiter = (_waiter == null)?null:_waiter.vars.get("waitingForFood");
+		var ar = []; for(y in 23...26) for(x in 128...140) if(o.area.getTile(x, y, BASE_LAYER) == null &amp;&amp; !o.area.hasObjectInTile(x, y, NPC_LAYER) &amp;&amp;
+			(waiter == null || !waiter.exists(x*32+y))){ar.push(x); ar.push(y);}
+		if(ar.length == 0) return [o.tile_x, o.tile_y]; var i = randInt(0, ar.length>>1); var ret = [ar[i*2], ar[i*2+1]]; 
+		if(waiter != null) waiter.set(ret[0]*32+ret[1], o); return ret;
+	}
+	function faceColonyTable(o){
+		if(o.area != null &amp;&amp; o.tile_x >= 128 &amp;&amp; o.tile_x &lt; 140 &amp;&amp; o.tile_y >= 23 &amp;&amp; o.tile_y &lt; 26){
+			o.renderer.scaleX = (o.area.getTile(o.tile_x-1, o.tile_y, BASE_LAYER) == null)?-1:1; return o.tile_x*32+o.tile_y;
+		} else return 0;
+	}
+	function getColonyFoodInTile(area, x, y){
+		for(f in area.getObjectsInTile(x, y)) if(getObject(f.info.xml.get("eaten")) != null) return f; return null;
+	}
+	function checkFoodAtColonyTable(o){
+		var _waiter = o.area.getObject('colony.waiter_bot'); var waiter = (_waiter == null)?null:_waiter.vars.get("waitingForFood"); var id = o.vars.get("waitForFood");
+		if(waiter == null || waiter.get(id) != o) return null; var x = Math.floor(id/32); var y = id%32; if(o.tile_x != x || o.tile_y != y) return [x, y];
+		if(faceColonyTable(o) != 0){
+			var f = getColonyFoodInTile(o.area, o.tile_x-Utils.sign(o.renderer.scaleX), o.tile_y);
+			if(f != null){var food = ObjectInfo.make(f.info.xml.get("eaten"), f.xPos, f.yTile); waiter.set(id, food); o.area.addObject(food); o.area.removeObject(f); return null;}
+		} return [x, y];
+	} colony_foods = []; for(i in 1...4) colony_foods.push("colony.food"+i); for(i in 1...5) colony_foods.push("colony.drink"+i);
+	</action>
+	<npc id="pilot" tile="pilot" action="talk" talk_sfx="talking6" sleepPos="[127,29]">
+		<idle class="locate">
+			<getLocation>
+				if(waitForFood != 0){var ret = checkFoodAtColonyTable(this); if(ret == null) waitForFood = 0; return ret;}
+				if(!exists("count")) count = 0; count = (count+1)%3; if(count == 0) return findColonyTableSeat(this); else if(count==1) return [117,20]; else return [120,27];
+			</getLocation>
+			<handleLocation>if(waitForFood == 0) waitForFood = faceColonyTable(this);</handleLocation>
+			<remoteHandleLocation>faceColonyTable(this);</remoteHandleLocation>
+			<canSleep>return waitForFood == 0;</canSleep>
+		</idle>
+		<init><action>if(!exists("waitForFood")) waitForFood = 0;</action></init>
+		<operate>
+			<section if="!player.hasQuest('exo_fighter')"><quest /><scene id="colony" show="pilot_intro" showToAll="true" with="fade" /></section>
+			<section if="player.canCompleteQuest('exo_fighter')"><quest /><scene id="colony" show="pilot_complete" with="fade" /></section>
+			<dialogue section="colony" id="exo_fighter6" speaker='this' />
+		</operate>
+	</npc>
+			
+	<procedure id="player.init" extends="player.init">
+		<item id="drone_factory_upgrade" hidden="true" if="!player.hasItem('drone_factory_upgrade') && player.questComplete('exo_factory')" />
+	</procedure>
+	
+	<tile id="president" sheet="sheet.png" x="19" />
+	<animation id="president.idle" count="1" length="32" />
+	<animation id="president.walk" x="9" count="3" />
+	<animation id="president.talk" x="1" count="8" />
+	<procedure id="president.default"><choose>
+		<section if="!player.hasQuest('exo_factory')">
+			<dialogue section="colony" id="exo_factory1" speaker="this" />
+			<dialogue section="colony" id="exo_factory2" speaker='this' />
+			<quest id="exo_factory">
+				<dialogue section="colony" id="exo_factory3" speaker='this' />
+			</quest>
+		</section>
+		<section if="player.canCompleteQuest('exo_factory')">
+			<dialogue section="colony" id="exo_factory4" speaker='this' />
+			<complete quest="exo_factory" />
+			<sound id="build" />
+			<section with="fade">
+				<move object="player" x="119" y="33" />
+				<move object="this" to="player" />
+				<light x="player.tile_x" y="player.tile_y" size="6" />
+				<structure id="colony.exo_factory" x="117" y="33" />
+				<item id="drone_factory_upgrade" hidden="true" />
+			</section>
+			<dialogue section="colony" id="exo_factory5" speaker='this' />
+			<lerp object="this" alpha="0" seconds="0.25" modal="true" />
+			<move object="this" x="108" y="20" /><action>this.renderer.alpha = 1;</action>
+		</section>
+		<group>
+			<scene id="colony" show="president" with="fade" />
+			<dialogue section="colony" id="virus2" speaker="this" if="!player.hasSeenItem('alien_heart') && !getFlag('final_boss_defeat')" />
+			<dialogue section="colony" id="virus4" speaker='this' if="player.questComplete('virus') && !getFlag('final_boss_defeat')" />
+		</group>
+	</choose></procedure>
+	<npc id="president" tile="president" action="talk" talk_sfx="talking7" night="true">
+		<idle class="wander" toX="116" />
+		<operate>
+			<choose if="getFlag('final_boss_defeat')">
+				<run procedure="president.default" if="hasHomeworld(player)" />
+				<section>
+					<quest /><dialogue section="colony" id="win3" speaker="this" />
+					<menu width="150" closeable="true">
+						<dialogue section="colony" id="win4" />
+						<choice id="player.areas.get(value).getPlanet().getName().get()" values="['earth.desert','colony','start'].iterator()">
+							<action>homeworld = value</action><run procedure="set.homeworld" />
+							<dialogue section="colony" id="win5" speaker="this" />
+							<dialogue section="colony" id="win6" speaker="this" /><item id="house_upgrade" />
+							<item id="hut_blueprint" hidden="true" if="!player.hasItem('hut_blueprint')" />
+							<item id="hut_upgrade" hidden="true" if="!player.hasItem('hut_upgrade')" />
+							<item id="house_kitchen" hidden="true" if="!player.hasItem('house_kitchen')" />
+						</choice>
+					</menu>
+				</section>
+			</choose>
+			<section if="!player.hasQuest('virus')">
+				<dialogue section="colony" id="virus1" speaker="this" />
+				<dialogue section="colony" id="virus2" speaker='this' />
+				<dialogue section="colony" id="virus3" speaker='this' />
+				<quest id="virus" />
+			</section>
+			<section if="player.canCompleteQuest('virus')">
+				<dialogue section="colony" id="virus4" speaker='this' />
+				<complete quest="virus" /><quest id="launch_virus" ask="false" />
+			</section>
+			<run procedure="president.default" />
+		</operate>
+	</npc>
+	
+	<tile id="museum.case" sheet="sheet.png" x="31" />
+	<procedure id="check.museum">
+		<action>
+			for(s in area.getStructuresById("museum.case")){
+				if(Item.getParameter(s.name, 'c') != '0') return;
+			} achievements.gainAchievement("museum");
+		</action>
+	</procedure>
+	<structure id="museum.case" tile="museum.case" includeName="true" allowUnder="true">
+		<tooltip section="actions" id="inspect" if="Item.getParameter(this.name, 'c') == '0'" />
+		<tooltip id="activate" />
+		<tile name="icon" eval="item = getItem(Item.getParameter(this.name, 'i')); return item.xml.get('icon')" alpha="Item.getParameter(this.name, 'c') == '0'?1:0.33" animationEval="item.animation" y="0" fps="item.getFPS()" />
+		<tile id="museum.case" y="0" tile_x="1" />
+		<item id="Item.getParameter(this.name, 'i')" count="Std.parseInt(Item.getParameter(this.name, 'c'))" />
+		<init><displayAction>
+			function update_name(e){
+				var icon = this.getTileById('icon'); if(icon != null) icon.alpha = Item.getParameter(this.name, 'c') == '0'?1:0.33;
+			} this.addEventListener("update_name", update_name);
+		</displayAction></init>
+		<initRenderer><action>getItem(Item.getParameter(this.name, 'i')).tint(this.getTileById('icon'))</action></initRenderer>
+		<operate>
+			<section if="Item.getParameter(this.name, 'c') != '0'">
+				<window type="build" title="museum.case" build="common.yes" cancel="common.no" includeStorehouse="true" requirementsXml="this.info.xml">
+					<action>this.name = Item.setParameter(this.name, 'c', '0'); this.getTileById('icon').alpha = 1; player.overlapChanged();</action><run procedure="check.museum" />
+				</window><stop />
+			</section>
+			<run procedure="check.museum" />
+			<dialogue eval="'museum.case_complete{item:[item='+Item.getParameter(this.name, 'i')+']}'" />
+		</operate>
+	</structure>
+	
+	<npc id="npc_patrol_bot" extends="patrol_bot" action="" color="eeccff" behind="true" title="npc.patrol_bot" />
+	<npc id="npc_bot.farmer" extends="worker_bot.farmer" animation="worker_bot.farmer" action="" color="eeccff" behind="true" title="npc>worker_bot.farmer" />
+	<npc id="npc_bot.carry" speed="3" tile="worker_bot" animation="worker_bot.carry" night="true" color="eeccff" behind="true" title="item.names.worker_bot"><idle class="wander" /></npc>
+	
+	<tile id="colony.townfolk" sheet="sheet.png" x="33" />
+	<layers id="colony.townfolk" width="16" height="16" cols="5" rows="2">
+		<layer tile="science1.townfolk" color="skin"><!-- body -->
+			<frame x="8" length="10" />
+		</layer>
+		<layer tile="science1.townfolk" color="eyes"><!-- eyes -->
+			<frame visible="false" /><frame x="9" length="9" />
+		</layer>
+		<layer tile="colony.townfolk" color="hair" offset="hair"><!-- hair -->
+			<frame x="0" length="10" />
+		</layer>
+		<layer tile="science1.townfolk" color="skin"><!-- legs -->
+			<frame x="58" length="2" /><frame x="0" count="8" />
+		</layer>
+		<layer tile="colony.townfolk" color="colony_clothes" offset="shirt"><!-- shirt -->
+			<frame x="8" length="10" />
+		</layer>
+		<layer tile="science1.townfolk" color="colony_clothes" offset="pants"><!-- pants -->
+			<frame x="26" length="10" />
+		</layer>
+		<layer tile="science1.townfolk" color="skin"><!-- arms -->
+			<frame x="45" length="2" /><frame x="42" count="8" />
+		</layer>
+		<layer tile="colony.townfolk" color="colony_clothes" offset="hat"><!-- uncolored -->
+			<frame x="16" length="10" />
+		</layer>
+	</layers>
+	
+	<colors type="colony_clothes">
+		<color value="99ccff" />
+		<color value="cdcef6" />
+		<color value="763dff" />
+		<color value="82daeb" />
+		<color value="404280" />
+	</colors>
+	<npc id="colony.townfolk.base" layers="colony.townfolk" animation="science1.townfolk" behind="true" fps="6">
+		<idle class="wander" flee="true" />
+		<offset id="hair" count="8" show="(r=random())<0.5" /><offset id="shirt" count="8" /><offset id="pants" count="8" /><offset id="hat" count="8" show="r>=0.5" />
+		<color id="skin" /><color id="hair" /><color id="eyes" /><color id="colony_clothes" />
+	</npc>
+	<npc id="colony.townfolk" extends="colony.townfolk.base" sleepPos="[127,29]">
+		<idle class="locate">
+			<getLocation>
+				if(waitForFood != 0){var ret = checkFoodAtColonyTable(this); if(ret == null) waitForFood = 0; return ret;}
+				if(!exists("count")) count = 0; count = (count+1)%3; if(count == 0) return findColonyTableSeat(this);
+				else if(count==1) return (random() &lt; 0.5)?[randInt(106,119),randInt(22,30)]:[randInt(109,144),randInt(35,41)];
+				else {
+					var r = random(); if(r &lt; 0.33) return [randInt(111,122),randInt(33,35)];
+					else if(r &lt; 0.66) return [121,26]; else return [randInt(110,116),randInt(16,19)];
+				}
+			</getLocation>
+			<handleLocation>if(waitForFood == 0) waitForFood = faceColonyTable(this);</handleLocation>
+			<remoteHandleLocation>faceColonyTable(this);</remoteHandleLocation>
+			<canSleep>return waitForFood == 0;</canSleep>
+		</idle>
+		<init><action>if(!exists("waitForFood")) waitForFood = 0;</action></init>
+	</npc>
+	
+	<npc id="colony.waiter_bot" tile="colony.waiter_bot" night="true" fps="10" speed="1">
+		<idle class="locate">
+			<getLocation>
+				if(!exists("waitingForFood")) waitingForFood = new IntMap();
+				var iter = waitingForFood.keys(); if(!iter.hasNext()) return [130,22];
+				var ar = []; for(i in iter){
+					var x = Math.floor(i/32); var y = i%32; var o = waitingForFood.get(i);
+					if(o.info.xml.get("waiter_clear") != "true"){
+						if(o.xPos != x*Tile.SIZE || o.yTile != y*Tile.SIZE || o.area == null) continue;
+						var tx = x+((o.area.getTile(o.tile_x-1, o.tile_y, BASE_LAYER) == null)?1:-1);
+						if(getColonyFoodInTile(o.area, tx, y) != null) continue;
+					} ar.push(x); ar.push(y);
+				} if(ar.length == 0) return [130,22];
+				var i = randInt(0, ar.length>>1); return [ar[i*2], ar[i*2+1]]; 
+			</getLocation>
+			<handleLocation>
+				faceColonyTable(this); var id = this.tile_x*32+this.tile_y; var o = waitingForFood.get(id);
+				if(this.area != null &amp;&amp; o != null){
+					if(o.info.xml.get("waiter_clear") == "true"){
+						waitingForFood.remove(id); if(o.area != null) o.area.removeObject(o); this.playAnimation("clear");
+					} else {
+						if(!exists("foods") || foods.length == 0){foods = colony_foods.copy(); shuffle(foods);} var food = foods.pop();
+						this.playAnimation("serve", function(){
+						var x = this.tile_x*Tile.SIZE+((this.area.getTile(this.tile_x-1, this.tile_y, BASE_LAYER) == null)?12:-12);
+						this.area.addObject(ObjectInfo.make(food, x, this.tile_y*Tile.SIZE));
+						});
+					}
+				}
+			</handleLocation>
+			<remoteHandleLocation>if(faceColonyTable(this) != 0) this.playAnimation("serve");</remoteHandleLocation>
+		</idle>
+	</npc>
+</data>

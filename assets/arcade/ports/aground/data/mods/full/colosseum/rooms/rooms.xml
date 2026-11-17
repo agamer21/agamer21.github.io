@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="minotaur.xml" />
+	<include id="yeti.xml" />
+	<include id="bandits.xml" />
+	<include id="dragon.xml" />
+	<include id="wyrm_queen.xml" />
+	<include id="golemech.xml" />
+	<include id="mirrows.xml" />
+	<include id="oldone.xml" />
+	<include id="pirates.xml" />
+	<include id="kraken.xml" />
+	<include id="plant_boss.xml" />
+	<include id="ice_boss.xml" />
+	<include id="bomber.xml" />
+	<include id="nursery.xml" />
+	<include id="final_boss.xml" />
+	<include id="megolemech.xml" />
+	<include id="dragomech.xml" />
+	<include id="draconian_wizard.xml" />
+	<include id="chimera.xml" />
+</data>

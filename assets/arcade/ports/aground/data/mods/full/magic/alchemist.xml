@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tilesheet id="structures/cave_portal.png" width="128" height="64" />
+	<tile id="alchemist.portal" sheet="structures/cave_portal.png" />
+	<animation id="alchemist_portal.idle" equals="item6" />
+	<structure id="alchemist_portal" tile="alchemist.portal" fps="5" fullOverlap="true" fullHeight="true" name="portal">
+		<operate><teleport area="area.id=='start'?'alchemist.portal':'start'" x="player._getTileX()" y="player._getTileY()" with="ellipse_fast" /></operate>
+		<hitbox x="0" y="Tile.SIZE" width="this.width" height="this.height-Tile.SIZE" />
+	</structure>
+	<object id="light_orb2" tile="magic_orb" animation="light_orb.idle" fps="10" layer="item" behind="true" width="16" height="16" color="ffff33">
+		<light tile="light.largest" color="fae1b5" flicker="true" />
+	</object>
+	<structure id="magic_house3" extends="magic_house" animation="magic_house">
+		<operate><action>this.loopAnimation("active"); this.playSFX("fire"); player.restoreStamina();</action><save sleep="true" /><stop /></operate>
+	</structure>
+	<area id="alchemist.portal" x="64" width="64" height="32" external="start">
+		<tiles id="bedrock" start="0" end="1" /><mine start="0" end="1" />
+		<tiles id="blackstone" y="0" /><tiles id="blackstone" y="31" /><tiles id="blackstone" x="64" /><tiles id="blackstone" x="127" />
+		<structure id="alchemist_portal" x="86" y="5" /><structure id="storehouse" x="95" y="5" />
+		<structure id="lab" x="82" y="5" /><structure id="wyrm_pen" x="79" y="5" /><structure id="magic_house3" x="100" y="5" />
+		<action>
+			for(y in 0...2) for(x in 0...8) area.addObject(ObjectInfo.make("light_orb2", (x*8+68)*Tile.SIZE, (y*16+6)*Tile.SIZE));
+			for(y in 0...32) for(x in 64...128) area.setLit(x, y);
+		</action>
+		<object id="campfire" x="90" y="5" />
+		<init><runAreaLoad /><action>var o = area.getObject('campfire'); o.setHealth(20, false); o.queue.addSmeltItem(getRecipe('cook_steak'), 4)</action></init>
+		<onLoad><music id="fish_village" seconds="1" /></onLoad>
+	</area>
+</data>

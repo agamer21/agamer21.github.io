@@ -1,0 +1,30 @@
+<tilesheet id='blue_crab.png' width='16' height='16' offsetX="-16" offsetY="-16">
+	<image frame='0' x='0' y='0' width='19' height='17' offsetX='12' offsetY='15' />
+	<image frame='1' x='19' y='0' width='23' height='26' offsetX='7' offsetY='6' />
+	<image frame='2' x='19' y='26' width='23' height='24' offsetX='6' offsetY='6' />
+	<image frame='3' x='42' y='0' width='27' height='16' offsetX='1' offsetY='16' />
+	<image frame='4' x='42' y='16' width='27' height='17' offsetX='1' offsetY='13' />
+	<image frame='5' x='42' y='33' width='27' height='19' offsetX='1' offsetY='11' />
+	<image frame='6' x='69' y='0' width='25' height='16' offsetX='3' offsetY='15' />
+	<image frame='7' x='42' y='52' width='25' height='24' offsetX='3' offsetY='7' />
+	<image frame='8' x='0' y='17' width='19' height='18' offsetX='11' offsetY='14' />
+	<image frame='9' x='0' y='35' width='16' height='11' offsetX='15' offsetY='20' />
+	<image frame='10' x='0' y='46' width='17' height='12' offsetX='14' offsetY='20' />
+	<image frame='11' x='0' y='58' width='14' height='8' offsetX='17' offsetY='24' />
+	<image frame='12' x='19' y='50' width='15' height='16' offsetX='16' offsetY='16' />
+	<image frame='13' x='94' y='0' width='15' height='16' offsetX='16' offsetY='16' />
+	<image frame='14' x='69' y='16' width='15' height='16' offsetX='16' offsetY='16' />
+	<image frame='15' x='84' y='16' width='16' height='16' offsetX='15' offsetY='16' />
+	<image frame='16' x='69' y='33' width='16' height='16' offsetX='15' offsetY='16' />
+	<image frame='17' x='85' y='33' width='16' height='16' offsetX='15' offsetY='16' />
+	<image frame='18' x='69' y='49' width='16' height='16' offsetX='15' offsetY='16' />
+	<image frame='19' x='69' y='65' width='16' height='16' offsetX='15' offsetY='16' />
+	<image frame='20' x='85' y='49' width='16' height='16' offsetX='15' offsetY='16' />
+	<image frame='21' x='0' y='66' width='14' height='15' offsetX='17' offsetY='17' />
+	<image frame='23' x='19' y='66' width='14' height='15' offsetX='17' offsetY='17' />
+	<image frame='24' x='85' y='65' width='17' height='15' offsetX='14' offsetY='17' />
+	<image frame='22' equals='20' offsetX='15' offsetY='16' />
+	<image frame='25' equals='24' offsetX='14' offsetY='17' />
+	<image frame='26' equals='24' offsetX='14' offsetY='17' />
+	<image frame='27' equals='24' offsetX='14' offsetY='17' />
+</tilesheet>

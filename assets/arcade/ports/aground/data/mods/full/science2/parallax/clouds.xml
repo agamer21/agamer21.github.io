@@ -1,0 +1,6 @@
+<tilesheet id='clouds.png' width='256' height='144'>
+	<image frame='0' x='0' y='0' width='256' height='144' offsetX='0' offsetY='0' />
+	<image frame='1' x='0' y='144' width='256' height='94' offsetX='0' offsetY='26' />
+	<image frame='2' x='0' y='238' width='256' height='110' offsetX='0' offsetY='18' />
+	<image frame='3' x='0' y='348' width='256' height='126' offsetX='0' offsetY='8' />
+</tilesheet>

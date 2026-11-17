@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="enemies.xml" />
+	<include id="npc/npcs.xml" />
+	<include id="ruins.xml" />
+	<tile id="earth.ruins0" sheet="ruins.1" x="0" /><structure id="earth.ruins0" tile="earth.ruins0" width="Math.ceil(tile.getInnerBounds().width)" centerX="false" />
+	<tile id="earth.ruins1" sheet="ruins.1" x="1" /><structure id="earth.ruins1" tile="earth.ruins1" extends="earth.ruins0" />
+	<tile id="earth.ruins2" sheet="ruins.1" x="2" /><structure id="earth.ruins2" tile="earth.ruins2" extends="earth.ruins0" />
+	<tile id="earth.ruins3" sheet="ruins.1" x="3" /><structure id="earth.ruins3" tile="earth.ruins3" extends="earth.ruins0" />
+	<tile id="earth.ruins4" sheet="ruins.1" x="4" /><structure id="earth.ruins4" tile="earth.ruins4" extends="earth.ruins0" />
+	<tile id="earth.ruins5" sheet="ruins.1" x="5" /><structure id="earth.ruins5" tile="earth.ruins5" extends="earth.ruins0" />
+	<tile id="earth.ruins6" sheet="ruins.1" x="6" />
+	<structure id="earth.ruins6" tile="earth.ruins6" name="enter" type="door" fullHeight="true" extends="earth.ruins0">
+		<hitbox x="119" y="54" width="35" height="42" />
+	</structure>
+	<tile id="earth.ruins7" sheet="ruins.1" x="7" />
+	<structure id="earth.ruins7" tile="earth.ruins7" extends="earth.ruins6">
+		<hitbox x="99" y="72" width="22" height="24" />
+	</structure>
+	<tile id="earth.ruins8" sheet="ruins.1" x="8" />
+	<structure id="earth.ruins8" tile="earth.ruins8" extends="earth.ruins6">
+		<hitbox x="103" y="68" width="25" height="28" />
+	</structure>
+	<include id="subway.xml" includeRoot="true" />
+	<tile id="subway.section" sheet="subway.png" />
+	<tile id="subway.end" sheet="subway.png" x="12" />
+	<animation id="subway.drip" x="17" count="8" />
+	<structure id="subway.section" width='64' height='48'>
+		<tile group="true" x="-1.5">
+            <tile id="subway.section" tile_x="randInt(0,3)" if="this.info.id != 'subway.door' && random()<0.2" />
+            <tile id="subway.section" tile_x="5" if="this.info.id == 'subway.door.broken'" />
+            <tile id="subway.section" tile_x="randInt(13,15)" if="this.info.id.substring(0,11) != 'subway.door' && random()<0.2" />
+			<tile id="subway.section" tile_x="var r = random(); return (r < 0.87)?8:(r < 0.95?9:10)" />
+            <tile id="subway.section" tile_x="var r = random(); return (r < 0.87)?16:15" />
+            <tile id="subway.section" tile_x="var r = random(); pipe_id = (r < 0.87)?6:7; return pipe_id" />
+			<tile id="subway.end" if="this.tile_x == -16" />
+            <tile id="subway.section" tile_x="11" if="this.info.id == 'subway.cavein'" />
+		</tile>
+		<tile id="subway.section" animation="subway.drip" x="-1.5" if="pipe_id == 7 && this.info.id != 'subway.cavein'" />
+		<tile id="subway.end" flip="true" x="2.5" if="this.tile_x == 236" />
+		<addedToArea><section if="built">
+			<action if="this.tile_x == -16">for(y in 0...3) setTile(this.tile_x, this.tile_y-y, "empty");</action>
+			<action if="this.tile_x == 236">for(y in 0...3) setTile(this.tile_x+3, this.tile_y-y, "empty");</action>
+		</section></addedToArea>
+	</structure>
+    <structure id="subway.cavein" extends="subway.section">
+        <addedToArea><action if="built">
+            for(y in 0...3) for(x in 0...4) setTile(this.tile_x+x, this.tile_y-y, "empty");
+        </action></addedToArea>
+    </structure>
+    <animation id="subway.door_closed" x="4" count="1" />
+    <animation id="subway.door_open" x="3" count="1" />
+    <structure id="subway.door" extends="subway.section" name="enter" type="door">
+        <tile id="subway.section" x="-1.5" animation="subway.door_closed" behind="true" name="door" />
+		<over><action>var door = this.getTileById("door"); if(door != null) door.playAnimation("subway.door_open", false)</action></over>
+		<out><action>var door = this.getTileById("door"); if(door != null) door.playAnimation("subway.door_closed", false)</action></out>
+		<afterTeleport><light x="player.tile_x" y="player.tile_y" size="3" /></afterTeleport>
+    </structure>
+    <structure id="subway.door.broken" extends="subway.section" />
+	
+	<include id="doodad.xml" includeRoot="true" />
+	<tile id="earth.doodad" sheet="doodad.png" />
+	<animation id="earth.door.opening" count="5" />
+	<animation id="earth.door.closing" count="5" reverse="true" />
+	<structure id="earth.door" tile="earth.doodad" name="enter" type="door" behind="true">
+		<over><sound id="ship_door" structure="this" /></over>
+	</structure>
+	
+	<tile id="earth.wreckage1" sheet="doodad.png" x="5" /><object id="earth.wreckage1" tile="earth.wreckage1" layer="bush" canCollect="true" />
+	<tile id="earth.wreckage2" sheet="doodad.png" x="6" /><object id="earth.wreckage2" tile="earth.wreckage2" layer="bush" canCollect="true" />
+	<tile id="earth.wreckage3" sheet="doodad.png" x="7" /><object id="earth.wreckage3" tile="earth.wreckage3" layer="bush" canCollect="true" />
+	<tile id="earth.wreckage4" sheet="doodad.png" x="8" /><object id="earth.wreckage4" tile="earth.wreckage4" layer="bush" canCollect="true" />
+	
+	<animation id="earth.light.off.idle" x="49" count="1" />
+	<structure id="earth.light.off" tile="earth.doodad" remove="false" />
+	<animation id="earth.light.idle" x="47" count="1" glow="true" />
+	<tilesheet id="light_lg.png" width="144" height="64" />
+	<tile id="earth.light" sheet="light_lg.png" />
+	<structure id="earth.light" tile="earth.doodad" remove="false">
+		<light tile="earth.light" color="cffbf9" offsetX="16" offsetY="32" />
+	</structure>
+	
+	<tile id="earth.arm1" sheet="doodad.png" x="34" /><structure id="earth.arm1" tile="earth.arm1" remove="false" />
+	<tile id="earth.arm2" sheet="doodad.png" x="35" /><structure id="earth.arm2" tile="earth.arm2" remove="false" />
+	<tile id="earth.arm3" sheet="doodad.png" x="36" /><structure id="earth.arm3" tile="earth.arm3" remove="false" />
+	
+	<tile id="blueprint_printer" sheet="doodad.png" x="20" />
+	<animation id="blueprint_printer.off" equals="single" />
+	<animation id="blueprint_printer.on" x="12" count="1" />
+	<animation id="blueprint_printer.over" x="1" count="10" />
+	<procedure id="blueprint_printer_recipes">
+		<item id="hut_blueprint" cost="1" />
+		<item id="hut_upgrade" cost="2" />
+		<item id="house_kitchen" cost="2" />
+		
+		<item id="earth_lab_blueprint" cost="6" />
+		<item id="blueprint_printer_blueprint" cost="4" />
+		<item id="paper_maker_blueprint" cost="4" />
+		
+		<item id="small_module_blueprint" cost="4" />
+		<item id="large_module_blueprint" cost="4" />
+		<item id="connector_module_blueprint" cost="4" />
+		<item id="xlarge_module_blueprint" cost="4" />
+		<item id="o2_generator_blueprint" cost="2" />
+		<item id="station_dock_blueprint" cost="6" />
+		
+		<item id="bunker_blueprint" cost="3" />
+		<item id="bunker_kitchen_blueprint" cost="3" />
+		<item id="bunker_depot_blueprint" cost="3" />
+		<item id="hydroponics_blueprint" cost="3" />
+		<item id="bunker_factory_blueprint" cost="4" />
+		<item id="bunker_farm_blueprint" cost="4" />
+		<item id="vending_machine_blueprint" cost="4" />
+		
+		<item id="sci_light_blueprint" cost="2" />
+		<item id="warehouse_blueprint" cost="3" />
+		<item id="advanced_lab_blueprint" cost="5" />
+		<item id="sub_pen_blueprint" cost="4" />
+		<item id="powerline_blueprint" cost="2" />
+		<item id="nuclear_plant_blueprint" cost="4" />
+		<item id="airport_blueprint" cost="3" />
+		<item id="workshop_upgrade" cost="2" />
+		<item id="factory_upgrade" cost="3" />
+		
+		<item id="arcade1_blueprint" cost="3" />
+		<item id="arcade2_blueprint" cost="3" />
+	</procedure>
+	<structure id="blueprint_printer" tile="blueprint_printer" name="operate" powered="true">
+		<operate>
+			<section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section>
+			<window type="shop" title="common.blueprint_printer" currency="item:blueprint_paper" buy="structure.cost" buy_prompt="false" name="item.names.blueprint_paper">
+				<run procedure="blueprint_printer_recipes" />
+			</window>
+		</operate>
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+	</structure>
+	<tile id="paper_maker" sheet="doodad.png" x="9" />
+	<animation id="paper_maker.open.on" equals="blueprint_printer.over" />
+	<animation id="paper_maker.open.off" x="22" count="1" />
+	<animation id="paper_maker.close.on" equals="blueprint_printer.over" />
+	<animation id="paper_maker.close.off" equals="single" />
+	<recipe id="bppaper_cloth" fuel="1" type="paper_maker"><item id="cloth" count="1" /></recipe>
+	<recipe id="bppaper_silk" fuel="2" type="paper_maker"><item id="silk" count="1" /></recipe>
+	<recipe id="bppaper_silicon" fuel="2" type="paper_maker"><item id="silicon" count="1" /></recipe>
+	<recipe id="bppaper_parts" fuel="30" type="paper_maker"><item id="ship_parts" count="1" /></recipe>
+	<recipe id="create_bppaper" creates="blueprint_paper" type="paper_maker" fuel_cost="30" incomplete="silk"><type id="no_uncraft" /></recipe>
+	<structure id="paper_maker" tile="paper_maker" animation="paper_maker" openable="true" type="kitchen" max_fuel="900" title="common.paper_maker" name="operate" powered="true" sfx="none">
+		<recipe type="paper_maker" />
+		<init><action>this.queue.addSmeltItem(getRecipe("create_bppaper"), 9999);</action></init>
+		<operate><dialogue section="warning" id="not_powered" if="!this.isPowered()" /></operate>
+	</structure>
+	
+	<item id="blueprint_printer_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="blueprint_printer" underground="true">
+			<item id="ship_parts" count="2" /><item id="titanium" count="8" /><item id="silicon" count="4" />
+		</action>
+	</item>
+	<item id="paper_maker_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="paper_maker" underground="true">
+			<item id="ship_parts" count="2" /><item id="titanium" count="8" /><item id="silicon" count="4" />
+		</action>
+	</item>
+	
+	<tile id="earth.computer1" sheet="doodad.png" x="33" /><structure id="earth.computer1" tile="earth.computer1" name="read" type="dialogue" remove="false" />
+	<animation id="earth.computer2.idle" x="37" count="10" /><structure id="earth.computer2" tile="earth.doodad" name="operate">
+		<light tile="light.medium" color="9ce1eb" offsetX="16" offsetY="16" />
+		<operate>
+			<section if="!player.questComplete('keycard')"><dialogue section="scavenger" id="locked" /><stop /></section>
+			<achievement id="drones" /><action>setFlag("drones.attack", false);</action><dialogue section="scavenger" id="stand_down" />
+		</operate>
+	</structure>
+	<structure id="earth.computer3" extends="earth.computer2" animation="earth.computer2">
+		<operate><dialogue section="scavenger" id="locked" /><stop /></operate>
+	</structure>
+	
+	<animation id="earth.medibed.idle" x="62" count="12" />
+	<animation id="earth.medibed.screen" x="50" count="12" glow="true" />
+	<animation id="earth.medibed.over" x="62" count="12"><append tile="earth.doodad" animation="earth.medibed.screen" /></animation>
+	<structure id="earth.medibed" tile="earth.doodad">
+		<tooltip section="actions" id="rest_bed" />
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<operate><action>player.fullRestore(); player.restorePower(false);</action><save sleep="true" /></operate>
+	</structure>
+	<animation id="earth.conveyor.idle" x="74" count="8" /><structure id="earth.conveyor" tile="earth.doodad" remove="false" />
+	
+	<tile id="station_debris1" sheet="ruins.2" x="0" />
+	<animation id="station_debris">
+		<frame x="0" />
+		<frame x="0" offsetY="-1" />
+		<frame x="0" offsetY="-2" />
+		<frame x="0" offsetY="-1" />
+		<frame x="0" />
+		<frame x="0" offsetY="1" />
+		<frame x="0" offsetY="2" />
+		<frame x="0" offsetY="1" />
+	</animation>
+	<object id="station_debris1" tile="station_debris1" animation="station_debris" fps="2" action="collect" layer="item">
+		<operate><action>player.addMultipleItems("titanium", 4, "ship_parts", 1)</action><remove object="this" /></operate>
+	</object>
+	<action>for(i in 1...9) evalXml('&lt;tile id="station_debris'+(i+1)+'" sheet="ruins.2" x="'+i+'" />&lt;object id="station_debris'+(i+1)+'" extends="station_debris1" tile="station_debris'+(i+1)+'" />');</action>
+	
+	<animation id="earth.door.open" x="0" count="4" />
+	<animation id="earth.door.close" x="0" count="4" reverse="true" />
+	<procedure id="unlock.door">
+		<sound id="keycard" object="this" />
+		<choose>
+			<window type="prompt" message="structure.unlock" item="key" if="player.getItemCount(key) > 0">
+				<item eval="key" count="-1" /><action>setTile(this.tile_x, this.tile_y, null)</action>
+			</window>
+			<dialogue eval="'structure.missing_key{item:[item='+key+']}'" />
+		</choose>
+	</procedure>
+	<object id="earth.door" tile="earth.door" layer="npc" width="16" height="16" behind="true" blocking="true" overlapVehicle="true" overlapNPC="true">
+		<tooltip section="actions" id="unlock" if="area.getTile(this.tile_x, this.tile_y, BASE_LAYER) != null" />
+		<onPlaced><action>mine(this.tile_x, this.tile_y); setTile(this.tile_x, this.tile_y, "empty")</action></onPlaced>
+		<tile id="earth.door" top="true" tile_x="4" x="-0.5" y="-0.5" />
+		<over><sound id="ship_door" object="this" /><play object="this" animation="earth.door.open" /></over>
+		<out><play object="this" animation="earth.door.close" /></out>
+		<operate><set id="key" value="'keycard'+((this.health == 0)?'':Std.string(this.health))" /><run procedure="unlock.door" /></operate>
+	</object>
+	
+	<tile id="particle_accelerator" sheet="bunker.3" />
+	<animation id="particle_accelerator.off" x="12" count="1" />
+	<animation id="particle_accelerator.on" count="12" />
+	<recipe id="particle_fuel" fuel="10" type="particle_accelerator"><item id="uranium" count="1" /></recipe>
+	<recipe id="create_exotic_matter" creates="exotic_matter" type="particle_accelerator" fuel_cost="100" incomplete="uranium"><type id="no_uncraft" /></recipe>
+	<structure id="particle_accelerator" tile="particle_accelerator" type="kitchen" animation="particle_accelerator" max_fuel="10000" title="common.particle_accelerator" name="operate" powered="true" sfx="none">
+		<recipe type="particle_accelerator" />
+		<init><action>this.queue.addSmeltItem(getRecipe("create_exotic_matter"), 9999);</action></init>
+		<operate><dialogue section="warning" id="not_powered" if="!this.isPowered()" /></operate>
+	</structure>
+	<tile id="interstellar_teleportal" sheet="bunker.4" />
+	<animation id="interstellar_teleportal.idle" x
+		="9" count="1" />
+	<animation id="interstellar_teleportal.start" x="9" count="5" />
+	<animation id="interstellar_teleportal.stop" x="9" count="5" reverse="true" />
+	<animation id="interstellar_teleportal.active" count="9" />
+	<recipe id="teleportal_fuel" fuel="5" type="interstellar_teleportal"><item id="exotic_matter" count="1" /></recipe>
+	<structure id="interstellar_teleportal" tile="interstellar_teleportal" powered="true" type="fuelable" maxFuel="20" name="operate" includeName="true" repairType="mechanic">
+		<recipe type="interstellar_teleportal" />
+		<operate>
+			<section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section>
+			<section if="area.vehicle.area.id == 'alien_hq'"><dialogue section="warning" id="no_use" /><stop /></section>
+			<window type="portal" structure="interstellar_teleportal" fuelable="this" fuelCost="1" acceptArea="return area.isVisitable(player) && area.id != 'alien_hq'">
+				<action with="ellipse">player.teleportTo(portal_area, portal_x, portal_y);</action>
+				<functionButton title="actions.rename">
+					<window type="input" initial="this.name" message="world.rename" maxLength="30">
+						<action>this.name=result;</action>
+					</window>
+				</functionButton>
+			</window><stop />
+		</operate>
+		<over><play object="this" animation="start" /><action>this.loopAnimation("active")</action></over>
+		<out><play object="this" animation="stop" /><action>this.loopAnimation("idle")</action></out>
+	</structure>
+	
+	<item id="particle_accelerator_blueprint" type="blueprint" cost="20000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="particle_accelerator" underground="true">
+			<item id="ship_parts" count="5" /><item id="titanium" count="10" /><item id="silicon" count="10" /><item id="magnegem" count="10" />
+		</action>
+	</item>
+	<item id="interstellar_teleportal_blueprint" type="blueprint" cost="20000" weight="0" icon="teleportal.ico">
+		<action id="build" structure="interstellar_teleportal" underground="true">
+			<areaConstraint enabled="!player.inDungeon() && !player.inTempArea() && area.getSystem() != null && area.id != 'alien_hq'" fail="warning.no_place" />
+			<item id="ship_parts" count="5" /><item id="titanium" count="10" /><item id="silicon" count="10" />
+		</action>
+	</item>
+</data>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<volume name="plant_effect" value="150" />
+	<volume name="ice_effect" value="175" />
+	<volume name="torpedo" value="200" />
+	<volume name="antimatter_missile" value="150" />
+	<volume name="nuclear_missile" value="200" />
+	<volume name="laserdrill" value="50" />
+	<volume name="ship_door" value="50" />
+	<volume name="acid_raptor_death" value="150" />
+	<volume name="acid_raptor_attack" value="150" />
+	<volume name="razor_bug_attack" value="165" />
+	<volume name="camoflora_attack_hit" value="130" />
+	<volume name="scrab_attack" value="125" />
+	<volume name="mars_fish_death" value="165" />
+	<volume name="brute_fish_death" value="165" />
+	<volume name="razor_bug_death" value="130" />
+	<volume name="cowterpillar_death" value="180" />
+	<volume name="dubex_death" value="190" />
+	<volume name="meat_tree_fall" value="190" />
+    
+	<sound id="talking3" />
+    
+	<sound id="build_spaceship" />
+	<sound id="laser" />
+	<sound id="plasma_gun" />
+	<sound id="plasma_cannon" />
+	<sound id="explosion" />
+	<sound id="cultivator_death" />
+	<sound id="hail_storm_death" />
+	<sound id="scalefish_death" />
+	<sound id="jellyfish_death" />
+	<sound id="snaptopus_death" />
+	<sound id="clam_death" />
+	<sound id="shark_death" />
+	<sound id="kraken_death" />
+	<sound id="bomber_death" />
+	<sound id="magnestone_death" />
+	<sound id="spirit_death" />
+	<sound id="fighter_death" />
+	<sound id="cruiser_death" />
+	
+	<sound id="coralbow" />
+	<sound id="coralsword" />
+	<sound id="firetrap" />
+	<sound id="fire_effect" />
+	<sound id="water_effect" />
+	<sound id="earthtrap" />
+	<sound id="ice_effect" />
+	<sound id="planttrap" />
+	<sound id="plant_effect" />
+	<sound id="enchantmenttrap" />
+	<sound id="laserdrill" />
+	<sound id="missile" />
+	<sound id="energy_shield" />
+	<sound id="antimatter_launcher" />
+	<sound id="antimatter_missile" />
+	<sound id="nuclear_missile" />
+	<sound id="torpedo_launcher" />
+	<sound id="torpedo" />
+	<sound id="spirit_scythe" />
+	<sound id="spirit_bow" />
+	<sound id="queendrill" />
+	<sound id="clamgun" />
+	<sound id="blueclaw" />
+	<sound id="magicwand" />
+	<sound id="bombardment" />
+	<sound id="shield_book" />
+	<sound id="teleport_book" />
+	<sound id="light_book" />
+	
+	<sound id="alien_bomber_attack" />
+	<sound id="alien_crusier_attack" />
+	<sound id="alien_fighter_attack" />
+	<sound id="alien_fighter_impact" />
+	<sound id="alien_fighter_mine" />
+	<sound id="cultivator_spores" />
+	<sound id="spore_impact" />
+	<sound id="cultivator_gas" />
+	<sound id="dinnerbell" />
+	<sound id="magnestone_attack" />
+	<sound id="magnestone_impact" />
+	<sound id="pirateship_attack" />
+	<sound id="scalefish_attack" />
+	<sound id="snaptopus_attack" />
+	
+	<sound id="ship_door" />
+	<sound id="ship_shield" />
+	<sound id="com_device" />
+	<sound id="com_device_in" />
+	<sound id="ship_takeoff" />
+	<sound id="activate_growth" />
+	<sound id="submarine_submerge" />
+	
+	<sound id="jump" />
+	<sound id="construct_bot_attack" />
+	<sound id="construct_bot_back" />
+	<sound id="drone_drill" />
+	<sound id="drone_sub_fire" />
+	<sound id="ftl_jump" />
+	<sound id="hunter_bot_attack" />
+	<sound id="jet_fly" />
+	<sound id="jet_land" />
+	<sound id="jet_takeoff" />
+	<sound id="keycard" />
+	<sound id="medical_bot" />
+	<sound id="research_dive" />
+	<sound id="research_surface" />\
+	<sound id="ship_land" />
+	<sound id="submarine_arm" />
+	<sound id="submarine_move" />
+	<sound id="turret_attack" />
+		
+	<sound id="brute_fish_attack" />
+	<sound id="brute_fish_death" />
+	<sound id="camoflora_attack" />
+	<sound id="camoflora_attack_hit" />
+	<sound id="drone_sub_death" />
+	<sound id="firebug_attack" />
+	<sound id="firebug_attack_hit" />
+	<sound id="giantgrub_attack" />
+	<sound id="jellypod_attack" />
+	<sound id="mars_fish_attack" />
+	<sound id="mars_fish_death" />
+	<sound id="medical_bot_attack" />
+	<sound id="razor_bug_attack" />
+	<sound id="razor_bug_attack_hit" />
+	<sound id="razor_bug_death" />
+	<sound id="scrab_attack" />
+    
+    <sound id="wasp_attack" />
+    <sound id="robot" />
+    <sound id="shark_attack" />
+    <sound id="fire_bird" />
+	
+	<sound id="acid_raptor_attack" />
+	<sound id="acid_raptor_death" />
+	<sound id="camoflora_death" />
+	<sound id="chimera_attack" />
+	<sound id="chimera_hurt" />
+	<sound id="chimera_death" />
+	<sound id="laser_traps" />
+	<sound id="auto_suit_drill" />
+	<sound id="plant_boss_spikes" />
+	<sound id="ice_boss" />
+	<sound id="cowterpillar_death" />
+	<sound id="firebug_death" />
+	<sound id="jellypod_death" />
+	<sound id="scrab_death" />
+	<sound id="wasp_death" />
+	<sound id="dubex_death" />
+	<sound id="meat_tree_fall" />
+</data>

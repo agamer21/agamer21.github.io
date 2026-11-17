@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<structure id="dragon_cruiser.ship_bg" tile="alien.cruiser" priority="-2" forceTime="12" behind="true" remove="false" back="true">
+		<initRenderer><action>setDarkness(this.renderer, 0.3)</action></initRenderer>
+	</structure>
+	<area id="colosseum.dragomech" shouldLight="false" background="alien_hq.orbit">
+		<action>
+			for(x in 2...26) setTile(x, 0, "empty"); for(x in 25...28) setTile(x, 1, "empty"); for(x in 1...9) setTile(x, 15, "empty");
+			for(x in 8...15) setTile(x, 14, "empty"); for(x in 14...28) setTile(x, 15, "empty"); for(y in 2...15) setTile(27, y, "empty");
+			for(y in 1...6) setTile(1, y, "empty"); for(y in 5...11) setTile(3, y, "empty"); for(y in 10...12) setTile(2, y, "empty");
+			for(y in 11...16) setTile(1, y, "empty"); setTile(2, 1, "empty"); setTile(2, 5, "empty");
+			area.floodFill(7, 7, BACK_LAYER, area.addTileIndex("empty"));
+		</action>
+		<structure id="dragon_cruiser.interior" x="0" y="16" />
+		<structure id="dragon_cruiser.ship_bg" x="-2/Tile.SIZE" y="16-4/Tile.SIZE" />
+		<object id="hi_alien" x="5" y="8" facing="left" />
+		<object id="hi_alien" x="16" y="8" facing="right" />
+		<object id="hi_alien" x="24" y="8" facing="right" />
+		<object id="dragomech" x="10" y="10" facing="left" />
+		<structure id="colosseum_exit" x="5" y="9" />
+	</area>
+	<procedure id="colosseum.dragomech">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 750);
+		var map = new StringMap(); map.set("dragomech", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("coral_cod"), 10); player.inventory.addItems(getItem("cake"), 30); player.inventory.addItems(getItem("missile"), 20);
+		player.inventory.addItems(getItem("battery"), 4); player.inventory.addItems(getItem("rocket_launcher"), 1);
+		player.stats.get("spellcast").permaBuff(5); player.stats.get("speed").permaBuff(4); player.stats.get("health").permaBuff(100); player.restoreHealth();</action>
+		<equip id="exo_sword" fromInventory="false" />
+		<equip id="shield_book" fromInventory="false" />
+		<equip id="laser_drill" fromInventory="false" />
+		<equip id="space_armor" fromInventory="false" />
+		<equip id="space_helm" fromInventory="false" />
+		<equip id="jetpack" fromInventory="false" />
+		<teleport area="colosseum.dragomech" x="7" y="9" temporary="true" />
+	</procedure>
+</data>

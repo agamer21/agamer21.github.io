@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tilesheet id="structures.png" width="156" height="155" />
+	<tile id="fish.library" sheet="structures.png" />
+	<animation id="fish.library.idle" count="10" glow="true" />
+	<structure id="fish.library" tile="fish.library" type="crafting" title="structure>fish.library">
+		<recipe type="spellbook" />
+		<light tile="light.largest" color="f5c16e" offsetX="77" offsetY="55" />
+        <light tile="light.largest" color="5cf3c1" offsetX="77" offsetY="120" />
+	</structure>
+	
+	<tile id="fish.market" sheet="structures.png" x="10" />
+	<animation id="fish.market.idle" equals="fish.library.idle" />
+	<animation id="fish.market.idle.noflash" equals="single" />
+	<structure id="fish.market" tile="fish.market" type="market" restock="5000" speechX="8" speechY="-8" price="2" multiplyStock="player.questComplete('coral_pen')?2:1">
+		<addedToArea><play object="this" animation="idle.noflash" loop="true" if="!allowFlash()" /></addedToArea>
+		<item id="ultra_backpack" min="1" max="1" if="true" />
+		<item id="map" min="1" max="1" if="player.getItemCount('map') == 0" />
+		<item id="evolution_seed" min="1" max="1" if="player.hasQuest('go_east') || player.seen_items.exists('evo_gem')" />
+		<item id="ink" min="3" max="3" />
+		<item id="fish_scale" min="0" max="3" />
+		<item id="yeti_fur" min="10" max="20" />
+		<item id="fire_tusk" min="10" max="20" />
+		<item id="coral_bow" min="1" max="1" />
+		<item id="coral_sword" min="1" max="1" />
+		<item id="growth_seed" min="1" max="1" />
+		<select count="3">
+			<item id="ice_heart" min="1" max="2" />
+			<item id="horn" min="5" max="5" />
+			<item id="plant_eye" min="5" max="5" />
+			<item id="fin" min="5" max="5" />
+			<item id="pearl" min="1" max="2" achievement="clam_pearl" />
+		</select>
+		<item id="focus_gem" min="20" max="40" />
+		<item id="alter_gem" min="10" max="20" />
+		<item id="blood_gem" min="5" max="10" />
+		<item id="dragonblood" min="5" max="10" />
+		<item id="spirit_gem" min="5" max="10" />
+		<select count="3">
+			<item id="fire_gem" min="1" max="1" />
+			<item id="water_gem" min="1" max="1" />
+			<item id="ice_gem" min="1" max="1" />
+			<item id="plant_gem" min="1" max="1" />
+			<item id="earth_gem" min="1" max="1" />
+		</select>
+		<select count="3">
+			<item id="health_potion" min="1" max="4" />
+			<item id="stamina_potion" min="1" max="4" />
+			<item id="attack_potion" min="5" max="10" />
+			<item id="defense_potion" min="5" max="10" />
+			<item id="speed_potion" min="1" max="4" />
+			<item id="endurance_potion" min="1" max="4" />
+		</select>
+		<item id="coral_pen_seed" min="5" max="5" if="player.questComplete('coral_pen')" />
+		<item id="coral_farm_seed" min="5" max="5" if="getFlag('coral_farm')" />
+		<buy type="potion" /><buy type="resource" /><buy type="animal" />
+		<light tile="light.largest" color="5cf3c1" offsetX="77" offsetY="55" />
+		<light tile="light.largest" color="5cf3c1" offsetX="77" offsetY="120" />
+		<operate>
+			<section if="!getFlag('fish.merchant')" with="fade">
+				<move object="player" to="area.getObject('fish_merchant')" /><action>area.getObject('fish_merchant').onOperate(player)</action><stop />
+			</section>
+		</operate>
+	</structure>
+
+	<include id="struc.xml" />
+	<tile id="growth" sheet="struc.1" />
+	<animation id="growth.idle" x="10" count="10" />
+	<animation id="growth_off.idle" x="20" count="1" />
+	<animation id="growth_off.activate" x="0" count="10" />
+	<structure id="growth_off" tile="growth" name="activate">
+		<operate><set id="achievement" value="'growth'" /><set id="gem" value="'plant_gem'" /><set id="into" value="'growth'" /><set id="sfx" value="'activate_growth'" /><run procedure="activate.gem_structure" /></operate>
+	</structure>
+	<recipe id="craft_fire_trap" creates="fire_trap" count="4" type="growth">
+		<item id="net" count="4" />
+		<item id="fire_gem" count="1" />
+	</recipe>
+	<recipe id="craft_water_trap" creates="water_trap" count="4" type="growth">
+		<item id="net" count="4" />
+		<item id="water_gem" count="1" />
+	</recipe>
+	<recipe id="craft_ice_trap" creates="ice_trap" count="4" type="growth">
+		<item id="net" count="4" />
+		<item id="ice_gem" count="1" />
+	</recipe>
+	<recipe id="craft_earth_trap" creates="earth_trap" count="4" type="growth">
+		<item id="net" count="4" />
+		<item id="earth_gem" count="1" />
+	</recipe>
+	<recipe id="craft_plant_trap" creates="plant_trap" count="4" type="growth">
+		<item id="net" count="4" />
+		<item id="plant_gem" count="1" />
+	</recipe>
+	<recipe id="craft_enchanted_net" creates="enchanted_net" type="growth">
+		<type id="enchantments" /><item id="net" count="1" />
+		<item id="blood_gem" count="1" />
+	</recipe>
+	<item id="forge_seed" type="potion" cost="0" weight="10" icon="magic_seed.ico" animation="fire_seed.ico"><action id="plant" sfx="plant_seed" structure="magic_forge" onGrass="false" underground="true" buildTime="8" /></item>
+	<item id="synthesizer_seed" type="potion" cost="0" weight="10" icon="magic_seed.ico" animation="water_seed.ico"><action id="plant" sfx="plant_seed" structure="magic_farm" onGrass="false" underground="true" buildTime="8" /></item>
+	<item id="growth_seed" type="potion" cost="700" weight="10" icon="magic_seed.ico" animation="plant_seed.ico"><action id="plant" sfx="plant_seed" structure="growth" buildTime="8" /></item>
+	<recipe id="craft_forge_seed" creates="forge_seed" type="growth">
+		<type id="no_uncraft" /><item id="fire_tusk" count="8" />
+		<item id="horn" count="2" />
+		<item id="fire_gem" count="1" />
+	</recipe>
+	<recipe id="craft_synthesizer_seed" creates="synthesizer_seed" type="growth">
+		<type id="no_uncraft" /><item id="fin" count="4" />
+		<item id="pearl" count="1" />
+		<item id="water_gem" count="1" />
+	</recipe>
+	<recipe id="craft_growth_seed" creates="growth_seed" type="growth">
+		<type id="no_uncraft" /><item id="plant_eye" count="8" />
+		<item id="plant_gem" count="1" />
+	</recipe>
+	<item id="house_seed" type="potion" cost="0" weight="10" icon="magic_seed.ico" animation="magic_seed.ico"><action id="plant" sfx="plant_seed" structure="magic_house2" onGrass="false" underground="true" buildTime="8"><plantCost><item id="focus_gem" count="1" /></plantCost></action></item>
+	<recipe id="craft_house_seed" creates="house_seed" type="growth">
+		<type id="no_uncraft" /><item id="alter_gem" count="8" />
+		<item id="spirit_gem" count="8" />
+	</recipe>
+	<item id="house_seed2" type="potion" cost="0" weight="10" icon="magic_seed.ico" animation="magic_seed.ico"><action id="plant" sfx="plant_seed" structure="evo_house" onGrass="false" underground="true" buildTime="8"><plantCost><item id="focus_gem" count="1" /></plantCost></action></item>
+	<recipe id="craft_house_seed2" creates="house_seed2" type="hq_growth">
+		<type id="no_uncraft" /><item id="house_seed" count="1" /><item id="evo_gem" count="2" />
+	</recipe>
+	<item id="time_manipulator_seed" type="potion" cost="0" weight="10" icon="magic_seed.ico" animation="ice_seed.ico"><action id="plant" sfx="plant_seed" structure="time_manipulator" onGrass="false" underground="true" buildTime="8"><plantCost><item id="ice_gem" count="1" /></plantCost></action></item>
+	<recipe id="craft_tm_seed" creates="time_manipulator_seed" type="growth">
+		<item id="yeti_fur" count="8" />
+		<item id="ice_heart" count="2" />
+		<item id="ice_gem" count="1" />
+		<item id="time_book" count="1" />
+	</recipe>
+	<recipe id="craft_mini_synthesizer" creates="mini_synthesizer" type="growth" value="0">
+		<type id="no_uncraft" /><item id="fin" count="2" />
+		<item id="water_gem" count="1" />
+		<item id="water_barrier_book" count="1" />
+	</recipe>
+	<recipe id="craft_mini_synthesizer2" creates="mini_synthesizer" value="0">
+		<item id="fin" count="2" />
+		<item id="water_gem" count="1" />
+		<item id="fish_scale" count="3" />
+		<item id="ink" count="3" />
+	</recipe>
+	<recipe id="craft_tree_seed" creates="tree_seed" type="growth">
+		<type id="adv_seed" />
+		<item id="wood" count="10" />
+		<item id="fruit" count="2" />
+	</recipe>
+	<recipe id="craft_conifer_seed" creates="conifer_seed" type="growth">
+		<type id="adv_seed" />
+		<item id="wood" count="10" />
+		<item id="ice_berries" count="2" />
+	</recipe>
+	<recipe id="craft_purple_tree_seed" creates="purple_tree_seed" type="growth">
+		<type id="adv_seed" />
+		<item id="wood" count="10" />
+		<item id="dragonblood" count="1" />
+	</recipe>
+	<recipe id="craft_bush_seed" creates="bush_seed" type="growth">
+		<type id="adv_seed" />
+		<item id="berries" count="12" />
+	</recipe>
+	<recipe id="craft_red_seed" creates="red_bush_seed" type="growth">
+		<type id="adv_seed" />
+		<item id="red_berries" count="12" />
+	</recipe>
+	<recipe id="craft_ice_seed" creates="ice_bush_seed" type="growth">
+		<type id="adv_seed" />
+		<item id="ice_berries" count="12" />
+	</recipe>
+	<recipe id="make_rice_seed" creates="rice_seed" type="growth">
+		<type id="adv_seed" />
+		<item id="rice" count="8" />
+	</recipe>
+	<recipe id="make_cotton_seed" creates="cotton_seed" type="growth">
+		<type id="adv_seed" />
+		<item id="cotton" count="8" />
+	</recipe>
+	<recipe id="make_sugar_seed" creates="sugar_seed" type="growth">
+		<type id="adv_seed" />
+		<item id="sugar" count="8" />
+	</recipe>
+	<action>
+		function isModVehicle(object, layer){
+			return object.info.xml.get("allowModifier") == "true";
+		}
+		function getModVehicleInStructure(factory){
+			return factory.area.getActionObject(factory.getInnerBounds(true), null, isModVehicle);
+		}
+	</action>
+	<procedure id="vehicle.modify">
+		<set id="v" value="getModVehicleInStructure(this)" /><set id="mod" value="Item.getModItem(v.name)" />
+		<window type="items" titleMutable="v.getTitle(player)" includeStorehouse="true" filter="function(i){return Item.hasModifiers(i);}" enabled="function(i){return mod != i;}" additionalInfo="function(item, s, w, x, y){return Item.halfScale(Item.addModifierInfo, item, s, w, x, y);}">
+			<action>if(mod != item &amp;&amp; inventory.addItems(item, -1, value, name)) v.name = Item.setParameter(v.name, "m", item.id);</action>
+		</window>
+	</procedure>
+	<structure id="growth" tile="growth" type="modify" name="enter" display="structure.growth_name" title="actions.transform" removeButton="structure.uproot">
+		<listItem title="structure.tooltip.change_modifier" enabled="return getModVehicleInStructure(this) != null" fail="warning.no_vehicle_modify"><run procedure="vehicle.modify" /></listItem>
+		<recipe type="growth" /><recipe type="seed" /><addedToArea><action>setFlag("activate_growth", true)</action></addedToArea>
+		<operate><achievement id="growth" /></operate>
+		<removeBy><action>this.onDismantle(player); player.addItem("growth_seed");</action></removeBy>
+	</structure>
+	
+	<animation id="light_weed.idle" count="1" glow="true" />
+	<structure id="light_weed" tile="light_weed" remove="false" behind="true" allowSpawn="true">
+		<light tile="light.large" color="ffb8fd" offsetX="12" offsetY="75" />
+		<light tile="light.large" color="ffb8fd" offsetX="57" offsetY="63" />
+		<light tile="light.large" color="ffb8fd" offsetX="90" offsetY="89" />
+		<light tile="light.large" color="ffb8fd" offsetX="136" offsetY="58" />
+		<light tile="light.large" color="ffb8fd" offsetX="200" offsetY="82" />
+		<light tile="light.large" color="ffb8fd" offsetX="234" offsetY="67" />
+	</structure>
+			
+	<structure id="light_weed1" tile="light_weed1" remove="false" behind="true" allowSpawn="true">
+		<light tile="light.large" color="ffb8fd" offsetX="16" offsetY="24" />
+	</structure>
+	<structure id="light_weed2" tile="light_weed2" remove="false" behind="true" allowSpawn="true">
+		<light tile="light.large" color="ffb8fd" offsetX="16" offsetY="12" />
+	</structure>
+	<structure id="light_weed3" tile="light_weed3" remove="false" behind="true" allowSpawn="true">
+		<light tile="light.large" color="ffb8fd" offsetX="16" offsetY="38" />
+	</structure>
+	<structure id="light_weed4" tile="light_weed4" remove="false" behind="true" allowSpawn="true">
+		<light tile="light.large" color="ffb8fd" offsetX="16" offsetY="7" />
+	</structure>
+	<structure id="light_weed5" tile="light_weed5" remove="false" behind="true" allowSpawn="true">
+		<light tile="light.large" color="ffb8fd" offsetX="16" offsetY="31" />
+	</structure>
+	<structure id="light_weed6" tile="light_weed6" remove="false" behind="true" allowSpawn="true">
+		<light tile="light.large" color="ffb8fd" offsetX="16" offsetY="16" />
+	</structure>
+	
+	<recipe id="make_water_helm" creates="water_helm" type="enchantments">
+		<item id="shark" count="1" />
+		<item id="alter_gem" count="1" />
+		<item id="water_gem" count="1" />
+		<item id="fin" count="3" />
+	</recipe>
+	
+	<recipe id="make_helium_pack" creates="helium_pack" type="enchantments">
+		<item id="ultra_backpack" count="1" />
+		<item id="evo_gem" count="1" />
+		<item id="helium_sac" count="4" />
+	</recipe>
+	
+	<recipe id="make_queen_drill" creates="queen_drill" type="enchantments">
+		<item id="wyrm_drill" count="1" />
+		<item id="evo_gem" count="1" />
+	</recipe>
+	
+	<animation id="evo_seed.ico" x="0" count="19" color="eaa030" colorScale="1.4" />
+	<item id="evolution_seed" type="potion" cost="2000" weight="10" icon="magic_seed.ico" animation="evo_seed.ico"><action id="plant" sfx="plant_seed" structure="evo_chamber" onGrass="false" underground="true" buildTime="8" /></item>
+	<recipe id="craft_evo_gem" creates="evo_gem" type="evo_chamber" fuel_cost="100" achievement="evo_gem">
+		<item id="evo_shard" count="5" />
+	</recipe>
+	<recipe id="craft_evo_gem2" creates="evo_gem" type="evo_chamber" fuel_cost="100" achievement="evo_gem">
+		<item id="fire_gem" count="1" />
+		<item id="water_gem" count="1" />
+		<item id="plant_gem" count="1" />
+		<item id="ice_gem" count="1" />
+		<item id="earth_gem" count="1" />
+	</recipe>
+	<recipe id="uncraft_craft_evolution_seed" creates="evolution_seed"><item id="evo_shard" count="5" /></recipe>
+	<recipe id="craft_evolution_seed" creates="evolution_seed" type="evo_chamber"><type id="no_uncraft" /><item id="evo_gem" count="1" /></recipe>
+	
+	<animation id="evo_chamber.off" equals="single" />
+	<animation id="evo_chamber.on" count="2" x="1" length="2" />
+	<animation id="evo_chamber.smelt" count="2" x="1" length="2" repeat="5">
+		<append tile="evo_gem.ico" animation="item11" x="8" y="11" />
+	</animation>
+	<structure id="evo_chamber" width="32" height="32" image="evo_chamber.png" type="smelter" name="enter" title="structure.evo_chamber" removeButton="structure.uproot" max_fuel="1500" sfx="magic">
+		<recipe type="magic_fuel" />
+		<recipe type="evo_chamber" />
+		<operate><section if="!player.hasQuest('go_east') && !getFlag('final_boss_defeat')"><dialogue section="alchemist" id="evo_chamber" /><stop /></section></operate>
+		<removeBy><action>this.onDismantle(player); player.addItem("evolution_seed");</action></removeBy>
+	</structure>
+	
+	<tile id="fish.house" sheet="struc.2" />
+	<animation id="fish.house.idle" x="6" count="6" />
+	<animation id="fish.house.active" x="0" count="6" />
+	<structure id="fish.house" tile="fish.house" name="enter" sleep="true">
+		<operate>
+			<action>this.loopAnimation("active");</action>
+			<action>player.restoreStamina(); player.restoreOxygen();</action><save sleep="true" />
+		</operate>
+		<exit><action>this.loopAnimation("idle");</action></exit>
+		<light tile="light.largest" color="ffb8fd" offsetX="30" offsetY="32" />
+	</structure>
+	
+	<include id="drag_factory.xml" />
+	<tile id="drag_factory" sheet="drag_factory.png" />
+	<tile id="drag_factory_bg" sheet="drag_factory_bg.png" />
+	<tile id="drag_factory_fg" sheet="drag_factory_fg.png" />
+    <animation id="drag_factory_fx" x="0" count="15" />
+    <animation id="drag_factory_fx_loop" x="15" count="8" />
+	<animation id="drag_factory.idle" x="9" count="1" />
+    <animation id="drag_factory.snow" x="0" count="9" length="2" />
+    <animation id="drag_factory.hidden"><frame visible="false" length="1" /></animation>
+	<structure id="drag_factory" tile="drag_factory" name="evolve" type="crafting" title="structure.tooltip.evolve" only_select="true">
+		<listItem icon="dragon_ship.ico" title="structure.tooltip.evolve_dragon" fail="this.getObjectInBounds('fly_ancient_dragon') != null?'warning.ingredients':'warning.no_item{item:[object=fly_ancient_dragon]}'">
+			<tooltip type="requires" requires="quests.requires">
+				<option>
+					<value icon="ancient_dragon.ico" title="vehicle.ancient_dragon" if="this.getObjectInBounds('fly_ancient_dragon') != null" />
+					<value icon="ancient_dragon.ico" title="structure.place_in_lair{item:[object=fly_ancient_dragon]}" error="true" />
+				</option>
+				<requirement icon="evo_gem.ico" title="item.names.evo_gem" count="player.getItemCountStorehouse('evo_gem')" of="1" />
+				<requirement icon="dragonblood.ico" title="item.names.dragonblood" count="player.getItemCountStorehouse('dragonblood')" of="20" />
+				<requirement icon="blood_gem.ico" title="item.names.blood_gem" count="player.getItemCountStorehouse('blood_gem')" of="20" />
+				<requirement icon="focus_gem.ico" title="item.names.focus_gem" count="player.getItemCountStorehouse('focus_gem')" of="20" />
+			</tooltip>
+			<section if="this.getObjectInBounds('dragon_ship') != null"><dialogue section="warning" id="drag_ship_factory" /><stop /></section>
+			<closeWindows />
+            <item id="evo_gem" count="-1" storehouse="true" />
+            <item id="dragonblood" count="-20" storehouse="true" />
+            <item id="blood_gem" count="-20" storehouse="true" />
+            <item id="focus_gem" count="-20" storehouse="true" />
+            <section with="fade">
+				<action>oldScale = getGameScale(); setGameScale(2)</action><pan x="256-this.xPos-this.info.width*0.5" y="256-this.yPos" seconds="0" />
+				<play object="this" animation="hidden" loop="true" />
+				<set id="dragon" value="this.getObjectInBounds('fly_ancient_dragon')" />
+				<action>dragon.alpha = 0;</action><remove object="dragon" />
+				<addAnimation to="this" modal="true">
+					<add fps="10" id="bg" tile="drag_factory_bg" animation="single" />
+					<add fps="10" id="first" tile="ancient_dragon" animation="ancient_dragon.idle" offsetX="-0.5" offsetY="-1" x="224" y="256" />
+					<add fps="10" id="second" tile="dragon_ship" animation="dragon_ship.idle" offsetX="-0.5" offsetY="-1" x="272" y="256" alpha="0" />
+					<add fps="10" id="fg" tile="drag_factory_fg" animation="single" />
+					<wait seconds="1" />
+					<play id="bg" animation="drag_factory_fx" />
+					<play id="fg" animation="drag_factory_fx" modal="true" />
+					<play id="bg" animation="drag_factory_fx_loop" loop="true" />
+					<play id="fg" animation="drag_factory_fx_loop" loop="true" />
+					<lerp id="first" alpha="0" seconds="0.5" />
+					<lerp id="second" alpha="1" seconds="0.5" modal="true" />
+					<wait seconds="1" />
+					<action>this.runAnimation("single", null)</action>
+					<lerp id="bg" alpha="0" seconds="1" />
+					<lerp id="fg" alpha="0" seconds="1" modal="true" />
+				</addAnimation>
+				<object id="dragon_ship" x="(this.xPos+160)/Tile.SIZE" y="this.yPos/Tile.SIZE-4" />
+				<action>dragon_ship.name = dragon.name; dragon_ship.inventory.copyFrom(dragon.inventory); dragon_ship.setFuel(Math.round(dragon.getFuelPercent()*dragon_ship.getMaxFuel()));</action>
+				<play object="this" animation="snow" modal="true" /><action>player.checkQuestComplete(null);</action>
+            </section>
+            <section with="fade"><action>setGameScale(oldScale)</action><pan toObject="player" seconds="0" /></section>
+		</listItem>
+		<operate>
+			<section if="!player.hasQuest('dragon_ship')"><dialogue section="structure" id="drag_factory_ruins" /><stop /></section>
+			<section if="area.getObject('ice_boss') != null"><dialogue section="structure" id="too_cold" /><stop /></section>
+		</operate>
+	</structure>
+	
+	<structure id="magic_house" extends="magic_house">
+		<operate>
+			<section if="(player.questComplete('oldone') && !player.hasQuest('go_east')) || getFlag('final_boss_defeat')">
+			<action>this.loopAnimation("active"); this.playSFX("fire");</action>
+			<choose if="!getFlag('final_boss_defeat')">
+				<scene id="alchemist" show="east_dead" with="fade" if="area.getNPC('alchemist_magic') == null" showToAll="true" />
+				<scene id="alchemist" show="east" with="fade" showToAll="true" />
+			</choose><action>player.restoreStamina();</action><save sleep="true" /><stop />
+			</section>
+		</operate>
+	</structure>
+	
+	<tile id="sea_witch_hut" sheet="struc.2" x="12" />
+	<animation id="sea_witch_hut.idle" x="6" count="1" />
+	<animation id="sea_witch_hut.active" x="0" count="6" />
+	<structure id="sea_witch_hut" tile="sea_witch_hut" name="enter" sleep="true">
+		<operate><choose>
+			<section if="player.questComplete('witch_potion')">
+				<action>this.loopAnimation("active");</action>
+				<action>player.restoreStamina();</action><save toNight="true" />
+			</section>
+			<section><setTime toNight="true" /><dialogue section="player" id="witch_hut" /></section>
+		</choose></operate>
+		<exit><action>this.loopAnimation("idle");</action></exit>
+		<light tile="light.large" color="42f4c8" offsetX="30" offsetY="42" />
+	</structure>
+	
+	<include id="coral_pen.xml" />
+	<include id="bombardment.xml" />
+	
+	<structure id="magic_house2" extends="magic_house" animation="magic_house" onSleep="player.restoreStamina()" removeButton="structure.uproot">
+		<operate>
+			<menu section="structure" closeable="true">
+				<choice id="sleep_day">
+					<action>this.loopAnimation("active"); this.playSFX("fire");</action>
+					<action>eval(this.info.xml.get("onSleep"))</action><save sleep="true" />
+				</choice>
+				<choice id="sleep_night">
+					<action>this.loopAnimation("active"); this.playSFX("fire");</action>
+					<action>eval(this.info.xml.get("onSleep"))</action><save toNight="true" />
+				</choice>
+				<choice id="uproot"><action>this.removeStructure(player)</action></choice>
+			</menu><stop />
+		</operate>
+		<removeBy>
+			<action>this.onDismantle(player); player.addItem("house_seed");</action>
+		</removeBy>
+	</structure>
+	<tile id="evo_house" sheet="struc.5" />
+	<structure id="evo_house" extends="magic_house2" tile="evo_house" image="" width="" height="" onSleep="player.fullRestore()">
+		<removeBy>
+			<action>this.onDismantle(player); player.addItem("house_seed2");</action><stop />
+		</removeBy>
+	</structure>
+			
+	<tile id="exiled.tv" sheet="struc.6" />
+	<animation id="exiled.tv.idle" equals="item8" />
+	<structure id="exiled.tv" tile="exiled.tv" name="watch" remove="false" behind="true" allowSpawn="true" priority="-1">
+		<operate><dialogue section="player" id="static" /></operate>
+	</structure>
+</data>

@@ -1,0 +1,44 @@
+<sheets>
+<tilesheet id='boss1.1' sheet='boss1.png' width='201' height='201' offsetX='-164' offsetY='-67'>
+	<image frame='0' x='0' y='0' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='1' x='0' y='215' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='2' x='0' y='430' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='3' x='221' y='0' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='4' x='221' y='215' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='5' x='221' y='430' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='6' x='442' y='0' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='7' x='663' y='0' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='8' x='442' y='215' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='9' x='442' y='430' width='221' height='215' offsetX='154' offsetY='60' />
+	<image frame='10' x='663' y='527' width='42' height='63' offsetX='148' offsetY='136' />
+	<image frame='11' x='736' y='215' width='80' height='72' offsetX='132' offsetY='132' />
+	<image frame='12' x='663' y='319' width='71' height='73' offsetX='103' offsetY='130' />
+	<image frame='13' x='816' y='215' width='64' height='87' offsetX='101' offsetY='133' />
+	<image frame='14' x='663' y='215' width='73' height='104' offsetX='88' offsetY='117' />
+	<image frame='15' x='663' y='452' width='50' height='75' offsetX='103' offsetY='127' />
+</tilesheet>
+<tilesheet id='boss1.2' sheet='boss1.png' width='32' height='32'>
+	<image frame='0' x='857' y='452' width='24' height='24' offsetX='4' offsetY='4' />
+	<image frame='1' x='713' y='577' width='29' height='25' offsetX='1' offsetY='3' />
+	<image frame='2' x='713' y='602' width='29' height='25' offsetX='1' offsetY='3' />
+	<image frame='3' x='755' y='488' width='29' height='25' offsetX='1' offsetY='3' />
+	<image frame='4' x='784' y='488' width='29' height='25' offsetX='1' offsetY='3' />
+	<image frame='5' x='813' y='488' width='29' height='25' offsetX='1' offsetY='3' />
+	<image frame='6' x='842' y='488' width='29' height='25' offsetX='1' offsetY='3' />
+</tilesheet>
+<tilesheet id='boss1.3' sheet='boss1.png' width='64' height='64'>
+	<image frame='0' x='733' y='392' width='60' height='60' offsetX='4' offsetY='0' />
+</tilesheet>
+<tilesheet id='boss1.4' sheet='boss1.png' width='72' height='36' offsetX='-10' offsetY='-29'>
+	<image frame='0' x='736' y='287' width='79' height='28' offsetX='10' offsetY='34' />
+	<image frame='1' x='713' y='452' width='72' height='36' offsetX='10' offsetY='29' />
+	<image frame='2' x='793' y='392' width='72' height='37' offsetX='10' offsetY='29' />
+	<image frame='3' x='785' y='452' width='72' height='36' offsetX='10' offsetY='28' />
+	<image frame='4' x='663' y='392' width='70' height='60' offsetX='15' offsetY='15' />
+	<image frame='5' x='803' y='319' width='72' height='67' offsetX='16' offsetY='13' />
+	<image frame='6' x='734' y='319' width='69' height='70' offsetX='16' offsetY='11' />
+	<image frame='7' x='663' y='590' width='50' height='48' offsetX='21' offsetY='23' />
+	<image frame='8' x='713' y='488' width='42' height='50' offsetX='33' offsetY='21' />
+	<image frame='9' x='713' y='538' width='36' height='39' offsetX='30' offsetY='29' />
+</tilesheet>
+</sheets>

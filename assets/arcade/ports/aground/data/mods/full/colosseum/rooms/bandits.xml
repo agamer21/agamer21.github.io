@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="colosseum.bandit_combo" x="96" width="32" height="16" background="science1" forceTime="12">
+		<tiles id="sci1.dirt" start="0" end="1" />
+		<tiles id="sci1.grass" y="0" />
+		<tiles id="bedrock" y="15" />
+		<shore x="95" top="sand_top" bottom="sand" trans1="sci1.dirt_sand1" trans2="sci1.dirt_sand2" flip="true" dock="dock_empty" />
+		<shore x="128" top="sand_top" bottom="sand" trans1="sci1.dirt_sand1" trans2="sci1.dirt_sand3" dock="dock_empty_flip" />
+		<objects id="conifer" y="-1" startX="96" endX="128" minDist="6" maxDist="9" array="trees" />
+		<objects id="red_bush" y="-1" between="trees" pos="0.25" altPos="0.75" percent="0.34" />
+		<objects id="bush" y="-1" between="trees" pos="0.25" altPos="0.75" percent="0.67" />
+		<object id="bandit_knives" x="96+11" />
+		<object id="bandit_ranged" x="96+10" />
+		<object id="bandit_combo" x="96+12" />
+		<object id="bandit_heavy" x="96+13" />
+		<structure id="colosseum_exit" x="120" />
+	</area>
+	<procedure id="colosseum.bandit_combo">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 50);
+		var map = new StringMap(); map.set("bandit_knives", 1); map.set("bandit_ranged", 1);
+		map.set("bandit_combo", 1); map.set("bandit_heavy", 1); setFlag('bandit_fight', true);
+		setGlobal("killCounts", map); changePlayer("player.colosseum", false); setGlobal("achievement", "bandits");
+		player.inventory.addItems(getItem("battery"), 2); player.inventory.addItems(getItem("shell"), 10);
+		player.inventory.addItems(getItem("shotgun"), 1); player.stats.get("speed").permaBuff(2);</action>
+		<equip id="chainsaw" fromInventory="false" />
+		<equip id="drill" fromInventory="false" />
+		<equip id="titanium_armor" fromInventory="false" />
+		<equip id="kite_shield" fromInventory="false" />
+		<teleport area="colosseum.bandit_combo" x="122" temporary="true" />
+	</procedure>
+</data>

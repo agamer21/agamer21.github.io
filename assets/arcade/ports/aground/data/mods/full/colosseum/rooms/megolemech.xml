@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="colosseum.megolemech" width="20" height="10" background="black">
+		<tiles id="stone" start="0" end="1" />
+		<action>for(y in 1...9) for(x in 1...19) mine(x, y)</action>
+		<tiles id="blackstone" x="0" />
+		<tiles id="blackstone" x="19" />
+		<tiles id="blackstone" y="0" />
+		<tiles id="blackstone" y="9" />
+		<ore id="lava" start="0" end="1" percent="1" tile="blackstone" />
+		<object id="megolemech" x="14" y="8" />
+		<structure id="colosseum_exit" x="1" y="8" />
+	</area>
+	<procedure id="colosseum.megolemech">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 1000);
+		var map = new StringMap(); map.set("megolemech", 1); setGlobal("killCounts", map); changePlayer("player.colosseum", false);
+		player.stats.get("health").permaBuff(50); player.restoreHealth(); player.stats.get("spellcast").permaBuff(3);
+		player.inventory.addItems(getItem("meteor_book"), 1); player.inventory.addItems(getItem("flood_book"), 1);
+		player.inventory.addItems(getItem("growth_book"), 1); player.inventory.addItems(getItem("spikes_book"), 1);
+		player.inventory.addItems(getItem("tornado_book"), 1); player.inventory.addItems(getItem("focus_gem"), 20);
+		player.inventory.addItems(getItem("cheeseburger"), 5); player.inventory.addItems(getItem("cake"), 10); player.stats.get("speed").permaBuff(4);</action>
+		<equip id="staff" fromInventory="false" name="uflood_book,mstaff.water&" forceName="false" />
+		<equip id="shield_book" fromInventory="false" />
+		<equip id="magne_queen_drill" fromInventory="false" />
+		<equip id="spirit_robes" fromInventory="false" />
+		<equip id="witch_hat" fromInventory="false" />
+		<equip id="plant_bag" fromInventory="false" />
+		<equip id="black_cat" fromInventory="false" />
+		<teleport area="colosseum.megolemech" x="2" y="8" temporary="true" />
+	</procedure>
+</data>

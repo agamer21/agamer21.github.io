@@ -1,0 +1,30 @@
+<sheets>
+<tilesheet id='bg.1' sheet='bg.png' width='16' height='16'>
+	<image frame='0' x='768' y='162' width='16' height='7' offsetX='0' offsetY='0' />
+	<image frame='1' x='768' y='169' width='16' height='16' offsetX='0' offsetY='0' />
+	<image frame='2' x='768' y='185' width='16' height='16' offsetX='0' offsetY='0' />
+</tilesheet>
+<tilesheet id='bg.2' sheet='bg.png' width='256' height='144'>
+	<image frame='0' x='511' y='401' width='244' height='85' offsetX='8' offsetY='59' />
+	<image frame='1' x='511' y='327' width='245' height='74' offsetX='7' offsetY='70' />
+	<image frame='2' x='0' y='364' width='256' height='123' offsetX='0' offsetY='21' />
+	<image frame='3' x='761' y='224' width='256' height='69' offsetX='0' offsetY='75' />
+	<image frame='4' x='256' y='364' width='254' height='144' offsetX='1' offsetY='0' />
+</tilesheet>
+<tilesheet id='bg.3' sheet='bg.png' width='768' height='144'>
+	<image frame='0' x='0' y='162' width='768' height='62' offsetX='0' offsetY='82' />
+	<image frame='1' x='0' y='309' width='744' height='18' offsetX='11' offsetY='92' />
+	<image frame='2' x='0' y='224' width='761' height='85' offsetX='3' offsetY='59' />
+</tilesheet>
+<tilesheet id='bg.4' sheet='bg.png' width='1024' height='144'>
+	<image frame='0' x='0' y='0' width='1024' height='58' offsetX='0' offsetY='86' />
+	<image frame='1' x='0' y='58' width='1024' height='95' offsetX='0' offsetY='49' />
+	<image frame='2' x='0' y='153' width='1018' height='9' offsetX='3' offsetY='135' />
+</tilesheet>
+<tilesheet id='bg.5' sheet='bg.png' width='512' height='144'>
+	<image frame='0' x='0' y='327' width='511' height='37' offsetX='1' offsetY='107' />
+</tilesheet>
+<tilesheet id='bg.6' sheet='bg.png' width='32' height='144'>
+	<image frame='0' x='761' y='293' width='32' height='143' offsetX='0' offsetY='1' />
+</tilesheet>
+</sheets>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<structure id="death_door" tile="spirit_door" name="enter" renderer="spirit" animation="spirit_door" remove="false">
+		<operate><teleport x="32" area="death_door" allowReturn="true" with="ellipse" /></operate>
+		<addedToArea><action>if(built) this.clearInvisibleBlocks()</action></addedToArea>
+	</structure>
+	<enemy id="ghost_flying" extends="ghost" flying="true" underwater="true" captureId="ghost" />
+	<object id="river_styx" width="1024" height="288" overlapVehicle="true">
+		<overSecond><damage object="player" attacker="this" damage="2" directional="false" critical="false" ignoreArmor="true" hideAttacker="true" /></overSecond>
+	</object>
+	<animation id="water_styx" color="ffff99" count="7" />
+	<enemy id="water_elemental2" extends="water_elemental" night="" captureId="water_elemental" />
+	<area id="death_door" background="spirit" viewHidden="true" canFly="false" placeLadder="false" temporary="true" width="64" height="1" looping="true" water="water_alt" water_anim="water_styx">
+		<structure id="spirit_door" x="30" y="-1" />
+		<action>
+			for(x in 28...38){setTile(x, 0, "empty"); setTile(x, 0, "invisible_block");}
+			for(x in 1...64){setTile(x, 18, "empty"); setTile(x, 18, "invisible_block");}
+			area.setWaterBlock(0, 18); for(y in 0...18) for(x in 0...64) area.addFlags(x, y, 132);
+		</action>
+		<fishing />
+		<object id="river_styx" x="0" y="17" />
+		<appendArea id="death_door.start" offsetX="0" offsetY="24" />
+		<appendArea id="death_door.science" offsetX="0" offsetY="62" />
+		<appendArea id="death_door.magic" offsetX="0" offsetY="100" />
+		<appendArea id="death_door.ice" offsetX="0" offsetY="138" />
+		<appendArea id="death_door.bottom" offsetX="0" offsetY="174" />
+		<spawner id="spirit_fish" time="5000" count="3" fromX="4" toX="60" fromY="5" toY="16" spawnWidth="32" underwater="true" />
+		<spawner id="ghost_flying" time="5000" count="5" fromX="4" toX="60" fromY="5" toY="16" spawnWidth="32" underwater="true" />
+		<spawner id="water_elemental2" time="5000" count="2" fromX="1" toX="62" fromY="17" toY="17" underwater="true" />
+		<init><runAreaLoad /><action>area.spawner.spawnAll("spirit_fish"); area.spawner.spawnAll("ghost_flying"); area.spawner.spawnAll("water_elemental2");</action></init>
+		<onLoad>
+			<action>player.gui.coins.changeCurrency("spirit", "spirit")</action><weather type="fog" color="0" alpha="0.75" /><music id="spirit" seconds="1" />
+			<weather type="fog" image="{core}/science1/sand.png" alpha="0.3" color="ffdd99" x="-1000" width="2000" y="62" height="8" dx="4" dy="0.05" />
+		</onLoad>
+		<onLeave><action>player.gui.coins.changeCurrency("coins", "coins"); setGameTime(24);</action></onLeave>
+		<updateHidden><run procedure="spirit_world_hidden" /></updateHidden>
+	</area>
+	<npc id="builder.ghost" extends="builder" night="true" clearAlpha="false">
+		<idle class="wander" />
+		<operate><group><dialogue section="builder" id="intro" speaker="this" /><dialogue section="scene.hut" id="first7" speaker="this" /></group></operate>
+		<init><lerp object="this" seconds="0.75"><from alpha="0.25" /><to alpha="0.75" /></lerp></init>
+	</npc>
+	<area id="death_door.start" width="64" height="32">
+		<tiles id="dirt" start="0" end="0.5" />
+		<tiles id="stone" start="0.5" end="1" />
+		<tiles id="grass" y="0" />
+		<action>
+			for(y in -5...0) setBack(0, y, "spirit_ladder");
+			var x = randInt(3,6); while(x &lt; 61){setOre(x, -randInt(2, 5), "grass"); x += randInt(6,10);}
+			for(x in 1...64){setTile(x, 32, "empty"); setTile(x, 32, "invisible_block");}
+		</action>
+		<ore id="quartz" start="0.4" end="0.5" percent="0.0025" tile="dirt" />
+		<ore id="iron" start="0.2" end="0.5" percent="0.0125" tile="dirt" />
+		<ore id="sulfur" start="0.2" end="0.5" percent="0.0125" tile="dirt" />
+		<ore id="coal" start="0.0" end="0.4" percent="0.0375" tile="dirt" />
+		<ore id="diamond" start="0.9" end="1.0" percent="0.0025" tile="stone" />
+		<ore id="gold" start="0.5" end="1.0" percent="0.0125" tile="stone" />
+		<ore id="iron" start="0.5" end="0.9" percent="0.0375" tile="stone" />
+		<ore id="lava" start="0.7" end="0.8" percent="1" tile="stone" />
+		<objects id="tree" y="-1" startX="4" endX="60" minDist="6" maxDist="9" array="trees" />
+		<objects id="wyrm" start="0.1" end="0.4" percent="0.001" tile="dirt" />
+		<objects id="golem" start="0.5" end="1.0" percent="0.0075" tile="stone" />
+		<objects id="bush" y="-1" between="trees" pos="0.25" altPos="0.75" percent="0.5" />
+		<object id="spirit_lava" x="0" y="32" />
+		<spawner id="rat" time="1000" count="6" fromX="3" toX="63" fromY="-1" toY="-1" />
+		<spawner id="boar" time="3000" count="5" fromX="3" toX="63" fromY="-1" toY="-1" />
+		<spawner id="wyrm" time="4000" count="2" fromX="1" toX="62" fromY="3" toY="20" tile="dirt" />
+		<spawner id="earth_elemental" time="5000" count="2" fromX="1" toX="62" fromY="-1" toY="-1" />
+		<spawner id="spirit_ox" time="5000" count="1" fromX="1" toX="62" fromY="-1" toY="-1" />
+		<init>
+			<action>area.spawner.spawnAll("rat"); area.spawner.spawnAll("boar"); area.spawner.spawnAll("earth_elemental"); area.spawner.spawnAll("spirit_ox");</action>
+			<object id="builder.ghost" x="22" y="offsetY-1" if="player.hasQuest('storehouse2')" />
+		</init>
+	</area>
+	<procedure id="mirrows.ghost">
+		<dialogue section="mirrows" id="win2" speaker="this" />
+		<dialogue section="mirrows" id="win3" speaker="area.getObject(this.info.id=='mirrow_n.ghost'?'mirrow_d.ghost':'mirrow_n.ghost')" />
+	</procedure>
+	<npc id="mirrow_n.ghost" extends="mirrow_n.npc" night="true" clearAlpha="false">
+		<operate><section><action>var other = area.getNPC('mirrow_d.ghost'); other.renderer.alpha = 1; lockNPC(other);</action><run procedure="mirrows.ghost" /></section></operate>
+		<init><lerp object="this" seconds="0.75"><from alpha="0.25" /><to alpha="0.75" /></lerp></init>
+	</npc>
+	<npc id="mirrow_d.ghost" extends="mirrow_d.npc" night="true" clearAlpha="false">
+		<operate><section><action>var other = area.getNPC('mirrow_n.ghost'); other.renderer.alpha = 1; lockNPC(other);</action><run procedure="mirrows.ghost" /></section></operate>
+		<init><lerp object="this" seconds="0.75"><from alpha="0.25" /><to alpha="0.75" /></lerp></init>
+	</npc>
+	<structure id="inn.ghost" extends="inn" generatePower="false" name="inn">
+		<operate><scene id="inn" show="ghost" with="fade" /><stop /></operate>
+	</structure>
+	<area id="death_door.science" width="64" height="32">
+		<tiles id="desert.dirt" start="0" end="0.5" />
+		<tiles id="basalt" start="0.5" end="1" />
+		<tiles id="desert.dirt_top" y="0" />
+		<action>
+			for(y in -6...0) setBack(0, y, "spirit_ladder");
+			var x = randInt(3,6); while(x &lt; 61){setOre(x, -randInt(2, 5), "obsidian"); x += randInt(6,10);}
+			for(x in 1...64){setTile(x, 32, "empty"); setTile(x, 32, "invisible_block");}
+		</action>
+		<ore id="oil" start="0.0" end="0.5" percent="0.0375" tile="desert.dirt" />
+		<ore id="quartz" start="0.2" end="0.5" percent="0.0125" tile="desert.dirt" />
+		<ore id="sulfur" start="0.4" end="0.5" percent="0.0025" tile="desert.dirt" />
+		<ore id="uranium" start="0.9" end="1.0" percent="0.0025" tile="basalt" />
+		<ore id="titanium" start="0.8" end="1.0" percent="0.0125" tile="basalt" />
+		<ore id="gold" start="0.5" end="1.0" percent="0.0125" tile="basalt" />
+		<ore id="oil" start="0.5" end="0.8" percent="0.0125" tile="basalt" />
+		<objects id="steel_wyrm" start="0.1" end="0.4" percent="0.001" tile="desert.dirt" />
+		<object id="spirit_lava" x="0" y="32" />
+		<spawner id="diode_wolf" time="4000" count="5" fromX="3" toX="63" fromY="-1" toY="-1" />
+		<spawner id="cyborg_heavy_gun" time="4000" count="3" fromX="3" toX="63" fromY="-1" toY="-1" />
+		<spawner id="steel_wyrm" time="4000" count="2" fromX="1" toX="62" fromY="3" toY="20" tile="desert.dirt" />
+		<spawner id="fire_elemental" time="5000" count="2" fromX="1" toX="62" fromY="-1" toY="-1" />
+		<spawner id="spirit_fox" time="5000" count="1" fromX="1" toX="62" fromY="-1" toY="-1" />
+		<init>
+			<action>area.spawner.spawnAll("diode_wolf"); area.spawner.spawnAll("cyborg_heavy_gun"); area.spawner.spawnAll("fire_elemental"); area.spawner.spawnAll("spirit_fox");</action>
+			<object id="mirrow_d.ghost" x="11" y="offsetY-1" if="getFlag('mirrows.sacrifice')" />
+			<object id="mirrow_n.ghost" x="12" y="offsetY-1" if="getFlag('mirrows.sacrifice')" />
+			<structure id="inn.ghost" x="34" y="offsetY-1" if="player.areas.exists('science1') && player.areas.get('science1').getStructureById('inn') == null" />
+		</init>
+	</area>
+	<npc id="alchemist.ghost" extends="alchemist" idle="wander" clearAlpha="false">
+		<operate><dialogue section="alchemist" id="east1" speaker="this" /></operate>
+		<init><lerp object="this" seconds="0.75"><from alpha="0.25" /><to alpha="0.75" /></lerp></init>
+	</npc>
+	<area id="death_door.magic" width="64" height="32">
+		<tiles id="magic1.dirt" start="0" end="0.5" />
+		<tiles id="magic1.stone" start="0.5" end="1" />
+		<tiles id="magic1.grass" y="0" />
+		<action>
+			for(y in -6...0) setBack(0, y, "spirit_ladder");
+			var x = randInt(3,6); while(x &lt; 61){setOre(x, -randInt(2, 5), "markings1"); x += randInt(6,10);}
+			for(x in 1...64){setTile(x, 32, "empty"); setTile(x, 32, "invisible_block");}
+		</action>
+		<ore id="quartz" start="0.4" end="0.5" percent="0.0025" tile="magic1.dirt" />
+		<ore id="alter_gem" start="0.2" end="0.5" percent="0.0125" tile="magic1.dirt" />
+		<ore id="focus_gem" start="0.2" end="0.5" percent="0.0175" tile="magic1.dirt" />
+		<ore id="evo_shard" start="0.9" end="1.0" percent="0.0025" tile="magic1.stone" />
+		<ore id="spirit_gem" start="0.5" end="1.0" percent="0.0125" tile="magic1.stone" />
+		<ore id="blood_gem" start="0.5" end="0.9" percent="0.0175" tile="magic1.stone" />
+		<objects id="purple_tree" y="-1" startX="4" endX="60" minDist="8" maxDist="10" array="trees" />
+		<objects id="magic_wyrm" start="0.6" end="0.9" percent="0.001" tile="magic1.stone" />
+		<objects id="purple_golem" start="0.5" end="1.0" percent="0.0075" tile="magic1.stone" />
+		<objects id="ice_bush" y="-1" between="trees" pos="0.25" altPos="0.75" percent="0.5" />
+		<object id="spirit_lava" x="0" y="32" />
+		<spawner id="crawler2" time="4000" count="5" fromX="3" toX="63" fromY="-1" toY="-1" />
+		<spawner id="fire_boar" time="4000" count="3" fromX="3" toX="63" fromY="-1" toY="-1" />
+		<spawner id="magic_wyrm" time="4000" count="2" fromX="1" toX="62" fromY="8" toY="63" tile="magic1.stone" />
+		<spawner id="plant_elemental2" time="5000" count="2" fromX="1" toX="62" fromY="-1" toY="-1" />
+		<spawner id="venatrix" time="5000" count="1" fromX="1" toX="62" fromY="-1" toY="-1" />
+		<init>
+			<action>area.spawner.spawnAll("crawler2"); area.spawner.spawnAll("fire_boar"); area.spawner.spawnAll("plant_elemental2"); area.spawner.spawnAll("venatrix");</action>
+			<object id="alchemist.ghost" x="34" y="offsetY-1" if="player.getNPC('alchemist') == null" />
+		</init>
+	</area>
+	<enemy id="magnewyrm2" extends="magnewyrm" eatTile="concrete" captureId="magnewyrm" />
+	<npc id="professor.ghost" extends="professor" clearAlpha="false">
+		<operate><dialogue section="professor" id="cheater" speaker="this" /></operate>
+		<init><lerp object="this" seconds="0.75"><from alpha="0.25" /><to alpha="0.75" /></lerp></init>
+	</npc>
+	<area id="death_door.ice" width="64" height="32" yStrength="0">
+		<tiles id="ice_wall" start="0" end="0.5" />
+		<tiles id="concrete" start="0.5" end="1" />
+		<tiles id="snow" y="0" />
+		<action>
+			for(y in -6...0) setBack(0, y, "spirit_ladder");
+			var x = randInt(3,6); while(x &lt; 61){setOre(x, -randInt(2, 5), "sand"); x += randInt(6,10);}
+			for(x in 1...64){setTile(x, 32, "empty"); setTile(x, 32, "invisible_block");}
+			setBack(0, 31, "concrete");
+		</action>
+		<ore id="exotic_matter" start="0.0" end="0.5" percent="0.0075" tile="ice_wall" />
+		<ore id="moissanite" start="0.9" end="1.0" percent="0.0025" tile="concrete" />
+		<ore id="chromium" start="0.5" end="1.0" percent="0.0125" tile="concrete" />
+		<ore id="magnegem" start="0.5" end="0.9" percent="0.0175" tile="concrete" />
+		<objects id="conifer_snow" y="-1" startX="4" endX="60" minDist="8" maxDist="10" array="trees" />
+		<objects id="icer" start="0.0" end="0.5" percent="0.0075" tile="ice_wall" />
+		<objects id="bush_snow" y="-1" between="trees" pos="0.25" altPos="0.75" percent="0.5" />
+		<objects id="magnewyrm2" start="0.6" end="0.9" percent="0.001" tile="concrete" />
+		<object id="spirit_lava" x="0" y="32" />
+		<spawner id="giantgrub" time="4000" count="2" fromX="3" toX="63" fromY="-1" toY="-1" />
+		<spawner id="yeti" time="4000" count="3" fromX="3" toX="63" fromY="-1" toY="-1" />
+		<spawner id="magnewyrm2" time="4000" count="2" fromX="1" toX="62" fromY="8" toY="63" tile="concrete" />
+		<spawner id="ice_elemental" time="5000" count="2" fromX="1" toX="62" fromY="-1" toY="-1" />
+		<spawner id="spirit_imp" time="5000" count="1" fromX="1" toX="62" fromY="-1" toY="-1" />
+		<init>
+			<action>area.spawner.spawnAll("giantgrub"); area.spawner.spawnAll("yeti"); area.spawner.spawnAll("ice_elemental"); area.spawner.spawnAll("spirit_imp");</action>
+			<object id="professor.ghost" x="17" y="offsetY-1" if="player.hasQuest('research_lab') && player.getNPC('professor') == null" />
+		</init>
+		<onLoad>
+			<repeat count="8">
+				<tile id="mountain_snow" tile_x="random()*8" x="offsetX+2+random()*28" y="offsetY-2" back="true" />
+			</repeat>
+		</onLoad>
+	</area>
+	<animation id="spirit_death.weap" x="16" count="8" />
+	<animation id="spirit_death.idle" x="24" count="8">
+		<append tile="spirit_guide" animation="spirit_death.weap" behind="true" />
+	</animation>
+	<animation id="spirit_death.walk" equals="spirit_death.idle" />
+	<animation id="spirit_death.weap.pre_attack" x="0" count="1" />
+	<animation id="spirit_death.pre_attack" x="24" count="1">
+		<append tile="spirit_guide" animation="spirit_death.weap.pre_attack" behind="true" />
+	</animation>
+	<animation id="spirit_death.weap.attack" x="1" count="7" />
+	<animation id="spirit_death.attack" x="25" count="7">
+		<append tile="spirit_guide" animation="spirit_death.weap.attack" behind="true" />
+	</animation>
+	<tile id="death_scythe" equals="spirit_scythe" />
+	<item id="death_scythe" type="equipment" equip_anim="equipment.spirit_scythe" melee_range="1" cost="0" slot="weapon" action="equip" weight="0" icon="spirit_scythe.ico" attack="20" cut="20" spirit="20" stamina="0" movement_walk="walk_rswing" knockback="10" underwater="true" sounds="sword" color="000000" hpSteal="-0.25" sfx="spirit_scythe" />
+	<enemy id="spirit_death" extends="generic.spirit" tile="spirit_guide" health="100" range="12" animation="spirit_death" color="000000" type="surface" capture="100" spirit_power="100">
+		<capture trapped="death_scythe" minCapture="3" />
+		<attack type="melee" range="1" damage="50" ignoreArmor="true"><pre><play object="this" animation="pre_attack" /></pre></attack>
+	</enemy>
+	<area id="death_door.bottom">
+		<action>
+			for(y in -4...0) setBack(0, y, "spirit_ladder");
+			for(x in -8...9){setTile(x, 0, "empty"); setTile(x, 0, "invisible_block");}
+		</action>
+		<object id="spirit_death" x="3" />
+	</area>
+</data>

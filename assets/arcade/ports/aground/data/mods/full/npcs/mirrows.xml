@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="water_cave" giver="mirrows" exp="500">
+		<area id="water_cave" name="quests.find_water_cave" count="1" />
+		<item id="steel_bar" count="8" /><item id="uranium" count="1" /><item id="silicon" count="3" />
+	</quest>
+	<quest id="ship_parts" giver="mirrows" exp="750">
+		<item id="ship_parts" count="1" />
+	</quest>
+	<quest id="repair_escort" giver="mirrows" exp="1000" achievement="fighter">
+		<item id="ship_parts" count="5" />
+		<item id="titanium" count="20" />
+		<item id="silicon" count="5" />
+		<item id="uranium" count="5" />
+	</quest>
+	<quest id="bombardment" giver="mirrows" exp="1000" achievement="bombardment">
+		<script id="isBombardment(player)?0:1" objectTile="alien.bomber" name="quests.bomber" count="1" defineLater="true" />
+	</quest>
+	<quest id="cyborg2" giver="mirrows" coins="20000" exp="4000">
+		<item id="carapace" count="5" />
+	</quest>
+	
+	<!-- This defines a fake NPC that contains BOTH mirrows for quest givers. -->
+	<tile id="mirrows" sheet="{core}/science1/enemies/mirrows.png" x="20" offsetX="-4">
+		<tile sheet="{core}/science1/enemies/mirrows.png" x="42" offsetX="-4" />
+		<tile sheet="{core}/science1/enemies/mirrows.png" x="80" />
+		<tile sheet="{core}/science1/enemies/mirrows.png" x="65" />
+	</tile>
+	<npc id="mirrows" tile="mirrows" animation="single" />
+	<procedure id="to_escort_ship">
+		<action if="player.vehicle != null">player.vehicle.doDismount(true);</action>
+		<teleport area="science2" x="80" y="-17" clearReturn="true" />
+		<object id="fake_jet" x="84" y="-17" /><action>fake_jet.moveToFront()</action><facing object="player" dir="right" />
+		<object id="mirrow_n.npc" name="mirrow_n" x="84" y="-17" facing="left" />
+		<object id="mirrow_d.npc" name="mirrow_d" x="85" y="-17" facing="left" />
+	</procedure>
+	<procedure id="mirrows.fly_back">
+		<lerp object="mirrow_n" alpha="0" seconds="0.25" /><remove object="mirrow_n" />
+		<lerp object="mirrow_d" alpha="0" seconds="0.25" /><remove object="mirrow_d" />
+		<play object="fake_jet" animation="jet.mount" modal="true" />
+		<play object="fake_jet" animation="jet.takeoff" modal="true" /><play object="fake_jet" animation="jet.hover" loop="true" />
+		<lerp object="fake_jet" deltaY="-7" seconds="2" modal="true" /><remove object="fake_jet" />
+	</procedure>
+	<procedure id="mirrows.fly_cave">
+		<menu section="common">
+			<dialogue section="mirrows" id="ride_water_cave" />
+			<choice id="yes">
+				<teleport area="water_cave" x="11" y="33" clearReturn="true" with="fade" />
+			</choice>
+			<choice id="no" />
+		</menu>
+	</procedure>
+	<procedure id="mirrows.ride_back">
+		<menu section="common">
+			<dialogue section="mirrows" id="ride_back" />
+			<choice id="yes">
+				<remove object="mirrow_n" /><remove object="mirrow_d" /><remove object="fake_jet" />
+				<teleport area="water_cave" x="11" y="33" clearReturn="true" with="fade" />
+			</choice>
+			<choice id="no"><run procedure="mirrows.fly_back" /></choice>
+		</menu>
+	</procedure>
+	<procedure id="repair_escort_ship">
+		<sound id="build" /><complete quest="repair_escort" />
+		<section with="fade"><run procedure="to_escort_ship" />
+			<object id="fighter" x="80" y="-17" />
+			<set id="ct" value="1" /><repeat count="12"><remove objectsById="'ship_debris'+ct" /><action>ct++</action></repeat>
+		</section>
+		<dialogue section="mirrows" id="escort_ship11" speaker="mirrow_d"  />
+		<dialogue section="mirrows" id="escort_ship12" speaker="mirrow_n"  />
+		<run procedure="mirrows.ride_back" />
+	</procedure>
+	<procedure id="examine_escort_ship">
+		<run procedure="to_escort_ship" with="fade" />
+		<dialogue section="mirrows" id="escort_ship5" speaker="mirrow_n"  />
+		<quest id="repair_escort">
+			<dialogue section="mirrows" id="escort_ship6" speaker="mirrow_d"  />
+		</quest>
+		<run procedure="mirrows.ride_back" />
+	</procedure>
+	<procedure id="mirrows.sacrifice">
+		<section if="player.questComplete('bombardment_shield')">
+			<group>
+				<dialogue section="mirrows" id="protected" if="first == second" />
+				<run procedure="mirrows.store" if="player.questComplete('power_core')" />
+			</group><call id="mirrows" end="true" if="first != second" /><stop />
+		</section><quest />
+		<dialogue section="mirrows" id="bombardment6" speaker='first' />
+		<dialogue section="mirrows" id="bombardment7" speaker='second' />
+		<menu section="mirrows" width="120">
+			<choice id="send_mirrows">
+				<section if="area.vehicle != null && area.vehicle.info.id == 'alien.bomber'">
+					<dialogue section="mirrows" id="on_bomber" speaker='second' /><call id="mirrows" end="true" if="first != second" /><stop />
+				</section>
+				<call id="mirrows" end="true" if="first != second" />
+				<scene id="start.space" show="mirrows" with="fade" showToAll="true">
+					<set id="a" value="player.areas.get('water_cave')" />
+					<action>
+						function removeObjectInstant(a, o){
+							a.removeObject(o); if(o.renderer != null &amp;&amp; o.renderer.parent != null) o.renderer.parent.removeChild(o.renderer);
+						} removeObjectInstant(a, a.getNPC('mirrow_n.npc')); removeObjectInstant(a, a.getNPC('mirrow_d.npc'));
+					</action>
+					<remove object="player.areas.get('start.orbit').getObject('alien.bomber')" />
+					<action>player.removeContact("mirrows"); setFlag('mirrows.sacrifice', true); player.removeQuestsByGiver('mirrows');</action>
+					<achievement id="bombardment" />
+				</scene>
+				<dialogue section="mirrows" id="sacrifice6" speaker="player" />
+				<wait seconds="0.5" />
+				<dialogue section="mirrows" id="sacrifice7" speaker="player" />
+			</choice>
+			<choice id="have_plan">
+				<dialogue section="mirrows" id="bombardment8" speaker='second' /><call id="mirrows" end="true" if="first != second" />
+			</choice>
+		</menu>
+	</procedure>
+	<action>
+		function outsideCallRange(player, this){
+			var p = player.getCurrentArea().getPlanet(); return this == null || this.area == null || p == null || p != this.area.getPlanet() || (!this.area.isOrbitInterior() &amp;&amp; !p.orbit.canEnterPlanet(player));
+		}
+	</action>
+	<procedure id="checkCallRange">
+		<section if="outsideCallRange(player, this)"><dialogue section="player" id="no_signal" /><stop /></section>
+		<section if="this.talking.get() != null"><dialogue section="multiplayer" id="call_busy" /><stop /></section><action>lockNPC(this);</action>
+	</procedure>
+	<procedure id="mirrows.cyborg"><choose>
+		<section if="!player.hasQuest('cyborg2')">
+			<dialogue section="mirrows" id="cyborg1" speaker="this" />
+			<dialogue section="mirrows" id="cyborg2" speaker="this" />
+			<quest id="cyborg2" />
+		</section>
+		<section>
+			<complete quest="cyborg2" />
+			<dialogue section="mirrows" id="cyborg3" speaker='this' />
+			<section with="fade" />
+			<dialogue section="mirrows" id="cyborg4" speaker='this' />
+		</section>
+	</choose></procedure>
+	<procedure id="call_mirrows">
+		<set id="this" value="player.getNPC('mirrow_n.npc')" /><run procedure="checkCallRange" /><action>lockNPC(player.getNPC('mirrow_d.npc'));</action>
+		<call id="mirrows"><caller id="mirrow_n" npc="mirrow_n.npc" /><caller id="mirrow_d" npc="mirrow_d.npc" /></call>
+		<choose>
+			<section if="player.info.id == 'player.werewolf' && !getFlag('splicer_defeat')">
+				<dialogue section="mirrows" id="werewolf1" speaker="mirrow_d" />
+				<dialogue section="mirrows" id="werewolf2" speaker="mirrow_n" />
+			</section>
+			<section if="getFlag('final_boss_defeat') && !getFlag('mirrows_win')">
+				<call id="mirrows" end="true" /><action>setFlag('mirrows_win', true)</action><scene id="scavenger" show="mirrows_win" with="fade" showToAll="true" />
+			</section>
+			<choose if="this.area.vehicle != null || getFlag('final_boss_defeat')">
+				<section if="if(this.area.vehicle != null) return false; o = this.area.getObject('research'); if(o == null) o = player.areas.get('science1').getObject('research'); return o != null && (player.vehicle == o || area.vehicle == o || o.area == area)">
+					<call id="mirrows" end="true" /><run procedure="mirrows.invite" /><stop />
+				</section>
+				<dialogue section="mirrows" id="research_lab" speaker="mirrow_n" if="player.questComplete('research_lab') && this.area.vehicle == null" />
+				<run procedure="mirrows.cyborg" if="getFlag('colony_world') && (!player.hasQuest('cyborg2') || player.canCompleteQuest('cyborg2'))" />
+				<section if="this.area.vehicle == null">
+					<dialogue section="mirrows" id="blueprints1" speaker="mirrow_d" />
+					<dialogue eval="'mirrows.blueprints3{area:'+this.area.getDisplay().get()+'}'" speaker="mirrow_n" />
+				</section>
+				<dialogue section="mirrows" id="research1" speaker="mirrow_n" />
+			</choose>
+			<section if="getFlag('bombardment') && isBombardment(player) && !player.hasQuest('bombardment')">
+				<dialogue section="mirrows" id="bombardment1" speaker="mirrow_n" />
+				<dialogue section="mirrows" id="bombardment2" speaker="mirrow_d" />
+				<dialogue section="mirrows" id="bombardment3" speaker="mirrow_n" />
+				<quest id="bombardment" />
+			</section>
+			<section if="player.canCompleteQuest('bombardment')">
+				<dialogue section="mirrows" id="bombardment5" speaker="mirrow_d" /><complete quest="bombardment" />
+			</section>
+			<section if="o = this.area.getObject('research'); if(o == null) o = player.areas.get('science1').getObject('research'); return o != null && (player.vehicle == o || area.vehicle == o || o.area == area)">
+				<call id="mirrows" end="true" /><run procedure="mirrows.invite" /><stop />
+			</section>
+			<choose if="player.hasQuest('repair_escort')">
+				<choose if="player.questComplete('power_core')">
+					<section if="getFlag('bombardment') && isBombardment(player) && !player.questComplete('bombardment')"><set id="first" value="mirrow_d" /><set id="second" value="mirrow_n" /><run procedure="mirrows.sacrifice" /><stop /></section>
+					<dialogue section="mirrows" id="research_lab" speaker="mirrow_n" if="player.questComplete('research_lab') && this.area.vehicle == null" />
+					<section>
+						<dialogue section="mirrows" id="blueprints1" speaker="mirrow_d" />
+						<dialogue eval="'mirrows.blueprints3{area:'+this.area.getDisplay().get()+'}'" speaker="mirrow_n" />
+					</section>
+				</choose>
+				<section if="player.questComplete('repair_escort')">
+					<set id="fighter" value="area.getObject('fighter')" />
+					<choose>
+						<run procedure="mirrows.fly_cave" if="area.planet != null && area.planet.id == 'start' && player.vehicle == null && !player.isUnderwater() && area.isEmptyTile(player.tile_x, player.tile_y) && (fighter == null || fighter.interior != null)" />
+						<section if="player.hasQuest('power_core')"><dialogue section="mirrows" id="escort_power_core1" speaker="mirrow_n" /><dialogue section="mirrows" id="escort_power_core2" speaker="mirrow_d" /></section>
+						<dialogue section="mirrows" id="escort_ship9" speaker="mirrow_n" />
+					</choose>
+				</section>
+				<section if="player.canCompleteQuest('repair_escort')">
+					<dialogue section="mirrows" id="escort_ship10" speaker="mirrow_n"  />
+					<run procedure="repair_escort_ship" />
+				</section>
+				<run procedure="mirrows.fly_cave" if="area.planet != null && area.planet.id == 'start' && player.vehicle == null && !player.isUnderwater() && area.isEmptyTile(player.tile_x, player.tile_y)" />
+				<dialogue section="mirrows" id="escort_ship7" speaker="mirrow_d" />
+			</choose>
+			<section if="getFlag('escort_ship')">
+				<dialogue section="mirrows" id="escort_ship1" speaker="mirrow_n" />
+				<choose>
+					<section if="player.questComplete('ship_parts')">
+						<dialogue section="mirrows" id="escort_ship3" speaker="mirrow_d" />
+						<run procedure="examine_escort_ship" />
+					</section>
+					<dialogue section="mirrows" id="escort_ship2" speaker="mirrow_d" />
+				</choose>
+			</section>
+			<section if="player.hasItem('power_core_parts') && !getFlag('power_core_parts')">
+				<action>setFlag('power_core_parts', true)</action>
+				<dialogue section="mirrows" id="mirrow_power_core" speaker="mirrow_n" />
+			</section>
+			<choose if="player.questComplete('ship_parts')">
+				<run procedure="mirrows.fly_cave" if="area.planet != null && area.planet.id == 'start' && player.vehicle == null && !player.isUnderwater() && area.isEmptyTile(player.tile_x, player.tile_y)" />
+				<dialogue section="mirrows" id="mirrow_same_room" speaker="mirrow_d" if="area.getObject('mirrow_n.npc') != null" />
+				<dialogue section="mirrows" id="ship_parts3" speaker="mirrow_d" />
+			</choose>
+			<section if="player.hasItem('ship_parts')">
+				<dialogue section="mirrows" id="ship_parts1" speaker="mirrow_n" />
+				<dialogue section="mirrows" id="ship_parts2" speaker="mirrow_d" />
+			</section>
+			<choose if="player.vehicle != null && player.vehicle.info.xml.get('type') == 'submarine'">
+				<section if="area.id == 'science2' && player.vehicle.tile_x > 3 && player.vehicle.tile_x < 130">
+					<dialogue section="mirrows" id="sub4" speaker="mirrow_n" />
+					<dialogue section="mirrows" id="sub5" speaker="mirrow_d" />
+				</section>
+				<dialogue section="mirrows" id="sub2" speaker="mirrow_n" if="area.id == 'science1' || area.id == 'water_cave' || (area.id == 'science2' && player.vehicle.tile_x > 140)" />
+				<dialogue section="mirrows" id="sub3" speaker="mirrow_n" if="area.id == 'science2'" />
+				<dialogue section="mirrows" id="sub1" speaker="mirrow_n" />
+			</choose>
+			<dialogue section="mirrows" id="mirrow_same_room" speaker="mirrow_d" if="area.getObject('mirrow_n.npc') != null" />
+			<dialogue section="mirrows" id="water_cave6" speaker="mirrow_d" />
+		</choose>
+		<call id="mirrows" end="true" />
+	</procedure>
+	
+	<procedure id="mirrows.invite">
+		<quest /><menu section="common">
+			<dialogue title="professor.invite{npc:[object=mirrows]}" />
+			<choice id="yes">
+				<set id="has_operation_table" value="o.interior.getStructureById('operation_table') != null" global="true" />
+				<scene id="scavenger" show="invite_mirrows" with="fade">
+					<set id="name" value="this.info.id" /><set id="a" value="this.area" />
+					<remove object="a.getNPC('mirrow_n.npc')" />
+					<remove object="a.getNPC('mirrow_d.npc')" />
+					<action>o.enter(player); updateArea(); setFlag('mirrow.defeat', true); player.removeQuestsByGiver("mirrows");</action>
+					<object id="mirrow_n.npc" x="3" y="2" facing="right" />
+					<object id="mirrow_d.npc" name="mirrow_d" x="4" y="2" facing="right" />
+					<move object="player" to="mirrow_d" /><set id="this" value="area.getObject(name)" />
+				</scene>
+			</choice>
+			<choice id="no" />
+		</menu>
+	</procedure>
+	<procedure id="mirrows.store">
+		<action>
+			this.inventory.addItems(getItem("operation_table_blueprint"), 1);
+			this.inventory.addItems(getItem("sub_pen_blueprint"), 1);
+			this.inventory.addItems(getItem("bunker_blueprint"), 1);
+			this.inventory.addItems(getItem("bunker_kitchen_blueprint"), 1);
+			this.inventory.addItems(getItem("sci_light_blueprint"), 1);
+			this.inventory.addItems(getItem("bunker_depot_blueprint"), 1);
+			this.inventory.addItems(getItem("hydroponics_blueprint"), 1);
+			this.inventory.addItems(getItem("bunker_factory_blueprint"), 1);
+			this.inventory.addItems(getItem("bunker_farm_blueprint"), 1);
+			if(player.questComplete('power_core') || getFlag('final_boss_defeat')){
+				this.inventory.addItems(getItem("fighter.gun"), 1);
+				this.inventory.addItems(getItem("fighter.cannon"), 1);
+				this.inventory.addItems(getItem("o2_canister"), 20);
+				this.inventory.addItems(getItem("small_module_blueprint"), 1);
+				this.inventory.addItems(getItem("large_module_blueprint"), 1);
+				this.inventory.addItems(getItem("connector_module_blueprint"), 1);
+				this.inventory.addItems(getItem("o2_generator_blueprint"), 1);
+				this.inventory.addItems(getItem("station_dock_blueprint"), 1);
+				this.inventory.addItems(getItem("vending_machine_blueprint"), 1);
+			} if(player.questComplete('mecha_dragon_ship')){
+			this.inventory.addItems(getItem("mecha_dragon_ship.gun"), 1);
+			this.inventory.addItems(getItem("mecha_dragon_ship.cannon"), 1);
+		  }
+		</action>
+		<dialogue section="mirrows" id="blueprints1" speaker="this" />
+		<window type="store" inventory="this.inventory" />
+		<dialogue section="mirrows" id="blueprints2" speaker="this" />
+		<action>this.inventory.clear();</action>
+	</procedure>
+	<procedure id="mirrows.npc" extends="mirrows.npc">
+		<achievement id="bombardment" if="getFlag('bombardment') && !isBombardment(player)" />
+		<section if="player.info.id == 'player.werewolf' && !getFlag('splicer_defeat')">
+			<dialogue section="mirrows" id="werewolf1" speaker="this" />
+			<dialogue section="mirrows" id="werewolf2" speaker="this" /><stop />
+		</section>
+		<section if="getFlag('final_boss_defeat') && !getFlag('mirrows_win')">
+			<quest /><action>setFlag('mirrows_win', true)</action><scene id="scavenger" show="mirrows_win" with="fade" showToAll="true" /><stop />
+		</section>
+		<section if="area.vehicle != null || getFlag('final_boss_defeat')">
+			<choose>
+				<section if="player.hasItem('com_device') && !player.hasContact('mirrows')">
+					<dialogue section="mirrows" id="com_device" speaker='this' />
+					<action>player.setContact("mirrows", "call_mirrows")</action>
+				</section>
+				<section if="if(area.vehicle != null) return false; o = area.getObject('research'); if(o == null) o = player.areas.get('science1').getObject('research'); return o != null">
+					<run procedure="mirrows.invite" /><stop />
+				</section>
+				<run procedure="mirrows.cyborg" if="getFlag('colony_world') && (!player.hasQuest('cyborg2') || player.canCompleteQuest('cyborg2'))" />
+				<run procedure="mirrows.store" />
+			</choose><stop />
+		</section>
+		<section if="getFlag('bombardment') && !getFlag('mirrow.defeat')">
+			<action>setFlag('mirrow.defeat', true);</action><dialogue section="mirrows" id="bombardment5" speaker="this" if="!isBombardment(player)" /><quest />
+		</section>
+		<section if="o = area.getObject('research'); if(o == null) o = player.areas.get('science1').getObject('research'); return o != null">
+			<run procedure="mirrows.invite" /><stop />
+		</section>
+		<set id="shouldStop" value="getFlag('mirrow.defeat')" />
+		<choose if="getFlag('mirrow.defeat')">
+			<section if="getFlag('bombardment') && isBombardment(player) && !player.hasQuest('bombardment')">
+				<dialogue section="mirrows" id="bombardment1" speaker="this" />
+				<dialogue section="mirrows" id="bombardment2" speaker="this" />
+				<dialogue section="mirrows" id="bombardment3" speaker="this" />
+				<quest id="bombardment" />
+			</section>
+			<section if="player.canCompleteQuest('bombardment')">
+				<dialogue section="mirrows" id="bombardment5" speaker="this" /><complete quest="bombardment" />
+			</section>
+			<section if="!player.hasQuest('water_cave')">
+				<dialogue section="mirrows" id="water_cave1" speaker='this' />
+				<dialogue section="mirrows" id="water_cave2" speaker='player' />
+				<dialogue section="mirrows" id="water_cave3" speaker='this' />
+				<dialogue section="mirrows" id="water_cave4" speaker='this' />
+				<quest id="water_cave" />
+			</section>
+			<section if="player.hasQuest('water_cave') && !player.questComplete('water_cave') && player.canCompleteQuest('water_cave')">
+				<dialogue section="mirrows" id="water_cave5" speaker='this' />
+				<complete quest="water_cave" />
+				<sound id="build" />
+				<section with="fade">
+					<set id="name" value="this.info.id" />
+					<remove object="area.getNPC('mirrow_n.npc')" />
+					<remove object="area.getNPC('mirrow_d.npc')" />
+					<teleport area="water_cave" x="17" y="33" clearReturn="true" />
+					<light x="17" y="33" size="5" />
+					<facing object="player" dir="right" /><object id="mirrow_n.npc" x="19" y="33" />
+					<object id="mirrow_d.npc" x="20" y="33" />
+					<structure id="sub_pen" x="16" y="33" />
+					<object id="ship_chest" x="21" y="33">this.inventory.addItems(Item.get("map"), 1); this.inventory.addItems(Item.get("workshop_upgrade"), 1); this.inventory.addItems(Item.get("elevator_blueprint"), 1);</object>
+					<set id="this" value="area.getObject(name)" />
+				</section>
+				<dialogue section="mirrows" id="water_cave6" speaker='this' />
+				<dialogue section="mirrows" id="water_cave7" speaker='this' />
+				<dialogue section="mirrows" id="water_cave8" speaker='this' />
+				<item id="com_device" modal="true" /><quest id="ship_parts" ask="false" />
+				<action>player.setContact("mirrows", "call_mirrows")</action>
+			</section>
+			<section if="player.hasQuest('ship_parts') && !player.questComplete('ship_parts') && player.canCompleteQuest('ship_parts')">
+				<complete quest="ship_parts" /><dialogue section="mirrows" id="airport1" speaker='this' />
+				<dialogue section="mirrows" id="airport2" speaker='this' />
+				<item id="airport_blueprint" modal="true" />
+				<dialogue section="mirrows" id="spaceship1" speaker='this' />
+			</section>
+			<choose if="player.hasQuest('repair_escort')">
+				<section if="player.canCompleteQuest('repair_escort')">
+					<dialogue section="mirrows" id="escort_ship4" speaker="this"  />
+					<run procedure="repair_escort_ship" />
+				</section>
+				<choose if="player.hasQuest('power_core')">
+					<section if="getFlag('bombardment') && isBombardment(player) && !player.questComplete('bombardment')"><set id="first" value="this" /><set id="second" value="this" /><run procedure="mirrows.sacrifice" /></section>
+					<run procedure="mirrows.store" if="player.questComplete('power_core')" />
+					<section>
+						<dialogue section="mirrows" id="escort_power_core1" speaker="this" />
+						<dialogue section="mirrows" id="escort_power_core2" speaker="this" />
+					</section>
+				</choose>
+				<dialogue section="mirrows" id="escort_ship9" speaker="this" if="player.questComplete('repair_escort')" />
+				<dialogue section="mirrows" id="escort_ship8" speaker="this" />
+			</choose>
+			<section if="getFlag('escort_ship')">
+				<dialogue section="mirrows" id="escort_ship1" speaker="this" />
+				<choose>
+					<section if="player.questComplete('ship_parts')">
+						<dialogue section="mirrows" id="escort_ship4" speaker="this"  />
+						<run procedure="examine_escort_ship" />
+					</section>
+					<dialogue section="mirrows" id="escort_ship2" speaker="this" />
+				</choose>
+			</section>
+			<dialogue section="mirrows" id="ship_parts3" speaker="this" if="player.questComplete('ship_parts')" />
+			<group if="area.id == 'water_cave'">
+				<dialogue section="mirrows" id="water_cave6" speaker='this' />
+				<dialogue section="mirrows" id="water_cave7" speaker='this' />
+				<section if="player.hasSeenItem('npc.steel_wyrm_helm') && !player.hasSeenItem('steel_wyrm_helm')">
+				  <dialogue section="mirrows" id="steel_wyrm_helm1" speaker="this" />
+				  <dialogue section="mirrows" id="steel_wyrm_helm2" speaker="this" />
+				</section>
+			</group>
+			<choose if="area.id == 'crashed_ship.cave1'">
+				<dialogue section="mirrows" id="bombardment4" speaker="this" if="isBombardment(player)" />
+				<dialogue section="mirrows" id="bombardment5" speaker="this" />
+			</choose>
+			<set id="shouldStop" value="false" />
+		</choose><stop if="shouldStop" />
+	</procedure>
+</data>

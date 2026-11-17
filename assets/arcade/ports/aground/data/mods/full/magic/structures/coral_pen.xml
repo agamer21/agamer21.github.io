@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="coral_farm" sheet="struc.3" x="0" />
+	<animation id="coral_farm.idle" count="10" />
+	<item id="coral_farm_seed" type="potion" cost="4000" weight="10" icon="magic_seed.ico" animation="magic_seed.ico"><action id="plant" sfx="plant_seed" structure="coral_farm" onGrass="false" underground="true" underwater="true" buildTime="8" /></item>
+	<structure id="coral_farm" tile="coral_farm" type="farm" name="farm" removeButton="structure.uproot">
+		<removeBy><action>this.onDismantle(player); player.addItem("coral_farm_seed");</action></removeBy>
+	</structure>
+	
+	
+	<familiar id="magic_wyrm" type="ground" costPerSecond="0.25">
+		<breakPower amount="1" cost="4" />
+		<attack type="melee" damage="16" cost="5" hit_sfx="magicwyrm_attack" />
+	</familiar>
+	<item id="magic_wyrm" type="animal" cost="0" durability="3000" weight="5" icon="magic_wyrm.ico" animation="item8" slot="familiar">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="magic_wyrm" tile="magic_wyrm" animation="magic_wyrm" />
+		<food id="rat" value="200" />
+		<food id="pig" value="300" />
+		<food id="chicken" value="500" />
+		<food id="cow" value="1000" />
+		<food id="steak" value="125" />
+		<food id="coal" value="125" />
+	</item>
+	<item id="magnewyrm" extends="magic_wyrm" icon="magnewyrm.ico" animation="item6" needsO2="false">
+		<familiar id="magic_wyrm" tile="magnewyrm" animation="magnewyrm" />
+	</item>
+	<animal id="magic_wyrm">
+		<farmable item="alter_gem" min="2" max="5" time="30" />
+		<tile id="magic_wyrm" animation="magic_wyrm.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<animal id="magnewyrm">
+		<farmable item="magnegem" min="1" max="1" time="30" />
+		<tile id="magnewyrm" animation="magnewyrm.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<enemy id="magic_wyrm" extends="magic_wyrm" capture="12">
+		<capture trapped="magic_wyrm" minCapture="5" />
+	</enemy>
+	<structure id="wyrm_pen" extends="wyrm_pen" attachFarm="coral_farm">
+		<animal id="magic_wyrm" />
+		<animal id="magnewyrm" />
+	</structure>
+	
+	<animation id="magnestone.fly" equals="magnestone.walk" />
+	<familiar id="magnestone" type="flying" costPerSecond="0.25" bounceHeight="0">
+		<attack type="projectile" damage="16" range="12" animation="attack" cost="10" sfx="magnestone_attack">
+			<projectile tile="magnestone.projectile" animation="magnestone.projectile" speed="3" glow="true" fire_sfx="fireball" knockback="5" underwater="true">
+				<hitEffect tile="magnestone.projectile" animation="magnestone.projectile.impact" color="ff99ff" /><light tile="light.small" color="ff99ff" />
+			</projectile>
+		</attack>
+	</familiar>
+	<item id="magnestone" type="animal" cost="0" durability="3000" weight="10" icon="magnestone.ico" animation="item12" slot="familiar" needsO2="false" flyOrbit="true">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="magnestone" tile="magnestone" animation="magnestone" />
+		<food id="magnegem" value="300" />
+	</item>
+	<animal id="magnestone">
+		<farmable item="magnegem" min="1" max="1" time="30" />
+		<tile id="magnestone" animation="magnestone.idle" x="-0.5" y="-0.875" />
+	</animal>
+	
+	<animation id="mars_fish.swim" equals="mars_fish.walk" />
+	<familiar id="mars_fish" type="swimming" costPerSecond="0.25" element="water">
+		<attack type="melee" damage="16" range="2.5" cost="5" />
+	</familiar>
+	<item id="mars_fish" type="animal" cost="0" durability="3000" weight="5" icon="mars_fish.ico" slot="familiar">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="mars_fish" tile="mars_fish" animation="mars_fish" />
+		<food id="meat" value="75" />
+		<food id="steak" value="125" />
+		<food id="toothfish" value="125" />
+		<food id="rockfish" value="300" />
+		<food id="coral_cod" value="750" />
+	</item>
+	<animal id="mars_fish">
+		<farmable item="ink" min="1" max="2" time="30" />
+		<farmable item="fish_scale" min="3" max="6" time="30" />
+		<tile id="mars_fish" animation="mars_fish.idle" x="-0.5" y="-0.875" />
+	</animal>
+	
+	<tile id="coral_pen" sheet="struc.4" x="0" />
+	<animation id="coral_pen.idle" count="8" />
+	<animal id="shark">
+		<farmable item="fin" min="1" max="2" time="30" />
+		<tile id="shark" animation="shark.idle" x="-0.5" y="-1" />
+	</animal>
+	<animal id="icer">
+		<farmable item="ice_heart" min="1" max="2" time="20" />
+		<tile id="icer" animation="icer.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<animal id="yeti">
+		<farmable item="yeti_fur" min="2" max="5" time="10" />
+		<tile id="yeti" animation="yeti.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<animal id="crawler">
+		<farmable item="plant_eye" min="1" max="2" time="10" />
+		<tile id="crawler" animation="crawler.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<animal id="fire_boar">
+		<farmable item="fire_tusk" min="2" max="5" time="10" />
+		<tile id="fire_boar" animation="fire_boar.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<animal id="shadow_cat">
+		<farmable item="dark_fur" min="1" max="3" time="10" />
+		<tile id="shadow_cat" animation="shadow_cat.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<animal id="scale_fish">
+		<farmable item="fish_scale" min="3" max="6" time="30" />
+		<tile id="scale_fish" animation="scale_fish.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<animal id="snaptopus">
+		<farmable item="ink" min="1" max="2" time="30" />
+		<tile id="snaptopus" animation="snaptopus.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<animal id="minotaur">
+		<farmable item="horn" min="1" max="2" time="30" />
+		<tile id="minotaur" animation="minotaur.idle" x="-0.5" y="-0.875" />
+	</animal>
+	<item id="coral_pen_seed" type="potion" cost="2000" weight="10" icon="magic_seed.ico" animation="magic_seed.ico"><action id="plant" sfx="plant_seed" structure="coral_pen" onGrass="false" underground="true" underwater="true" buildTime="8" /></item>
+	<structure id="coral_pen" tile="coral_pen" animals="1" type="pen" name="cage" removeButton="structure.uproot" attachFarm="coral_farm">
+		<sprite>
+			<animal i="0" offsetX="32" offsetY="27" /><self />
+		</sprite>
+		<animal id="golem" />
+		<animal id="gold_golem" />
+		<animal id="purple_golem" />
+		<animal id="shark" />
+		<animal id="icer" />
+		<animal id="yeti" />
+		<animal id="crawler" />
+		<animal id="fire_boar" />
+		<animal id="shadow_cat" />
+		<animal id="scale_fish" />
+		<animal id="snaptopus" />
+		<animal id="minotaur" />
+		<animal id="spirit_fish" />
+		<animal id="magic_wyrm" />
+		<animal id="magnewyrm" />
+		<animal id="magnestone" />
+		<animal id="mars_fish" />
+		<animal id="acid_raptor" />
+		<removeBy><action>this.onDismantle(player); player.addItem("coral_pen_seed");</action></removeBy>
+	</structure>
+	<recipe id="craft_coral_farm_seed" creates="coral_farm_seed" type="growth" available="getFlag('coral_farm')" first="true">
+		<item id="magnegem" count="4" /><item id="blood_gem" count="4" /><item id="spirit_gem" count="4" />
+	</recipe>
+	<recipe id="craft_coral_pen_seed" creates="coral_pen_seed" type="growth" available="player.questComplete('coral_pen')" first="true">
+		<item id="magnegem" count="2" /><item id="blood_gem" count="4" />
+	</recipe>
+</data>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<object id="meat_tree_placeholder" width="80" height="80" />
+	<area id="unnature_dungeon">
+		<objects id="meat_tree_placeholder" fromX="4" fromY="5" toX="41" toY="55" width="5" height="5" ground="false" count="6" />
+		<objects id="jakolantern" fromX="4" fromY="5" toX="41" toY="55" width="5" height="5" ground="false" count="6" />
+		<action>
+			setBack(1, 27, "unnature.dirt"); setBack(2, 27, "unnature.dirt"); setBack(1, 28, "unnature.dirt"); setBack(2, 28, "unnature.dirt");
+			dy = random()>0.5?1:45; for(y in 0...10) for(x in 45...55) setBack(x, y+dy, "unnature.dirt");
+			var tree = getObject("meat_tree"); for(o in area.getObjectsById("meat_tree_placeholder")){
+				var x = o.tile_x; var y = o.tile_y; for(ty in -4...1) for(tx in 0...5) setBack(x+tx, y+ty, "unnature.dirt");
+				area.addObject(tree.create(o.xPos+32, o.yTile)); area.removeObject(o);
+			} for(o in area.getObjectsById("jakolantern")) setBack(o.tile_x, o.tile_y, "unnature.dirt");
+			var o = ObjectInfo.make("treasure_chest", 54*Tile.SIZE, ((dy == 1)?54:1)*Tile.SIZE);
+			o.inventory.addItems(Item.get("werewolf_stealth_body_dna"), 1); area.addObject(o); setBack(o.tile_x, o.tile_y, "unnature.dirt");
+		</action>	
+		<maze floor="unnature.dirt" wall="blackstone" width="56" height="56" />
+		<structure id="cave" x="1" y="28" />
+		<object id="dice.small" x="50" y="dy+8" />
+		<spawner id="drill_beetle" time="4000" count="12" fromX="1" toX="54" fromY="1" toY="54" />
+		<init><runAreaLoad /><action>area.spawner.spawnAll("drill_beetle");</action></init>
+		<onLoad><weather type="fog" /><music id="magic1" seconds="1" /></onLoad>
+	</area>
+	<procedure id="unnature.victory.begin">
+		<set id="ranger" value="area.getObject('unnature.ranger2')" /><move object="ranger" x="15" y="11" />
+		<set id="splicer" value="area.getObject('unnature.splicer')" /><pan toObject="splicer" seconds="1" /><wait seconds="0.5"><operate object="splicer" /></wait>
+		<action>ranger.renderer.alpha = 1; splicer.setTileId("unnature.splicer"); splicer.renderer.scaleX = -1;</action>
+		<complete quest="splicer" useResources="false" />
+		<play object="splicer" animation="unenrage" modal="true" /><music id="unnature" seconds="1" />
+	</procedure>
+	<procedure id="unnature.victory.end">
+		<dialogue section="unnature" id="lab10" speaker="area.getObject('unnature.ranger2')" />
+		<section with="ellipse">
+			<return /><action>
+				s = area.getStructureById("unnature.ranger.couch");
+				if(area.getTileString(s.tile_x-1, s.tile_y, BACK_LAYER) == "unnature.stone") x = s.tile_x-3; else x = s.tile_x+4;
+			</action><object id="unnature.splicer" x="x" y="s.tile_y-1" />
+		</section><wait seconds="0.5" /><set id="ranger" value="area.getObject('unnature.ranger')" />
+		<dialogue section="unnature" id="victory1" speaker="ranger" />
+		<dialogue section="unnature" id="victory2" speaker="player" />
+		<dialogue section="unnature" id="victory3" speaker="ranger" />
+		<dialogue section="unnature" id="victory4" speaker="ranger" />
+	</procedure>
+	<procedure id="unnature.quit">
+		<displayAction>setControl(true)</displayAction>
+		<action>player.state.removeEventListener("update_flag", check_splicer_defeat); var t = player.stats.get("timer"); t.removeEventListener("updated", splicer_lab_timer); t.clearTempBuff();</action>
+		<invokeLater><return with="ellipse" /></invokeLater><closeWindows />
+	</procedure>
+	<procedure id="unnature.timer">
+		<action>player.stats.get("timer").removeEventListener("updated", splicer_lab_timer); player.state.removeEventListener("update_flag", check_splicer_defeat);</action>
+		<section if="getFlag('splicer_defeat')"><return with="ellipse" /><stop /></section><action>setFlag("splicer_defeat", true);</action>
+		<run procedure="unnature.victory.begin" />
+		<set id="ranger" value="area.getObject('unnature.ranger2')" />
+		<dialogue section="unnature" id="lab8" speaker="ranger" />
+		<set id="splicer" value="area.getObject('unnature.splicer')" /><set id="chimera" value="area.getObject('chimera')" /><wait seconds="0.5"><operate object="splicer" /></wait>
+		<tile id="meat_tree_wasp" animation="meat_tree_wasp.projectile" x="splicer.tile_x" y="splicer.tile_y" onTop="true" name="dart" renderer="static" />
+		<lerp object="dart" x="chimera.getCenterX()/Tile.SIZE" y="chimera.getCenterY()/Tile.SIZE-0.5" seconds="0.5" modal="false" />
+		<pan toObject="chimera" seconds="0.5" /><object id="rat" x="chimera.getCenterX()/Tile.SIZE-0.5" y="chimera.getCenterY()/Tile.SIZE-0.5" />
+		<action>dart.parent.removeChild(dart); rat.moveToBack();</action><sound id="rat_death" /><remove object="chimera" />
+		<lerp object="chimera" alpha="0" seconds="0.25" modal="true" /><action>chimera.renderer.parent.removeChild(chimera.renderer);</action>
+		<wait seconds="0.5"><operate object="splicer" /><operate object="rat" /></wait>
+		<dialogue section="unnature" id="lab9" speaker="ranger" />
+		<pan toObject="splicer" seconds="1" />
+		<run procedure="unnature.victory.end" />
+	</procedure>
+	<npc id="unnature.ranger2" tile="unnature.ranger" animation="unnature.ranger" speed="64" night="true" talk_sfx="talking1" underwater="true" stopForPlayer="false">
+		<idle class="defaultNPCIdle" />
+	</npc>
+	<action>
+		function splicer_lab_timer(e){runProcedure("unnature.timer", null, getLocalPlayer());}
+		function check_splicer_defeat(e){var p = getLocalPlayer(); if(p.getFlag('splicer_defeat')) runProcedure("unnature.quit", null, p);}
+	</action>
+	<area id="splicer_lab" width="32" height="16" shouldLight="false" lightTiles="false" blockTeleport="true">
+		<tiles id="lab.floor1" start="0" end="1" />
+		<action>for(y in 6...12) for(x in 8...24) mine(x, y, 0, "lab.floor2");</action>
+		<structure id="medivat.full3" x="10" y="11" />
+		<structure id="medivat.full4" x="13" y="11" />
+		<structure id="earth.arm3" x="11" y="7" />
+		<structure id="earth.conveyor" x="11" y="11" />
+		<structure id="earth.light" x="9" y="7" />
+		<structure id="earth.light" x="13" y="7" />
+		<structure id="earth.computer3" x="15" y="11" />
+		<structure id="medivat.full2" x="18" y="11" />
+		<structure id="medivat.full1" x="21" y="11" />
+		<structure id="earth.arm3" x="19" y="7" />
+		<structure id="earth.conveyor" x="19" y="11" />
+		<structure id="earth.light" x="17" y="7" />
+		<structure id="earth.light" x="21" y="7" />
+		<object id="unnature.splicer" x="15" y="10" />
+		<object id="unnature.ranger2" x="22" y="11" />
+		<object id="chimera" x="8" y="11" />
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<set id="splicer" value="area.getObject('unnature.splicer')" /><action>splicer.renderer.scaleX = -1; var r = area.getObject('chimera').renderer; r._idle(); r.runDist = 0; r.scaleX = -1;</action>
+			<set id="ranger" value="area.getObject('unnature.ranger2')" />
+			<wait seconds="1" />
+			<menu section="unnature">
+				<dialogue section="unnature" id="lab1" speaker="splicer" />
+				<choice id="stay" />
+				<choice id="leave">
+					<invokeLater><return with="ellipse" /></invokeLater><stop />
+				</choice>
+			</menu>
+			<dialogue section="unnature" id="lab2" speaker="splicer" />
+			<music id="boss" seconds="1" />
+			<pan deltaX="112" seconds="1" />
+			<dialogue section="unnature" id="lab3" speaker="ranger" />
+			<wait seconds="0.5"><operate object="splicer" /></wait>
+			<sound id="construct_bot_attack" object="splicer" />
+			<play object="splicer" animation="enrage" modal="true" /><action>splicer.setTileId("unnature.splicer.enraged"); splicer.renderer.scaleX = -1;</action>
+			<wait seconds="0.5"><operate object="splicer" /></wait>
+			<dialogue section="unnature" id="lab4" speaker="splicer" />
+			<dialogue section="unnature" id="lab5" speaker="splicer" />
+			<dialogue section="unnature" id="lab6" speaker="splicer" />
+			<pan deltaX="-112" seconds="0.25" />
+			<section if="getFlag('splicer_defeat')"><run procedure="unnature.timer" /><stop /></section>
+			<action>
+				var t = player.stats.get("timer"); t.tempBuff(1, 120); t.removeEventListener("updated", splicer_lab_timer); t.addEventListener("updated", splicer_lab_timer);
+				player.state.removeEventListener("update_flag", check_splicer_defeat); player.state.addEventListener("update_flag", check_splicer_defeat);
+				ranger.renderer.alpha = 0.5; ranger.idle.pathfind(15, 11); ranger.idle.handleIdle(ranger.renderer);
+			</action><sound id="hide" />
+		</onLoad>
+	</area>
+</data>

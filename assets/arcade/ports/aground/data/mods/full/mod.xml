@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mod>
+    <name>Full Version</name>
+    <description>Expands the core game into the full version.</description>
+    <author>Fancy Fish Games</author>
+    <version>2.1.2</version>
+	<website>http://fancyfishgames.com/Aground/</website>
+	<disableWarning>This will disable all new islands and features after the demo of the game.</disableWarning>
+    <init>
+        <include id="music/music.xml" />
+		<include id="sound/sounds.xml" />
+		<include id="achievements.xml" />
+		<include id="items/items.xml" />
+		<include id="tiles/tiles.xml" />
+		<include id="lang/languages.xml" />
+		<include id="vehicles/vehicles.xml" />
+		<include id="debris/debris.xml" />
+		<include id="structures/structures.xml" />
+        <include id="enemies/enemies.xml" />
+		<include id="space/planet.xml" />
+        <include id="science2/science2.xml" />
+		<include id="scenes/scenes.xml" />
+		<include id="npcs/npcs.xml" />
+		<include id="ships/ships.xml" />
+		<include id="space/colony/colony.xml" />
+		<include id="magic/magic.xml" />
+		<include id="colosseum/mod.xml" child="init" />
+		<include id="magic/spirit/spirit.xml" />
+		<include id="minigames/minigames.xml" />
+		<include id="ui/smileys.xml" />
+		<include id="backer_weapons/items.xml" />
+		<include id="hybrid_path/hybrid_path.xml" />
+		<include id="update/update.xml" />
+    </init>
+</mod>
+

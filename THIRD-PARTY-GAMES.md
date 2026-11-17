@@ -103,3 +103,18 @@ Added Plants vs. Zombies wrapper using Ruffle; SWF loaded from jsDelivr (\sasa24
 
 Removed Pokémon Ultra Sun/Omega Ruby/Alpha Sapphire browser pages/cards and stopped deploying \pokemon-3ds/\ from the site repo (3DS performance was poor in browser). Added Pokémon Emerald (GBA) player page ready for a user-provided ROM via EmulatorJS (CDN). ROMs previously hosted on the separate home server origin must be removed there separately if desired. PVZ icon replaced with a working cover-art image.
 
+
+## 2026-11-17: Local game entry pages
+
+Angry Birds Star Wars II and Aground now launch on the arcade origin, with runtime files bundled under `assets/arcade/ports/`. Neither game navigates to nawsif.github.io or reeyuki.github.io. Aground full-version music loads from its pinned jsDelivr source to keep the Pages deployment below its size limit; entry pages and other runtime assets are local. The existing Pages workflow copies all of `assets/arcade/`.
+
+- Angry Birds Star Wars II: snapshot of `nawsif/absw2` at `c96d5b5e61f3d1e4963c813b5cd377a29d9db561`. Includes the upstream player, LÖVE runtime, asset manifest and hash-verified game parts; existing runtime license notices retained.
+- Aground: snapshot of `reeyuki/AgroundWebport` at `a62d1468ebbb708c3cb4b653f8c717f26ebda1a9`, including entry HTML, runtime and game data.
+
+Game names, assets and publisher rights remain with their respective owners. Public source availability does not imply an open-source license for publisher assets.
+
+Hill Climb Racing's old CDN link serves HTML as text. Its pinned `NotRexed/HillClimbRacingPort@7467bb544dff9871a1a6dfd15407ecd48bd06bb9` source also returns 404 for the required `hcr.wasm` and the upstream repository is unavailable. The launcher now explains this instead of sending players to a dead game. A working runtime source is still required to restore gameplay.
+
+## 2026-11-17: Embedded launchers
+
+Aground, Angry Birds Star Wars II, Cat Goes Fishing, Hotline Miami 2 and Minecraft: Story Mode now use same-tab iframe players with an arcade return link and fullscreen control. Aground and Star Wars use the local runtime snapshots described above. Cat Goes Fishing includes `reeyuki/CatFish@6f8d9f78a4a98387d29ec6386afe7a3ade9e8e09`; runtime URLs resolve locally and the external advertising loader is omitted. Upstream runtime credits are retained. Minecraft uses its existing external game host inside the player; Hotline Miami 2 uses the existing same-origin `/hlm2-web/` deployment. Their separate hosting remains required.

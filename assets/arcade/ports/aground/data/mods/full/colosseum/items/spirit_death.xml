@@ -1,0 +1,14 @@
+<tilesheet id='spirit_death.png' width='32' height='32'>
+	<image frame='0' x='0' y='0' width='30' height='29' offsetX='2' offsetY='0' />
+	<image frame='1' x='0' y='29' width='24' height='23' offsetX='4' offsetY='3' />
+	<image frame='2' x='30' y='0' width='29' height='28' offsetX='2' offsetY='2' />
+	<image frame='3' x='30' y='28' width='29' height='28' offsetX='2' offsetY='1' />
+	<image frame='4' x='59' y='0' width='29' height='28' offsetX='2' offsetY='1' />
+	<image frame='5' x='88' y='0' width='13' height='13' offsetX='11' offsetY='8' />
+	<image frame='6' x='59' y='28' width='17' height='17' offsetX='9' offsetY='6' />
+	<image frame='7' x='88' y='13' width='15' height='15' offsetX='10' offsetY='7' />
+	<image frame='8' x='76' y='28' width='13' height='13' offsetX='11' offsetY='8' />
+	<image frame='9' x='59' y='45' width='9' height='9' offsetX='13' offsetY='10' />
+	<image frame='10' x='89' y='28' width='13' height='13' offsetX='11' offsetY='8' />
+	<image frame='11' x='76' y='41' width='15' height='15' offsetX='10' offsetY='7' />
+</tilesheet>

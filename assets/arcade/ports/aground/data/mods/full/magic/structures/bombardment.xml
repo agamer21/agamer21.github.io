@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="burned.xml" />
+    <animation id="ruin_smoke" count="5"><frame visible="false" length="15" /></animation>
+	<structure id="burned" name="inspect" remove="false">
+		<tile eval="'smoke1'" startFrame="random()" animation="ruin_smoke" x="(this.info.width-Tile.SIZE)*random()/Tile.SIZE" y="this.info.height/Tile.SIZE-2" fps="8" />
+        <tile eval="'smoke2'" startFrame="random()" animation="ruin_smoke" x="(this.info.width-Tile.SIZE)*random()/Tile.SIZE" y="this.info.height/Tile.SIZE-2" fps="8" if="this.info.width >= Tile.SIZE*2.5" />
+        <tile eval="'smoke'+(random()<0.5?'1':'2')" startFrame="random()" animation="ruin_smoke" x="(this.info.width-Tile.SIZE)*random()/Tile.SIZE" y="this.info.height/Tile.SIZE-2" fps="8" if="this.info.width >= Tile.SIZE*4" />
+		<operate>
+			<set id="blueprint" value="Item.getBlueprintForStructure(getStructure(this.info.id.substring(0, this.info.id.length-10)).id)" />
+			<window title="player.burned" type="dismantle" requirementsXml="blueprint.xml" percent="0.25" if="blueprint != null">
+				<lerp object="this" alpha="0" seconds="0.25" modal="true" /><action>area.removeStructure(this, null); player.overlapChanged();</action>
+			</window>
+			<window type="prompt" message="player.burned" if="blueprint == null">
+				<lerp object="this" alpha="0" seconds="0.25" modal="true" /><action>area.removeStructure(this, null); player.overlapChanged();</action>
+			</window><stop />
+		</operate>
+	</structure>
+	<structure id="farm.destroyed" image="burned.1" extends="burned" />
+	<structure id="farm2.destroyed" image="burned.2" extends="burned" />
+	<structure id="dockhouse.destroyed" image="burned.4" extends="burned" />
+	<structure id="factory.destroyed" image="burned.5" extends="burned" />
+	<structure id="car_factory.destroyed" extends="factory.destroyed" />
+	<tile id="advanced_lab.destroyed" sheet="burned.5" x="1" />
+	<structure id="advanced_lab.destroyed" tile="advanced_lab.destroyed" extends="burned" />
+	<structure id="food_market.closed.destroyed" image="burned.6" extends="burned" />
+	<structure id="food_market.destroyed" extends="food_market.closed.destroyed" />
+	<structure id="house.destroyed" image="burned.7" extends="burned" />
+	<structure id="hut.destroyed" image="burned.8" extends="burned" />
+	<structure id="kitchen.destroyed" image="burned.9" extends="burned" />
+	<structure id="kitchen2.destroyed" image="burned.10" extends="burned" />
+	<structure id="house_kitchen.destroyed" image="burned.11" extends="burned" />
+	<structure id="lab.destroyed" image="burned.12" extends="burned" />
+	<structure id="mineral_market.closed.destroyed" image="burned.13" extends="burned" />
+	<structure id="mineral_market.destroyed" extends="mineral_market.closed.destroyed" />
+	<tile id="weaps_market.destroyed" sheet="burned.13" x="1" />
+	<structure id="weaps_market.closed.destroyed" tile="weaps_market.destroyed" extends="burned" />
+	<structure id="weaps_market.destroyed" extends="weaps_market.closed.destroyed" />
+	<structure id="nuclear_plant.destroyed" image="burned.14" extends="burned" />
+	<structure id="stall2.destroyed" image="burned.15" extends="burned" tileWidth="2" />
+	<structure id="smelter.destroyed" image="burned.16" extends="burned" />
+	<structure id="storehouse.destroyed" image="burned.18" extends="burned">
+		<operate><dialogue section="player" id="storehouse_burned" if="(area.id=='start' || area.id=='science1') && getFlag('bombardment')" /></operate>
+	</structure>
+	<structure id="storehouse2.destroyed" image="burned.17" extends="storehouse.destroyed" />
+	<structure id="warehouse.destroyed" image="burned.19" extends="storehouse.destroyed" />
+	<structure id="warehouse_flipped.destroyed" image="burned.19" extends="storehouse.destroyed" flip="true" />
+	<structure id="workshop.destroyed" image="burned.20" extends="burned" />
+	<structure id="airport.destroyed" image="burned.21" extends="burned" />
+	<structure id="elevator.destroyed" image="burned.22" extends="burned" tileWidth="3" />
+	<structure id="sci1.food_market.closed.destroyed" image="burned.23" extends="burned" />
+	<structure id="sci1.food_market.destroyed" extends="sci1.food_market.closed.destroyed" />
+	<structure id="inn.destroyed" image="burned.24" extends="burned">
+		<operate><dialogue section="player" id="inn_burned" if="area.id=='science1' && getFlag('bombardment')" /></operate>
+	</structure>
+	<structure id="crashed_ship.destroyed" image="burned.25" priority="-2" behind="true" remove="false">
+		<addedToArea>
+			<set id="s" value="area.getStructureById('crashed_ship.door')" /><remove structure="s" if="s != null" />
+			<set id="s" value="area.getStructureById('crashed_ship.door.locked')" /><remove structure="s" if="s != null" />
+		</addedToArea>
+		<tooltip section="actions" id="repair" if="player.hasQuest('colony_ship')" />
+		<operate><run procedure="repair_colony_ship" if="player.hasQuest('colony_ship')" /></operate>
+	</structure>
+	<structure id="crashed_ship" extends="crashed_ship">
+		<tooltip section="actions" id="repair" if="player.hasQuest('colony_ship')" />
+		<operate><run procedure="repair_colony_ship" if="player.hasQuest('colony_ship')" /></operate>
+	</structure>
+	<structure id="sci1.mineral_market.closed.destroyed" image="burned.26" extends="burned" />
+	<structure id="sci1.mineral_market.destroyed" extends="sci1.mineral_market.closed.destroyed" />
+	<tile id="sci1.weaps_market.destroyed" sheet="burned.26" x="1" />
+	<structure id="sci1.weaps_market.closed.destroyed" tile="sci1.weaps_market.destroyed" extends="burned" />
+	<structure id="sci1.weaps_market.destroyed" extends="sci1.weaps_market.closed.destroyed" />
+	<structure id="power_plant.destroyed" image="burned.27" extends="burned" />
+	<structure id="damaged_power_plant.destroyed" extends="power_plant.destroyed" />
+	<structure id="operation_table.destroyed" image="burned.28" extends="burned" behind="true" />
+	<structure id="wyrm_pen.destroyed" image="burned.29" extends="burned" />
+	<structure id="teleportal.destroyed" image="burned.30" extends="burned" />
+	<structure id="terraformer.destroyed" image="burned.31" extends="burned" />
+	<structure id="exo_factory.destroyed" image="burned.32" extends="burned" />
+	<structure id="earth.lab.destroyed" image="burned.33" extends="burned" />
+	<structure id="bunker_kitchen.destroyed" image="burned.34" extends="burned" />
+	<structure id="interstellar_teleportal.destroyed" image="burned.35" extends="burned" />
+	<tile id="paper_maker.destroyed" sheet="burned.28" x="1" /><structure id="paper_maker.destroyed" tile="paper_maker.destroyed" extends="burned" behind="true" />
+	<tile id="blueprint_printer.destroyed" sheet="burned.28" x="2" /><structure id="blueprint_printer.destroyed" tile="blueprint_printer.destroyed" extends="burned" behind="true" />
+	<tile id="hydroponics.destroyed" sheet="burned.28" x="3" /><structure id="hydroponics.destroyed" tile="hydroponics.destroyed" extends="burned" behind="true" />
+	<tile id="o2_generator.destroyed" sheet="burned.28" x="4" /><structure id="o2_generator.destroyed" tile="o2_generator.destroyed" width="22" height="18" extends="burned" behind="true" />
+	<tile id="particle_accelerator.destroyed" sheet="burned.28" x="5" /><structure id="particle_accelerator.destroyed" tile="particle_accelerator.destroyed" extends="burned" behind="true" />
+	<tile id="vending_machine.destroyed" sheet="burned.28" x="6" /><structure id="vending_machine.destroyed" tile="vending_machine.destroyed" extends="burned" behind="true" />
+	<tile id="bunker.destroyed" sheet="burned.8" x="1" /><structure id="bunker.destroyed" tile="bunker.destroyed" extends="burned" />
+	<tile id="bunker_factory.destroyed" sheet="burned.5" x="2" /><structure id="bunker_factory.destroyed" tile="bunker_factory.destroyed" extends="burned" />
+	<tile id="bunker_farm.destroyed" sheet="burned.5" x="3" /><structure id="bunker_farm.destroyed" tile="bunker_farm.destroyed" extends="burned" />
+	<tile id="bunker_depot.destroyed" sheet="burned.17" x="1" /><structure id="bunker_depot.destroyed" tile="bunker_depot.destroyed" image="" width="64" height="54" extends="storehouse.destroyed" />
+	
+	<include id="orbital.xml" />
+	<tile id="orbital_projectile" sheet="orbital.1" />
+	<animation id="orbital_projectile" count="6" />
+	<tile id="orbital_blast" sheet="orbital.2" />
+	<animation id="orbital_blast" count="14" />
+	<action>
+		function saveItems(s, player){
+			if((s.info.xml.get("type") != "storehouse" &amp;&amp; s.info.xml.get("saveItems") != "true") || s.area == null || s.inventory == null) return;
+			if(s.area.id == "science1" &amp;&amp; s.area.getStructureById('crashed_ship.crack1') != null){
+				var n = player.areas.get("crashed_ship.cave1").getMainStorehouse();
+				if(n != null) n.accessInventory().addAll(s.inventory);
+			} else if(s.area.id == "start"){
+				var n = player.areas.get("alchemist.portal").getMainStorehouse();
+				if(n != null) n.accessInventory().addAll(s.inventory);
+			}
+		}
+	</action>
+	<object id="orbital_blast" tile="orbital_blast" animation="orbital_blast" layer="top" fps="10" removeOnComplete="true" save="false">
+		<addedToArea><action>
+			count = 0.0; function scorchTile(x, y, layer, append){
+				var t = area.getTile(x, y, layer); if(t != null &amp;&amp; Tile.exists(t.id+append))
+					area.setTile(x, y, layer, area.addTileIndex(t.id+append));
+			} function damageTile(x, y){
+				area.breakBrick(x, y, 4, 12, true, this); setOre(x, y, null);
+				scorchTile(x, y+1, BACK_LAYER, ".scorched"); scorchTile(x, y+1, BASE_LAYER, ".scorched");
+				return false;
+			}
+		</action><sound id="bombardment" /><shake count="10" dx="2" seconds="2" modal="false" if="allowFlash() && !area.isOrbit()" /></addedToArea>
+		<onFrame>count += frames; if(count >= 8){
+			count -= 8; for(o in this.getOverlappingObjects(null, damageTile)){
+				if(o.info.xml.get("canBombard") == "false"){}
+				else if(o.info.xml.nodeName() == "npc") area.removeObject(o); 
+				else if(o.attackPower(1, 1, 0, null, false) > 0 &amp;&amp; o.getDefense(false, false, false) &lt; 20) o.damage(50, FLAG_IGNORE_DEFENSE|FLAG_HIDE_ATTACKER, o);
+				else {var l = o.getLayer(); if(l == BUSH_LAYER || l == ITEM_LAYER || l == TRAP_LAYER) area.removeObject(o);}
+			} for(y in Math.floor(this.yTop()/Tile.SIZE)...(this.tile_y+2)){
+				scorchTile(this.tile_x-1, y, BACK_LAYER, ".scorchedt"); scorchTile(this.tile_x-1, y, BASE_LAYER, ".scorchedt");
+				scorchTile(this.tile_right, y, BACK_LAYER, ".scorchedt"); scorchTile(this.tile_right, y, BASE_LAYER, ".scorchedt");
+			} for(s in this.getOverlappingStructure(null, null, 0)){
+				var d = s.info.xml.get("id")+".destroyed";
+				if(s.info.xml.get("destroyRemove") == "true"){saveItems(s, player); area.removeStructure(s, null);}
+				else if(StructureInfo.exists(d)){saveItems(s, player); area.removeStructure(s,null); getStructure(d).build(null, area, s.xPos, s.yPos);}
+			}
+		}</onFrame>
+	</object>
+	<procedure id="alchemist.bombardment">
+		<action>setFlag('alchemist.bombardment', true)</action>
+		<dialogue section="builder" id="no_alchemist1" speaker="player" />
+		<dialogue section="builder" id="no_alchemist2" speaker="this" />
+	</procedure>
+	<npc id="builder2" extends="builder">
+		<idle class="wander" fromX="89" toX="89" facing="right" />
+		<operate>
+			<section if="getFlag('final_boss_defeat')">
+				<quest /><dialogue section="builder" id="win1" speaker="this" />
+				<remove object="this" /><object id="builder" x="40" area="start" />
+			</section>
+			<choose if="getFlag('bombardment')">
+				<run procedure="alchemist.bombardment" if="area.getNPC('alchemist') == null && !getFlag('alchemist.bombardment')" />
+				<dialogue section="builder" id="bombardment" speaker="this" />
+			</choose>
+		</operate>
+	</npc>
+	<npc id="miner2" extends="miner">
+		<idle class="wander" fromX="74" toX="106" />
+		<operate>
+			<section if="getFlag('final_boss_defeat') || player.questComplete('bombardment_shield')">
+				<quest /><dialogue section="miner" id="win1" speaker="this" />
+				<remove object="this" /><object id="miner" x="23" area="start" />
+			</section>
+			<choose if="getFlag('bombardment')">
+				<run procedure="alchemist.bombardment" if="area.getNPC('alchemist') == null && !getFlag('alchemist.bombardment')" />
+				<dialogue section="miner" id="bombardment" speaker="this" />
+			</choose>
+		</operate>
+	</npc>
+	<npc id="farmer2" extends="farmer" title="npc.farmer" hoe_anim="farmer.hoe" sleepPos="[91,5]">
+		<operate>
+			<section if="getFlag('final_boss_defeat') || player.questComplete('bombardment_shield')">
+				<quest /><dialogue section="farmer" id="win1" speaker="this" />
+				<remove object="this" /><object id="farmer" x="46" area="start" />
+			</section>
+			<choose if="getFlag('bombardment')">
+				<run procedure="alchemist.bombardment" if="area.getNPC('alchemist') == null && !getFlag('alchemist.bombardment')" />
+				<dialogue section="farmer" id="bombardment" speaker="this" if="isBombardment(player)" />
+				<dialogue section="farmer" id="bombardment2" speaker="this" />
+			</choose>
+		</operate>
+	</npc>
+	<procedure id="hunter.invite">
+		<quest /><menu section="common">
+			<dialogue title="professor.invite{npc:[object=hunter]}" />
+			<choice id="yes">
+				<dialogue section="hunter" id="research1" speaker="this" />
+				<scene id="scavenger" show="invite_hunter" with="fade">
+					<remove object="this" /><action>o.enter(player); updateArea(); player.removeQuestsByGiver("hunter");</action>
+					<object id="hunter_lab" x="8" y="2" /><set id="this" value="hunter_lab" />
+					<facing object="this" dir="right" /><move object="player" to="this" />
+				</scene>
+			</choice>
+			<choice id="no" />
+		</menu>
+	</procedure>
+	<npc id="hunter" extends="hunter">
+		<operate>
+			<run procedure="hunter.endgame" if="getFlag('final_boss_defeat')" />
+			<run procedure="hunter.invite" if="o = player.areas.get('start').getObject('research'); return o != null" />
+		</operate>
+	</npc>
+	<npc id="hunter2" extends="hunter" animation="hunter">
+		<idle class="wander" fromX="65" toX="126" />
+		<operate>
+			<section if="getFlag('final_boss_defeat')">
+				<quest /><dialogue section="hunter" id="win1" speaker="this" />
+				<remove object="this" /><object id="hunter" x="90" area="start" />
+			</section>
+			<run procedure="hunter.invite" if="o = player.areas.get('start').getObject('research'); return o != null" />
+			<choose if="getFlag('bombardment')">
+				<run procedure="alchemist.bombardment" if="area.getNPC('alchemist') == null && !getFlag('alchemist.bombardment')" />
+				<dialogue section="hunter" id="bombardment3" speaker="this" if="getFlag('mirrows.sacrifice')" />
+				<dialogue section="hunter" id="bombardment" speaker="this" if="isBombardment(player)" />
+				<dialogue section="hunter" id="bombardment2" speaker="this" />
+			</choose>
+		</operate>
+	</npc>
+	<npc id="trader2" extends="trader">
+		<idle class="wander" fromX="65" toX="126" />
+		<operate>
+			<section if="getFlag('final_boss_defeat') || player.questComplete('bombardment_shield')">
+				<quest /><dialogue section="trader" id="win1" speaker="this" />
+				<remove object="this" /><object id="trader" x="12" area="start" />
+			</section>
+			<choose if="getFlag('bombardment')">
+				<run procedure="alchemist.bombardment" if="area.getNPC('alchemist') == null && !getFlag('alchemist.bombardment')" />
+				<dialogue section="trader" id="bombardment" speaker="this" />
+			</choose>
+		</operate>
+	</npc>
+	<npc id="fisherman2" tile="fisherman" animation="fisherman" action="talk" talk_sfx="talking1">
+		<idle class="wander" fromX="10" toX="55" />
+		<operate>
+			<section if="getFlag('final_boss_defeat')">
+				<quest /><dialogue section="fisherman" id="win1" speaker="this" />
+				<remove object="this" /><object id="fisherman" x="198" area="science1" />
+				<set id="cat" value="area.getObject('fisherman.cat2')" />
+				<section if="cat != null"><remove object="cat" /><object id="fisherman.cat" x="196" area="science1" /></section>
+			</section>
+			<dialogue section="fisherman" id="bombardment" speaker="this" if="isBombardment(player)" />
+			<dialogue section="fisherman" id="bombardment3" speaker="this" if="getFlag('mirrows.sacrifice')" />
+			<dialogue section="fisherman" id="bombardment2" speaker="this" />
+		</operate>
+	</npc>
+	<structure id="farm" extends="farm">
+		<operate><stop complete="true" if="getFlag('bombardment')"/></operate>
+	</structure>
+	<scene id="inn" extends="inn">
+		<show id="bombardment">
+			<layer id="bg" />
+			<layer id="innkeeper" />
+			<wait seconds="1" />
+			<choose>
+				<dialogue section="innkeeper" id="hybrid_bombardment" speaker="innkeeper" if="player.questComplete('bombardment_shield')" />
+				<section if="isBombardment(player)">
+					<dialogue section="innkeeper" id="bombardment1" speaker="innkeeper" />
+					<dialogue section="innkeeper" id="bombardment2" speaker="innkeeper" />
+					<dialogue section="innkeeper" id="bombardment3" speaker="innkeeper" />
+				</section>
+				<dialogue section="innkeeper" id="bombardment4" speaker="innkeeper" />
+			</choose>
+			<wait seconds="1" />
+		</show>
+		<show id="ghost">
+			<layer id="bg" />
+			<layer id="innkeeper" />
+			<wait seconds="1" />
+			<dialogue section="innkeeper" id="bombardment3" speaker="innkeeper" />
+			<wait seconds="1" />
+		</show>
+		<show id="win">
+			<layer id="bg" />
+			<layer id="innkeeper" />
+			<wait seconds="1" />
+			<dialogue section="innkeeper" id="win1" speaker="innkeeper" />
+			<dialogue section="innkeeper" id="win2" speaker="innkeeper" />
+			<dialogue section="innkeeper" id="win3" speaker="innkeeper" />
+			<wait seconds="1" />
+		</show>
+	</scene>
+	<structure id="inn" extends="inn" generatePower="getFlag('final_boss_defeat')">
+		<operate>
+			<section if="getFlag('final_boss_defeat')">
+				<scene id="inn" show="win" with="fade" /><action>player.fullRestore();</action><save sleep="true" /><stop />
+			</section>
+        <section if="getFlag('bombardment')">
+          <scene id="inn" show="bombardment" with="fade" />
+          <choose>
+            <section if="getFlag('inn_free') && this.isPowered()"><action>player.fullRestore();</action></section>
+            <action>player.restoreStamina();</action>
+          </choose><save sleep="true" /><stop />
+        </section>
+		</operate>
+	</structure>
+	<npc id="fisherman.cat2" tile="cat" animation="cat" action="talk" speed="1">
+		<idle class="wander" fromX="10" toX="55" />
+		<operate>
+			<section><action>this.playAnimation("talk")</action><sound id="meow" /></section>
+		</operate>
+	</npc>
+	<procedure id="lurker.restock" extends="lurker.restock">
+		<action>
+			if(getFlag('mirrows.sacrifice')){
+				this.inventory.addItems(getItem("bunker_blueprint"), 1);
+				this.inventory.addItems(getItem("bunker_kitchen_blueprint"), 1);
+				this.inventory.addItems(getItem("bunker_depot_blueprint"), 1);
+				this.inventory.addItems(getItem("sci_light_blueprint"), 1);
+				this.inventory.addItems(getItem("hydroponics_blueprint"), 1);
+				this.inventory.addItems(getItem("bunker_factory_blueprint"), 1);
+				this.inventory.addItems(getItem("bunker_farm_blueprint"), 1);
+				this.inventory.addItems(getItem("small_module_blueprint"), 1);
+				this.inventory.addItems(getItem("large_module_blueprint"), 1);
+				this.inventory.addItems(getItem("connector_module_blueprint"), 1);
+				this.inventory.addItems(getItem("o2_generator_blueprint"), 1);
+				this.inventory.addItems(getItem("station_dock_blueprint"), 1);
+				this.inventory.addItems(getItem("vending_machine_blueprint"), 1);
+			}
+		</action>
+	</procedure>
+	<npc id="lurker2" extends="lurker" sleepPos="[40,23]" animation="lurker">
+		<idle class="wander" fromX="34" toX="46" />
+		<exit><action>this.inventory.clear();</action><run procedure="lurker.restock" /></exit>
+	</npc>
+	<npc id="science1.townfolk2" extends="science1.townfolk.base">
+		<idle class="wander" fromX="10" toX="55" />
+	</npc>
+	<structure id="market.closed" name="inspect">
+		<operate>
+			<window type="prompt" message="player.abandoned">
+				<lerp object="this" alpha="0" seconds="0.25" modal="true" /><action>area.removeStructure(this, null); player.overlapChanged();</action>
+			</window>
+		</operate>
+	</structure>
+	<structure id="food_market.closed" width="41" height="35" extends="market.closed" image="{core}/structures/food_market.png" animation="market.night" />
+	<structure id="weaps_market.closed" tile="weaps_market" extends="market.closed" animation="market.night" />
+	<structure id="mineral_market.closed" tile="mineral_market" extends="market.closed" animation="market.night" />
+	<structure id="sci1.food_market.closed" width="41" height="50" extends="market.closed" image="{core}/science1/structures/food_market.png" animation="sci1.food_market.night" />
+	<structure id="sci1.weaps_market.closed" tile="sci1.weaps_market" extends="market.closed" animation="sci1.weaps_market.night" />
+	<structure id="sci1.mineral_market.closed" tile="sci1.mineral_market" extends="market.closed" animation="sci1.mineral_market.night" />
+	<action>
+		function closeMarkets(start, science1){
+			var a = start; var s = a.getStructureById("food_market"); if(s != null){a.removeStructure(s,null); getStructure("food_market.closed").build(null, a, s.xPos, s.yPos);}
+			var s = a.getStructureById("weaps_market"); if(s != null){a.removeStructure(s,null); getStructure("weaps_market.closed").build(null, a, s.xPos, s.yPos);}
+			var s = a.getStructureById("mineral_market"); if(s != null){a.removeStructure(s,null); getStructure("mineral_market.closed").build(null, a, s.xPos, s.yPos);}
+			a = science1; var s = a.getStructureById("sci1.food_market"); if(s != null){a.removeStructure(s,null); getStructure("sci1.food_market.closed").build(null, a, s.xPos, s.yPos);}
+			var s = a.getStructureById("sci1.weaps_market"); if(s != null){a.removeStructure(s,null); getStructure("sci1.weaps_market.closed").build(null, a, s.xPos, s.yPos);}
+			var s = a.getStructureById("sci1.mineral_market"); if(s != null){a.removeStructure(s,null); getStructure("sci1.mineral_market.closed").build(null, a, s.xPos, s.yPos);}
+		}
+	</action>
+	<procedure id="bombardment.init"><choose>
+		<section if="player.questComplete('bombardment_shield')">
+		  <music id="encounter" seconds="1" /><action>setFlag('bombardment', true);</action>
+		  <object id="alien.bomber" x="256" y="55" area="start.orbit" />
+		  <objects id="alien.fighter" count="4" fromX="192" toX="320" fromY="30" toY="50" width="10" height="6" ground="false" area="start.orbit" />
+		  <scene id="start.space" show="hybrid_bombardment" with="fade" showToAll="true" />
+		</section>
+		<section>
+		<music id="encounter" seconds="1" /><action>
+			function mineAndCable(a, x, y, c){
+				var t = a.getTileId(x, y, BASE_LAYER); if(t != -1) a.mine(x, y, t, 0);
+				if(a.getTile(x, y, ORE_LAYER) == null) a.setTile(x, y, ORE_LAYER, c);
+			}
+			function removeObjectInstant(a, o){
+				a.removeObject(o); if(o.renderer != null &amp;&amp; o.renderer.parent != null) o.renderer.parent.removeChild(o.renderer);
+			} setFlag('bombardment', true); var npcs = ['builder','miner','farmer','hunter','trader','fisherman','fisherman.cat','lurker','mechanic','innkeeper','science1.townfolk'];
+			var ids = ['market2','dock2']; var quests = []; for(q in player.state.quests) if(ids.indexOf(q.id) != -1 || npcs.indexOf(q.giver) != -1) quests.push(q);
+			for(q in quests) player.removeQuest(q.id); var a = player.areas.get("start"); if(!player.questComplete('bandits')) player.removeQuest('bandits');
+			var o = a.getObject('dock2_placeholder'); if(o != null) removeObjectInstant(a, o);
+			var o = a.getObject('market2_placeholder'); if(o != null) removeObjectInstant(a, o);
+			var science1 = player.areas.get("science1"); closeMarkets(a, science1);
+			var pen = a.getStructureById("wyrm_pen"); getStructure("alchemist_portal").build(null, a, 86*Tile.SIZE, 5*Tile.SIZE);
+			var t = a.addTileIndex("bedrock"); a.setTile(92, 1, BASE_LAYER, t); for(x in 87...93) a.mine(x, 6, t, 0);
+			var o = a.getNPC('alchemist'); var hadAlchemist = o != null; if(hadAlchemist) removeObjectInstant(a, o);
+			var hadHunter = a.getNPC('hunter') != null; var hadBuilder = a.getNPC('builder') != null;
+			var hadTrader = a.getNPC('trader') != null; var hadMiner = a.getNPC('miner') != null; var hadFarmer = a.getNPC('farmer') != null;
+			var s = a.getStructureById("tent"); if(s != null) a.removeStructure(s,null);
+			var o = a.getObject("hunter_hotspot"); if(o != null) removeObjectInstant(a, o);
+			var ar = []; for(o in a.getAllObjects()) if(npcs.indexOf(o.info.id) != -1) ar.push(o); for(o in ar) removeObjectInstant(a, o); var a = science1;
+			var hadMechanic = a.getNPC('mechanic') != null; var hadFisherman = a.getNPC('fisherman') != null;
+			var s = a.getStructureById("damaged_power_plant"); if(s != null){a.removeStructure(s,null); getStructure("power_plant.destroyed").build(null, a, s.xPos, s.yPos);}
+			var s = a.getStructureById("crashed_ship"); if(s != null){a.removeStructure(s,null); getStructure("crashed_ship.destroyed").build(null, a, s.xPos, s.yPos);}
+			var o = a.getObject("fisherman.boat"); if(o != null) removeObjectInstant(a, o);
+			var ar = []; for(o in a.getAllObjects()) if(npcs.indexOf(o.info.id) != -1) ar.push(o); for(o in ar) removeObjectInstant(a, o);
+			var c = a.addTileIndex("rail"); for(y in -1...13) mineAndCable(a, 149, y, c); for(x in 54...149) mineAndCable(a, x, 12, c);
+			var o = ObjectInfo.make("lantern", 54*Tile.SIZE, 12*Tile.SIZE); o.health = o.getMaxFuel(); a.addObject(o);
+			var o = ObjectInfo.make("lantern", 149*Tile.SIZE, 12*Tile.SIZE); o.health = o.getMaxFuel(); a.addObject(o);
+			
+			var a = player.areas.get("crashed_ship.cave1"); a.removeObjects(makeRect(0, 0, 64*Tile.SIZE, 32*Tile.SIZE), ENEMY_LAYER);
+			for(y in 0...32) for(x in 0...64){if(a.getTileString(x, y, BASE_LAYER) == "desert.scorched"){a.setTile(x, y, BASE_LAYER, -1); a.setTile(x, y, ORE_LAYER, -1);} a.setLit(x, y);}
+			getStructure("bunker").build(null, a, 37*Tile.SIZE, 19*Tile.SIZE);
+			getStructure("bunker_depot").build(null, a, 44*Tile.SIZE, 19*Tile.SIZE).inventory.addItems(Item.get("power_plant_blueprint"), 1);
+			getStructure("bunker_factory").build(null, a, 49*Tile.SIZE, 19*Tile.SIZE);
+
+			getStructure("bunker_market").build(null, a, 22*Tile.SIZE, 19*Tile.SIZE);
+			getStructure("bunker_merchant.ore").build(null, a, 22*Tile.SIZE, 19*Tile.SIZE);
+			getStructure("bunker_merchant.weaps").build(null, a, 22*Tile.SIZE+46, 19*Tile.SIZE);
+			getStructure("bunker_merchant.food").build(null, a, 22*Tile.SIZE+92, 19*Tile.SIZE);
+			a.addObject(ObjectInfo.make("bunker_market.counter", 22*Tile.SIZE, 19*Tile.SIZE));
+			
+			getStructure("sci1.light").build(null, a, 33*Tile.SIZE, 19*Tile.SIZE);
+			getStructure("sci1.light").build(null, a, 41*Tile.SIZE, 19*Tile.SIZE);
+			getStructure("sci1.light").build(null, a, 37*Tile.SIZE, 23*Tile.SIZE);
+			getStructure("sci1.light").build(null, a, 41*Tile.SIZE, 23*Tile.SIZE);
+			getStructure("sci1.light").build(null, a, 45*Tile.SIZE, 23*Tile.SIZE);
+			getStructure("sci1.light").build(null, a, 13*Tile.SIZE, 19*Tile.SIZE);
+			getStructure("sci1.light").build(null, a, 18*Tile.SIZE, 19*Tile.SIZE);
+			a.addObject(ObjectInfo.make("lurker2", 40*Tile.SIZE, 23*Tile.SIZE));
+			for(x in 0...4) a.addObject(ObjectInfo.make("science1.townfolk2", (15+12*x)*Tile.SIZE, 19*Tile.SIZE));
+			ar = [37,40,43,46]; shuffle(ar);
+			for(i in 0...4) getStructure("medivat.full"+(i+1)).build(null, a, ar[i]*Tile.SIZE, 23*Tile.SIZE);
+			for(i in 0...3){
+				var medicom = getStructure("medicom").build(null, a, (ar[i]+2)*Tile.SIZE, 23*Tile.SIZE);
+				medicom.title = "medicom.panel"+(i+13);
+			} var c = a.addTileIndex("cable"); for(x in 12...56) a.setTile(x, 19, ORE_LAYER, c);
+			var o = getStructure("power_plant").build(null, a, 12*Tile.SIZE, 19*Tile.SIZE); o.addFuel(o.getMaxFuel());
+			if(hadMechanic) a.addObject(ObjectInfo.make("mechanic", 52*Tile.SIZE, 19*Tile.SIZE));
+			if(hadFisherman) a.addObject(ObjectInfo.make("fisherman2", 46*Tile.SIZE, 19*Tile.SIZE));
+			if(getVar('fisherman_cat') &lt; 3) a.addObject(ObjectInfo.make("fisherman.cat2", 46*Tile.SIZE, 19*Tile.SIZE));
+			player.areas.remove("mirrows_lab");
+			if(player.getNPC('mirrow_n.npc') == null){
+				a.addObject(ObjectInfo.make("mirrow_n.npc", 37*Tile.SIZE, 19*Tile.SIZE));
+				a.addObject(ObjectInfo.make("mirrow_d.npc", 38*Tile.SIZE, 19*Tile.SIZE));
+			} 
+			
+			var a = player.areas.get("alchemist.portal");
+			if(pen != null) a.getStructureById("wyrm_pen").upgradeFrom(pen);
+			if(hadFarmer) a.addObject(ObjectInfo.make("farmer2", 91*Tile.SIZE, 5*Tile.SIZE));
+			if(hadHunter) a.addObject(ObjectInfo.make("hunter2", 92*Tile.SIZE, 5*Tile.SIZE));
+			if(hadBuilder) a.addObject(ObjectInfo.make("builder2", 89*Tile.SIZE, 5*Tile.SIZE));
+			if(hadAlchemist) a.addObject(ObjectInfo.make("alchemist", 88*Tile.SIZE, 5*Tile.SIZE));
+			if(hadMiner) a.addObject(ObjectInfo.make("miner2", 90*Tile.SIZE, 6*Tile.SIZE));
+			if(hadTrader) a.addObject(ObjectInfo.make("trader2", 87*Tile.SIZE, 5*Tile.SIZE));
+			
+			var a = player.areas.get("magic1"); var o = a.getObject('alchemist_magic'); if(o != null) a.removeObject(o);
+		</action>
+		<object id="alien.bomber" x="256" y="55" area="start.orbit" />
+		<objects id="alien.fighter" count="4" fromX="192" toX="320" fromY="30" toY="50" width="10" height="6" ground="false" area="start.orbit" />
+		<scene id="start.space" show="bombardment" with="fade" showToAll="true" />
+		</section>
+	</choose></procedure>
+	<procedure id="science1.doodad" extends="science1.doodad">
+		<section if="getFlag('bombardment') || isBombardment(player)">
+			<layer p="0.75" py="1">
+				<tile sheet="burned.3" x="0" offsetX="1740" loop="false" />
+				<tile sheet="burned.3" x="1" offsetX="2032" loop="false" />
+				<tile sheet="{core}/science1/parallax/desert.png" x="0" y="0" offsetX="64" loop="false" offsetY="-26" />
+				<tile sheet="{core}/science1/parallax/desert.png" x="0" y="2" offsetX="448" loop="false" offsetY="-26" />
+				<tile sheet="{core}/science1/parallax/desert.png" x="0" y="1" offsetX="800" loop="false" offsetY="-26" />
+			</layer><layer type="back" /><run procedure="start.water" /><stop />
+		</section>
+	</procedure>
+    <set id="bombardment.time" value="0" global="true" />
+	<procedure id="orbital_bombardment">
+		<section if="area.id == current_area && !player.questComplete('bombardment_shield') && isBombardment(player)">
+        <section if="area.isActivePlayer() && Math.abs(getGlobal('bombardment.time')-getGameTime()) > 0.25">
+		<set id="x" value="0" />
+		<action>
+			var ar = []; for(s in area.getStructures())
+				if((s.info.xml.get("destroyRemove") == "true" || StructureInfo.exists(s.info.xml.get("id")+".destroyed")) &amp;&amp; area.emptyTile(s.tile_x, s.tile_y)) ar.push(s);
+			if(ar.length == 0){
+				if(area.id == 'science1') x = randInt(101, 191); else x = randInt(1, 95);
+			} else x = Math.round(ar[randInt(0, ar.length)].getCenterX()/Tile.SIZE);
+		</action>
+		<projectile tile="orbital_projectile" animation="orbital_projectile" speed="3" width="32" height="64" damage="100" dx="0" dy="1" spawnX="x" spawnY="-64" range="68">
+			<removed><object id="orbital_blast" x="this.tile_x-6" y="this.tile_y+2" if="isBombardment(player)" /></removed>
+		</projectile><set id="bombardment.time" value="getGameTime()" global="true" /></section>
+		<invokeLater seconds="15" paused="true"><run procedure="orbital_bombardment" /></invokeLater></section>
+	</procedure>
+</data>

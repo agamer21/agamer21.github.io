@@ -1,0 +1,121 @@
+<sheets>
+<tilesheet id='burned.1' sheet='burned.png' width='104' height='75'>
+	<image frame='0' x='239' y='490' width='94' height='25' offsetX='5' offsetY='50' />
+</tilesheet>
+<tilesheet id='burned.2' sheet='burned.png' width='106' height='95'>
+	<image frame='0' x='562' y='163' width='101' height='21' offsetX='4' offsetY='74' />
+</tilesheet>
+<tilesheet id='burned.3' sheet='burned.png' width='256' height='80' offsetY="-64">
+	<image frame='0' x='356' y='521' width='228' height='34' offsetX='26' offsetY='110' />
+	<image frame='1' x='356' y='455' width='235' height='66' offsetX='21' offsetY='78' />
+</tilesheet>
+<tilesheet id='burned.4' sheet='burned.png' width='100' height='55'>
+	<image frame='0' x='0' y='538' width='94' height='15' offsetX='2' offsetY='40' />
+</tilesheet>
+<tilesheet id='burned.5' sheet='burned.png' width='106' height='80'>
+	<image frame='0' x='239' y='467' width='104' height='23' offsetX='1' offsetY='57' />
+	<image frame='1' x='498' y='48' width='106' height='47' offsetX='0' offsetY='33' />
+	<image frame='2' x='562' y='131' width='105' height='32' offsetX='0' offsetY='48' />
+	<image frame='3' x='498' y='271' width='105' height='28' offsetX='0' offsetY='52' />
+</tilesheet>
+<tilesheet id='burned.6' sheet='burned.png' width='41' height='35'>
+	<image frame='0' x='623' y='542' width='41' height='9' offsetX='0' offsetY='26' />
+</tilesheet>
+<tilesheet id='burned.7' sheet='burned.png' width='60' height='64'>
+	<image frame='0' x='148' y='538' width='55' height='16' offsetX='0' offsetY='48' />
+</tilesheet>
+<tilesheet id='burned.8' sheet='burned.png' width='60' height='55'>
+	<image frame='0' x='498' y='339' width='48' height='9' offsetX='6' offsetY='46' />
+	<image frame='1' x='591' y='455' width='56' height='21' offsetX='1' offsetY='34' />
+</tilesheet>
+<tilesheet id='burned.9' sheet='burned.png' width='73' height='72'>
+	<image frame='0' x='595' y='238' width='69' height='32' offsetX='2' offsetY='40' />
+</tilesheet>
+<tilesheet id='burned.10' sheet='burned.png' width='73' height='80'>
+	<image frame='0' x='498' y='299' width='73' height='40' offsetX='0' offsetY='40' />
+</tilesheet>
+<tilesheet id='burned.11' sheet='burned.png' width='45' offsetX="-7" height='64'>
+	<image frame='0' x='306' y='538' width='50' height='14' offsetX='2' offsetY='50' />
+</tilesheet>
+<tilesheet id='burned.12' sheet='burned.png' width='64' height='64'>
+	<image frame='0' x='604' y='48' width='61' height='42' offsetX='2' offsetY='22' />
+</tilesheet>
+<tilesheet id='burned.13' sheet='burned.png' width='46' height='35'>
+	<image frame='0' x='623' y='529' width='45' height='13' offsetX='0' offsetY='22' />
+	<image frame='1' x='604' y='95' width='46' height='35' offsetX='0' offsetY='0' />
+</tilesheet>
+<tilesheet id='burned.14' sheet='burned.png' width='150' height='96' offsetY="-32">
+	<image frame='0' x='498' y='0' width='150' height='48' offsetX='0' offsetY='80' />
+</tilesheet>
+<tilesheet id='burned.15' sheet='burned.png' width='40' height='25' offsetY="-4">
+	<image frame='0' x='591' y='497' width='38' height='17' offsetX='0' offsetY='12' />
+</tilesheet>
+<tilesheet id='burned.16' sheet='burned.png' width='68' height='50'>
+	<image frame='0' x='239' y='515' width='67' height='23' offsetX='1' offsetY='27' />
+</tilesheet>
+<tilesheet id='burned.17' sheet='burned.png' width='66' height='90'>
+	<image frame='0' x='603' y='271' width='66' height='33' offsetX='0' offsetY='57' />
+	<image frame='1' x='498' y='131' width='64' height='54' offsetX='0' offsetY='0' />
+</tilesheet>
+<tilesheet id='burned.18' sheet='burned.png' width='66' height='70' offsetX="-1">
+	<image frame='0' x='611' y='208' width='58' height='24' offsetX='9' offsetY='46' />
+</tilesheet>
+<tilesheet id='burned.19' sheet='burned.png' width='125' height='80'>
+	<image frame='0' x='498' y='208' width='113' height='30' offsetX='3' offsetY='50' />
+</tilesheet>
+<tilesheet id='burned.20' sheet='burned.png' width='65' height='35'>
+	<image frame='0' x='603' y='325' width='65' height='20' offsetX='0' offsetY='15' />
+</tilesheet>
+<tilesheet id='burned.21' sheet='burned.png' width='100' height='80'>
+	<image frame='0' x='498' y='238' width='97' height='33' offsetX='0' offsetY='47' />
+</tilesheet>
+<tilesheet id='burned.22' sheet='burned.png' width='55' height='40'>
+	<image frame='0' x='94' y='538' width='54' height='17' offsetX='0' offsetY='23' />
+</tilesheet>
+<tilesheet id='burned.23' sheet='burned.png' width='41' height='50'>
+	<image frame='0' x='629' y='497' width='40' height='14' offsetX='0' offsetY='36' />
+</tilesheet>
+<tilesheet id='burned.24' sheet='burned.png' width='106' height='75'>
+	<image frame='0' x='498' y='95' width='106' height='36' offsetX='0' offsetY='39' />
+</tilesheet>
+<tilesheet id='burned.25' sheet='burned.png' width='512' height='388'>
+	<image frame='0' x='0' y='0' width='498' height='348' offsetX='12' offsetY='24' />
+</tilesheet>
+<tilesheet id='burned.26' sheet='burned.png' width='46' height='50'>
+	<image frame='0' x='306' y='515' width='46' height='23' offsetX='0' offsetY='27' />
+	<image frame='1' x='239' y='538' width='46' height='18' offsetX='0' offsetY='32' />
+</tilesheet>
+<tilesheet id='burned.27' sheet='burned.png' width='150' height='64'>
+	<image frame='0' x='498' y='185' width='150' height='23' offsetX='0' offsetY='41' />
+</tilesheet>
+<tilesheet id='burned.28' sheet='burned.png' width='32' height='32'>
+	<image frame='0' x='203' y='538' width='31' height='14' offsetX='1' offsetY='18' />
+	<image frame='1' x='591' y='476' width='32' height='21' offsetX='0' offsetY='11' />
+	<image frame='2' x='591' y='514' width='32' height='20' offsetX='0' offsetY='12' />
+	<image frame='3' x='591' y='534' width='30' height='11' offsetX='1' offsetY='21' />
+	<image frame='4' x='648' y='0' width='21' height='10' offsetX='5' offsetY='8' />
+	<image frame='5' x='571' y='299' width='32' height='30' offsetX='0' offsetY='2' />
+	<image frame='6' x='571' y='329' width='32' height='17' offsetX='0' offsetY='15' />
+</tilesheet>
+<tilesheet id='burned.29' sheet='burned.png' width='42' height='26'>
+	<image frame='0' x='623' y='514' width='41' height='15' offsetX='0' offsetY='11' />
+</tilesheet>
+<tilesheet id='burned.30' sheet='burned.png' width='32' height='16'>
+	<image frame='0' x='591' y='545' width='30' height='10' offsetX='2' offsetY='6' />
+</tilesheet>
+<tilesheet id='burned.31' sheet='burned.png' width='300' height='246' offsetX='-25' offsetY='-104'>
+	<image frame='0' x='356' y='348' width='309' height='107' offsetX='16' offsetY='243' />
+</tilesheet>
+<tilesheet id='burned.32' sheet='burned.png' width='356' height='141' offsetX='-78' offsetY='-115'>
+	<image frame='0' x='0' y='348' width='356' height='119' offsetX='78' offsetY='137' />
+</tilesheet>
+<tilesheet id='burned.33' sheet='burned.png' width='240' height='104' offsetY="-21">
+	<image frame='0' x='0' y='467' width='239' height='71' offsetX='0' offsetY='54' />
+</tilesheet>
+<tilesheet id='burned.34' sheet='burned.png' width='32' height='55' offsetX="-1">
+	<image frame='0' x='623' y='476' width='35' height='19' offsetX='0' offsetY='36' />
+</tilesheet>
+<tilesheet id='burned.35' sheet='burned.png' width='64' height='32'>
+	<image frame='0' x='603' y='304' width='62' height='21' offsetX='2' offsetY='11' />
+</tilesheet>
+</sheets>

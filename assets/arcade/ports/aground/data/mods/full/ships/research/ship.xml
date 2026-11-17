@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="research.xml" />
+	<tile id="research.kitchen.counter" sheet="research.1" x="1" />
+	<tile id="research.kitchen.counter.food" sheet="research.1" />
+	<tile id="research.arcade1" sheet="research.1" x="2" offsetY="1" />
+	<tile id="research.arcade2" sheet="research.1" x="3" offsetY="1" />
+	<tile id="research.kitchen" sheet="research.2" />
+	<tile id="research.drone_factory" sheet="research.3" />
+	<tile id="research.factory" sheet="research.3" x="7" />
+	<tile id="research.lab" sheet="research.4" />
+	<tile id="research.command" sheet="research.5" />
+	<tile id="research.engine" sheet="research.6" />
+	<tile id="research.hall" sheet="research.7" />
+	<tile id="research.quarters" sheet="research.8" />
+	<tile id="research" sheet="research.9" />
+	
+	<animation id="research.command.idle" count="1" />
+	<animation id="research.command.over" x="1" count="6" />
+	<structure id="research.command" tile="research.command" room="true" fps="6" name="operate" powered="true">
+		<tile id="fighter.command_chair" animation="item6" x="1" y="0" />
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<operate>
+			<set id="ct" value="getPowerCores(area)" />
+			<section if="ct >= 3"><section if="area.vehicle.canMount(player)">
+				<set id="sprite" value="player.createSimpleSprite('idle')" />
+				<action>sprite.x = 36; sprite.y= 8; sprite.alpha = 0; this.addBefore(sprite, 'fighter.command_chair');</action>
+				<lerp object="player" alpha="0" seconds="0.25" modal="false" />
+				<lerp object="sprite" alpha="1" seconds="0.25" animate="player" modal="true" />
+				<action with="ellipse_fast">sprite.parent.removeChild(sprite); var v = area.vehicle; if(v.canMount(player)){v.doExit(player); setGameScale(2); v.doMount(player, true);}</action>
+				</section><stop />
+			</section><dialogue eval="'vehicle.not_enough_cores{count:'+ct+'}{total:3}'" />
+		</operate>
+	</structure>
+	
+	<structure id="research.engine" tile="research.engine" extends="fighter.engine" />
+	
+	<animation id="research.hall.idle" count="1" />
+	<animation id="research.hall.off"><frame visible="false" /></animation>
+	<structure id="research.hall" tile="research.hall" powered="true" back="true" remove="false" />
+	
+	<animation id="research.quarters.idle" x="62" count="12"><append tile="research.quarters" y="16" behind="true" /></animation>
+	<animation id="research.quarters.over" x="62" count="12"><append tile="research.quarters" y="16" behind="true" /><append tile="earth.doodad" animation="earth.medibed.screen" /></animation>
+	<structure id="research.quarters" extends="earth.medibed" room="true" powered="true">
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+	</structure>
+	
+	<action>
+		function getResearchers(area){
+			var ct = 0; for(o in area.getAllObjects()) if(o.info.xml.get("researcher") == "true") ct++; return ct;
+		}
+	</action>
+	<recipe id="research_particles" creates="particle_accelerator_blueprint" type="research" fuel_cost="1000" incomplete="blueprint_paper" available="!player.seen_items.exists('particle_accelerator_blueprint')" />
+	<recipe id="research_teleportal" creates="interstellar_teleportal_blueprint" type="research" fuel_cost="1000" incomplete="blueprint_paper" available="!player.seen_items.exists('interstellar_teleportal_blueprint')" />
+	<recipe id="research_silicon" creates="silicon" type="research" fuel_cost="100" incomplete="blueprint_paper" />
+	<recipe id="research_titanium" creates="titanium" type="research" fuel_cost="250" incomplete="blueprint_paper" />
+	<recipe id="research_gold" creates="gold" type="research" fuel_cost="250" incomplete="blueprint_paper" />
+	<recipe id="research_refined_oil" creates="refined_oil" type="research" fuel_cost="250" incomplete="blueprint_paper" />
+	<recipe id="research_uranium" creates="uranium" type="research" fuel_cost="500" incomplete="blueprint_paper" />
+	<recipe id="research_chromium" creates="chromium" type="research" fuel_cost="1000" incomplete="blueprint_paper" available="player.seen_items.exists('chromium')" />
+	<recipe id="research_moissanite" creates="moissanite" type="research" fuel_cost="1000" incomplete="blueprint_paper" available="area.getObject('depths.explorer') != null" />
+	<recipe id="research_alien_locator" creates="alien_locator" type="research" fuel_cost="500" incomplete="blueprint_paper" available="player.hasQuest('locate_hq')" />
+	<structure id="research.lab" extends="fighter.ladder" tile="research.lab" fps="6" name="operate" title="structure.research_lab" type="smelter" max_fuel="0" smeltAnim="false" fuelName="time" multiplier="getResearchers(this.area)" multiplierTitle="structure.researchers" sfx="none">
+		<recipe type="research" />
+		<operate><dialogue section="warning" id="not_powered" if="!this.isPowered()" /></operate>
+		<addedToArea><action>for(y in 0...3) setTile(this.tile_x+1, this.tile_y-y, "empty"); setTile(this.tile_x, this.tile_y-2, "empty");</action></addedToArea>
+	</structure>
+	
+	<structure id="research.kitchen" extends="fighter.ladder" type="crafting" tile="research.kitchen" fps="6" name="kitchen" room="false">
+		<tile id="research.kitchen.counter" top="true" x="0" y="0" behind="true" />
+		<recipe type="kitchen3" />
+		<recipe type="kitchen2" />
+		<recipe type="kitchen" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<addedToArea><action>setTile(this.tile_x, this.tile_y, "empty");</action></addedToArea>
+	</structure>
+	
+	<animation id="research.arcade.off" equals="single" />
+	<animation id="research.arcade.on"><frame x="2" /><frame x="4" /><frame x="6" /><frame x="8" /><frame x="10" /><frame x="12" /></animation>
+	<structure id="research.arcade1" tile="research.arcade1" display="structure>research.arcade" animation="research.arcade" fps="6" name="operate" powered="true">
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section><run procedure="minigame.shooter.title" with="fade_fast" /></operate>
+	</structure>
+	<structure id="research.arcade2" extends="research.arcade1" tile="research.arcade2">
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section><run procedure="minigame.platformer.title" with="fade_fast" /><stop /></operate>
+	</structure>
+	
+	<structure id="research.factory" extends="fighter.ladder" type="crafting" tile="research.factory" fps="6" name="factory">
+		<recipe type="airport" includeObjects="false" />
+		<recipe type="car_factory" includeObjects="false" />
+		<recipe type="factory" />
+		<recipe type="net" />
+		<recipe type="workshop" />
+		<recipe type="smelter" />
+		<recipe type="workbench" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<addedToArea><action>setTile(this.tile_x, this.tile_y, "empty");</action></addedToArea>
+	</structure>
+	
+	<structure id="research.drone_factory" extends="fighter.ladder" type="crafting" tile="research.drone_factory" fps="6" name="factory" title="common.earth_lab">
+		<recipe type="drone_lab" /><recipe type="advanced_lab" /><recipe type="tech_resource" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<addedToArea><action>for(x in 1...3) setTile(this.tile_x+x, this.tile_y-1, "empty");</action></addedToArea>
+	</structure>
+	
+	<tile id="research._shields" sheet="research.10" x="0" />
+	<animation id="research.shields.idle"><frame visible="false" length="6" /><append tile="fighter._shields" animation="fighter.shields.idle" /></animation>
+	<animation id="research.shields.over" x="0" count="6" />
+	<structure id="research.shields" tile="research._shields" extends="fighter.shields" repairType="mechanic" />
+	
+	<structure id="research.exit" width="16" height="16">
+		<over>
+			<window type="prompt" message="warning.spaceship_exit" if="var flight = player.getFlight(); return area.vehicle.exitFlying() && (flight == null || area.vehicle.tile_y <= -flight.flight.height)" on="no">
+				<invokeLater><move object="player" x="this.tile_x" y="this.tile_y-1" /></invokeLater><stop />
+			</window>
+			<action>area.vehicle.exit(player, this.xPos)</action>
+		</over>
+		<addedToArea><action>area.setBlockVehicle(this.tile_x, this.tile_y);</action></addedToArea>
+	</structure>
+	
+	<area id="research.interior" name="research" shouldLight="false" backDarkness="1" powered="getPowerCores(this) > 0">
+		<action>
+			for(y in 2...5) for(x in 1...19) setBack(x, y, "ship.grate");
+			for(x in 2...18) setBack(x, 5, "ship.floor"); for(x in 3...17) setBack(x, 1, "ship.floor");
+			for(y in 0...7) for(x in 0...20) if(area.getTileId(x, y, BACK_LAYER) == -1) setTile(x, y, "empty");
+			for(y in 3...5) area.setBlockNPC(3, y); setBack(8, 6, "empty"); setBack(11, 6, "empty"); setTile(8, 6, null); setTile(11, 6, null);
+		</action>
+		<structure id="research.command" x="8" y="1" />
+		<structure id="research.shields" x="12" y="1" />
+		<structure id="fighter.weaps" x="5" y="1" />
+		<structure id="research.quarters" x="3" y="1" />
+		<structure id="research.quarters" x="15" y="1" />
+		<structure id="fighter.o2" x="8" y="2" />
+		<structure id="fighter.subsystems" x="10" y="2" />
+		<structure id="fighter.cargo" x="2" y="5" /><structure id="fighter.cargo" x="14" y="5" />
+		<structure id="research.engine" x="8" y="4" />
+		<structure id="research.hall" x="6" y="5" />
+		<structure id="research.lab" x="17" y="4" />
+		<structure id="research.kitchen" x="1" y="4" />
+		<structure id="research.arcade1" x="1" y="2" />
+		<structure id="research.arcade2" x="2" y="2" />
+		<structure id="research.factory" x="3" y="3" />
+		<structure id="research.drone_factory" x="14" y="3" />
+		<structure id="research.exit" x="8" y="6" /><structure id="research.exit" x="11" y="6" />
+		
+		<object id="power_core.slot" x="8" y="3" /><object id="power_core.slot" x="8" y="4" /><object id="power_core.slot" x="11" y="4" />
+		
+		<object id="ship.doorh" x="7.5" y="1" /><object id="ship.doorh" x="11.5" y="1" />
+		<object id="ship.doorh" x="4.5" y="1" /><object id="ship.doorh" x="14.5" y="1" />
+		<object id="ship.doorv" x="9" y="1.5" /><object id="ship.doorv" x="10" y="1.5" />
+		<object id="ship.doorv" x="9" y="2.5" /><object id="ship.doorv" x="10" y="2.5" />
+		<object id="ship.doorv" x="9" y="4.5" /><object id="ship.doorv" x="10" y="4.5" />
+		<object id="ship.doorh" x="5.5" y="5" /><object id="ship.doorh" x="13.5" y="5" />
+		<object id="ship.doorv" x="5" y="1.5" /><object id="ship.doorv" x="5" y="3.5" />
+		<object id="ship.doorv" x="14" y="1.5" /><object id="ship.doorv" x="14" y="3.5" />
+		<object id="ship.doorv" x="7" y="1.5" /><object id="ship.doorv" x="12" y="1.5" />
+		<object id="ship.doorh" x="2.5" y="4" /><object id="ship.doorh" x="16.5" y="4" />
+		
+		<action>for(y in 0...7) for(x in 0...20) area.setLit(x, y);</action>
+	
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<music id="technically" seconds="1" />
+			<set id="pos" value="[17,4, 15,3, 3,2, 4,2, 13,1, 8,2, 15,5]" />
+			<set id="ids" value="['professor','scavenger','mirrow_n.npc','mirrow_d.npc','mechanic','hunter_lab', 'depths.explorer']" />
+			<set id="id" value="randInt(0, ids.length+3)" />
+			<action>
+				var len = ids.length; found = false; for(i in 0...len){
+					var o = area.getObject(ids[i]); if(o == null) continue; if(i == id){o.setPosition(Tile.SIZE, 3*Tile.SIZE, true); found = true;}
+					else if(o.tile_x &lt; 3) o.setPosition(pos[2*i]*Tile.SIZE, pos[2*i+1]*Tile.SIZE, true);
+				}
+			</action>
+			<set id="s" value="area.getStructureById('fighter.shields')" /><structure id="research.shields" x="s.tile_x" y="s.tile_y" if="s != null" />
+			<tile id="research.kitchen.counter.food" x="1" y="3" top="true" if="found" />
+		</onLoad>
+	</area>
+	
+	<animation id="research.wheels.idle" x="61" count="1" />
+	<animation id="research.empty" x="36" count="1"><append tile="research" animation="research.wheels.idle" behind="true" /></animation>
+	<animation id="research.idle" x="37" count="1"><append tile="research" animation="research.wheels.idle" behind="true" /></animation>
+	<animation id="research.wheels" x="50" count="12" />
+	<animation id="research.move" x="37" count="1" length="12"><append tile="research" animation="research.wheels" behind="true" /></animation>
+	<animation id="research.takeoff" x="32" count="4"><append tile="research" animation="research.idle" behind="true" /></animation>
+	<animation id="research.land" x="32" count="4" reverse="true"><append tile="research" animation="research.idle" behind="true" /></animation>
+	<animation id="research.fly" x="24" count="8"><append tile="research" animation="research.idle" behind="true" /></animation>
+	<animation id="research.hover" equals="research.fly" />
+	<animation id="research.swim" x="0" count="8"><append tile="research" animation="research.fly" behind="true" /></animation>
+	<animation id="research.toLand" x="8" count="4" reverse="true"><append tile="research" animation="research.fly" behind="true" /></animation>
+	<animation id="research.toSea" x="8" count="4"><append tile="research" animation="research.fly" behind="true" /></animation>
+	<animation id="research.door.open" x="12" count="12" />
+	<animation id="research.door.close"><frame x="12" count="12" reverse="true" /><frame visible="false" /></animation>
+	<animation id="research.shields" x="44" count="6" />
+	<animation id="research.shields.front" x="38" count="6" />
+	<animation id="research.shields.back"><frame visible="false" length="6" /><append tile="research" animation="research.shields.front" flip="true" x="314" /></animation>
+	<animation id="research.ftl" x="24" count="8">
+		<append tile="research" animation="research.idle" behind="true" />
+		<append tile="fighter.shields" animation="fighter.ftl_bubble" />
+	</animation>
+	<tile id="light.research" sheet="{core}/player/light256.png">
+		<tile sheet="{core}/player/light256.png" offsetX="-128" /><tile sheet="{core}/player/light256.png" offsetX="128" />
+	</tile>
+	<vehicle id="research" tile="research" health="2000" fuel="1000" useBatteries="false" efficiency="0" fuelName="power" defense="9" fps="12" speed="8" type="spaceship" blood="science.explosion.lg" title="itemName('world.research', this.name)" underground="true" underwater="true" flight_height="999" max_weight="10000" death_sfx="explosion" block_icon="fighter.shields.ico" block_behind="true" block_move="true" icon="research_lab.ico" flyMove="false" swimAnim="true" hitDamage="5" backAboveTiles="true" enter_sea_sfx="research_dive" exit_sea_sfx="research_surface" allowRename="true">
+		<tile id="research" animation="hidden" x="0" y="0" fps="12" />
+		<interior area="research.interior" offsetX="3" offsetY="0" enterX="8" enterY="5" exitX="0" operateX="9.5" operateY="1" />
+		<repair id="titanium" value="250" /><operateHitbox x="124" y="48" width="66" height="64" />
+		<dismount><action>if(this.renderer != null) this.renderer.scaleX = 1;</action></dismount>
+		<light tile="light.research" />
+        <init><set id="partial" value="0" /><set id="cores" value="0" /><set id="repair" value="0" /></init>
+		<onFrame>
+			var f = frames*0.25; var of = Math.floor(f); partial += f-of; if(partial >= 1){of++; partial -= 1;}
+			var p = of*cores; if(this.blocking) p -= of*4; if(p > 0) this.addFuel(p); else if(p &lt; 0) this.useFuel(-p);
+			var p = of*repair; if(p > 0) this.addHealth(p);
+		</onFrame>
+		<onDeath><run procedure="launch.lifepod" /></onDeath>
+		<mount><set id="cores" value="getPowerCores(this.interior)" /><set id="repair" value="(this.interior.getNPC('mechanic')==null)?0:1" /></mount>
+		<exitInterior><run object="research" event="mount" /></exitInterior>
+		<enterInterior>
+			<section if="this.interior != null && player.questComplete('research_lab') && (o = player.areas.get('earth.desert').getNPC('professor')) != null">
+				<remove object="o" /><object id="professor" x="17" y="4" areaObject="this.interior" />
+			</section>
+		</enterInterior>
+		<over><action if="this.renderer != null">var s = this.renderer.inner.getChildAt(0); s.setFrame(0); s.playAnimation("research.door.open", false);</action></over>
+		<out><action if="this.renderer != null">var s = this.renderer.inner.getChildAt(0); s.setFrame(0); s.playAnimation("research.door.close", false);</action></out>
+		<shield tile="research" animation="research.shields" hit_front="research.shields.front" hit_back="research.shields.back" hit_sfx="ship_shield" />
+	</vehicle>
+</data>

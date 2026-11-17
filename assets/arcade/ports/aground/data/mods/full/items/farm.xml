@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="rice_seed.ico" sheet="items.png" x="57" />
+	<include id="rice.xml" includeRoot="true" />
+	<tile id="rice_field" sheet="rice.png" />
+	<animation id="rice.grow" count="5" />
+	<animation id="rice.harvest" count="12" x="6" />
+	<animation id="rice.idle" count="1" x="5" />
+	<crop id="rice" tile="rice_field" cost="250" icon="rice_seed.ico" attachFarm="farm">
+		<farmable item="rice" min="1" max="4" time="30" />
+	</crop>
+</data>

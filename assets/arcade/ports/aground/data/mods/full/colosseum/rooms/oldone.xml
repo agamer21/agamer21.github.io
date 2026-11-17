@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<enemy id="colosseum.alien" extends="alien" hostileFlag="">
+		<tooltip section="object.tooltip" id="enemy" />
+		<onHit><attack type="omni" damage="10" range="2" animation="blast" knockback="32" sfx="fireball">
+			<post><action if="old_health <= 0.65*this.getMaxHealth()">this.renderer.scaleX = -this.renderer.scaleX; this.knockback(sign(this.renderer.scaleX)*128, true);</action><run procedure="alien.orbs" /></post>
+		</attack><stop complete="true" /></onHit>
+		<onDeath><action if="exists('orbs')">while(orbs.length > 0) area.removeObject(orbs.pop());</action><stop complete="true" /></onDeath>
+		<operate><stop complete="true" /></operate>
+	</enemy>
+	<area id="colosseum.alien" background="black" shouldLight="false">
+		<run procedure="alchemist_cave" />
+		<object id="heal_circle" x="92-0.5" y="4+0.5" />
+		<object id="colosseum.alien" x="87" y="4" />
+	</area>
+	<procedure id="colosseum.alien">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 200);
+		var map = new StringMap(); map.set("colosseum.alien", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("berries"), 10);
+		player.inventory.addItems(getItem("attack_potion"), 5); player.inventory.addItems(getItem("steak"), 5);
+		player.inventory.addItems(getItem("fire_arrow"), 10); player.inventory.addItems(getItem("bow"), 1, 0, Item.setParameter(null, "p", "fire_arrow"));
+		player.stats.get("speed").permaBuff(3); player.setHotkey(0, getItem("fire_arrow").asItem()); player.setHotkey(1, getItem("attack_potion").asItem()); setFlag('oldone.begin', true);</action>
+		<equip id="fire_sword" fromInventory="false" />
+		<equip id="steel_pickaxe" fromInventory="false" />
+		<equip id="steel_armor" fromInventory="false" />
+		<equip id="ice_shield" fromInventory="false" />
+		<teleport area="colosseum.alien" x="92" y="4" temporary="true" />
+	</procedure>
+</data>

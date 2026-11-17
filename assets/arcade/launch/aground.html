@@ -11,12 +11,9 @@
   <header class="player-header">
     <a href="/#games" aria-label="Back to AG Arcade">← AG Arcade</a>
     <h1>Aground</h1>
+    <button id="fullscreen" type="button">Fullscreen</button>
   </header>
-  <main class="port-launcher">
-    <img src="/assets/arcade/icons/aground.webp" width="144" height="144" alt="">
-    <p>Mine, craft, and build a settlement.</p>
-    <a class="port-play" href="https://reeyuki.github.io/AgroundWebport/" target="_blank" rel="noopener">Play in a new tab ↗</a>
-    <p class="port-return">Close the game tab to return here.</p>
-  </main>
+  <iframe id="game" class="player-frame" src="/assets/arcade/ports/aground/" title="Aground" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+  <script src="/assets/arcade/embedded-player.js" defer></script>
 </body>
 </html>

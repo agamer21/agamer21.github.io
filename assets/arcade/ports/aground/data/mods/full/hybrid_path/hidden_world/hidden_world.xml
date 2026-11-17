@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <include id="bg.xml" />
+
+  <tile id="hidden_world.dirt" sheet="bg.7" x="1" />
+  <tile id="hidden_world.grass" sheet="bg.7" x="1"><tile sheet="bg.7" x="0" /></tile>
+  <tile id="hidden_world.stone" sheet="bg.7" x="2" />
+  <tile id="hidden_world.bedrock" sheet="bg.7" x="3" />
+  <tile id="hidden_world.dirt_sand1" sheet="bg.7" x="1"><tile sheet="{core}/tiles/tiles.png" x="85" /></tile>
+  <tile id="hidden_world.dirt_sand2" sheet="bg.7" x="1"><tile sheet="{core}/tiles/tiles.png" x="84" /></tile>
+  <tile id="hidden_world.dirt_sand3" sheet="bg.7" x="1"><tile sheet="{core}/tiles/tiles.png" x="88" /></tile>
+  <dig id="hidden_world.dirt" cost="4" />
+  <dig id="hidden_world.grass" cost="4" grass="true" />
+  <dig id="hidden_world.stone" cost="6" />
+  <dig id="hidden_world.bedrock" cost="8" />
+  <dig id="hidden_world.dirt_sand1" cost="4" />
+  <dig id="hidden_world.dirt_sand2" cost="4" />
+  <dig id="hidden_world.dirt_sand3" cost="4" />
+
+  <tile id="exotic_gas" sheet="bg.7" x="4" />
+
+  <parallax id="hidden_world" mapBG="264d96" mapBGHeight="95" waterLevel="0" >
+    <layer p="0" day="true"><tile sheet="bg.1" x="0" /></layer>
+		<layer p="0" day="false" storm="false" glow="true"><tile sheet="{core}/start/parallax/night_bg.png" x="0" y="0" /></layer>
+		<layer p="0" storm="false">
+			<tile id="sun" animation="sun" fps="5" rise="5" set="20" dir="left" pathHeight="96" pathTop="-16" sun="true" />
+		</layer>
+    <layer p="0.046875" py="0.1875" scroll="0.0625"><tile sheet="{core}/start/parallax/tiles256.png" x="0" /></layer>
+    <layer p="0.05" py="0.15" scroll="0.03125"><tile sheet="bg.2" x="0" /></layer>
+    <layer p="0.0625" py="0.25"><tile sheet="bg.3" x="0" loop="false" dy="-6" /></layer>
+    <layer p="0.09375" py="0.375" scroll="0.125"><tile sheet="{core}/start/parallax/tiles256.png" x="1" dy="8" /></layer>
+    <layer p="0.15" py="0.65"><tile sheet="bg.4" x="0" loop="false" offsetX="-128"/></layer>
+    <layer p="0.25" py="1"><tile sheet="bg.5" x="0" loop="false" dy="8" /></layer>
+    <layer p="0.6" py="1" ><tile sheet="bg.6" x="0" loop="false" offsetX="128" /></layer>
+    <layer type="back" /><layer type="water" image="{core}/start/parallax/water.png" max_depth="9600" background="0b3a5a" offsetY="12" />
+	<layer type="waves" image="{core}/start/parallax/waves.png" wave_height="4" />
+	<layer p="0.0625" py="0.09375" overWater="true" glow="true" scale_py="true">
+		<tile sheet="{mod:full_version}/space/depths/bg.2" x="2" dy="144" />
+		<rect color="185278" x="-256" y="288" width="512" height="144" loop="true" />
+	</layer>
+  </parallax>
+
+  <area id="hidden_world.shallows.left" extends="sea_floor_bottom" extendAppend="true" yStrength="0.25" xStrength="0.125">
+    <mine start="0.8" end="0.9" flood="true" /><tiles id="hidden_world.bedrock" start="0.9" end="1" />
+    <ore id="gold" start="0.6" end="0.8" percent="0.003125" tile="sand" />
+    <ore id="quartz" start="0.5" end="0.7" percent="0.00625" tile="sand" />
+    <ore id="uranium" start="0.7" end="0.8" percent="0.003125" tile="sand" />
+    <ore id="sulfur" start="0.5" end="0.6" percent="0.00625" tile="sand" />
+    <ore id="exotic_gas" start="0.9" end="1" percent="0.0015625" tile="hidden_world.bedrock" />
+  </area>
+  <area id="hidden_world.shallows.right" extends="sea_floor_bottom" extendAppend="true" yStrength="0.5" xStrength="-0.25">
+    <tiles id="hidden_world.bedrock" start="0.9" end="1" />
+    <ore id="blood_gem" start="0.7" end="0.9" percent="0.003125" tile="sand" />
+    <ore id="alter_gem" start="0.5" end="0.8" percent="0.00625" tile="sand" />
+    <ore id="spirit_gem" start="0.8" end="0.9" percent="0.003125" tile="sand" />
+    <ore id="focus_gem" start="0.5" end="0.6" percent="0.00625" tile="sand" />
+    <ore id="evo_shard" start="0.9" end="1" percent="0.003125" tile="hidden_world.bedrock" />
+    <ore id="exotic_gas" start="0.9" end="1" percent="0.0015625" tile="hidden_world.bedrock" />
+  </area>
+  <enemy id="lampfish3" extends="lampfish" minY="70" />
+  <area id="hidden_world" width="96" height="96" background="hidden_world" planet="start.gas" name="quests.hidden_world">
+    <shape type="trapezoid">
+			<top y="-5" fromX="16" toX="25" />
+			<bottom y="0" fromX="10" toX="31" />
+		</shape>
+    <tiles id="hidden_world.dirt" start="0" end="0.4" />
+    <tiles id="hidden_world.stone" start="0.4" end="0.8" />
+    <tiles id="hidden_world.bedrock" start="0.8" end="1" />
+    <tiles id="hidden_world.grass" top="0" />
+    <shore x="-1" top="sand_top" bottom="sand" trans1="hidden_world.dirt_sand1" trans2="hidden_world.dirt_sand2" flip="true" dock="dock_empty" />
+    <shore x="96" top="sand_top" bottom="sand" trans1="hidden_world.dirt_sand1" trans2="hidden_world.dirt_sand3" dock="dock_empty_flip" />
+    <set id="_width" value="192" /><set id="_height" value="88" /><appendArea id="hidden_world.shallows.left" offsetX="-196" offsetY="8" />
+    <set id="_width" value="172" /><set id="_height" value="88" /><appendArea id="hidden_world.shallows.right" offsetX="68" offsetY="8" />
+    <action>for(x in -250...250) setTile(x, 95, "blackstone");</action>
+
+    <ore id="iron" start="0.1" end="0.5" percent="0.0125" tile="hidden_world.dirt" />
+    <ore id="focus_gem" start="0.1" end="0.5" percent="0.0125" tile="hidden_world.dirt" />
+    <ore id="alter_gem" start="0.4" end="0.6" percent="0.00625" tile="hidden_world.stone" />
+    <ore id="quartz" start="0.4" end="0.6" percent="0.00625" tile="hidden_world.stone" />
+    <ore id="titanium" start="0.5" end="0.7" percent="0.00625" tile="hidden_world.stone" />
+    <ore id="blood_gem" start="0.5" end="0.7" percent="0.00625" tile="hidden_world.stone" />
+    <ore id="chromium" start="0.6" end="0.8" percent="0.003125" tile="hidden_world.stone" />
+    <ore id="spirit_gem" start="0.6" end="0.8" percent="0.003125" tile="hidden_world.stone" />
+    <ore id="exotic_gas" start="0.7" end="0.8" percent="0.00125" tile="hidden_world.stone" />
+    <ore id="uranium" start="0.8" end="1.0" percent="0.003125" tile="hidden_world.bedrock" />
+    <ore id="evo_shard" start="0.8" end="1.0" percent="0.003125" tile="hidden_world.bedrock" />
+    <ore id="exotic_gas" start="0.8" end="1.0" percent="0.0025" tile="hidden_world.bedrock" />
+
+    <objects id="bush" fromX="32" toX="92" y="-1" count="6" />
+    <structure id="hidden_world.monolith" x="18" y="-6"/>
+    <objects structure="light_weed1" width="2" height="6" count="2" fromX="-192" toX="-128" fromY="50" toY="90" underwater="true" bottom="true" />
+    <objects structure="light_weed2" width="2" height="6" count="2" fromX="-196" toX="-128" fromY="50" toY="90" underwater="true" bottom="true" />
+    <objects structure="light_weed3" width="2" height="6" count="2" fromX="-196" toX="-128" fromY="50" toY="90" underwater="true" bottom="true" />
+    <objects structure="light_weed4" width="2" height="6" count="2" fromX="-196" toX="-128" fromY="50" toY="90" underwater="true" bottom="true" />
+    <objects id="crystal_tree" width="2" height="5" count="15" fromX="-128" toX="176" fromY="10" toY="60" underwater="true" bottom="true" />
+    <objects id="spindle_driller" start="0.4" end="0.8" percent="0.0005" tile="hidden_world.stone" />
+	  
+		<set id="pillar_x" value="randInt(2, 93)" />
+		<spreadTiles x="pillar_x" y="68" tile="invisible_block" on="hidden_world.stone" count="100" />
+		<structure id="recipe_pillar" x="pillar_x" y="68" recipe="make_drain_exo_sword" />
+
+    <spawner id="spindle_driller" time="10000" count="6" fromX="1" toX="94" fromY="36" toY="78" tile="hidden_world.stone" />
+    <spawner id="snaptopus" time="10000" count="6"  fromX="-240" toX="240" fromY="3" toY="78" spawnWidth="128" underwater="true" />
+    <spawner id="scale_fish" time="10000" count="6"  fromX="-240" toX="240" fromY="3" toY="78" spawnWidth="128" underwater="true" />
+    <spawner id="blue_crab" time="5000" count="20"  fromX="-240" toX="240" fromY="3" toY="78" spawnWidth="128" underwater="true" bottom="true" />
+    <spawner id="lampfish3" time="5000" count="6" fromX="-240" toX="240" fromY="70" toY="96" spawnWidth="128" underwater="true" />
+    <spawner id="octoblaster" time="10000" count="8" fromX="-240" toX="240" fromY="10" toY="96" spawnWidth="128" underwater="true" />
+
+    <spawner id="boar" time="2000" count="5" fromX="3" toX="95" fromY="-1" toY="-1" enabled="getFlag('dragon_sanctuary')" />
+    <spawner id="wyrm_hidden_world" time="4000" count="3" fromX="1" toX="94" fromY="3" toY="32" tile="hidden_world.dirt" enabled="getFlag('dragon_sanctuary')" />
+    <spawner id="npc.baby_dragon" time="3000" count="4" fromX="3" toX="95" fromY="-1" toY="-1" enabled="getFlag('dragon_sanctuary')" />
+    <spawner id="npc.young_dragon" time="4000" count="3" fromX="3" toX="95" fromY="-1" toY="-10" ground="false" enabled="getFlag('dragon_sanctuary')" />
+    <fishing>
+      <loot id="toothfish" p="8" difficulty="1" />
+      <loot id="rockfish" p="12" difficulty="2" />
+      <loot id="coral_cod" p="1" difficulty="3" />
+      <loot id="carapace" p="1" difficulty="6" />
+    </fishing>
+
+    <init><runAreaLoad /><action>area.spawner.spawnAll("snaptopus"); area.spawner.spawnAll("scale_fish"); area.spawner.spawnAll("blue_crab"); area.spawner.spawnAll("lampfish3");area.spawner.spawnAll("octoblaster");</action></init>
+    <onLoad>
+      <object id="draconian_sister" x="70" if="player.getKillCount('draconian_wizard') != 0 && player.getNPC('draconian_sister') == null && getFlag('draconian_teacher_intro')"/>
+      <music id="depths" seconds="1" /><achievement id="hidden_world" />
+    </onLoad>
+    <connection area="hidden_world" fromX="245" toX="-245" />
+		<connection area="hidden_world" fromX="-245" toX="245" />
+  </area>
+</data>

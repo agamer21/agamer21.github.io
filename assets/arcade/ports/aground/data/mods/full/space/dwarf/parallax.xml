@@ -1,0 +1,17 @@
+<sheets>
+<tilesheet id='parallax.1' sheet='parallax.png' width='1024' height='144'>
+	<image frame='0' x='0' y='0' width='1024' height='17' offsetX='0' offsetY='127' />
+	<image frame='1' x='0' y='17' width='866' height='109' offsetX='45' offsetY='35' />
+</tilesheet>
+<tilesheet id='parallax.2' sheet='parallax.png' width='768' height='144'>
+	<image frame='0' x='0' y='126' width='768' height='55' offsetX='0' offsetY='89' />
+	<image frame='1' x='0' y='181' width='762' height='87' offsetX='3' offsetY='57' />
+</tilesheet>
+<tilesheet id='parallax.3' sheet='parallax.png' width='512' height='144'>
+	<image frame='0' x='0' y='268' width='512' height='113' offsetX='0' offsetY='31' />
+</tilesheet>
+<tilesheet id='parallax.4' sheet='parallax.png' width='256' height='144'>
+	<image frame='0' x='762' y='181' width='256' height='142' offsetX='0' offsetY='2' />
+	<image frame='1' x='0' y='381' width='256' height='59' offsetX='0' offsetY='85' />
+</tilesheet>
+</sheets>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="minigame.shooter.explosion1" sheet="sheet.3" />
+	<tile id="minigame.shooter.explosion2" sheet="sheet.3" x="4" />
+	<tile id="minigame.shooter.explosion3" sheet="sheet.3" x="8" />
+	<tile id="minigame.shooter.explosion4" sheet="sheet.3" x="12" />
+	<tile id="minigame.shooter.explosion5" sheet="sheet.3" x="16" />
+	<tile id="minigame.shooter.explosion6" sheet="sheet.3" x="20" />
+	<animation id="minigame.shooter.explosion1" equals="item4" />
+	<animation id="minigame.shooter.explosion2" equals="item4" />
+	<animation id="minigame.shooter.explosion3" equals="item4" />
+	<animation id="minigame.shooter.explosion4" equals="item4" />
+	<animation id="minigame.shooter.explosion5" equals="item4" />
+	<animation id="minigame.shooter.explosion6" equals="item4" />
+	
+	<tile id="minigame.shooter.enemy1" sheet="sheet.10" />
+	<animation id="minigame.shooter.enemy1.idle" x="2" count="6" />
+	<animation id="minigame.shooter.enemy1.walk" equals="minigame.shooter.enemy1.idle" />
+	<animation id="minigame.shooter.enemy1.fire" count="2" repeat="3" />
+	<enemy id="minigame.shooter.enemy" fps="10" type="surface" range="200" canFlip="false" friendlyFire="false" passEnemies="true" flying="true" blood="minigame.shooter.explosion6" ignoreHit="true" score="0" cooldownCancelAttack="true">
+		<positionChanged><remove object="this" if="this.xPos < -32" /></positionChanged>
+		<onDeath><action if="!exists('skipScore')">player.addTmpVar("shooter_points", Std.parseInt(this.info.xml.get("score")));</action></onDeath>
+		<removedFromArea><action>
+			if(!area.hasObjectInLayer(ENEMY_LAYER)) minigame_shooter_handle_wave(area);
+		</action></removedFromArea>
+	</enemy>
+	<hitEffect id="minigame.shooter.explosion2" tile="minigame.shooter.explosion2" animation="minigame.shooter.explosion2" />
+	<enemy id="minigame.shooter.enemy1" tile="minigame.shooter.enemy1" health="2" speed="0.75"  extends="minigame.shooter.enemy" score="10" death_sfx="fighter_death" >
+		<tile id="minigame.shooter.enemy1" name="attack" animation="hidden" fps="10" y="0" />
+		<cooldown seconds="3">
+			<set id="_attack" value="this.getTileById('attack')" />
+			<section if="_attack != null">
+				<sound id="alien_fighter_attack" object="this" />
+				<projectile tile="minigame.shooter.enemy1.projectile" animation="item4" damage="1" range="14" speed="5" delay="1" dx="this.getDX()" dy="0" spawner="this" hit_sfx="alien_fighter_impact" hitEffect="minigame.shooter.explosion2" fireNoSpawner="false" />
+				<projectile tile="minigame.shooter.enemy1.projectile" animation="item4" damage="1" range="14" speed="5" delay="3" dx="this.getDX()" dy="0" spawner="this" hit_sfx="alien_fighter_impact" hitEffect="minigame.shooter.explosion2" fireNoSpawner="false" />
+				<projectile tile="minigame.shooter.enemy1.projectile" animation="item4" damage="1" range="14" speed="5" delay="5" dx="this.getDX()" dy="0" spawner="this" hit_sfx="alien_fighter_impact" hitEffect="minigame.shooter.explosion2" fireNoSpawner="false" />
+				<play object="_attack" animation="minigame.shooter.enemy1.fire" offsetX="-0.5" offsetY="-0.5" />
+				<play object="_attack" animation="hidden" loop="true" />
+			</section>
+		</cooldown>
+	</enemy>
+	
+	<tile id="minigame.shooter.enemy2" sheet="sheet.10" x="8" />
+	<animation id="minigame.shooter.enemy2.idle" x="6" count="6" />
+	<animation id="minigame.shooter.enemy2.walk" equals="minigame.shooter.enemy2.idle" />
+	<enemy id="minigame.shooter.enemy2" tile="minigame.shooter.enemy2" health="6" speed="0.5" extends="minigame.shooter.enemy" score="50" death_sfx="bomber_death" >
+		<tile id="minigame.shooter.enemy2" name="attack" animation="hidden" fps="10" y="0" />
+		<cooldown seconds="2">
+			<set id="_attack" value="this.getTileById('attack')" />
+			<section if="_attack != null">
+				<sound id="alien_bomber_attack" object="this" />
+				<projectile tile="minigame.shooter.enemy2.projectile" animation="item6" damage="4" range="14" speed="5" delay="3" dx="this.getDX()" dy="0" spawner="this" hit_sfx="orb_impact" fireNoSpawner="false">
+					<hitEffect tile="minigame.shooter.explosion1" animation="minigame.shooter.explosion1" />
+				</projectile>
+				<play object="_attack" animation="item6" offsetX="-0.5" offsetY="-0.5" />
+				<play object="_attack" animation="hidden" loop="true" />
+			</section>
+		</cooldown>
+	</enemy>
+	
+	<tile id="minigame.shooter.enemy3" sheet="sheet.10" x="20" />
+	<animation id="minigame.shooter.enemy3.idle" equals="item6" />
+	<animation id="minigame.shooter.enemy3.walk" equals="minigame.shooter.enemy3.idle" />
+	<enemy id="minigame.shooter.enemy3" tile="minigame.shooter.enemy3" health="3" speed="3" extends="minigame.shooter.enemy" score="20" passPlayer="true" overlapVehicle="true" death_sfx="cruiser_death">
+		<over>
+			<damage object="player" attacker="this" damage="6" />
+			<action>if(!player.vehicle.blocking) skipScore = true; this.loseHealth(10,0,player)</action>
+		</over>
+	</enemy>
+		
+	<enemy id="minigame.shooter.pickup" tile="vehicle_health" health="1" speed="1" extends="minigame.shooter.enemy" passPlayer="true" overlapVehicle="true" blood="minigame.shooter.explosion3" death_sfx="explosion">
+		<over><choose>
+			<action if="player.vehicle.blocking">this.loseHealth(10,0,player)</action>
+			<section><action>player.vehicle.heal(5);</action><remove object="this" /><sound id="item" /></section>
+		</choose></over>
+	</enemy>
+	
+	<tile id="minigame.shooter.player" sheet="sheet.10" x="26" />
+	<animation id="minigame.shooter.player.idle" x="3" count="6" />
+	<animation id="minigame.shooter.player.engines" x="9" count="6" />
+	<animation id="minigame.shooter.player.move" x="3" count="6"><append tile="minigame.shooter.player" animation="minigame.shooter.player.engines" /></animation>
+	<animation id="minigame.shooter.player.attack" x="3" count="3"><append tile="minigame.shooter.player" animation="item3" /></animation>
+	<animation id="minigame.shooter.player.shields" x="15" count="6" />
+	<vehicle id="minigame.shooter.player" tile="minigame.shooter.player" health="20" speed="2" defense="0" fps="10" efficiency="0" flyAnim="false" type="spaceship" block_icon="fighter.shields.ico" block_behind="true" block_move="true" icon="escort_fighter.ico" title="world.fighter" blood="none" flight_height="999" max_weight="4000" death_sfx="none" canDismount="false" attack_move="true" canFlip="false" addExp="false">
+		<gui hideAll="true" options="true" bars="true" equipButtons="true" coins="true" />
+		<shield tile="minigame.shooter.player" animation="minigame.shooter.player.shields" />
+		<attack type="projectile" damage="1" range="14">
+			<projectile tile="minigame.shooter.player.projectile" animation="item3" speed="5" delay="2" fire_sfx="plasma_gun">
+				<hitEffect tile="minigame.shooter.explosion4" animation="minigame.shooter.explosion4" />
+			</projectile>
+		</attack>
+		<onDeath>
+			<sound id="explosion" /><hitEffect object="this" tile="minigame.shooter.explosion5" animation="minigame.shooter.explosion5" runPaused="true" />
+			<lerp object="this" alpha="0" seconds="0.1" modal="true" /><wait seconds="0.5" />
+			<run procedure="minigame.shooter.quit" /><stop/>
+		</onDeath>
+		<onCancel>
+			<window type="prompt" message="common.quit_minigame"><run procedure="minigame.shooter.quit" /></window><stop />
+		</onCancel>
+		<init><set id="partial" value="0" /></init>
+		<onFrame>
+			if(this.blocking){
+				var f = frames/120; var of = Math.floor(f); partial += f-of; if(partial >= 1){of++; partial -= 1;} if(of > 0) this.loseHealth(of, FLAG_IGNORE_DEFENSE, player);
+			}
+		</onFrame>
+		<mount><action>setGameScale(1)</action></mount>
+	</vehicle>
+	
+	<tile id="minigame.shooter.enemy1.projectile" sheet="sheet.11" />
+	<tile id="minigame.shooter.enemy2.projectile" sheet="sheet.11" x="4" />
+	<tile id="minigame.shooter.player.projectile" sheet="sheet.11" x="10" />
+	
+	<parallax id="minigame.shooter.bg">
+		<layer p="0" scale="2"><tile sheet="sheet.1" x="3" /></layer>
+		<layer type="back" />
+	</parallax>
+		
+	<action>
+		minigame_shooter_waves = [
+			[2,0,0,0],
+			[5,0,0,1],
+			[2,0,0,0],
+			[3,1,0,0],
+			[2,3,0,2],
+			[3,1,0,0],
+			[0,0,3,0],
+			[5,0,0,1],
+			[5,0,3,0],
+			[2,3,0,2],
+			[0,3,5,1],
+			[3,3,3,0],
+			[2,3,0,2],
+			[3,3,5,0],
+			[5,0,0,1],
+			[7,5,5,0],
+			[5,5,5,1],
+			[10,5,5,0],
+			[5,10,5,0]
+		];
+		function minigame_shooter_handle_wave(area){
+			var w = getGlobal('minigame_shooter_wave');
+			var wave = minigame_shooter_waves[w]; var names = ['minigame.shooter.enemy1','minigame.shooter.enemy2','minigame.shooter.enemy3','minigame.shooter.pickup'];
+			var x = 6; var objects = []; for(i in 0...4) for(c in 0...wave[i]) objects.push(getObject(names[i])); shuffle(objects);
+			while(objects.length > 0){
+				var rows = ((x&amp;1) == 0)?[1,3,5,7]:[0,2,4,6,8]; shuffle(rows);
+				while(objects.length > 0 &amp;&amp; rows.length > 0){
+					var y = rows.pop(); var info = objects.pop();
+					var o = info.create(Std.int((8+x*4*Std.parseFloat(info.xml.get("speed")))*Tile.SIZE), y*Tile.SIZE); area.addObject(o); o.renderer.scaleX = 1;
+				} x++;
+			} w++; if(w >= minigame_shooter_waves.length) w -= 4; setGlobal('minigame_shooter_wave', w);
+		}
+	</action>
+	
+	<area id="minigame.shooter" background="minigame.shooter.bg" shouldLight="false" type="none" camera="fixed" clearReturn="false">
+		<connection area="stop" dir="left" fromX="0" toX="0" />
+		<connection area="stop" dir="right" fromX="15" toX="15" />
+		<connection area="stop" dir="down" fromY="8" toY="8" />
+		<connection area="stop" dir="up" fromY="0" toY="0" />
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<action>setGlobal('minigame_shooter_wave', 0); player.setTmpVar("shooter_points", 0); player.gui.coins.changeCurrency("sticky", "tvar:shooter_points"); minigame_shooter_handle_wave(area);</action>
+			<music id="minigame_shooter" seconds="1" />
+		</onLoad>
+		<onLeave><action>player.gui.coins.changeCurrency("coins", "coins");</action></onLeave>
+	</area>
+		
+	<procedure id="minigame.shooter.quit">
+		<action>var v = player.getTmpVar("shooter_points"); if(v > player.getVar("shooter_hiscore")){player.setVar("shooter_hiscore", v); setGlobal('has_highscore', true);}</action>
+		<score id="shooter_score" value="player.getVar('shooter_hiscore')" if="getGlobal('has_highscore')" />
+		<section with="fade_fast"><action>this.dismount(true)</action><run procedure="minigame.exit" /><run procedure="minigame.shooter.title" /></section>
+	</procedure>
+	<procedure id="minigame.shooter.title">
+		<action>oldTile = player.gui.coins.tile; oldStorage = player.gui.coins.storage; player.gui.coins.changeCurrency("sticky", "var:shooter_hiscore");</action>
+		<show type="tile" tile="minigame.shooter.title" animation="minigame.shooter.title" renderer="static" id="title" x="0" y="0" fps="10" />
+		<show id="highscore" tooltip="default" text="common.new_highscore" seconds="0.16" x="0.5" y="0" if="getGlobal('has_highscore')" /><action>setGlobal('has_highscore', false)</action>
+		<menu section="common" closeable="true" showCoins="true" autoselect="true" darken="false" yalign="0.55">
+			<choice id="newgame">
+				<section with="fade_fast">
+					<run procedure="minigame.enter" />
+					<teleport area="minigame.shooter" x="0" y="4" temporary="true" />
+					<object id="minigame.shooter.player" x="0" y="4" name="ship" /><facing object="ship" dir="right" />
+					<action>ship.doMount(player, true); clearStaticDisplays();</action>
+				</section><stop />
+			</choice>
+			<choice id="exit" />
+		</menu><section with="fade_fast"><hide id="title" /><hide id="highscore" /><action>player.gui.coins.changeCurrency(oldTile, oldStorage);</action></section>
+	</procedure>
+</data>

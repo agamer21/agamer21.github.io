@@ -1,0 +1,28 @@
+<sheets>
+<tilesheet id='structures.1' sheet='structures.png' width='160' height='160'>
+	<image frame='0' x='1344' y='1268' width='160' height='118' offsetX='0' offsetY='42' />
+	<image frame='1' x='1024' y='1268' width='160' height='141' offsetX='0' offsetY='19' />
+	<image frame='2' x='1184' y='1268' width='160' height='121' offsetX='0' offsetY='39' />
+	<image frame='3' x='1344' y='1409' width='160' height='93' offsetX='0' offsetY='67' />
+	<image frame='4' x='1024' y='1409' width='160' height='103' offsetX='0' offsetY='57' />
+	<image frame='5' x='1184' y='1409' width='160' height='103' offsetX='0' offsetY='57' />
+</tilesheet>
+<tilesheet id='structures.2' sheet='structures.png' width='512' height='320'>
+	<image frame='0' x='1024' y='320' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='1' x='0' y='640' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='2' x='0' y='954' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='3' x='0' y='0' width='512' height='320' offsetX='0' offsetY='0' />
+	<image frame='4' x='0' y='1268' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='5' x='0' y='1582' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='6' x='512' y='640' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='7' x='1024' y='640' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='8' x='512' y='0' width='512' height='320' offsetX='0' offsetY='0' />
+	<image frame='9' x='1024' y='0' width='512' height='320' offsetX='0' offsetY='0' />
+	<image frame='10' x='0' y='320' width='512' height='320' offsetX='0' offsetY='0' />
+	<image frame='11' x='512' y='320' width='512' height='320' offsetX='0' offsetY='0' />
+	<image frame='12' x='512' y='954' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='13' x='1024' y='954' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='14' x='512' y='1268' width='512' height='314' offsetX='0' offsetY='6' />
+	<image frame='15' x='512' y='1582' width='512' height='314' offsetX='0' offsetY='6' />
+</tilesheet>
+</sheets>

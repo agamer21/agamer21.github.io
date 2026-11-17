@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="fish.xml" includeRoot="true" />
+	<tile id="clam" sheet="fish.png" x="0" y="0" />
+	<animation id="clam.idle" count="1" />
+	<animation id="clam.pre_attack" x="1" count="9" />
+	<animation id="clam.attack" x="10" count="10" />
+	<enemy id="clam" tile="clam" health="10" element="water" defense="5" speed="0" canFlip="false" canCritical="false" type="underwater" death_sfx="clam_death">
+		<loot p="4" /><loot id="pearl" p="1" achievement="clam_pearl" />
+		<attack type="vertical" damage="40" range="-1.5" sfx="clamgun"><pre><play object="this" animation="pre_attack" /></pre></attack>
+	</enemy>
+	
+	<tile id="shark" sheet="fish.png" x="40" y="0" />
+	<animation id="shark.idle" x="11" count="10" />
+	<animation id="shark.walk" equals="shark.idle" />
+	<animation id="shark.pre_attack" count="5" />
+	<animation id="shark.attack" x="5" count="5" />
+	<animation id="shark.hit" count="1" length="3" x="10" />
+	<enemy id="shark" tile="shark" health="30" element="water" defense="3" range="16" speed="2" type="underwater" capture="20"  death_sfx="shark_death" attack_sfx="none">
+		<loot id="fin" /><capture trapped="shark" minCapture="3" />
+		<idle><action>this.flip(); this.run();</action><stop /></idle>
+		<hitWall><action>this.flip(); this.run();</action><stop /></hitWall>
+		<attack type="melee" damage="40" knockback="5" sfx="shark_attack"><pre><play object="this" animation="pre_attack" /></pre></attack>
+	</enemy>
+	
+	<tile id="jellyfish" sheet="fish.png" x="30" />
+	<animation id="jellyfish.idle" count="10" />
+	<animation id="jellyfish.walk" equals="jellyfish.idle" />
+	<enemy id="jellyfish" tile="jellyfish" health="15" element="water" range="16" speed="0.25" type="underwater" passPlayer="true" death_sfx="jellyfish_death">
+		<idle><action>this.flip(); this.run();</action><stop /></idle>
+		<hitWall><action>this.flip(); this.run();</action><stop /></hitWall>
+		<inRange range="5"><action>this.run();</action></inRange>
+		<over><damage object="player" attacker="this" damage="10" directional="false" critical="false" /></over>
+	</enemy>
+	<tile id="flapper" sheet="fish.png" x="20" />
+	<enemy id="flapper" tile="flapper" speed="2" extends="jellyfish" animation="jellyfish" />
+	
+	<include id="kraken.xml" />
+	<tile id="kraken" sheet="kraken.1" />
+	<animation id="kraken.eyes" x="1" count="6" />
+	<animation id="kraken.mouth.closed" x="7" count="1" length="6" />
+	<animation id="kraken.mouth.open" x="8" count="1" length="6" />
+	<animation id="kraken.mouth.bite" x="8" count="1" length="3"><frame x="7" length="3" /></animation>
+	<animation id="kraken.idle" count="1" length="6">
+		<append tile="kraken" animation="kraken.mouth.closed" />
+		<append tile="kraken" animation="kraken.eyes" />
+	</animation>
+	<animation id="kraken.hit" count="1" length="6">
+		<append tile="kraken" animation="kraken.mouth.open" />
+		<append tile="kraken" animation="kraken.eyes" />
+	</animation>
+	<animation id="kraken.bite" count="1" length="6">
+		<append tile="kraken" animation="kraken.mouth.bite" />
+		<append tile="kraken" animation="kraken.eyes" />
+	</animation>
+	<tile id="kraken.arm.back" sheet="kraken.1" x="9" />
+	<tile id="kraken.arm" sheet="kraken.2" />
+	<tile id="kraken.claw" sheet="kraken.3" />
+	<enemy id="kraken.arm" tile="kraken.arm" health="15" element="water" defense="5" canFlip="false" canCritical="false" overlapVehicle="true">
+		<over><damage object="player" attacker="this" damage="25" directional="false" critical="false" /></over>
+	</enemy>
+	<enemy id="kraken.claw" tile="kraken.claw" extends="kraken.arm" offsetX="-16" offsetY="28" />
+	<enemy id="kraken.claw_flip" tile="kraken.claw" extends="kraken.arm" offsetX="-2" offsetY="28" facing="right" />
+	<enemy id="kraken" tile="kraken" health="50" element="water" defense="5" canFlip="false" canCritical="false" type="floatUpDown" speed="0.25" bgm="boss" bottomPad="170" kill_achievement="kraken" death_sfx="kraken_death" soundScale="2">
+		<arm id="kraken.arm" x="97" y="-4" length="12" diameter="10" end="kraken.claw" angle="130" angleDelta="40" regrow="3" />
+		<arm id="kraken.arm" x="140" y="-4" length="12" diameter="10" end="kraken.claw_flip" angle="50" angleDelta="40" regrow="3" />
+		<arm id="kraken.arm" x="92" y="-10" length="12" diameter="10" end="kraken.claw" angle="220" angleDelta="40" regrow="3" />
+		<arm id="kraken.arm" x="145" y="-10" length="12" diameter="10" end="kraken.claw_flip" angle="-40" angleDelta="40" regrow="3" />
+		<lootSet><loot id="water_gem" /></lootSet>
+		<lootSet><loot id="ink" count="3" /></lootSet>
+		<object tile="kraken.arm.back" layer="bush" offsetY="57">
+			<initRenderer><lerp object="this" seconds="2"><from rotation="-20" /><to rotation="20" /></lerp></initRenderer>
+		</object>
+		<object tile="kraken.arm.back" layer="bush" offsetY="57">
+			<initRenderer><lerp object="this" seconds="2"><from rotation="90" /><to rotation="50" /></lerp></initRenderer>
+		</object>
+		<object tile="kraken.arm.back" layer="bush" offsetY="57">
+			<initRenderer><lerp object="this" seconds="2"><from rotation="140" /><to rotation="180" /></lerp></initRenderer>
+		</object>
+		<object tile="kraken.arm.back" layer="bush" offsetY="57">
+			<initRenderer><lerp object="this" seconds="2"><from rotation="250" /><to rotation="210" /></lerp></initRenderer>
+		</object>
+		<object offsetX="106" offsetY="10" width="44" height="50" overlapVehicle="true">
+			<over>
+				<damage object="player" attacker="this" damage="100" directional="false" critical="false" />
+				<play object="this.parent" animation="bite" /><action if="this.parent.renderer != null">this.parent.renderer.playIdle(this.parent.renderer)</action>
+			</over>
+		</object>
+		<hitbox x="106" y="111" width='44' height='10' />
+	</enemy>
+	
+	<!-- pirates -->
+	<include id="pirate_ship.xml" includeRoot="true" />
+	<tile id="pirate_ship1" sheet="pirate_ship.png" />
+	<animation id="pirate_ship1.crew.idle" x="15" count="1" />
+	<animation id="pirate_ship1.cannon" x="41" count="1" />
+	<animation id="pirate_ship1.idle" x="32" count="1">
+		<append tile="pirate_ship1" animation="pirate_ship1.crew.idle" behind="true" />
+		<append tile="pirate_ship1" animation="pirate_ship1.cannon" />
+	</animation>
+	<animation id="pirate_ship1.crew.walk" x="8" count="8" />
+	<animation id="pirate_ship1.waves" x="16" count="8" />
+	<animation id="pirate_ship1.walk" x="32" count="1" length="8">
+		<append tile="pirate_ship1" animation="pirate_ship1.crew.walk" behind="true" />
+		<append tile="pirate_ship1" animation="pirate_ship1.cannon" />
+		<append tile="pirate_ship1" animation="pirate_ship1.waves" />
+	</animation>
+	<animation id="pirate_ship1.crew.pre_attack" x="0" count="3" />
+	<animation id="pirate_ship1.pre_beams" x="24" count="3" glow="true" />
+	<animation id="pirate_ship1.cannon.pre_attack" x="33" count="3" />
+	<animation id="pirate_ship1.pre_attack" x="32" count="1" length="3">
+		<append tile="pirate_ship1" animation="pirate_ship1.crew.pre_attack" behind="true" />
+		<append tile="pirate_ship1" animation="pirate_ship1.pre_beams" />
+		<append tile="pirate_ship1" animation="pirate_ship1.cannon.pre_attack" />
+	</animation>
+	<animation id="pirate_ship1.crew.attack" x="3" count="5" />
+	<animation id="pirate_ship1.beams" x="27" count="5" glow="true" />
+	<animation id="pirate_ship1.cannon.attack" x="36" count="5" />
+	<animation id="pirate_ship1.attack" x="32" count="1" length="5">
+		<append tile="pirate_ship1" animation="pirate_ship1.crew.attack" behind="true" />
+		<append tile="pirate_ship1" animation="pirate_ship1.beams" />
+		<append tile="pirate_ship1" animation="pirate_ship1.cannon.attack" />
+	</animation>
+	<animation id="pirate_ship1.hit" equals="pirate_ship1.idle" />
+	<enemy id="pirate_ship1" tile="pirate_ship1" health="80" defense="4" range="32" speed="2" type="floating" friendlyFire="false" passEnemies="true" blood="vehicle.death" death_sfx="explosion" ignoreHit="true">
+		<idle><action>this.flip(); this.run();</action><stop /></idle>
+		<hitWall><action>this.flip(); this.run();</action><stop /></hitWall>
+		<attack type="beam" damage="40" range="5.5" animation="attack" sfx="pirateship_attack"><pre><play object="this" animation="pre_attack" /></pre></attack>
+		<light tile="light.headlamp" offsetX="-38" />
+	</enemy>
+	
+	<tile id="pirate_ship2" sheet="pirate_ship.png" x="42" />
+	<animation id="pirate_ship2.crew.idle" x="52" count="1" />
+	<animation id="pirate_ship2.cannon" x="38" count="1" />
+	<animation id="pirate_ship2.idle" x="76" count="1">
+		<append tile="pirate_ship2" animation="pirate_ship2.crew.idle" behind="true" />
+		<append tile="pirate_ship2" animation="pirate_ship2.cannon" />
+	</animation>
+	<animation id="pirate_ship2.engine_fx" x="39" count="6" glow="true"><frame visible="false" length="2" /></animation>
+	<animation id="pirate_ship2.crew.walk" x="45" count="8" />
+	<animation id="pirate_ship2.waves" x="53" count="8" />
+	<animation id="pirate_ship2.walk" x="76" count="1" length="8">
+		<append tile="pirate_ship2" animation="pirate_ship2.engine_fx" behind="true" />
+		<append tile="pirate_ship2" animation="pirate_ship2.crew.walk" behind="true" />
+		<append tile="pirate_ship2" animation="pirate_ship2.cannon" />
+		<append tile="pirate_ship2" animation="pirate_ship2.waves" />
+	</animation>
+	<animation id="pirate_ship2.crew.pre_attack" x="0" count="3" />
+	<animation id="pirate_ship2.pre_beams" x="61" count="3" glow="true" />
+	<animation id="pirate_ship2.cannon.pre_attack" x="19" count="3" />
+	<animation id="pirate_ship2.pre_attack" x="76" count="1" length="3">
+		<append tile="pirate_ship2" animation="pirate_ship2.crew.pre_attack" behind="true" />
+		<append tile="pirate_ship2" animation="pirate_ship2.pre_beams" />
+		<append tile="pirate_ship2" animation="pirate_ship2.cannon.pre_attack" />
+	</animation>
+	<animation id="pirate_ship2.crew.attack" x="3" count="16" />
+	<animation id="pirate_ship2.beams" x="64" count="12" glow="true"><frame visible="false" length="4" /></animation>
+	<animation id="pirate_ship2.cannon.attack" x="22" count="16" />
+	<animation id="pirate_ship2.attack" x="76" count="1" length="16">
+		<append tile="pirate_ship2" animation="pirate_ship2.crew.attack" behind="true" />
+		<append tile="pirate_ship2" animation="pirate_ship2.beams" />
+		<append tile="pirate_ship2" animation="pirate_ship2.cannon.attack" />
+	</animation>
+	<animation id="pirate_ship2.hit" equals="pirate_ship2.idle" />
+	<enemy id="pirate_ship2" tile="pirate_ship2" health="60" speed="4" extends="pirate_ship1" />
+</data>

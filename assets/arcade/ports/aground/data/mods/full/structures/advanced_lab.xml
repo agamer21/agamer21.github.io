@@ -1,0 +1,26 @@
+<tilesheet id='advanced_lab.png' width='106' height='80'>
+	<image frame='0' x='0' y='0' width='52' height='46' offsetX='27' offsetY='34' />
+	<image frame='1' x='0' y='46' width='52' height='52' offsetX='27' offsetY='28' />
+	<image frame='2' x='52' y='46' width='54' height='51' offsetX='26' offsetY='29' />
+	<image frame='3' x='52' y='0' width='52' height='46' offsetX='27' offsetY='34' />
+	<image frame='4' x='104' y='0' width='52' height='31' offsetX='27' offsetY='49' />
+	<image frame='5' x='156' y='0' width='52' height='46' offsetX='27' offsetY='34' />
+	<image frame='6' x='106' y='46' width='52' height='52' offsetX='27' offsetY='28' />
+	<image frame='7' x='158' y='46' width='54' height='51' offsetX='26' offsetY='29' />
+	<image frame='8' x='208' y='0' width='106' height='46' offsetX='0' offsetY='34' />
+	<image frame='9' x='212' y='46' width='106' height='46' offsetX='0' offsetY='34' />
+	<image frame='10' x='0' y='98' width='106' height='46' offsetX='0' offsetY='34' />
+	<image frame='11' x='106' y='98' width='106' height='46' offsetX='0' offsetY='34' />
+	<image frame='12' x='212' y='98' width='106' height='46' offsetX='0' offsetY='34' />
+	<image frame='13' x='0' y='144' width='106' height='46' offsetX='0' offsetY='34' />
+	<image frame='14' x='0' y='190' width='106' height='46' offsetX='0' offsetY='34' />
+	<image frame='15' x='0' y='236' width='106' height='46' offsetX='0' offsetY='34' />
+	<image frame='16' x='0' y='282' width='106' height='68' offsetX='0' offsetY='12' />
+	<image frame='19' x='106' y='144' width='106' height='68' offsetX='0' offsetY='12' />
+	<image frame='20' x='212' y='144' width='106' height='68' offsetX='0' offsetY='12' />
+	<image frame='21' x='106' y='212' width='106' height='68' offsetX='0' offsetY='12' />
+	<image frame='22' x='106' y='280' width='106' height='68' offsetX='0' offsetY='12' />
+	<image frame='23' x='212' y='212' width='106' height='68' offsetX='0' offsetY='12' />
+	<image frame='17' equals='16' offsetX='0' offsetY='12' />
+	<image frame='18' equals='16' offsetX='0' offsetY='12' />
+</tilesheet>

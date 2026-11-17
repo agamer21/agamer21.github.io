@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="npc.xml" />
+	<include id="scene.xml" />
+	
+	<action>
+		function checkUnnatureMine(e){
+			var p = getLocalPlayer(); if(isPlayerAction() &amp;&amp; (e.object == null || e.object.info.id != "drill_beetle") &amp;&amp; p.getCurrentArea() == e.area) runProcedure("unnature.splicer.enrage", null, p);
+		}
+		function checkUnnatureKill(e){
+			var p = getLocalPlayer(); if(isPlayerAction() &amp;&amp; e.killer != null &amp;&amp; p.getCurrentArea() == e.area) runProcedure("unnature.splicer.enrage", null, p);
+		}
+	</action>
+	<tile id="unnature.splicer" sheet="npc.2" />
+	<tile id="unnature.splicer.enraged" sheet="npc.2" />
+	<animation id="unnature.splicer.idle" x="43" count="16" />
+	<animation id="unnature.splicer.talk" equals="unnature.splicer.idle" />
+	<animation id="unnature.splicer.enrage" count="9" />
+	<animation id="unnature.splicer.unenrage" count="9" reverse="true" />
+	<animation id="unnature.splicer.enraged.idle" x="9" count="10" />
+	<animation id="unnature.splicer.enraged.talk" equals="unnature.splicer.enraged.idle" />
+	<animation id="unnature.splicer.enraged.operate1" x="19" count="6" />
+	<animation id="unnature.splicer.enraged.operate2" x="25" count="18" />
+	<npc id="unnature.splicer" tile="unnature.splicer" canBombard="false" talk_sfx="talking3" layer="top" underwater="true" night="true">
+		<tooltip id="talk" if="getFlag('splicer_defeat')" />
+		<operate><stop if="!getFlag('splicer_defeat')" />
+			<section if="player.hasQuest('spirit_hq') && !player.hasQuest('oldone_form')">
+				<dialogue section="unnature" id="oldone1" speaker="this" />
+				<dialogue section="unnature" id="oldone2" speaker="this" /><quest id="oldone_form" />
+			</section>
+			<section if="player.canCompleteQuest('oldone_form')">
+				<complete quest="oldone_form" /><dialogue section="unnature" id="oldone3" speaker="this" />
+				<dialogue section="unnature" id="oldone4" speaker="this" />
+			</section>
+			<window type="craft" includeStorehouse="true" title="structure.tooltip.operate_self">
+				<recipe type="splicer" />
+				<listItem icon="werewolf_head.ico" title="unnature.werewolf" if="player.info.id != 'player.werewolf'">
+					<closeWindows /><action>id = "player.werewolf";</action><run procedure="changePlayerForm" />
+					<action>
+						player.equipment.forceEquip("weapon", player, getItem("werewolf_paws").asItem());
+						player.equipment.forceEquip("armor", player, getItem("werewolf_body").asItem());
+						player.equipment.forceEquip("head", player, getItem("werewolf_head").asItem());
+					</action>
+				</listItem>
+				<listItem icon="carapace_armor.ico" title="unnature.oldone" if="player.info.id != 'player.oldone' && player.questComplete('oldone_form')">
+					<closeWindows /><action>id = "player.oldone";</action><run procedure="changePlayerForm" />
+					<action>
+						player.equipment.forceEquip("weapon", player, getItem("oldone_cast").asItem());
+						player.equipment.forceEquip("shield", player, getItem("oldone_shield").asItem());
+						player.equipment.forceEquip("pickaxe", player, getItem("oldone_mine").asItem());
+						player.equipment.forceEquip("armor", player, getItem("oldone_body").asItem());
+					</action>
+				</listItem>
+				<listItem icon="stat.evasion" title="unnature.human" if="player.info.id != 'player.ancient'">
+					<closeWindows /><action>id = "player.ancient";</action><run procedure="changePlayerForm" />
+				</listItem>
+				<listItem icon="blood.ico" title="structure.change_appearance">
+					<window type="character" title="structure.change_appearance" />
+				</listItem>
+			</window>
+		</operate>
+	</npc>
+	<procedure id="splicer.arrive">
+		<action>
+			var x = Math.round(player.getVCenterX())-8; var y = Math.round(player.getVCenterY()); facing = player._getFacing(); scale = getGameScale();
+			splicer = ObjectInfo.make("unnature.splicer", x-facing*30, y-8); area.addObject(splicer); splicer.renderer.scaleX = -facing; splicer.renderer.x -= facing*160;
+		</action>
+		<section if="scale != 1"><action>setGameScale(1)</action><pan toObject="player.vehicle == null?player:player.vehicle" /></section>
+		<lerp object="splicer" deltaX="facing*160/Tile.SIZE" modal="true" seconds="3" />
+	</procedure>
+	<procedure id="splicer.leave">
+		<action>splicer.renderer.scaleX = - splicer.renderer.scaleX;</action><lerp object="splicer" deltaX="-facing*160/Tile.SIZE" modal="true" seconds="3" />
+		<section if="scale != 1"><action>setGameScale(scale)</action><pan toObject="player.vehicle == null?player:player.vehicle" /></section>
+		<action>splicer.renderer.alpha = 0; area.removeObject(splicer)</action>
+	</procedure>
+	<procedure id="unnature.splicer.intro">
+		<run procedure="splicer.arrive" />
+		<wait seconds="1"><operate object="splicer" /></wait>
+		<dialogue section="unnature" id="intro1" speaker="splicer" />
+		<dialogue section="unnature" id="intro2" speaker="splicer" />
+		<dialogue section="unnature" id="intro3" speaker="splicer" />
+		<dialogue section="unnature" id="intro4" speaker="splicer" />
+		<dialogue section="unnature" id="intro5" speaker="player" />
+		<dialogue section="unnature" id="intro6" speaker="splicer" />
+		<dialogue section="unnature" id="intro7" speaker="splicer" />
+		<wait seconds="1"><operate object="splicer" /></wait>
+		<run procedure="splicer.leave" />
+	</procedure>
+	<procedure id="unnature.splicer.enrage">
+		<action>area.removeEventListener("mine", checkUnnatureMine); area.removeEventListener("tree_cut", checkUnnatureKill); area.objects.removeEventListener("rem_object", checkUnnatureKill);</action>
+		<invokeLater><stop if="player.hasSeenItem('unnature.splicer') || getFlag('splicer_defeat')" /><action>player.setSeenItem('unnature.splicer')</action>
+		<action if="player.vehicle == null && (player.tile_y != -1 || player.tile_x < 0 || player.tile_x > 127)" with="fade">player.setPosition(Utils.clampi(player.xPos, 0, 128*Tile.SIZE-player._width), -16); player.renderer.teleport();</action>
+		<action if="player.vehicle != null" with="fade">
+			player.vehicle.droneArea = null; player.vehicle.setPosition(Utils.clampi(player.vehicle.xPos, 0, 128*Tile.SIZE-player.vehicle._width), -16); player.vehicle.doDismount(true);
+		</action>
+		<run procedure="splicer.arrive" />
+		<dialogue section="unnature" id="intro8" speaker="splicer" />
+		<wait seconds="0.5"><operate object="splicer" /></wait>
+		<dialogue section="unnature" id="intro9" speaker="splicer" />
+		<wait seconds="0.5"><operate object="splicer" /></wait>
+		<sound id="construct_bot_attack" object="splicer" />
+		<play object="splicer" animation="enrage" modal="true" /><action>splicer.setTileId("unnature.splicer.enraged"); splicer.renderer.scaleX = -facing;</action>
+		<wait seconds="0.5"><operate object="splicer" /></wait>
+		<dialogue section="unnature" id="intro10" speaker="splicer" />
+		<dialogue section="unnature" id="intro11" speaker="splicer" />
+		<lerp object="splicer" deltaX="facing*16/Tile.SIZE" modal="true" seconds="0.3" animate="player" />
+		<sound id="medical_bot" object="splicer" />
+		<play object="splicer" animation="operate1" modal="true" />
+		<run procedure="player.werewolf" /><action>player.skills.reset();</action>
+		<play object="splicer" animation="operate2" modal="true" animate="player" animateLerpOnly="true" />
+		<object id="treasure_chest" x="player.tile_x" y="0">
+			var items = []; var iter = player.inventory.getItems(); while(iter.hasNext()){var i = iter.next().getItemValues(); while(i.hasNext()){var v = i.next(); if(v.item.canStore()) items.push(v);}}
+			for(v in items) if(player.inventory.addItems(v.item, -v.count, v.value, v.name)) this.inventory.addItems(v.item, v.count, v.value, v.name);
+		</object>
+		<sound id="place" object="treasure_chest" />
+		<run procedure="splicer.leave" /><run procedure="spawn.unnature.ranger" if="area.getObject('unnature.ranger') == null" /></invokeLater>
+	</procedure>
+	
+	<quest id="splicer" giver="unnature.ranger" exp="4000" achievement="splicer">
+		<flag id="never_set" name="common.complete" />
+	</quest>
+	<quest id="werewolf_claws" giver="unnature.ranger" exp="1000"><item id="meat_tree_seed" count="5" /></quest>
+	<quest id="werewolf_body" giver="unnature.ranger" exp="1000">
+		<kill id="acid_raptor" name="quests.acid_raptors" count="5" />
+		<kill id="drill_beetle" name="quests.drill_beetles" count="4" />
+	</quest>
+		
+	<tile id="unnature.ranger" sheet="npc.1" />
+	<animation id="unnature.ranger.tail.idle" x="2" count="1" length="10"><frame x="3" count="8" /><frame x="2" length="4" /></animation>
+	<animation id="unnature.ranger.idle">
+		<frame x="1" y="0" length="4" />
+		<frame x="0" y="0" length="2" />
+		<frame x="1" y="0" length="16" />
+		<append tile="unnature.ranger" animation="unnature.ranger.tail.idle" behind="true" />
+	</animation>
+	<animation id="unnature.ranger.tail.talk" x="3" count="8" />
+	<animation id="unnature.ranger.talk" x="11" count="8">
+		<append tile="unnature.ranger" animation="unnature.ranger.tail.talk" behind="true" />
+	</animation>
+	<animation id="unnature.ranger.walk" x="19" count="8" />
+	<animation id="unnature.ranger.mine" x="1" count="1"><append tile="unnature.ranger" animation="unnature.ranger.tail.idle" behind="true" /></animation>
+	<procedure id="unnature.ranger.splicer">
+		<menu section="unnature">
+			<dialogue section="unnature" id="body15" />
+			<choice id="lets_go">
+				<teleport area="splicer_lab" x="22" y="10" allowReturn="true" temporary="true" with="ellipse" />
+			</choice>
+			<choice id="not_yet" />
+		</menu>
+	</procedure>
+	<procedure id="unnature.range.invite">
+		<quest /><menu section="common">
+			<dialogue title="professor.invite{npc:[object=unnature.ranger]}" />
+			<choice id="yes">
+				<section with="fade">
+					<remove object="this" /><action>o.enter(player); updateArea(); player.removeQuestsByGiver("unnature.ranger");</action>
+					<object id="unnature.ranger" x="3" y="5" name="ranger" /><set id="this" value="ranger" />
+					<facing object="this" dir="right" /><move object="player" to="this" />
+				</section>
+				<dialogue section="unnature" id="research3" speaker="this" />
+			</choice>
+			<choice id="no" />
+		</menu>
+	</procedure>
+	<procedure id="werewolf_body">
+		<dialogue section="unnature" id="body8" speaker="this" />
+		<action if="player.isEquipped('werewolf_body')">
+			var i = getItem("werewolf_heal_body"); player.equipment.forceEquip("armor", player, i.asItem());
+			var i2 = getItem("werewolf_cunning_head"); player.equipment.forceEquip("head", player, i2.asItem());
+			player.multiItemPopup([new ItemCt(i, 1),new ItemCt(i2, 1)]);
+		</action>
+		<dialogue section="unnature" id="body9" speaker="player" />
+		<dialogue section="unnature" id="body10" speaker="this" />
+		<dialogue section="unnature" id="body11" speaker="player" />
+		<dialogue section="unnature" id="body12" speaker="this" />
+		<dialogue section="unnature" id="body13" speaker="player" />
+		<dialogue section="unnature" id="body14" speaker="this" />
+		<run procedure="unnature.ranger.splicer" />
+	</procedure>
+	<npc id="unnature.ranger" tile="unnature.ranger" mine="7" speed="3" night="true" action="talk" talk_sfx="talking1" underwater="true" collectOre="false" stopForPlayer="!this.idle.hasPath()" researcher="true">
+		<idle class="locate" allowWander="true">
+			<getLocation>
+				if(!player.hasQuest('splicer')) return [this.tile_x, -1];
+				else if(!player.hasQuest('werewolf_claws')){
+					var s = area.getStructureById("unnature.ranger.couch"); return [Math.floor(s.getInnerCenterX()/Tile.SIZE), s.tile_y];
+				} else return null;
+			</getLocation>
+		</idle>
+		<operate>
+			<section if="!getFlag('splicer_defeat') && player.info.id != 'player.werewolf'">
+				<dialogue section="unnature" id="ranger1" speaker="this" />
+				<dialogue section="unnature" id="ranger2" speaker="this" />
+			</section>
+			<section if="!player.hasQuest('splicer')">
+				<dialogue section="unnature" id="ranger1" speaker="this" />
+				<dialogue section="unnature" id="ranger2" speaker="this" />
+				<dialogue section="unnature" id="ranger3" speaker="player" />
+				<dialogue section="unnature" id="ranger4" speaker="this" />
+				<dialogue section="unnature" id="ranger5" speaker="this" />
+				<quest id="splicer">
+					<dialogue section="unnature" id="ranger6" speaker="this" />
+					<dialogue section="unnature" id="ranger7" speaker="this" />
+					<action>this.endTalk(); this.beginPath();</action>
+				</quest>
+			</section>
+			<dialogue section="unnature" id="ranger7" speaker="this" if="!getFlag('splicer_defeat') && this.tile_y < 8" />
+			<section if="!player.hasQuest('werewolf_claws')">
+				<dialogue section="unnature" id="ranger8" speaker="this" />
+				<dialogue section="unnature" id="ranger9" speaker="this" />
+				<quest id="werewolf_claws" />
+			</section>
+			<section if="player.canCompleteQuest('werewolf_claws')">
+				<complete quest="werewolf_claws" />
+				<dialogue section="unnature" id="ranger10" speaker="this" />
+				<dialogue section="unnature" id="ranger11" speaker="this" />
+				<action if="player.isEquipped('werewolf_paws')">var i = getItem("werewolf_claws"); player.equipment.forceEquip("weapon", player, i.asItem()); player.itemPopup(i);</action>
+			</section>
+			<choose if="player.questComplete('werewolf_claws')">
+				<section if="!getFlag('splicer_defeat') && player.isEquipped('werewolf_paws')">
+					<quest /><dialogue section="unnature" id="ranger10" speaker="this" />
+					<dialogue section="unnature" id="ranger11" speaker="this" />
+					<action>var i = getItem("werewolf_claws"); player.equipment.forceEquip("weapon", player, i.asItem()); player.itemPopup(i);</action>
+				</section>
+				<section if="!getFlag('ranger.intro')">
+					<dialogue section="unnature" id="ranger12" speaker="this" />
+					<dialogue section="unnature" id="ranger13" speaker="this" />
+				</section>
+				<section if="!player.hasQuest('werewolf_body')">
+					<dialogue section="unnature" id="body1" speaker="this" />
+					<dialogue section="unnature" id="body2" speaker="this" />
+					<dialogue section="unnature" id="body3" speaker="player" />
+					<dialogue section="unnature" id="body4" speaker="this" />
+					<dialogue section="unnature" id="body5" speaker="this" />
+					<dialogue section="unnature" id="body6" speaker="player" />
+					<dialogue section="unnature" id="body7" speaker="this" />
+					<quest id="werewolf_body" />
+				</section>
+				<section if="player.canCompleteQuest('werewolf_body')">
+					<complete quest="werewolf_body" />
+					<run procedure="werewolf_body" />
+				</section>
+				<choose if="player.questComplete('werewolf_body')">
+					<section if="!getFlag('splicer_defeat') && player.isEquipped('werewolf_body')"><quest /><run procedure="werewolf_body" /></section>
+					<section if="!getFlag('splicer_defeat')"><quest /><run procedure="unnature.ranger.splicer" /></section>
+					<section if="player.questComplete('research_lab') && this.area.vehicle == null">
+						<dialogue section="unnature" id="research1" speaker="this" />
+						<choose>
+							<run procedure="unnature.range.invite" if="o = area.getObject('research'); return o != null" />
+							<dialogue section="unnature" id="research2" speaker="this" />
+						</choose>
+					</section>
+					<section>
+						<dialogue section="unnature" id="victory3" speaker="this" />
+						<dialogue section="unnature" id="victory4" speaker="this" />
+					</section>
+				</choose>
+				<dialogue section="unnature" id="body1" speaker="this" />
+			</choose>
+			<section>
+				<dialogue section="unnature" id="ranger8" speaker="this" />
+				<dialogue section="unnature" id="ranger9" speaker="this" />
+			</section>
+		</operate>
+	</npc>
+	<tile id="unnature.ranger.couch" sheet="npc.3" x="14" offsetX="1" />
+	<structure id="unnature.ranger.couch" tile="unnature.ranger.couch" name="couch" behind="true" sleep="true">
+		<operate>
+			<section if="!player.hasQuest('splicer')"><dialogue section="unnature" id="couch" /><stop /></section>
+			<scene id="unnature.ranger" show="intro" with="fade" if="player.questComplete('werewolf_claws') && !getFlag('ranger.intro')" showToAll="true">
+				<action>setFlag('ranger.intro', true);</action>
+			</scene>
+			<action>player.restoreStamina();</action><save sleep="true" />
+		</operate>
+	</structure>
+	<tile id="unnature.ranger.table" sheet="npc.3" x="15" offsetX="-4" />
+	<structure id="unnature.ranger.table" tile="unnature.ranger.table" width="16" remove="false" behind="true" />
+	<tile id="unnature.ranger.lamp" sheet="npc.3" x="16" />
+	<structure id="unnature.ranger.lamp" tile="unnature.ranger.lamp" remove="false"><light tile="light.medium" color="ffee98" offsetX="16" offsetY="24" /></structure>
+	<structure id="unnature.ranger.lamp.flip" extends="unnature.ranger.lamp" flip="true" />
+	<procedure id="spawn.unnature.ranger">
+		<action>
+			dx = (player.tile_x > 64)?-1:1; x = player.tile_x+4*dx;
+			ranger = ObjectInfo.make("unnature.ranger", x*Tile.SIZE, 5*Tile.SIZE);
+			for(tx in 0...4){setTile(x+tx*dx, 4, "unnature.stone"); setTile(x+tx*dx, 9, "unnature.stone");}
+			for(y in 5...9) for(tx in 0...4) mine(x+tx*dx, y, 0, "unnature.stone"); mine(x, 4);
+			setTile(x-dx, 8, "unnature.stone"); setTile(x+dx*4, 8, "unnature.stone"); setTile(x-dx, 5, "unnature.stone"); setTile(x+dx*4, 5, "unnature.stone");
+			for(y in 6...8){mine(x-dx, y, 0, "unnature.stone"); mine(x+dx*4, y, 0, "unnature.stone"); setTile(x+dx*5, y, "unnature.stone"); setTile(x-dx*2, y, "unnature.stone");}
+			area.addObject(ranger); var cx = (x+(dx > 0?2:-3))*Tile.SIZE; getStructure("unnature.ranger.couch").build(null, area, cx-2*dx, 8*Tile.SIZE);
+			getStructure("unnature.ranger.table").build(null, area, (x+dx)*Tile.SIZE, 8*Tile.SIZE);
+			var o = ObjectInfo.make("ship_chest", (x+dx*4)*Tile.SIZE, 7*Tile.SIZE); o.inventory.addItems(getItem("jumpship"), 1); area.addObject(o);
+			getStructure("unnature.ranger.lamp"+(dx > 0?".flip":"")).build(null, area, cx+5*dx, 8*Tile.SIZE); unlockNPC(ranger); ranger.beginPath();
+		</action>
+	</procedure>
+		
+	<tile id="distress_signal" sheet="npc.3" x="0" />
+	<animation id="distress_signal" x="0" count="14" />
+</data>

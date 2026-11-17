@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<scene id="start.space">
+		<layer id="bg" image="night_bg.png" />
+        <tile id="atmos" sheet="atmos.png" offsetY="100" />
+		<layer id="atmos" tile="atmos" />
+		<tile id="ground" sheet="ground.png" x="1" offsetY="22" />
+		<tile id="clouds" sheet="ground.png" x="0" offsetY="22" />
+		<layer id="ground" tile="ground" />
+		<layer id="clouds" tile="clouds" />
+		<layer id="bomber" tile="alien.bomber" animation="alien.bomber.idle" color="aaaaff" colorScale="1.5" />
+		<layer id="npc_fighter" tile="alien.fighter" animation="alien.fighter.idle" />
+		<layer id="npc_bomber" tile="alien.bomber" animation="alien.bomber.idle" />
+		<layer id="npc_cruiser" tile="alien.cruiser" animation="alien.cruiser.idle" />
+		<layer id="ftl" tile="ftl" animation="ftl.cycle" />
+        <animation id="bomber.shield"><frame visible="false" length="8" /><append tile="alien.bomber" animation="alien.bomber.idle" /><append tile="alien.bomber" animation="alien.bomber.shield" /></animation>
+        <animation id="mirrows.orb" x="0" count="3" repeat="2"><append tile="mirrows.ship" animation="mirrows.ship.idle" behind="true" /><append tile="mirrows.ship.orb" animation="mirrows.orb.impact" x="-128" /></animation>
+        <animation id="knife" x="56" count="14"><append tile="mirrows.ship" animation="mirrows.ship.fly" /><append tile="mirrows.ship" animation="mirrows.ship.knife.form" /></animation>
+        <animation id="mirrows.knife"><frame visible="false" length="7" /><frame x="35" count="7" /><append tile="mirrows.ship" animation="scene.start.space.knife" /></animation>
+        <layer id="bomb" tile="orbital_projectile" animation="orbital_projectile" x="102" y="70" />
+		<layer id="mirrows_ship" tile="mirrows.ship" animation="mirrows.ship.idle" />
+        <layer id="alien_explosion" tile="magic.explosion.lg" animation="hidden" offsetX="-0.5" offsetY="-0.5" />
+        <layer id="ship_explosion" tile="science.explosion.med" animation="hidden" offsetX="-0.5" offsetY="-0.5" />
+		<tile id="mirrows_bg" sheet="mirrows.3" /><animation id="ship_top" x="10" count="1" />
+		<layer id="ship_bg" tile="mirrows_bg" animation="item10" />
+		<layer id="ship_top" tile="mirrows_bg" animation="ship_top" />
+		<layer id="mr" tile="scene.mirrows.mr" animation="scene.mirrows.mr.idle" talk="scene.mirrows.mr.talk" sfx="talking4" x="0" y="0" />
+		<layer id="mrs" tile="scene.mirrows.mrs" animation="scene.mirrows.mrs.idle" talk="scene.mirrows.mrs.talk" sfx="talking6" x="0" y="0" />
+        <show id="bombardment">
+			<layer id="bg" />
+			<layer id="atmos" />
+			<layer id="ground" />
+            <layer id="clouds" />
+            <displayAction>ground.x = -32*Tile.SIZE; clouds.x = -32*Tile.SIZE;</displayAction>
+            <lerp object="clouds" x="0" y="0" seconds="300" modal="false" />
+            <lerp object="ground" x="0" y="0" seconds="1200" modal="false" />
+			<layer id="bomber" />
+            <displayAction>bomber.x = 100; bomber.y = 150; bomber.scaleX = bomber.scaleY = 1;</displayAction>
+            <lerp object="bomber" x="-3" y="-7" seconds="20" />
+            <play object="bomber" animation="alien.bomber.bomb" />
+            <layer id="bomb" />
+            <lerp object="bomb" deltaY="6" seconds="2" />
+		</show>
+		<show id="mirrows">
+			<music id="encounter" seconds="1" />
+			<layer id="bg" />
+			<layer id="atmos" />
+			<layer id="ground" />
+            <layer id="clouds" />
+            <displayAction>ground.x = -32*Tile.SIZE; clouds.x = -32*Tile.SIZE;</displayAction>
+            <lerp object="clouds" x="0" y="0" seconds="300" modal="false" />
+            <lerp object="ground" x="0" y="0" seconds="1200" modal="false" />
+			<layer id="bomber" /><layer id="mirrows_ship" />
+			<displayAction>mirrows_ship.scaleX = mirrows_ship.scaleY = 0.5; mirrows_ship.x = 128; mirrows_ship.y = 150;</displayAction>
+			<play object="mirrows_ship" animation="mirrows.ship.fly" loop="true" />
+			<play object="bomber" animation="bomber.shield" loop="true" />
+            <displayAction>bomber.scaleX = -0.5; bomber.scaleY = 0.5; bomber.x = 0; bomber.y = -200;</displayAction>
+            <lerp object="bomber" x="6" y="0" seconds="12" modal="false" />
+            <lerp object="mirrows_ship" x="12" y="1" seconds="12" />
+            <displayAction if="bomber.tracks != null">bomber.tracks.advanceFrame(bomber, 9999)</displayAction>
+			<play object="mirrows_ship" animation="mirrows.ship.hover" loop="true" />
+			<section with="fade">
+				<layer id="ship_bg" /><layer id="mr" /><layer id="mrs" /><layer id="ship_top" />
+			</section>
+			<wait seconds="1" />
+			<dialogue section="mirrows" id="sacrifice1" speaker="mr" />
+			<dialogue section="mirrows" id="sacrifice2" speaker="mrs" />
+			<dialogue section="mirrows" id="sacrifice3" speaker="mr" />
+			<dialogue section="mirrows" id="sacrifice4" speaker="mrs" />
+			<dialogue section="mirrows" id="sacrifice5" speaker="mr" />
+			<wait seconds="1" />
+			<displayAction with="fade">ship_bg.alpha = 0; ship_top.alpha = 0; mr.alpha = 0; mrs.alpha = 0; ground.x = -32*Tile.SIZE; clouds.x = -32*Tile.SIZE;</displayAction>
+            <lerp object="clouds" x="0" y="0" seconds="300" modal="false" />
+            <lerp object="ground" x="0" y="0" seconds="1200" modal="false" />
+			<wait seconds="1" />
+			<sound id="plasma_cannon" /><play object="mirrows_ship" animation="mirrows.ship.orb" />
+            <play object="mirrows_ship" animation="mirrows.orb" />
+            <layer id="alien_explosion" /><layer id="ship_explosion" />
+            <invokeLater paused="true">
+                <lerp object="mirrows_ship" x="8" y="1" seconds="1.6" modal="false" />
+                <play object="bomber" animation="alien.bomber.idle" />
+                <sound id="fireball" /><play object="bomber" animation="alien.bomber.attack" />
+                <lerp object="bomber" alpha="0" seconds="0.25" modal="false" />
+                <play object="bomber" animation="alien.bomber.idle" loop="true" />
+                <displayAction>ship_explosion.x = mirrows_ship.x+mirrows_ship.tile.getWidth()*0.25; ship_explosion.y = mirrows_ship.y+mirrows_ship.tile.getHeight()*0.25; ship_explosion.scaleX = ship_explosion.scaleY = 0.5;</displayAction>
+                <lerp object="mirrows_ship" alpha="0" seconds="0.25" modal="false" />
+                <sound id="explosion" /><play object="ship_explosion" animation="science.explosion.med" />
+                <displayAction>mirrows_ship.alpha = 0; ship_explosion.alpha = 0;</displayAction>
+            </invokeLater>
+			<invokeLater paused="true" seconds="0.3"><layer tile="magic.explosion.sm" animation="magic.explosion.sm" offsetX="-0.5" offsetY="-0.5" removeOnComplete="true" x="100" y="50" /></invokeLater>
+            <invokeLater paused="true" seconds="0.6"><layer tile="magic.explosion.sm" animation="magic.explosion.sm" offsetX="-0.5" offsetY="-0.5" removeOnComplete="true" x="70" y="50" /></invokeLater>
+            <invokeLater paused="true" seconds="0.9"><layer tile="magic.explosion.sm" animation="magic.explosion.sm" offsetX="-0.5" offsetY="-0.5" removeOnComplete="true" x="40" y="50" /></invokeLater>
+            <play object="mirrows_ship" animation="mirrows.knife" />
+            <displayAction>alien_explosion.x = bomber.x-bomber.tile.getWidth()*0.25; alien_explosion.y = bomber.y+bomber.tile.getHeight()*0.25; alien_explosion.scaleX = alien_explosion.scaleY = 0.5;</displayAction>
+            <sound id="explosion" /><play object="alien_explosion" animation="magic.explosion.lg" />
+            <displayAction>bomber.alpha = 0; alien_explosion.alpha = 0;</displayAction>
+			<music id="Cutscene9" seconds="1" />
+            <wait seconds="2" />
+		</show>
+		<show id="enemy_ship_free">
+			<layer id="bg" />
+			<layer id="atmos" />
+			<layer id="ground" />
+            <layer id="clouds" />
+			<container name="planet" />
+            <displayAction>planet.addChild(atmos); planet.addChild(ground); planet.addChild(clouds); ground.x = -32*Tile.SIZE; clouds.x = -32*Tile.SIZE; planet.y = 78;</displayAction>
+            <lerp object="clouds" x="0" y="0" seconds="300" modal="false" />
+            <lerp object="ground" x="0" y="0" seconds="1200" modal="false" />
+			<section if="player.getVar('free.dragon_fighter') > 0">
+				<layer id="npc_fighter" /><displayAction>npc_fighter.scaleX = -0.5; npc_fighter.scaleY = 0.5; npc_fighter.x = 220; npc_fighter.y = -60;</displayAction>
+				<play object="npc_fighter" animation="alien.fighter.ftl" loop="true" /><lerp object="npc_fighter" x="240/Tile.SIZE" y="10/Tile.SIZE" modal="false" seconds="4" />
+			</section>
+			<section if="player.getVar('free.dragon_bomber') > 0">
+				<layer id="npc_bomber" /><displayAction>npc_bomber.scaleX = -0.5; npc_bomber.scaleY = 0.5; npc_bomber.x = 230; npc_bomber.y = -10;</displayAction>
+				<play object="npc_bomber" animation="alien.bomber.ftl" loop="true" /><lerp object="npc_bomber" y="40/Tile.SIZE" modal="false" seconds="4" />
+			</section>
+			<section if="player.getVar('free.dragon_cruiser') > 0">
+				<layer id="npc_cruiser" /><displayAction>npc_cruiser.scaleX = -0.5; npc_cruiser.scaleY = 0.5; npc_cruiser.x = 100; npc_cruiser.y = -30;</displayAction>
+				<play object="npc_cruiser" animation="alien.cruiser.ftl" loop="true" /><lerp object="npc_cruiser" y="5/Tile.SIZE" modal="false" seconds="4" />
+			</section>
+			<layer id="ftl" /><wait seconds="1" />
+			<play object="ftl" animation="ftl.disengage" /><displayAction>ftl.alpha = 0;</displayAction>
+			<play object="npc_fighter" animation="alien.fighter.hover" loop="true" if="player.getVar('free.dragon_fighter') > 0" />
+			<play object="npc_bomber" animation="alien.bomber.hover" loop="true" if="player.getVar('free.dragon_bomber') > 0" />
+			<play object="npc_cruiser" animation="alien.cruiser.hover" loop="true" if="player.getVar('free.dragon_cruiser') > 0" />
+			<lerp object="planet" y="0" seconds="1" />
+			<wait seconds="2" />
+			<dialogue section="dragon_ship" id="help1" />
+			<dialogue section="dragon_ship" id="help2" />
+			<dialogue section="dragon_ship" id="help3" />
+			<wait seconds="2" />
+		</show>
+	</scene>
+</data>

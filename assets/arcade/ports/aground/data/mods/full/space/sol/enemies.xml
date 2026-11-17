@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="enemy_sheet.xml" />
+	<tile id="hunter_bot" sheet="enemy_sheet.1" />
+	<animation id="hunter_bot.idle" x="8" count="1" length="3" />
+	<animation id="hunter_bot.walk" x="9" count="5" />
+	<animation id="hunter_bot.fire" x="0" count="7"><frame x="8" count="1" length="3" /></animation>
+	<animation id="hunter_bot.hit" x="7" count="1" length="3" />
+	
+	<tile id="hunter_bot.bolt" sheet="enemy_sheet.2" />
+	<animation id="hunter_bot.bolt" x="3" count="4" glow="true" />
+	<animation id="hunter_bot.bolt.impact" x="0" count="3" glow="true" />
+	<enemy id="hunter_bot" tile="hunter_bot" health="16" defense="6" range="3" speed="1.5" passEnemies="true" hostileFlag="drones.attack" friendlyFire="false" type="surface" blood="science.explosion.sm" death_sfx="explosion" vertical="true">
+		<loot id="ai_core" p="1" />
+		<loot id="titanium" count="2" p="1" />
+		<flee id="player" />
+		<attack type="projectile" damage="12" range="12" animation="fire" sfx="hunter_bot_attack">
+			<projectile tile="hunter_bot.bolt" animation="hunter_bot.bolt" speed="3" delay="2" offsetY="-2" fire_sfx="fireball" knockback="5" underwater="true">
+				<hitEffect tile="hunter_bot.bolt" animation="hunter_bot.bolt.impact" color="9999ff" />
+			</projectile>
+		</attack>
+	</enemy>
+	
+	<tile id="construct_bot" sheet="enemy_sheet.3" />
+	<tile id="construct_bot.arm" sheet="enemy_sheet.4" x="0" />
+	<animation id="construct_bot.body" x="8" count="8" />
+	<animation id="construct_bot.back" x="8" count="8" />
+	<animation id="construct_bot.idle" x="16" count="1" length="8">
+		<append tile="construct_bot" animation="construct_bot.body" behind="true" />
+		<append tile="construct_bot" animation="single" behind="true" />
+	</animation>
+	<animation id="construct_bot.walk" x="16" count="8">
+		<append tile="construct_bot" animation="construct_bot.body" behind="true" />
+		<append tile="construct_bot" animation="single" behind="true" />
+	</animation>
+	<animation id="construct_bot.attack" x="16" count="1" length="12">
+		<append tile="construct_bot" animation="construct_bot.body" behind="true" />
+		<append tile="construct_bot" animation="item8" behind="true" />
+	</animation>
+	<enemy id="construct_bot" tile="construct_bot" damage="16" health="30" defense="6" range="8" speed="1" hostileFlag="drones.attack" type="surface" blood="science.explosion.sm" attack_sfx="construct_bot_attack" death_sfx="explosion" ignoreHit="true" passEnemies="true" vertical="true">
+		<loot id="ai_core" p="1" />
+		<loot id="titanium" count="3" p="1" />
+		<object tile="construct_bot.arm" animation="single" layer="enemy" offsetX="34" attack_sfx="construct_bot_back">
+			<over><section if="this.renderer.animation == 'single' && (getFlag('drones.attack') || this.parent.getHealthPercent() < 1)">
+				<damage object="player" attacker="this" damage="12" critical="false" /><play object="this" animation="item8" />
+				<play object="this" animation="single" loop="true" />
+			</section></over>
+		</object>
+	</enemy>
+	<tile id="medical_bot" sheet="enemy_sheet.5" />
+	<animation id="medical_bot.idle" x="9" count="8" />
+	<animation id="medical_bot.hit" x="8" count="1" length="3" />
+	<animation id="medical_bot.attack" x="0" count="8" />
+	<animation id="medical_bot.attach" x="17" count="8" />
+	<animation id="medical_bot.detach" x="17" count="8" reverse="true" />
+	<animation id="medical_bot.heal" x="25" count="8" />
+	<object id="medical_bot" tile="medical_bot" animation="medical_bot.idle" layer="top">
+		<over><invokeLater if="this.renderer.animation == 'medical_bot.idle' && player.shield.get() == null">
+			<sound id="medical_bot" object="this" /><play object="this" animation="medical_bot.attach" loop="true" />
+			<move object="player" x="Math.round(this.getCenterX()-8)/Tile.SIZE" y="this.yTile/Tile.SIZE" />
+			<facing object="player" dir="right" />
+			<play object="this" animation="medical_bot.attach" modal="true" />
+			<action>player.fullRestore()</action><show tooltip="popup" text="common.full_heal" x="0.5" y="0.4" />
+			<play object="this" animation="medical_bot.heal" modal="true" />
+			<play object="this" animation="medical_bot.detach" modal="true" />
+			<play object="this" animation="medical_bot.idle" loop="true" />
+		</invokeLater></over>
+	</object>
+	<object id="medical_bot.rogue" tile="medical_bot" animation="medical_bot.idle" layer="top" attack_sfx="medical_bot_attack">
+		<over><invokeLater if="this.renderer.animation == 'medical_bot.idle' && getFlag('drones.attack')">
+			<action if="this.renderer != null">this.renderer.scaleX = player.getCenterX()>this.getCenterX()?-1:1</action>
+			<damage object="player" attacker="this" damage="15" knockback="15" /><play object="this" animation="medical_bot.attack" />
+			<object id="medical_bot.rogue2" x="this.xPos/Tile.SIZE" y="this.yTile/Tile.SIZE" /><remove object="this" />
+		</invokeLater></over>
+	</object>
+	<enemy id="medical_bot.rogue2" tile="medical_bot" health="30" defense="6" speed="0" blood="science.explosion.sm" death_sfx="explosion" ignoreHit="true" passEnemies="true" attack_sfx="medical_bot_attack">
+		<loot id="ai_core" />
+		<over><invokeLater if="this.renderer.animation == 'medical_bot.idle' && (getFlag('drones.attack') || this.getHealthPercent() < 1)">
+			<action if="this.renderer != null">this.renderer.scaleX = player.getCenterX()>this.getCenterX()?-1:1</action>
+			<damage object="player" attacker="this" damage="15" knockback="15" /><play object="this" animation="attack" />
+			<play object="this" animation="idle" loop="true" />
+		</invokeLater></over>
+	</enemy>
+	<animation id="enemy_drone.fly.colored" x="8" count="5" glow="true" color="ff3333" colorScale="2">
+		<frame visible="false" length="3" />
+	</animation>
+	<animation id="enemy_drone.fly" count="8" ><append tile="drone.ship" animation="enemy_drone.fly.colored" /></animation>
+	<animation id="enemy_drone.idle" x="13" count="1" length="8">
+		<append tile="fighter.cannon" animation="equipment.fighter.cannon.idle" behind="true" x="-1" y="-35" />
+		<append tile="drone.ship" animation="enemy_drone.fly" behind="true" />
+	</animation>
+	<animation id="enemy_drone.walk" equals="enemy_drone.idle" />
+	<animation id="enemy_drone.open" x="13" count="8">
+		<append tile="fighter.cannon" animation="equipment.fighter.cannon.idle" behind="true" x="-1" y="-35" />
+		<append tile="drone.ship" animation="enemy_drone.fly" behind="true" />
+	</animation>
+	<animation id="enemy_drone.close" x="13" count="8" reverse="true">
+		<append tile="fighter.cannon" animation="equipment.fighter.cannon.idle" behind="true" x="-1" y="-35" />
+		<append tile="drone.ship" animation="enemy_drone.fly" behind="true" />
+	</animation>
+	<animation id="enemy_drone.fire" x="21" count="1" length="8">
+		<append tile="fighter.cannon" animation="equipment.fighter.cannon" behind="true" x="-1" y="-35" />
+		<append tile="drone.ship" animation="enemy_drone.fly" behind="true" />
+	</animation>
+	<enemy id="enemy_drone" tile="drone.ship" animation="enemy_drone" health="500" defense="7" hostileFlag="drones.attack" type="surface" range="18" speed="6" vertical="true" flying="true" friendlyFire="false" passEnemies="true" blood="science.explosion.med" death_sfx="explosion" ignoreHit="true">
+		<lootSet><loot id="ai_core" p="1" /></lootSet>
+		<lootSet><loot id="titanium" count="3" /></lootSet>
+		<light tile="light.fighter" />
+		<attack type="projectile" damage="50" range="18" animation="fire" afterAnimation="close" boundsY="-21" height="30">
+			<pre><play object="this" animation="open" /></pre>
+			<projectile tile="fighter.cannon.bolt" animation="fighter.cannon.bolt" speed="10" offsetX="-140" delay="2" overlap="0.25">
+				<hitEffect tile="fighter.cannon.bolt" animation="fighter.cannon.bolt.impact" color="9999ff" />
+			</projectile>
+		</attack>
+	</enemy>
+	
+	<animation id="drone.sub.walk" equals="drone.sub.move" />
+	<enemy id="enemy_sub" tile="drone.sub" animation="drone.sub" color="ffaaaa" health="300" defense="7" hostileFlag="drones.attack" type="underwater" range="18" speed="5" vertical="true" friendlyFire="false" passEnemies="true" blood="science.explosion.med" death_sfx="drone_sub_death" walk_sfx="submarine_move" ignoreHit="true">
+		<lootSet><loot id="ai_core" p="1" /></lootSet>
+		<lootSet><loot id="titanium" count="3" /></lootSet>
+		<light tile="light.drone.sub" />
+		<attack type="projectile" damage="15" range="18" boundsY="-15" height="14" hits="3" sfx="drone_sub_fire">
+			<pre animation="fire1"><projectile tile="drone.sub.bolt" animation="drone.sub.bolt" speed="8" delay="6" offsetX="-30" offsetY="13" overlap="0.25" hitEffect="drone.sub.bolt" underwater="true" /></pre>
+			<cont animation="fire2"><projectile tile="drone.sub.bolt" animation="drone.sub.bolt" speed="8" delay="1" offsetX="-30" offsetY="13" overlap="0.25" hitEffect="drone.sub.bolt" underwater="true" /></cont>
+			<cont animation="fire3"><projectile tile="drone.sub.bolt" animation="drone.sub.bolt" speed="8" delay="1" offsetX="-30" offsetY="13" overlap="0.25" hitEffect="drone.sub.bolt" underwater="true" /></cont>
+		</attack>
+	</enemy>
+	
+	<include id="traps.xml" />
+	<tile id="earth.traps" sheet="traps.1" /><animation id="laser_trap" x="5" count="1" />
+	<object id="laser_trap" tile="earth.traps" animation="laser_trap" layer="top">
+		<over><section if="this.renderer.animation == 'laser_trap' && getFlag('drones.attack')"><sound id="laser_traps" object="this" />
+			<damage object="player" attacker="this" damage="20" critical="false" /><play object="this" animation="item6" />
+			<play object="this" animation="laser_trap" loop="true" />
+		</section></over>
+	</object>
+	<animation id="lightning_trap" x="13" count="1" />
+	<animation id="lightning_trap.1" x="6" count="3" />
+	<animation id="lightning_trap.2" x="9" count="3" />
+	<animation id="lightning_trap.3" x="12" count="2" />
+	<object id="lightning_trap" tile="earth.traps" animation="lightning_trap" layer="top">
+		<over><section if="this.renderer.animation == 'lightning_trap' && getFlag('drones.attack')"><sound id="laser_traps" object="this" />
+			<damage object="player" attacker="this" damage="10" critical="false" /><play object="this" animation="lightning_trap.1" />
+			<damage object="player" attacker="this" damage="10" critical="false" if="player.overObjects.indexOf(this) != -1" /><play object="this" animation="lightning_trap.2" />
+			<damage object="player" attacker="this" damage="10" critical="false" if="player.overObjects.indexOf(this) != -1" /><play object="this" animation="lightning_trap.3" />
+			<play object="this" animation="lightning_trap" loop="true" />
+		</section></over>
+	</object>
+	
+	<tile id="turret" sheet="traps.2" />
+	<animation id="turret.idle" x="12" count="10" />
+	<animation id="turret.attack" x="2" count="8" />
+	<animation id="turret.open" x="22" count="4"><frame x="0" count="2" /></animation>
+	<animation id="turret.close"><frame x="10" count="2" /><frame x="22" count="4" reverse="true" /></animation>
+	<enemy id="turret" tile="turret" health="100" defense="6" speed="0" type="surface" hostileFlag="drones.attack" fps="10" blood="science.explosion.sm" death_sfx="explosion" ignoreHit="true" canFlip="false" canCritical="false">
+		<loot id="ship_parts" />
+		<attack type="breath" damage="12" range="20" repeat="2" afterAnimation="close" omnidirectional="true" sfx="turret_attack">
+			<pre><play object="this" animation="open" /></pre>
+			<projectile tile="fire" glow="true" speed="2" frames="8" scaleTo="1.5" color="98c6f9" colorScale="2" offsetY="-12" underwater="true" />
+		</attack>
+	</enemy>
+	
+	<tile id="mars_fish" sheet="enemy_sheet.6" />
+	<animation id="mars_fish.idle" x="8" count="8" />
+	<animation id="mars_fish.walk" equals="mars_fish.idle" />
+	<animation id="mars_fish.attack" x="0" count="12" />
+	<enemy id="mars_fish" tile="mars_fish" health="40" element="water" defense="6" range="16" speed="1" type="underwater" capture="30" death_sfx="mars_fish_death" attack_sfx="none" passEnemies="true" vertical="true">
+		<capture trapped="mars_fish" minCapture="3" /><lootSet><loot id="ink" count="1" /></lootSet>
+		<lootSet><loot id="fish_scale" count="3" /></lootSet>
+		<attack type="melee" damage="40" range="2.5" knockback="5" sfx="mars_fish_attack" />
+	</enemy>
+</data>

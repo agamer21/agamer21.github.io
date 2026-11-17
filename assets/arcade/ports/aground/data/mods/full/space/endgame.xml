@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<procedure id="endgame"><action>
+		var npcs = ["builder", "miner", "farmer", "hunter", "trader", "fisherman", "innkeeper"]; for(npc in npcs) player.removeQuestsByGiver(npc);
+		var quests = ["hatch_dragons", "virus", "launch_virus", "bandits", "bunker", "station", "water_cave", "ship_parts", "repair_escort", "bombardment", "powerplant", "factory", "elevator", "mirrows2", "locate_hq", "magne_queen_drill", "cultivator", "oldone", "go_east", "bombardment_shield", "holo_projector", "holo_ships"];
+		for(q in quests) if(!player.questComplete(q)) player.removeQuest(q); setFlag('bandit_fight', true); setFlag('endgame', true); setFlag('seen_nav', true);
+		var a = player.areas.get("start.orbit"); var o; while((o = a.getObject("alien.bomber")) != null) a.removeObject(o);
+		var a = player.areas.get("start"); var o = a.getObject("hunter_hotspot");  if(o != null) a.removeObject(o);
+		if(!player.questComplete('spirit_portal')) setFlag('exiled_win', true); setFlag('call_earth', true); setFlag('fisherman_intro', true); setFlag('mirrow.defeat', true);
+		setFlag('alchemist_first', true); setFlag('alchemist_second', true);
+		if(!getFlag('bombardment')){
+			var a = player.areas.get("mirrows_lab");
+			var o = a.getObject('mirrow_n'); if(o != null){a.addObject(ObjectInfo.make("mirrow_n.npc", o.xPos, o.yTile)); a.removeObject(o);}
+			var o = a.getObject('mirrow_d'); if(o != null){a.addObject(ObjectInfo.make("mirrow_d.npc", o.xPos, o.yTile)); a.removeObject(o);}
+		}
+	</action></procedure>
+	<onLoad>
+		<section if="player.getFlag('final_boss_defeat') && !player.getFlag('endgame')">
+			<run procedure="science_endgame" if="getFlag('alien_hq.locked')" />
+			<run procedure="endgame" />
+		</section>
+		<section if="!getFlag('hybrid_win')"><action>setFlag('aliens.hostile',true)</action></section>
+	</onLoad>
+	<action>
+		function hasHomeworld(player){return player.getString('homeworld') != null;}
+		function onHomeworld(area, player){return area != null &amp;&amp; player.getString('homeworld') == area.id;}
+	</action>
+	<npc id="lurker3" extends="lurker" animation="lurker">
+		<idle class="wander" fromX="20" toX="60" />
+	</npc>
+	<procedure id="set.homeworld">
+		<action>player.setString("homeworld", homeworld); closeMarkets(player.areas.get("start"), player.areas.get("science1"));</action>
+		<objects id="colony.townfolk.base" count="7" fromX="0" toX="80" fromY="-1" toY="-1" area="homeworld" />
+		<objects id="science1.townfolk.base" count="6" fromX="0" toX="80" fromY="-1" toY="-1" area="homeworld" />
+		<object id="lurker3" x="55" area="homeworld" />
+		<section if="player.areas.exists('science1')" >
+			<remove objectsById="science1.townfolk" area="science1" /><remove objectsById="lurker" area="science1" />
+		</section>
+		<section if="player.areas.exists('crashed_ship.cave1')">
+			<remove objectsById="science1.townfolk2" area="crashed_ship.cave1" /><remove objectsById="lurker2" area="crashed_ship.cave1" />
+		</section>
+	</procedure>
+	<procedure id="start.doodad">
+		<run procedure="homeworld.parallax" if="onHomeworld(area, player)" />
+	</procedure>
+	<procedure id="to.homeworld">
+		<quest /><dialogue eval="'player.homeworld{area:'+player.areas.get(player.getString('homeworld')).getDisplay().get()+'}'" speaker="player" />
+	</procedure>
+	<npc id="builder" extends="builder">
+		<operate>
+			<choose if="getFlag('final_boss_defeat')">
+				<section if="hasHomeworld(player) && !onHomeworld(this.area, player)">
+					<run procedure="to.homeworld" /><dialogue section="builder" id="homeworld1" speaker="this" />
+					<dialogue section="builder" id="homeworld2" speaker="player" /><dialogue section="builder" id="homeworld3" speaker="this" />
+					<remove object="this" /><object id="builder" x="40" area="player.getString('homeworld')" />
+				</section>
+				<dialogue section="builder" id="win2" speaker="this" />
+			</choose>
+		</operate>
+	</npc>
+	<action>function surfaceScorched(area){
+		var ct = 0; for(x in 0...128){
+			var t = area.getTileString(x, 0, BASE_LAYER); if(t == null) t = area.getTileString(x, 0, BACK_LAYER); if(t != null){
+				var i = t.lastIndexOf("."); if(i != -1 &amp;&amp; t.substr(i, 9) == ".scorched") ct++;
+			}
+		} return ct > 16;
+	}</action>
+	<npc id="farmer" extends="farmer">
+		<operate>
+			<choose if="getFlag('final_boss_defeat')">
+				<choose if="hasHomeworld(player)">
+					<section if="!onHomeworld(this.area, player)">
+						<run procedure="to.homeworld" /><dialogue section="farmer" id="homeworld1" speaker="this" />
+						<dialogue section="farmer" id="homeworld2" speaker="this" />
+						<remove object="this" /><object id="farmer" x="46" area="player.getString('homeworld')" />
+					</section>
+					<dialogue section="farmer" id="win4" speaker="this" if="area.getStructureById('terraformer') == null && surfaceScorched(area)" />
+					<dialogue section="farmer" id="win2" speaker="this" if="area.id == 'start'" />
+					<choose if="area.id == 'earth.desert'">
+						<dialogue section="farmer" id="win4" speaker="this" if="area.getStructureById('terraformer') == null" />
+						<dialogue section="farmer" id="win3" speaker="this" />
+					</choose>
+					<dialogue section="farmer" id="win1" speaker="this" />
+				</choose>
+				<dialogue section="farmer" id="win1" speaker="this" />
+			</choose>
+		</operate>
+	</npc>
+	<npc id="miner" extends="miner">
+		<operate>
+			<choose if="getFlag('final_boss_defeat')">
+				<choose if="hasHomeworld(player)">
+					<section if="!onHomeworld(this.area, player)">
+						<run procedure="to.homeworld" />
+						<choose>
+							<dialogue section="miner" id="homeworld1" speaker="this" if="player.getString('homeworld') == 'colony'" />
+							<dialogue section="miner" id="homeworld2" speaker="this" if="player.getString('homeworld') == 'earth.desert'" />
+						</choose>
+						<dialogue section="miner" id="homeworld3" speaker="this" />
+						<remove object="this" /><object id="miner" x="23" area="player.getString('homeworld')" />
+					</section>
+					<dialogue section="miner" id="win3" speaker="this" if="area.getStructureById('space_house') == null" />
+					<dialogue section="miner" id="win2" speaker="this" />
+				</choose>
+				<dialogue section="miner" id="win2" speaker="this" />
+			</choose>
+		</operate>
+	</npc>
+	<npc id="trader" extends="trader">
+		<operate>
+			<choose if="getFlag('final_boss_defeat')">
+				<choose if="hasHomeworld(player)">
+					<section if="!onHomeworld(this.area, player)">
+						<run procedure="to.homeworld" /><dialogue section="trader" id="homeworld1" speaker="this" />
+						<remove object="this" /><object id="trader" x="12" area="player.getString('homeworld')" />
+					</section>
+					<dialogue section="trader" id="win2" speaker="this" if="area.id == 'start'" />
+					<dialogue section="trader" id="win3" speaker="this" />
+				</choose>
+				<dialogue section="trader" id="win1" speaker="this" />
+			</choose>
+		</operate>
+	</npc>
+	<procedure id="hunter.endgame"><choose>
+		<choose if="hasHomeworld(player)">
+			<section if="!onHomeworld(this.area, player)">
+				<run procedure="to.homeworld" /><dialogue section="hunter" id="win4" speaker="this" />
+				<remove object="this" /><object id="hunter" x="90" area="player.getString('homeworld')" />
+			</section><section>
+				<dialogue section="hunter" id="win2" speaker="this" />
+				<dialogue section="hunter" id="win3" speaker="this" />
+			</section>
+		</choose>
+		<dialogue section="hunter" id="win1" speaker="this" />
+	</choose></procedure>
+	<procedure id="mechanic.endgame"><choose>
+		<choose if="hasHomeworld(player)">
+			<section if="!onHomeworld(this.area, player)">
+				<run procedure="to.homeworld" /><dialogue section="mechanic" id="win6" speaker="mechanic" />
+				<dialogue section="mechanic" id="win7" speaker="mechanic" /><action>player.removeQuestsByGiver("mechanic");</action>
+				<remove object="this" /><object id="mechanic" x="60" area="player.getString('homeworld')" name="mechanic_endgame" />
+			</section>
+			<section if="!getFlag('colony_mechanic')"><quest /><scene id="colony" show="mechanic" with="fade" showToAll="true"><action>setFlag('colony_mechanic', true)</action></scene></section>
+			<section if="!player.hasQuest('colony_ship')">
+				<dialogue section="mechanic" id="colony_ship1" speaker="mechanic" />
+				<quest id="colony_ship">
+					<dialogue section="mechanic" id="colony_ship2" speaker="mechanic" />
+				</quest>
+			</section>
+			<dialogue section="mechanic" id="colony_ship2" speaker="mechanic" if="player.canCompleteQuest('colony_ship')" />
+			<dialogue section="mechanic" id="win3" speaker="mechanic" />
+		</choose>
+		<section>
+			<dialogue section="mechanic" id="win1" speaker="mechanic" />
+			<dialogue section="mechanic" id="win2" speaker="mechanic" if="player.questComplete('com_station') && !getFlag('colony_world')" />
+			<run procedure="com_station" if="!player.hasQuest('com_station')" />
+		</section>
+	</choose></procedure>
+	<procedure id="alchemist.endgame">
+		<quest /><action>setFlag('alchemist.win', true);</action><scene id="alchemist" show="win" with="fade" showToAll="true" />
+	</procedure>
+</data>

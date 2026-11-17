@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="buildings.xml" />
+	<tile id="terraformer" sheet="buildings.1" />
+	<animation id="terraformer.off" equals="single" />
+	<animation id="terraformer.fx" x="1" count="12" glow="true" />
+	<animation id="terraformer.on" x="13" count="1" length="12"><append tile="terraformer" animation="terraformer.fx" /></animation>
+	<recipe id="fuel_exotic_matter" fuel="50" type="exo_fuel"><item id="exotic_matter" /></recipe>
+	<structure id="terraformer" tile="terraformer" powered="true" name="operate" type="fuelable" maxFuel="400" speed="0.5" maxDist="200" title="common.terraformer" repairType="mechanic">
+		<recipe type="exo_fuel" /><recipe type="adv_seed" /><recipe type="seed" />
+		<terraform from="desert.dirt" to="sci1.dirt" />
+		<terraform from="desert.dirt_top" to="sci1.grass" />
+		<terraform from="sci1.dirt" to="sci1.grass" top="true" />
+		<terraform from="desert.dirt_sand1" to="sci1.dirt_sand1" />
+		<terraform from="desert.dirt_sand2" to="sci1.dirt_sand2" />
+		<terraform from="desert.dirt_sand3" to="sci1.dirt_sand3" />
+		<terraform from="desert.scorched" to="sci1.dirt" />
+		<terraform from="basalt" to="sci1.dirt" />
+		<terraform from="basalt.top" to="sci1.grass" />
+		<terraform from="sci1.dirt" to="sci1.grass" top="true" />
+		<terraform from="snow" to="grass" />
+		<terraform from="snow_stone" to="stone" />
+		<addedToArea><displayAction>
+			partial = 0.0; speed = Std.parseFloat(this.info.xml.get("speed"))/60.0;
+			maxDist = Std.parseInt(this.info.xml.get("maxDist")); map = new StringMap(); top = new StringMap();
+			for(t in this.info.xml.elementsNamed("terraform")) (t.get("top") == "true"?top:map).set(t.get("from"), t.get("to"));
+			function terraform(x, y){
+				var l = BASE_LAYER; var id = this.area.getTileString(x, y, l);
+				if(id == null){l = BACK_LAYER; id = this.area.getTileString(x, y, l);} if(id == null) return false;
+				var to = map.get(id); if(to == null &amp;&amp; this.area.emptyTile(x, y-1)) to = top.get(id); if(to == null){
+					var i = id.lastIndexOf("."); if(i != -1 &amp;&amp; id.substr(i, 9) == ".scorched") to = id.substring(0, i);
+				} if(Tile.exists(to)){
+					this.area.setTile(x, y, l, this.area.addTileIndex(to)); return true;
+				} else return false;
+			}
+			function terraformDown(x, y, dist){
+				var to = Utils.min(7, Utils.abs(dist))+1; var s = Utils.sign(dist); for(i in 1...to){dist -= s; terraform(x+dist, y+i, 0);}
+			}
+			function doTerraform(){
+				if(this.area == null) return false;
+				var cen = Math.round(this.getCenterX()/Tile.SIZE); var y = this.tile_y+1;
+				for(dist in 0...maxDist){
+					if(terraform(cen+dist, y)){terraformDown(cen, y, dist); return true;}
+					if(dist > 0 &amp;&amp; terraform(cen-dist, y)){terraformDown(cen, y, -dist); return true;}
+				} return false;
+			} area.hasO2Func = function(){return this.hasFuel() &amp;&amp; this.canFunction();};
+		</displayAction></addedToArea>
+		<removedFromArea><displayAction>area.hasO2Func = null;</displayAction></removedFromArea>
+		<onTick>
+			if(this.hasFuel() &amp;&amp; this.canFunction()){var f = frames*speed; partial += f-Math.floor(f); if(partial >= 1){partial -= 1; this.useFuel(); if(!doTerraform()) partial -= 7;}}
+		</onTick>
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<light tile="light.largest" color="9ce1eb" offsetX="150" offsetY="180" />
+	</structure>
+	
+	<item id="terraformer_blueprint" type="blueprint" cost="30000" weight="0" icon="blueprint.ico" achievement="terraformer">
+		<action id="build" structure="terraformer" underground="false" unique="true">
+			<areaConstraint enabled="!area.isOrbit()" fail="warning.no_build_orbit" />
+			<item id="ship_parts" count="5" /><item id="titanium" count="10" /><item id="silicon" count="8" /><item id="chromium" count="5" />
+		</action>
+	</item>
+		
+	<tile id="exo_factory" sheet="buildings.2" />
+	<animation id="exo_factory.door" x="29" count="1" />
+	<animation id="exo_factory.off" x="40" count="1"><append tile="exo_factory" animation="exo_factory.door" /></animation>
+	<animation id="exo_factory.power" x="42" count="12" glow="true" />
+	<animation id="exo_factory.on" x="41" count="1" length="12"><append tile="exo_factory" animation="exo_factory.door" /><append tile="exo_factory" animation="exo_factory.power" /></animation>
+	<animation id="exo_factory.bg" x="0" count="29" glow="true" />
+	<animation id="exo_factory.operate" x="41" count="1" length="12"><append tile="exo_factory" animation="exo_factory.power" /></animation>
+	<animation id="exo_factory.open" x="29" count="11"><frame visible="false" /><append tile="exo_factory" animation="exo_factory.operate" behind="true" /></animation>
+	<animation id="exo_factory.close"><frame visible="false" /><frame x="29" count="11" reverse="true" /><append tile="exo_factory" animation="exo_factory.operate" behind="true" /></animation>
+	<action>
+		function isExoObject(object, layer){
+			return object.info.id == "exo_mech";
+		}
+		function getExoInFactory(factory){
+			return factory.area.getActionObject(factory.getInnerBounds(true), null, isExoObject);
+		}
+	</action>
+	<procedure id="exo_mech_equip">
+		<window type="recipes" recipes="v.info.id+'_equip'" includeStorehouse="true" titleMutable="v.getTitle(player)" enabled="if(recipe == null) return true; var e = v.getEquipment().getItem(recipe.creates.item.xml.get('slot')); return e == null || e.info != recipe.creates.item;">
+			<action>v.getEquipment().forceEquip(recipe.creates.item.xml.get("slot"), v, recipe == null?null:recipe.creates.asItem())</action>
+		</window>
+	</procedure>
+	<structure id="exo_factory" type="crafting" tile="exo_factory" fps="10" name="factory" display="exo_factory" title="common.exo_factory" powered="true" spawnX="(this.xPos+((this.info.width-getTile(info.tile).getWidth())>>1))/Tile.SIZE" repairType="mechanic" exo_mech_equip="true">
+		<tile id="exo_factory" animation="exo_factory.bg" fps="10" y="0" behind="true" />
+		<recipe type="exo_factory" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<listItem title="structure.tooltip.change_equip" enabled="return getExoInFactory(this) != null" fail="warning.no_vehicle_equip">
+			<set id="v" value="getExoInFactory(this)" /><run procedure="exo_mech_equip" />
+		</listItem>
+		<over><play object="this" animation="open" /><action>this.loopAnimation("operate")</action></over>
+		<out><play object="this" animation="close" /><action>this.loopAnimation("idle")</action></out>
+		<light tile="light.largest" color="9ce1eb" offsetX="178" offsetY="70" />
+	</structure>
+	
+	<item id="exo_factory_blueprint" type="blueprint" cost="30000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="exo_factory" underground="true">
+			<item id="ship_parts" count="5" /><item id="titanium" count="10" /><item id="silicon" count="8" /><item id="chromium" count="5" />
+		</action>
+	</item>
+	
+	<procedure id="blueprint_printer_recipes" extends="blueprint_printer_recipes">
+		<item id="terraformer_blueprint" cost="8" if="getFlag('colony_world')" />
+		<item id="exo_factory_blueprint" cost="8" if="getFlag('colony_world')" />
+		<item id="weap_market_blueprint" cost="6" if="getFlag('colony_world')" />
+		<item id="mineral_market_blueprint" cost="6" if="getFlag('colony_world')" />
+		<item id="cafeteria_blueprint" cost="6" if="getFlag('colony_world')" />
+	</procedure>
+	
+	<include id="struc.xml" />
+	<tile id="space_house" sheet="struc.1" />
+	<animation id="space_house.idle" equals="single" />
+	<animation id="space_house.opening" count="8" />
+	<animation id="space_house.closing" count="8" reverse="true" />
+	<action>
+		space_house_upgrades = ["storehouse", "farm", "stall", "sci.light", "house_kitchen", "dock", "dock_flip", "dockhouse"];
+		space_house_npcs = house_npcs;
+		function checkSpaceHouseUpgrade(e){
+			var s = e.value; if(space_house_upgrades.indexOf(s.info.id) != -1) s.setInfo(getStructure(s.info.id+"3"));
+		}
+		function checkkSpaceHouseUpgradeNPC(e){
+			var n = e.value; if(space_house_npcs.indexOf(n.info.id) != -1) setNPCUpgrade(n, n.info.id+".upgrade2", 2, 4);
+		}
+	</action>
+	<structure id="space_house" tile="space_house" sleep="true" name="enter" behind="true" repairType="mechanic">
+		<operate>
+			<action>player.fullRestore(); player.restoreOxygen(); player.restorePower();</action><save sleep="true" />
+		</operate>
+		<light tile="light.large" color="9ce1eb" offsetX="30" offsetY="45" />
+		<addedToArea><displayAction>
+			for(h in space_house_upgrades) for(s in area.getStructuresById(h)) s.setInfo(getStructure(h+"3"));
+			for(n in space_house_npcs) for(o in area.getObjectsById(n)) setNPCUpgrade(o, n+".upgrade2", 2, 4);
+			area.addEventListener("add_structure", checkSpaceHouseUpgrade);
+			area.objects.addEventListener("add_object", checkkSpaceHouseUpgradeNPC);
+		</displayAction></addedToArea>
+		<removedFromArea><displayAction>
+			for(h in space_house_upgrades) for(s in area.getStructuresById(h)) s.setInfo(getStructure(h));
+			for(n in space_house_npcs) for(o in area.getObjectsById(n)) setNPCUpgrade(o, n, 4, 1);
+			area.removeEventListener("add_structure", checkSpaceHouseUpgrade);
+			area.objects.removeEventListener("add_object", checkkSpaceHouseUpgradeNPC);
+		</displayAction></removedFromArea>
+	</structure>
+	<tile id="house_kitchen3" sheet="struc.2" />
+	<animation id="house_kitchen3.idle" equals="single" />
+	<animation id="house_kitchen3.opening" count="6" />
+	<animation id="house_kitchen3.closing" count="6" reverse="true" />
+	<structure id="house_kitchen3" alias="house_kitchen" tile="house_kitchen3" type="crafting" name="kitchen" animation="house_kitchen3">
+		<recipe type="kitchen3" />
+		<recipe type="kitchen2" />
+		<recipe type="kitchen" />
+		<light tile="light.default" color="9ce1eb" offsetX="30" offsetY="45" />
+	</structure>
+	
+	<item id="house_upgrade" type="blueprint" cost="10000" weight="0" icon="blueprint.ico">
+		<action id="upgrade" upgrade="house" structure="space_house">
+			<item id="ship_parts" count="2" /><item id="chromium" count="2" /><item id="silicon" count="5" /><item id="titanium" count="5" />
+		</action>
+	</item>
+	<tile id="storehouse3" sheet="struc.3" />
+	<structure id="storehouse3" alias="storehouse" tile="storehouse3" type="storehouse" main="true" name="storehouse" animation="space_house" repairType="mechanic">
+		<light tile="light.default" color="9ce1eb" offsetX="33" offsetY="45" />
+	</structure>
+
+	<tile id="farm3" sheet="struc.4" x="16" />
+	<tile id="farm3.weathervane" sheet="struc.4" x="0" />
+	<animation id="farm3.halloween.idle" count="1">
+		<append tile="farm2.pumpkin" animation="farm2.idle" />
+	</animation>
+	<animation id="farm3.halloween.opening" count="8">
+		<append tile="farm2.pumpkin" animation="farm2.opening" />
+	</animation>
+	<animation id="farm3.halloween.closing" count="8" reverse="true">
+		<append tile="farm2.pumpkin" animation="farm2.closing" />
+	</animation>
+	<structure id="farm3" alias="farm" tile="farm3" type="farm" name="farm" animation="isDate(10,31,3)?'farm3.halloween':'space_house'" repairType="mechanic">
+		<tile id="farm3.weathervane" animation="farm2.weathervane" x="0" y="0" />
+		<tile id="farm2" animation="farm2.lights" x="0" y="0" if="isDate(12,27,7)" />
+		<tile id="farm2" animation="farm2.wreath" x="0" y="0" if="isDate(12,27,7)" />
+		<light tile="light.large" color="9ce1eb" offsetX="53" offsetY="45" />
+	</structure>
+	<tile id="pen3" sheet="struc.5" />
+	<structure id="stall3" alias="stall" extends="stall" width="" height="" image="" tile="pen3" destroyRemove="" />
+	
+	<tile id="sci.light" sheet="struc.6" x="2" />
+	<tile id="sci.light3" sheet="struc.6" x="0" />
+	<animation id="sci.light.off" equals="single" />
+	<animation id="sci.light.on" x="1" count="1" />
+	<animation id="sci.light.surface.off" x="4" count="1" />
+	<animation id="sci.light.surface.on" x="5" count="1" />
+	<structure id="sci.light" tile="sci.light" powered="true" tileLayer="true" destroyRemove="true" repairType="mechanic">
+		<light tile="light.large" color="9ce1eb" offsetX="8" offsetY="2" />
+		<addedToArea><displayAction if="area.emptyTile(this.tile_x, this.tile_y)">this.animation = "sci.light.surface";</displayAction></addedToArea>
+	</structure>
+	<structure id="sci.light3" alias="sci.light" tile="sci.light3" extends="sci.light" animation="sci.light" destroyRemove="false" repairType="mechanic" />
+	<item id="sci_light_blueprint" type="blueprint" cost="5000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="sci.light" underground="true">
+			<item id="silicon" count="2" /><item id="steel_bar" count="2" /><item id="titanium" count="1" />
+		</action>
+	</item>
+	
+	<tile id="dockhouse2" sheet="struc.7" />
+	<animation id="dockhouse2.idle" equals="single" />
+	<animation id="dockhouse2.closing" count="6" reverse="true" />
+	<animation id="dockhouse2.opening" count="6" />
+	<structure id="dockhouse2" extends="dockhouse" alias="dockhouse" width="" height="" image="" tile="dockhouse2" destroyRemove="true" animation="dockhouse2">
+		<recipe type="dock2" />
+	</structure>
+	
+	<tile id="dockhouse3" sheet="struc.9" />
+	<animation id="dockhouse3.idle" x="8" count="12" />
+	<tile id="dockhouse3_door" sheet="struc.9" />
+	<animation id="dockhouse3_door.closing" count="8" reverse="true"><frame visible="false" /></animation>
+	<animation id="dockhouse3_door.opening" count="8"><frame visible="false" /></animation>
+	<structure id="dockhouse3" extends="dockhouse2" tile="dockhouse3" destroyRemove="false" animation="dockhouse3">
+		<tile id="dockhouse3_door" animation="single" x="0" y="0" fps="10" />
+		<over><action>var door = this.getTileById("dockhouse3_door"); if(door != null) door.playAnimation("dockhouse3_door.opening", false)</action></over>
+		<out><action>var door = this.getTileById("dockhouse3_door"); if(door != null) door.playAnimation("dockhouse3_door.closing", false)</action></out>
+		<light tile="light.large" color="9ce1eb" offsetX="50" offsetY="45" />
+	</structure>
+	
+	<tile id="dock3" sheet="struc.8" x="2" />
+	<tile id="dock_front3" sheet="struc.8" x="1" />
+	<tile id="dock_front3.glow" sheet="struc.8" x="0" />
+	<animation id="dock_front3.glow" count="1" glow="true" />
+	<structure id="dock3" alias="dock" extends="dock_base" tile="dock3" offsetY="64" dockWidth="4" dockHeight="4" overlapVehicle="true">
+		<tile id="dock_front3" top="true" x="0" y="0" />
+		<tile id="dock_front3.glow" top="true" x="0" y="0" animation="hidden" />
+		<over><action>var glow = this.getTileById("dock_front3.glow"); if(glow != null) glow.playAnimation("dock_front3.glow", false)</action></over>
+		<out><action>var glow = this.getTileById("dock_front3.glow"); if(glow != null) glow.playAnimation("hidden", false)</action></out>
+		<light tile="light.default" color="9ce1eb" offsetX="32" offsetY="0" />
+	</structure>
+	<structure id="dock_flip3" alias="dock_flip" extends="dock3" flip="true" />
+</data>

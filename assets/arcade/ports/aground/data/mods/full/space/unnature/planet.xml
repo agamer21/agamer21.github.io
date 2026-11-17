@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="parallax.xml" />
+	<include id="enemies.xml" />
+	<include id="npcs.xml" />
+	<include id="player.xml" />
+	<planet id="unnature" height="80">
+		<orbit id="unnature.orbit" width="256" height="64" background="unnature.orbit" name="system.planet.unnature" type="none" distress="!player.hasQuest('splicer')">
+			<area id="unnature" x="0" />
+			<init><runAreaLoad /><invokeLater><dialogue section="unnature" id="distress_orbit" /></invokeLater></init>
+			<onLoad><music id="orbit" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+		</orbit>
+	</planet>
+	<animation id="unnature">
+		<append tile="planet5" animation="single" color="4b87bd" colorScale="2" />
+		<append tile="planet5.clouds" animation="single" color="f2f3ab" colorScale="2" />
+		<append tile="planet5.land2" animation="single" color="e89052" colorScale="2" />
+		<append tile="planet5.shadow" animation="single" /><frame visible="false" />
+	</animation>
+	<system id="unnature" bgm="voyage" x="80" y="14">
+		<planet id="unnature" tile="planet5" animation="unnature" orbit="orbit2" orbitOffX="-8" orbitOffY="-12" offsetX="-23" offsetY="-4" name="system.planet.unnature" />
+	</system>
+	
+	<tile id="unnature.dirt" sheet="bg.6" x="1" />
+	<tile id="unnature.grass" sheet="bg.6" x="1"><tile sheet="bg.6" x="0" /></tile>
+	<tile id="unnature.stone" sheet="bg.6" x="2" />
+	<tile id="unnature.dirt_sand1" sheet="bg.6" x="1"><tile sheet="{core}/tiles/tiles.png" x="85" /></tile>
+	<tile id="unnature.dirt_sand2" sheet="bg.6" x="1"><tile sheet="{core}/tiles/tiles.png" x="84" /></tile>
+	<tile id="unnature.dirt_sand3" sheet="bg.6" x="1"><tile sheet="{core}/tiles/tiles.png" x="88" /></tile>
+	<dig id="unnature.dirt" cost="2" />
+	<dig id="unnature.grass" cost="2" grass="true" />
+	<dig id="unnature.stone" cost="6" />
+	<dig id="unnature.dirt_sand1" cost="2" />
+	<dig id="unnature.dirt_sand2" cost="2" />
+	<dig id="unnature.dirt_sand3" cost="2" />
+	<structure id="unnature_dungeon" width="32" height="32" image="{core}/structures/cave.png" name="enter" animation="door">
+		<operate><teleport area="unnature_dungeon" x="1" y="28" allowReturn="true" with="ellipse" /></operate>
+	</structure>
+	<area id="unnature" width="128" height="96" background="unnature" planet="unnature" name="system.planet.unnature">
+		<tiles id="unnature.dirt" start="0" end="0.4" />
+		<tiles id="unnature.stone" start="0.4" end="0.7" />
+		<tiles id="bedrock" start="0.7" end="1" />
+		<tiles id="unnature.grass" y="0" />
+		<shore x="-1" top="sand_top" bottom="sand" trans1="unnature.dirt_sand1" trans2="unnature.dirt_sand2" flip="true" dock="dock_empty" />
+		<shore x="128" top="sand_top" bottom="sand" trans1="unnature.dirt_sand1" trans2="unnature.dirt_sand3" dock="dock_empty_flip" />
+		<appendArea id="sea_floor"><params area_left="-200" area_right="350" area_width="128" area_height="96" /></appendArea>
+		<ore id="quartz" start="0.3" end="0.4" percent="0.0025" tile="unnature.dirt" />
+		<ore id="sulfur" start="0.1" end="0.4" percent="0.0125" tile="unnature.dirt" />
+		<ore id="coal" start="0.0" end="0.3" percent="0.0375" tile="unnature.dirt" />
+		<ore id="gold" start="0.3" end="0.4" percent="0.000625" tile="unnature.dirt" />
+		<ore id="exotic_matter" start="0.65" end="0.7" percent="0.00125" tile="unnature.stone" />
+		<ore id="sulfur" start="0.4" end="0.7" percent="0.0125" tile="unnature.stone" />
+		<ore id="iron" start="0.4" end="0.6" percent="0.0175" tile="unnature.stone" />
+		<ore id="lava" start="0.65" end="0.7" percent="1" tile="unnature.stone" />
+		<ore id="exotic_matter" start="0.8" end="1" percent="0.0025" tile="bedrock" />
+		<ore id="magnegem" start="0.7" end="0.9" percent="0.00125" tile="bedrock" />
+		<ore id="uranium" start="0.8" end="1" percent="0.0125" tile="bedrock" />
+		<ore id="titanium" start="0.7" end="0.8" percent="0.025" tile="bedrock" />
+		<objects id="meat_tree" y="-1" startX="4" endX="124" minDist="6" maxDist="15" array="trees" />
+		<objects id="red_bush" y="-1" between="trees" pos="0.33" altPos="0.66" percent="0.5" />
+		<objects id="ice_bush" y="-1" between="trees" pos="0.33" altPos="0.66" percent="0.5" />
+		<objects id="drill_beetle" start="0.4" end="0.6" percent="0.0005" tile="unnature.stone" />
+		<objects id="treasure_chest" start="0.2" end="0.3" count="2" tile="unnature.dirt">
+			this.inventory.addItems(Item.get("meat_tree_seed"), 1);
+		</objects>
+		<set id="cave_x" value="randInt(2, 126)" />
+		<structure id="unnature_dungeon" x="cave_x" y="92" />
+		<spreadTiles x="cave_x" y="92" eval="'markings'+randInt(1,9)" layer="back" on="bedrock" count="80" />
+		<spawner id="acid_raptor" time="6000" count="5" fromX="3" toX="126" fromY="-1" toY="-1" />
+		<spawner id="brutefish" time="5000" count="18" fromX="-180" toX="320" fromY="3" toY="78" spawnWidth="128" underwater="true" />
+		<spawner id="jellypod" time="8000" count="12" fromX="-180" toX="320" fromY="3" toY="78" spawnWidth="128" underwater="true" />
+		<spawner id="drill_beetle" time="4000" count="6" fromX="1" toX="126" fromY="22" toY="64" tile="unnature.stone" />
+		<spawner id="alien.hatchling" time="3000" count="14" fromX="-180" toX="320" fromY="3" toY="78" spawnWidth="128" underwater="true"  enabled="player.questComplete('oldone_form')" />
+		<fishing>
+			<loot id="toothfish" p="8" difficulty="1" />
+			<loot id="rockfish" p="12" difficulty="2" />
+			<loot id="coral_cod" p="1" difficulty="3" />
+		</fishing>
+		<init><runAreaLoad /><action>area.spawner.spawn('acid_raptor', 1); area.spawner.spawnAll("brutefish"); area.spawner.spawnAll("jellypod");</action></init>
+		<onLoad>
+			<music id="unnature" seconds="1" />
+			<action if="!player.hasSeenItem('unnature.splicer')">
+				area.removeEventListener("mine", checkUnnatureMine); area.removeEventListener("tree_cut", checkUnnatureKill); area.objects.removeEventListener("rem_object", checkUnnatureKill);
+				area.addEventListener("mine", checkUnnatureMine); area.addEventListener("tree_cut", checkUnnatureKill); area.objects.addEventListener("rem_object", checkUnnatureKill);
+			</action>
+			<invokeLater if="!getFlag('splicer_defeat') && !player.hasSeenItem('unnature.splicer.intro')"><action>player.setSeenItem('unnature.splicer.intro')</action><run procedure="unnature.splicer.intro" /></invokeLater>
+		</onLoad>
+		<connection area="unnature" fromX="350" toX="-200" />
+		<connection area="unnature" fromX="-200" toX="350" />
+	</area>
+	
+	<include id="dungeon.xml" />
+</data>

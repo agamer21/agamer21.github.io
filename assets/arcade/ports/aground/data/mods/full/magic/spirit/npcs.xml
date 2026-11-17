@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="spirit_hq" giver="spirit_guide" exp="2000">
+		<script id="player.getStorage('spirit').getValue()" tile="spirit" animation="spirit" name="common.spirit" count="100" />
+	</quest>
+	<tile id="spirit_guide" sheet="spirits.7" />
+	<animation id="spirit_guide.weap">
+		<frame x="8" count="8" repeat="2" />
+		<frame x="0" count="8" />
+		<frame x="16" count="8" repeat="4" />
+		<frame x="0" count="8" reverse="true" />
+		<frame x="8" count="8" repeat="2" />
+	</animation>
+	<animation id="spirit_guide.idle" x="24" count="8" repeat="10">
+		<append tile="spirit_guide" animation="spirit_guide.weap" behind="true" />
+	</animation>
+	<animation id="spirit_guide.talk" equals="spirit_guide.idle" />
+	<tile id="spirit_guide.ico" sheet="spirits.8" />
+	<npc id="spirit_guide" tile="spirit_guide" action="talk" animation="spirit_guide" night="true" icon="spirit_guide.ico">
+		<operate>
+			<scene id="spirit" show="intro" dissolve="true" seconds="0.5" if="!getFlag('spirit_guide_intro')" showToAll="true"><action>setFlag('spirit_guide_intro', true)</action></scene>
+			<section if="player.canCompleteQuest('spirit_hq')">
+				<dialogue section="spirit" id="spirit_hq1" speaker="this" />
+				<complete quest="spirit_hq" /><action>player.getStorage("spirit").loseValue(100)</action>
+				<pan tileX="13" tileY="13" seconds="1" />
+				<run procedure="spirit.path" /><wait seconds="0.25" />
+				<choose>
+					<dialogue section="spirit" id="spirit_hq3" speaker="this" if="getFlag('final_boss_defeat')" />
+					<dialogue section="spirit" id="spirit_hq2" speaker="this" />
+				</choose>
+				<pan toObject="player" seconds="1" />
+			</section>
+			<dialogue section="spirit" id="not_enough" speaker="this" if="player.getStorage('spirit').getValue() < 5" />
+			<scene id="spirit" show="deal" dissolve="true" seconds="0.5" />
+		</operate>
+	</npc>
+	<tilesheet id="pentagram.png" width="128" height="128" />
+	<tile id="pentagram" sheet="pentagram.png" />
+	<procedure id="spirit.knowledge">
+		<action>player.getStorage("spirit").loseValue(5)</action><show tooltip="popup" text="warning.lose_spirit{amt:-5}" x="0.5" y="0.4" modal="true" />
+	</procedure>
+	<procedure id="spirit_guide_recipes">
+		<item id="spirit_glaive" cost="10" />
+		<item id="spirit_gem" cost="20" />
+		<item id="evo_shard" cost="20" />
+		<item id="staff" cost="50" />
+		<item id="alien_heart" cost="50" />
+		<item id="spirit_gem2" cost="60" />
+		<item id="exotic_matter" cost="60" />
+		<item id="storehouse_seed" cost="100" />
+		<item id="venatrix_seed" cost="100" />
+		<item id="spirit_fox_helm" cost="100" />
+		<item id="spirit_robes" cost="100" />
+		<item id="spirit_box" cost="200" if="player.getItemCount('spirit_box') == 0" />
+	</procedure>
+	<scene id="spirit">
+		<tilesheet id="scene.png" width="188" height="144" />
+		<tile id="spirit_guide" sheet="scene.png" />
+		<layer id="spirit_bg" tile="spirit.bg" animation="item12" fps="5" />
+		<layer id="spirit_clouds" tile="spirit.clouds" animation="item12" fps="10" />
+		<layer id="spirit_guide" tile="spirit_guide" animation="item8" talk="item8" x="68" y="0" />
+		<tile id="mid" sheet="bg.png" x="12" /><layer id="mid" tile="mid" />
+		<tile id="top" sheet="bg.png" x="25" /><layer id="top" tile="top" />
+		<show id="intro">
+			<layer id="spirit_bg" />
+			<layer id="mid" />
+			<layer id="spirit_clouds" />
+			<layer id="top" />
+			<layer id="spirit_guide" />
+			<wait seconds="3" />
+			<dialogue section="spirit" id="intro1" speaker="spirit_guide" />
+			<dialogue section="spirit" id="intro2" speaker="player" />
+			<dialogue section="spirit" id="intro3" speaker="spirit_guide" />
+			<dialogue section="spirit" id="intro4" speaker="player" />
+			<dialogue section="spirit" id="intro5" speaker="spirit_guide" />
+			<dialogue section="spirit" id="intro6" speaker="spirit_guide" />
+			<dialogue section="spirit" id="intro7" speaker="player" />
+			<dialogue section="spirit" id="intro8" speaker="spirit_guide" />
+			<dialogue section="spirit" id="intro9" speaker="spirit_guide" />
+			<item id="spirit_glaive" modal="true" />
+			<wait seconds="1" />
+		</show>
+		<show id="deal">
+			<layer id="spirit_bg" />
+			<layer id="mid" />
+			<layer id="spirit_clouds" />
+			<layer id="top" />
+			<layer id="spirit_guide" />
+			<wait seconds="1" />
+			<menu section="spirit" width="120" closeable="true">
+				<dialogue section="spirit" id="deal" />
+				<choice id="knowledge">
+					<menu section="spirit" width="180" closeable="true" showCoins="true">
+						<dialogue section="spirit" id="knowledge_title" />
+						<choice id="enemy" if="!player.hasQuest('spirit_hq')">
+							<run procedure="spirit.knowledge" /><choose>
+							<section if="getFlag('final_boss_defeat')">
+								<dialogue section="spirit" id="enemypost1" speaker="spirit_guide" />
+								<dialogue section="spirit" id="enemypost2" speaker="spirit_guide" />
+								<dialogue section="spirit" id="enemy4" speaker="spirit_guide" />
+							</section>
+							<section>
+								<dialogue section="spirit" id="enemy1" speaker="spirit_guide" />
+								<dialogue section="spirit" id="enemy2" speaker="spirit_guide" />
+								<dialogue section="spirit" id="enemy3" speaker="spirit_guide" />
+								<dialogue section="spirit" id="enemy4" speaker="spirit_guide" />
+							</section></choose><quest id="spirit_hq" />
+						</choice>
+						<choice id="venatrix" if="player.hasQuest('activate_hq_structures') && !player.questComplete('activate_hq_structures')">
+							<run procedure="spirit.knowledge" />
+							<dialogue section="spirit" id="venatrix1" speaker="spirit_guide" />
+							<dialogue section="spirit" id="venatrix2" speaker="spirit_guide" />
+							<dialogue section="spirit" id="venatrix3" speaker="spirit_guide" />
+						</choice>
+						<choice id="spirits">
+							<run procedure="spirit.knowledge" />
+							<dialogue section="spirit" id="spirits1" speaker="spirit_guide" />
+							<dialogue section="spirit" id="spirits2" speaker="spirit_guide" />
+							<dialogue section="spirit" id="spirits3" speaker="spirit_guide" />
+						</choice>
+						<choice id="spirit">
+							<run procedure="spirit.knowledge" />
+							<dialogue section="spirit" id="spirit1" speaker="spirit_guide" />
+							<dialogue section="spirit" id="spirit2" speaker="spirit_guide" />
+							<dialogue section="spirit" id="spirit3" speaker="spirit_guide" />
+						</choice>
+						<choice id="world">
+							<run procedure="spirit.knowledge" />
+							<dialogue section="spirit" id="world1" speaker="spirit_guide" />
+							<dialogue section="spirit" id="world2" speaker="spirit_guide" />
+							<dialogue section="spirit" id="world3" speaker="spirit_guide" />
+						</choice>
+						<choice id="elements">
+							<run procedure="spirit.knowledge" />
+							<dialogue section="spirit" id="elements1" speaker="spirit_guide" />
+							<show type="tile" tile="pentagram" id="pentagram" x="0.5" y="0.5" seconds="0.16" />
+							<wait /><hide id="pentagram" seconds="0.16" />
+							<item id="element_table" modal="true" />
+							<dialogue section="spirit" id="spirits3" speaker="spirit_guide" />
+							<dialogue section="spirit" id="elements2" speaker="spirit_guide" />
+						</choice>
+						<choice id="spirit_fish" if="player.seen_items.exists('spirit_fish')">
+							<run procedure="spirit.knowledge" />
+							<dialogue section="spirit" id="spirit_fish1" speaker="spirit_guide" />
+							<dialogue section="spirit" id="spirit_fish2" speaker="spirit_guide" />
+							<dialogue section="spirit" id="spirit_fish3" speaker="spirit_guide" />
+						</choice>
+					</menu>
+				</choice>
+				<choice id="power">
+					<window type="shop" title="spirit.buy" currency="spirit" currencyIcon="spirit" name="common.spirit">
+						<run procedure="spirit_guide_recipes" />
+					</window>
+				</choice>
+			</menu>
+			<wait seconds="1" />
+		</show>
+	</scene>
+</data>

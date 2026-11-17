@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="objects.xml" />
+	<tile id="sea_serpent.body" sheet="objects.2" />
+	<tile id="sea_serpent" sheet="objects.3" x="0" />
+	<tile id="sea_serpent.tail" sheet="objects.2"><tile sheet="objects.3" x="2" offsetX="29" offsetY="-25" /></tile>
+	<enemy id="sea_serpent.body" tile="sea_serpent.body" health="35" element="water" defense="7" canFlip="false" canCritical="false" overlapVehicle="true" linkFlip="false" linkFacing="true">
+		<over><damage object="player" attacker="this" damage="40" directional="false" critical="false" /></over>
+	</enemy>
+	<enemy id="sea_serpent.tail" tile="sea_serpent.tail" extends="sea_serpent.body" offsetX="-6" offsetY="0" linkFacing="true" />
+	<animation id="sea_serpent.idle" equals="single" />
+	<animation id="sea_serpent.attack" x="1" count="1" length="3"><frame x="0" length="5" /></animation>
+	<enemy id="sea_serpent" tile="sea_serpent" health="200" element="water" damage="100" defense="7" range="16" speed="1.5" type="underwater" passEnemies="true" vertical="true" ignoreHit="true" soundScale="2" inFront="true" idleFlip="false" minY="90" maxY="130">
+		<arm id="sea_serpent.body" x="45" y="-16" length="10" diameter="36" end="sea_serpent.tail" angle="0" angleDelta="30" regrow="6" />
+		<hitWall><action>this.flip(); this.run();</action><stop /></hitWall>
+		<lootSet><loot id="bone_shard" count="3" /></lootSet>
+		<lootSet><loot id="fish_scale" count="3" /></lootSet>
+	</enemy>
+	
+	<tile id="lampfish" sheet="objects.1" x="0" />
+	<animation id="lampfish.idle" x="14" count="15" />
+	<animation id="lampfish.walk" equals="lampfish.idle" />
+	<animation id="lampfish.pre_attack" count="6" />
+	<animation id="lampfish.attack" x="6" count="7" />
+	<animation id="lampfish.hit" count="1" length="3" x="13" />
+	<enemy id="lampfish" tile="lampfish" health="50" defense="12" element="water" range="8" vrange="10" speed="1" type="underwater" passEnemies="true" friendlyFire="false" vertical="true" minY="140" waterTint="false" alignBelow="true">
+		<attack type="vertical" damage="200" range="-1.5"><pre><play object="this" animation="pre_attack" /></pre></attack>
+		<light tile="light.medium" color="c3f7ff" offsetX="-1" offsetY="-17" />
+		<lootSet><loot id="bone_shard" count="1" /></lootSet>
+		<lootSet><loot id="ink" count="1" /></lootSet>
+	</enemy>
+	<enemy id="lampfish2" extends="lampfish" minY="100" />
+	
+	<tile id="crystal_tree" sheet="objects.4" x="0" />
+	<animation id="crystal_tree.hit" x="0" count="9" />
+	<animation id="crystal_tree.grow" x="9" count="4" />
+	<item id="crystal_tree_seed" type="animal" cost="0" weight="1" icon="storehouse_seed.ico" animation="item20">
+		<action id="plant" sfx="plant_seed" object="crystal_tree" onGrass="false" underwater="true" />
+	</item>
+	<tree id="crystal_tree" health="20" defense="2" loot="crystal_shard" min="2" max="4" collect="2" grown="3" speed="0.002" tile="crystal_tree">
+		<loot id="crystal_tree_seed" p="4" />
+		<loot p="17" />
+	</tree>
+	
+	<tile id="draconian_wizard" sheet="objects.10" x="0" />
+	<animation id="draconian_wizard.idle" x="28" count="1" />
+	<animation id="draconian_wizard.walk" x="29" count="5" />
+	<animation id="draconian_wizard.cast" count="8" />
+	<animation id="draconian_wizard.hit" x="8" count="1" length="3" />
+	<animation id="draconian_wizard.talk" x="9" count="20" />
+	<animation id="draconian_wizard.teleport_out" x="0" count="8">
+		<frame x="28" length="5" />
+		<append tile="alchemist" animation="alchemist.teleport" />
+		<frame visible="false" length="3" />
+	</animation>
+	<animation id="draconian_wizard.teleport_in">
+		<append tile="alchemist" animation="alchemist.teleport" />
+		<frame visible="false" length="3" />
+		<frame x="28" length="13" />
+	</animation>
+	<animation id="draconian_wizard.hidden" equals="hidden" />
+	<procedure id="draconian_wizard.orbs">
+		<play object="this" animation="cast" /><run procedure="alien.orbs" /><action>teleport--; this.playIdle();</action>
+	</procedure>
+	<procedure id="draconian_wizard.teleport">
+		<action>var orbs = this.vars.get("orbs"); if(orbs != null) while(orbs.length > 0) this.area.removeObject(orbs.pop());</action>
+		<action>if(this.area != player.area &amp;&amp; player.area != null){if(this.area != null) this.area.removeObject(this); player.area.addObject(this);}</action>
+		<move object="this" to="player.vehicle == null?player:player.vehicle" />
+		<play object="this" animation="teleport_in" />
+		<action>this.endVulnerable();</action>
+		<action>this.vars.set("teleport", 2); spawner = this;</action><object id="spell.flood" x="(this.getCenterX()-72)/Tile.SIZE" y="(this.getCenterY()+64)/Tile.SIZE" pre="true">this.vars.set("spawner", spawner); this.vars.set("damage", 15);</object>
+		<play object="this" animation="cast" /><action>this.playIdle();</action>
+	</procedure>
+	<action>
+		function handleDraconianShield(e){
+			var this = e.target; var shield = this.getTileById('shield'); if(shield != null){
+				if(this.front_defense == -1) shield.playAnimation('hidden', false);
+				else shield.playAnimation('magic_shield', true, null, -0.5, -0.5);
+			}
+		}
+	</action>
+	<enemy id="draconian_wizard" tile="draconian_wizard" health="150" defense="4" flying="true" underwater="true" passFence="true" bgm="boss" max_damage="20" canCritical="false" projectileKillCollect="true" kill_achievement="draconian_wizard">
+		<tile id="magic_shield" name="shield" animation="hidden" fps="10" y="0" />
+		<loot id="beacon_book" />
+		<onHit>
+			<action if="this.front_defense == -1">this.setVulnerable(500,500);</action>
+		</onHit>
+		<init><set id="teleport" value="2" /></init>
+		<onDeath>
+			<action if="exists('orbs')">while(orbs.length > 0) area.removeObject(orbs.pop());</action>
+			<object id="draconian_sister" x="37.5" y="-11" area="depths" if="player.info.id != 'player.colosseum'" />
+		</onDeath>
+		<cooldown seconds="0.5">
+			<section if="!exists('orbs')"><run procedure="draconian_wizard.orbs" /><stop /></section>
+			<set id="orbs" value="orbs.filter(function(o){return o.area != null;})" if="orbs.length > 0" /><choose>
+				<action if="orbs.length > 0">var p = area.getClosestPlayer(this.getCenterX(), this.getCenterY()); if(p != null){Movement.seek(orbs.pop(), p, 4); if(orbs.length > 0 &amp;&amp; this.getHealthPercent() &lt;= 0.5) Movement.seek(orbs.pop(), p, 4);}</action>
+				<section if="teleport <= 0">
+					<action>this.setVulnerable(500,500);</action><play object="this" animation="teleport_out" />
+					<action if="exists('orbs')">while(orbs.length > 0) area.removeObject(orbs.pop());</action>
+					<play object="this" animation="hidden" loop="true" />
+					<section if="player.vehicle != null && (player.vehicle.interior != null || player.vehicle.isDrone())">
+						<action>player.vehicle.dismount();</action><invokeLater><run procedure="draconian_wizard.teleport" if="this != null && this.area != null" /></invokeLater><stop />
+					</section>
+					<run procedure="draconian_wizard.teleport" />
+				</section>
+				<run procedure="draconian_wizard.orbs" />
+			</choose>
+		</cooldown>
+		<addEvents>this.addEventListener("update_defense", handleDraconianShield);</addEvents>
+	</enemy>
+</data>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="activate_hq_structures" exp="4000" achievement="hq_structures">
+		<item id="venatrix_seed" count="3" />
+	</quest>
+	<procedure id="enemy_structure.talk"><choose>
+		<section if="!player.hasQuest('activate_hq_structures')">
+			<dialogue section="dragon_ship" id="structure1" speaker="player" />
+			<dialogue section="dragon_ship" id="structure2" />
+			<choose>
+				<section if="getFlag('final_boss_defeat')">
+					<dialogue section="dragon_ship" id="structure14" speaker="player" />
+					<dialogue section="dragon_ship" id="structure15" />
+					<dialogue section="dragon_ship" id="structure16" speaker="player" />
+					<dialogue section="dragon_ship" id="structure17" />
+					<dialogue section="dragon_ship" id="structure18" />
+				</section>
+				<section>
+					<dialogue section="dragon_ship" id="structure3" speaker="player" />
+					<dialogue section="dragon_ship" id="structure4" />
+					<dialogue section="dragon_ship" id="structure5" speaker="player" />
+					<dialogue section="dragon_ship" id="structure6" />
+					<dialogue section="dragon_ship" id="structure7" speaker="player" />
+					<dialogue section="dragon_ship" id="structure8" />
+				</section>
+			</choose>
+			<dialogue section="dragon_ship" id="structure9" speaker="player" />
+			<dialogue section="dragon_ship" id="structure10" />
+			<quest id="activate_hq_structures" />
+		</section>
+		<dialogue section="dragon_ship" id="structure13" if="player.questComplete('activate_hq_structures')" />
+		<section if="player.canCompleteQuest('activate_hq_structures')">
+			<complete quest="activate_hq_structures" />
+			<dialogue section="dragon_ship" id="structure12" />
+			<dialogue section="dragon_ship" id="structure13" />
+		</section>
+		<dialogue section="dragon_ship" id="structure11" />
+	</choose></procedure>
+	
+	<include id="buildings.xml" includeRoot="true" />
+	<tile id="alien_hq.growth" sheet="buildings.png" />
+	<tile id="alien_hq.library" sheet="buildings.png" x="16" />
+	<animation id="alien_hq.build.idle" count="8" />
+	<animation id="alien_hq.build.over" x="8" count="8" />
+	
+	<item id="hq_library_seed" type="potion" cost="0" weight="10" icon="hq_seed.ico" animation="hq_seed.ico"><action id="plant" sfx="plant_seed" structure="alien_hq.library" onGrass="false" underground="true" buildTime="15" /></item>
+	<item id="hq_factory_seed" type="potion" cost="0" weight="10" icon="hq_seed.ico" animation="hq_seed.ico"><action id="plant" sfx="plant_seed" alignTile="true" structure="alien_hq.factory" onGrass="false" buildTime="30" /></item>
+    <item id="hq_growth_seed" type="potion" cost="0" weight="10" icon="hq_seed.ico" animation="hq_seed.ico"><action id="plant" sfx="plant_seed" structure="alien_hq.growth" onGrass="false" underground="true" buildTime="15" /></item>
+	<recipe id="craft_magnetrap" creates="magnetrap" type="hq_growth" available="player.hasQuest('magne_queen_drill') || getFlag('final_boss_defeat')">
+		<item id="enchanted_net" count="1" /><item id="magnegem" count="5" />
+	</recipe>
+	<recipe id="craft_hq_library_seed" creates="hq_library_seed" type="hq_growth">
+		<item id="fish_scale" count="10" /><item id="ink" count="10" /><item id="fire_gem" count="1" /><item id="evo_gem" count="1" />
+	</recipe>
+	<recipe id="craft_hq_factory_seed" creates="hq_factory_seed" type="hq_growth">
+		<item id="evo_gem" count="1" />
+		<item id="blood_gem" count="20" />
+		<item id="magnegem" count="10" />
+		<item id="exotic_matter" count="2" />
+	</recipe>
+	<recipe id="craft_hq_growth_seed" creates="hq_growth_seed" type="hq_growth">
+		<type id="no_uncraft" /><item id="growth_seed" count="1" /><item id="fire_gem" count="1" /><item id="evo_gem" count="1" />
+	</recipe>
+
+	<structure id="alien_hq.growth" tile="alien_hq.growth" animation="alien_hq.build" type="modify" name="enter" title="actions.transform" removeButton="structure.uproot" modifySlot="all">
+		<listItem title="structure.tooltip.change_modifier" enabled="return getModVehicleInStructure(this) != null" fail="warning.no_vehicle_modify"><run procedure="vehicle.modify" /></listItem>
+		<recipe type="hq_growth" /><recipe type="growth" /><recipe type="seed" />
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<removeBy><action>this.onDismantle(player); player.addItem("hq_growth_seed");</action></removeBy>
+		<operate><section if="!player.questComplete('activate_hq_structures')"><run procedure="dragon_ship.translate" /><stop /></section></operate>
+		<onTranslate><run procedure="enemy_structure.talk" /></onTranslate>
+	</structure>
+	<structure id="alien_hq.library" tile="alien_hq.library" animation="alien_hq.build" type="crafting" name="fish.library" title="structure>alien_hq.library" display="structure>alien_hq.library" removeButton="structure.uproot">
+		<recipe type="spellbook" /><recipe type="hq_spellbook" />
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<removeBy><action>this.onDismantle(player); player.addItem("hq_library_seed");</action></removeBy>
+		<operate><section if="!player.questComplete('activate_hq_structures')"><run procedure="dragon_ship.translate" /><stop /></section></operate>
+		<onTranslate><run procedure="enemy_structure.talk" /></onTranslate>
+	</structure>
+	<include id="factory.xml" includeRoot="true" /><tile id="alien_hq.factory" sheet="factory.png" />
+	<include id="factory_fg.xml" includeRoot="true" /><tile id="alien_hq.factory.fg" sheet="factory_fg.png" />
+	<animation id="alien_hq.factory.idle" count="14" /><animation id="alien_hq.factory.active.fg1" x="14" count="14" reverse="true" /><animation id="alien_hq.factory.active.fg2" x="15" count="13" />
+	<animation id="alien_hq.factory.active.bg" x="14" count="11" glow="true"><frame visible="false" /><frame x="25" glow="true" /><frame visible="false" /></animation>
+	<animation id="alien_hq.factory.active" count="14"><append tile="alien_hq.factory" animation="alien_hq.factory.active.bg" /></animation>
+	<item id="fire_gem" extends="fire_gem">
+		<action id="transform_other" name="transform" consume="true" enabled="player.questComplete('dragon_ship')">
+			<transform from="wyrm" to="dragon" />
+			<transform from="dragon" to="young_dragon" />
+			<transform from="young_dragon" to="adult_dragon" />
+		</action>
+	</item>
+	<recipe id="craft_magne_queen_drill" creates="magne_queen_drill" type="dragon_factory" available="player.questComplete('magne_queen_drill') || getFlag('final_boss_defeat')" achievement="magne_queen_drill">
+		<item id="evo_gem" count="1" /><item id="magic_wyrm" count="1" /><item id="magnegem" count="5" />
+	</recipe>
+	<recipe id="craft_dragomech" object="ride_dragomech" title="item.names.dragomech" type="dragon_factory">
+		<item id="evo_gem" count="1" />
+		<item id="magic_wyrm" count="1" />
+		<item id="blood_gem" count="5" />
+		<script id="(player.structure.getObjectInBounds('fly_ancient_dragon') == null)?0:1" tile="ancient_dragon.ico" name="vehicle.ancient_dragon" count="1" />
+	</recipe>
+	<recipe id="craft_dragon_ship" object="dragon_ship" title="world.dragon_ship" type="dragon_factory">
+		<item id="evo_gem" count="1" />
+		<item id="dragonblood" count="20" />
+		<item id="blood_gem" count="20" />
+		<script id="(player.structure.getObjectInBounds('fly_ancient_dragon') == null)?0:1" tile="ancient_dragon.ico" name="vehicle.ancient_dragon" count="1" />
+	</recipe>
+	<recipe id="craft_dragon_fighter" object="dragon_fighter" title="world.dragon_fighter" type="dragon_factory">
+		<item id="evo_gem" count="1" />
+		<item id="blood_gem" count="20" />
+		<item id="magnegem" count="10" />
+		<script id="(player.structure.getObjectInBounds('fly_ancient_dragon') == null)?0:1" tile="ancient_dragon.ico" name="vehicle.ancient_dragon" count="1" />
+	</recipe>
+	<recipe id="craft_dragon_bomber" object="dragon_bomber" title="world.dragon_bomber" type="dragon_factory">
+		<item id="evo_gem" count="3" />
+		<item id="blood_gem" count="40" />
+		<item id="magnegem" count="20" />
+		<script id="(player.structure.getObjectInBounds('fly_ancient_dragon') == null)?0:1" tile="ancient_dragon.ico" name="vehicle.ancient_dragon" count="1" />
+	</recipe>
+	<recipe id="craft_dragon_cruiser" object="dragon_cruiser" title="world.dragon_cruiser" type="dragon_factory">
+		<item id="evo_gem" count="8" />
+		<item id="blood_gem" count="60" />
+		<item id="exotic_matter" count="8" />
+		<script id="(player.structure.getObjectInBounds('fly_ancient_dragon') == null)?0:1" tile="ancient_dragon.ico" name="vehicle.ancient_dragon" count="1" />
+	</recipe>
+	<structure id="alien_hq.factory" tile="alien_hq.factory" name="evolve" fps="10" type="crafting" title="structure.tooltip.evolve" spawnX="(this.xPos+((this.info.width-getTile(info.tile).getWidth())>>1))/Tile.SIZE" spawnY="this.tile_y-(recipe.id == 'craft_dragon_cruiser'?2:6)" removeButton="structure.uproot" only_select="true">
+		<tile name="fg" id="alien_hq.factory.fg" animation="alien_hq.factory.idle" fps="10" y="0" />
+		<addedToArea>
+			<tiles from="factory_tiles.png" x="this.tile_x" y="this.tile_y-5"><tile id="empty" color="000000" layer="back" /></tiles>
+		</addedToArea>
+		<removedFromArea>
+			<tiles from="factory_tiles.png" x="this.tile_x" y="this.tile_y-5"><tile id="clear" incOre="false" color="000000" /></tiles>
+		</removedFromArea>
+		<recipe type="dragon_factory" />
+		<craftObject>
+		  <section with="fade">
+			<choose>
+			  <set id="dragon" value="player.structure.getObjectInBounds('mecha_dragon')" if="recipe.id == 'craft_mecha_dragon_ship'"/>
+			  <set id="dragon" value="player.structure.getObjectInBounds('fly_ancient_dragon')" />
+			</choose>
+			<action>oldScale = getGameScale(); setGameScale(2); fg = this.getTileById("fg"); this.loopAnimation("active"); dragon.setPosition(this.xPos+((this.info.width-dragon._width)>>1), (this.tile_y-6)*Tile.SIZE); old = fg.parent; area.renderer.over_objects.addChild(fg); fg.x += this.renderer.x; fg.y += this.renderer.y;</action>
+			<pan x="256-this.xPos-this.info.width*0.5" y="256-this.yPos" seconds="0" />
+			<play object="fg" animation="alien_hq.factory.active.fg1" modal="true" animate="this" />
+			<action>object.name = dragon.name; object.inventory.copyFrom(dragon.inventory); object.setFuel(Math.round(dragon.getFuelPercent()*object.getMaxFuel())); dragon.alpha = 0; area.addObject(object);</action>
+			<remove object="dragon" /><play object="fg" animation="alien_hq.factory.active.fg2" modal="true" animate="this" />
+		  </section>
+		  <section with="fade">
+			<play object="fg" animation="alien_hq.factory.idle" loop="true" /><action>this.loopAnimation("idle"); setGameScale(oldScale); old.addChild(fg); fg.x -= this.renderer.x; fg.y -= this.renderer.y;</action><pan toObject="player" seconds="0" />
+			<action if="object.renderer.getClosest(0, -1, 1) != null">object.setHealth(0, false); object.area.removeObject(object, object)</action>
+		  </section><stop />
+		</craftObject>
+		<removeBy><action>this.onDismantle(player); player.addItem("hq_factory_seed");</action></removeBy>
+		<operate><section if="!player.questComplete('activate_hq_structures')"><run procedure="dragon_ship.translate" /><stop /></section></operate>
+		<onTranslate><run procedure="enemy_structure.talk" /></onTranslate>
+	</structure>
+</data>

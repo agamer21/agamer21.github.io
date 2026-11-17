@@ -1,0 +1,26 @@
+<tilesheet id='nuke_blast.png' width='128' height='128'>
+	<image frame='0' x='0' y='0' width='49' height='46' offsetX='36' offsetY='82' />
+	<image frame='1' x='0' y='46' width='101' height='66' offsetX='27' offsetY='62' />
+	<image frame='2' x='0' y='112' width='128' height='128' offsetX='0' offsetY='0' />
+	<image frame='3' x='128' y='112' width='128' height='128' offsetX='0' offsetY='0' />
+	<image frame='4' x='0' y='240' width='127' height='128' offsetX='0' offsetY='0' />
+	<image frame='5' x='127' y='240' width='128' height='128' offsetX='0' offsetY='0' />
+	<image frame='6' x='256' y='112' width='126' height='128' offsetX='0' offsetY='0' />
+	<image frame='7' x='0' y='368' width='128' height='125' offsetX='0' offsetY='3' />
+	<image frame='8' x='255' y='240' width='126' height='125' offsetX='0' offsetY='3' />
+	<image frame='9' x='0' y='493' width='124' height='125' offsetX='2' offsetY='3' />
+	<image frame='10' x='0' y='618' width='127' height='123' offsetX='1' offsetY='5' />
+	<image frame='11' x='128' y='368' width='128' height='123' offsetX='0' offsetY='5' />
+	<image frame='12' x='256' y='368' width='126' height='122' offsetX='0' offsetY='6' />
+	<image frame='13' x='128' y='491' width='127' height='92' offsetX='1' offsetY='36' />
+	<image frame='14' x='128' y='583' width='128' height='82' offsetX='0' offsetY='46' />
+	<image frame='15' x='255' y='491' width='127' height='77' offsetX='1' offsetY='51' />
+	<image frame='16' x='101' y='46' width='127' height='65' offsetX='1' offsetY='63' />
+	<image frame='17' x='228' y='46' width='128' height='56' offsetX='0' offsetY='72' />
+	<image frame='18' x='128' y='665' width='128' height='50' offsetX='0' offsetY='78' />
+	<image frame='19' x='49' y='0' width='122' height='41' offsetX='4' offsetY='87' />
+	<image frame='20' x='171' y='0' width='118' height='41' offsetX='6' offsetY='87' />
+	<image frame='21' x='256' y='583' width='118' height='39' offsetX='7' offsetY='89' />
+	<image frame='22' x='256' y='622' width='114' height='29' offsetX='9' offsetY='99' />
+	<image frame='23' x='256' y='651' width='104' height='28' offsetX='14' offsetY='100' />
+</tilesheet>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="colosseum.kraken" background="sky" forceTime="12">
+		<action>
+			for(x in 0...32) setTile(x, 31, "empty");
+			for(y in -4...31){setTile(0, y, "empty"); setTile(31, y, "empty");}
+			for(y in 8...20) for(x in -8...1) setTile(x, y, "obsidian");
+			for(y in 16...19) for(x in -7...1){mine(x, y); area.setWater(x, y);}
+			for(y in 9...16) for(x in -7...0) mine(x, y);
+		</action>
+		<structure id="colosseum_exit" x="-7" y="14" /><light x="-4" y="14" size="4" /><structure id="sub_pen" x="-4" y="15" />
+		<object id="kraken" x="12" y="16" /><object id="sub" x="-3" y="16" />
+		<init><equip id="torpedo_launcher" to="area.getObject('sub')" fromInventory="false" /></init>
+	</area>
+	<procedure id="colosseum.kraken">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 300);
+		var map = new StringMap(); map.set("kraken", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("berries"), 10); player.inventory.addItems(getItem("battery"), 2);
+		player.inventory.addItems(getItem("torpedo"), 14); player.stats.get("speed").permaBuff(2);</action>
+		<equip id="coral_sword" fromInventory="false" />
+		<equip id="drill" fromInventory="false" />
+		<equip id="titanium_armor" fromInventory="false" />
+		<equip id="headlamp" fromInventory="false" />
+		<teleport area="colosseum.kraken" x="-5" y="14" temporary="true" />
+	</procedure>
+</data>

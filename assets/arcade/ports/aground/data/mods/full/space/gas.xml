@@ -1,0 +1,12 @@
+<sheets>
+<tilesheet id='gas.1' sheet='gas.png' width='768' height='144'>
+	<image frame='0' x='0' y='0' width='768' height='57' offsetX='0' offsetY='87' />
+	<image frame='1' x='0' y='57' width='768' height='61' offsetX='0' offsetY='83' />
+	<image frame='2' x='0' y='118' width='768' height='58' offsetX='0' offsetY='86' />
+</tilesheet>
+<tilesheet id='gas.2' sheet='gas.png' width='256' height='144'>
+	<image frame='0' x='0' y='176' width='256' height='66' offsetX='0' offsetY='78' />
+	<image frame='1' x='256' y='176' width='256' height='66' offsetX='0' offsetY='78' />
+	<image frame='2' x='512' y='176' width='256' height='66' offsetX='0' offsetY='78' />
+</tilesheet>
+</sheets>

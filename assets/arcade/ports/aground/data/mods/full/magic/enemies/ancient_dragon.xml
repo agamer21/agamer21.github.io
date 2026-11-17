@@ -1,0 +1,49 @@
+<tilesheet id='ancient_dragon.png' width='128' height='64' offsetX="-48" offsetY="-88" name="ancient_dragon">
+	<image frame='0' x='0' y='0' width='173' height='110' offsetX='29' offsetY='41' />
+	<image frame='1' x='0' y='110' width='173' height='110' offsetX='29' offsetY='41' />
+	<image frame='4' x='0' y='220' width='173' height='45' offsetX='29' offsetY='106' />
+	<image frame='5' x='0' y='265' width='173' height='108' offsetX='29' offsetY='108' />
+	<image frame='9' x='0' y='373' width='173' height='45' offsetX='29' offsetY='106' />
+	<image frame='16' x='173' y='0' width='136' height='169' offsetX='36' offsetY='2' />
+	<image frame='17' x='309' y='0' width='137' height='169' offsetX='35' offsetY='4' />
+	<image frame='18' x='309' y='169' width='137' height='169' offsetX='35' offsetY='7' />
+	<image frame='19' x='0' y='418' width='136' height='105' offsetX='36' offsetY='70' />
+	<image frame='20' x='446' y='0' width='138' height='111' offsetX='34' offsetY='66' />
+	<image frame='21' x='584' y='0' width='138' height='111' offsetX='34' offsetY='62' />
+	<image frame='22' x='309' y='338' width='137' height='111' offsetX='35' offsetY='59' />
+	<image frame='23' x='446' y='111' width='157' height='116' offsetX='15' offsetY='53' />
+	<image frame='24' x='173' y='169' width='131' height='169' offsetX='41' offsetY='2' />
+	<image frame='25' x='173' y='338' width='131' height='169' offsetX='41' offsetY='4' />
+	<image frame='26' x='446' y='227' width='131' height='169' offsetX='41' offsetY='7' />
+	<image frame='27' x='722' y='0' width='131' height='103' offsetX='41' offsetY='72' />
+	<image frame='28' x='853' y='0' width='131' height='109' offsetX='41' offsetY='68' />
+	<image frame='29' x='446' y='396' width='131' height='109' offsetX='41' offsetY='65' />
+	<image frame='30' x='603' y='111' width='131' height='108' offsetX='41' offsetY='62' />
+	<image frame='31' x='309' y='449' width='132' height='74' offsetX='91' offsetY='78' />
+	<image frame='32' x='734' y='111' width='164' height='79' offsetX='59' offsetY='73' />
+	<image frame='33' x='603' y='219' width='133' height='76' offsetX='90' offsetY='76' />
+	<image frame='34' x='736' y='219' width='132' height='74' offsetX='91' offsetY='78' />
+	<image frame='35' x='603' y='295' width='175' height='110' offsetX='48' offsetY='42' />
+	<image frame='36' x='603' y='405' width='175' height='110' offsetX='48' offsetY='42' />
+	<image frame='37' x='778' y='295' width='176' height='110' offsetX='47' offsetY='42' />
+	<image frame='38' x='778' y='405' width='176' height='110' offsetX='47' offsetY='42' />
+	<image frame='39' x='446' y='505' width='96' height='37' offsetX='70' offsetY='106' />
+	<image frame='2' equals='1' offsetX='29' offsetY='41' />
+	<image frame='3' equals='1' offsetX='29' offsetY='41' />
+	<image frame='6' equals='5' offsetX='29' offsetY='108' />
+	<image frame='7' equals='5' offsetX='29' offsetY='108' />
+	<image frame='8' equals='5' offsetX='29' offsetY='108' />
+	<image frame='10' equals='9' offsetX='29' offsetY='107' />
+	<image frame='11' equals='9' offsetX='29' offsetY='107' />
+	<image frame='12' equals='9' offsetX='29' offsetY='107' />
+	<image frame='13' equals='9' offsetX='29' offsetY='108' />
+	<image frame='14' equals='9' offsetX='29' offsetY='108' />
+	<image frame='15' equals='9' offsetX='29' offsetY='108' />
+	<image frame='40' equals='39' offsetX='70' offsetY='106' />
+	<image frame='41' equals='39' offsetX='70' offsetY='107' />
+	<image frame='42' equals='39' offsetX='70' offsetY='107' />
+	<image frame='43' equals='39' offsetX='70' offsetY='107' />
+	<image frame='44' equals='39' offsetX='70' offsetY='108' />
+	<image frame='45' equals='39' offsetX='70' offsetY='108' />
+	<image frame='46' equals='39' offsetX='70' offsetY='108' />
+</tilesheet>

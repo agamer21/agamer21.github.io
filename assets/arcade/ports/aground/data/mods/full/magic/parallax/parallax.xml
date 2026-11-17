@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="bg.xml" />
+	<tile id="fish.far_bg" sheet="bg.1" x="9"><tile sheet="bg.1" x="8" offsetX="320" /></tile>
+    <tile id="fish.near_bg1" sheet="bg.1" x="10" />
+    <tile id="fish.near_bg2" sheet="bg.1" x="11" />
+    <animation id="fish.near_bg1_seaweed" x="2" count="8" glow="true" />
+    <animation id="fish.near_bg1" count="1" length="8" glow="true"><append tile="fish.near_bg1" animation="fish.near_bg1_seaweed" /></animation>
+    <animation id="fish.near_bg2_seaweed" x="9" count="8" glow="true" />
+    <animation id="fish.near_bg2" count="1" length="8" glow="true"><append tile="fish.near_bg2" animation="fish.near_bg2_seaweed" /></animation>
+    <tile id="fish_bg" sheet="bg.1" x="0" />
+	<parallax id="magic2" extends="magic1">
+        <layer p="0.75" py="1" overWater="true" layerWidth="256" layerHeight="144" onTop="true" glow="true">
+			<tile id="fish.near_bg1" animation="fish.near_bg1" offsetX="1330" offsetY="1264" fps="5" />
+			<tile id="fish.near_bg2" animation="fish.near_bg2" offsetX="1640" offsetY="1264" fps="5" />
+			<tile id="fish.near_bg1" animation="fish.near_bg1" offsetX="1950" offsetY="1264" fps="5" />
+		</layer>
+        <layer p="0.6" py="1" overWater="true" layerWidth="256" layerHeight="144" onTop="true" scroll="-0.125" x="80" width="120" glow="true">
+			<tile id="fish_bg" animation="item8" fps="3" offsetX="0" offsetY="1264" /><tile id="fish_bg" animation="item8" fps="3" offsetX="-256" offsetY="1264" />
+		</layer>
+        <layer p="0.5" py="1" overWater="true" layerWidth="256" layerHeight="144" onTop="true" glow="true">
+			<tile id="fish.far_bg" animation="single" offsetX="896" offsetY="1264" />
+		</layer>
+	</parallax>
+	
+	<tile id="fish_near" sheet="bg.2" />
+	<animation id="fish_near" count="6" />
+	<tile id="fish_near2" sheet="bg.3" />
+	<animation id="fish_near2" count="8" glow="true" />
+	
+	<tile id="light_weed" sheet="bg.1" x="28" />
+	<tile id="light_weed1" sheet="bg.4" x="0" />
+	<tile id="light_weed2" sheet="bg.4" x="1" />
+	<tile id="light_weed3" sheet="bg.4" x="2" />
+	<tile id="light_weed4" sheet="bg.4" x="3" />
+	<tile id="light_weed5" sheet="bg.4" x="4" />
+	<tile id="light_weed6" sheet="bg.4" x="5" />
+</data>

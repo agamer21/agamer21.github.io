@@ -1,0 +1,42 @@
+<tilesheet id='sub.png' offsetX="-25" offsetY="-38" width='31' height='20'>
+	<image frame='0' x='0' y='0' width='25' height='12' offsetX='22' offsetY='49' />
+	<image frame='1' x='25' y='0' width='27' height='13' offsetX='20' offsetY='48' />
+	<image frame='2' x='52' y='0' width='29' height='13' offsetX='18' offsetY='46' />
+	<image frame='3' x='25' y='13' width='26' height='15' offsetX='19' offsetY='45' />
+	<image frame='4' x='51' y='13' width='27' height='15' offsetX='17' offsetY='45' />
+	<image frame='5' x='81' y='0' width='31' height='9' offsetX='13' offsetY='48' />
+	<image frame='10' x='0' y='12' width='12' height='6' offsetX='50' offsetY='50' />
+	<image frame='11' x='0' y='18' width='12' height='7' offsetX='51' offsetY='50' />
+	<image frame='12' x='12' y='18' width='11' height='7' offsetX='51' offsetY='50' />
+	<image frame='13' x='0' y='25' width='12' height='8' offsetX='51' offsetY='50' />
+	<image frame='14' x='12' y='25' width='12' height='8' offsetX='51' offsetY='50' />
+	<image frame='15' x='0' y='33' width='12' height='9' offsetX='51' offsetY='49' />
+	<image frame='16' x='12' y='33' width='11' height='9' offsetX='51' offsetY='49' />
+	<image frame='17' x='0' y='42' width='12' height='8' offsetX='51' offsetY='49' />
+	<image frame='18' x='12' y='42' width='11' height='8' offsetX='51' offsetY='49' />
+	<image frame='19' x='0' y='50' width='12' height='8' offsetX='51' offsetY='50' />
+	<image frame='20' x='0' y='58' width='15' height='21' offsetX='24' offsetY='38' />
+	<image frame='21' x='25' y='28' width='32' height='28' offsetX='25' offsetY='35' />
+	<image frame='22' x='25' y='56' width='32' height='30' offsetX='25' offsetY='33' />
+	<image frame='23' x='57' y='28' width='32' height='32' offsetX='25' offsetY='31' />
+	<image frame='24' x='57' y='60' width='32' height='35' offsetX='25' offsetY='28' />
+	<image frame='25' x='0' y='79' width='12' height='10' offsetX='37' offsetY='40' />
+	<image frame='26' x='12' y='79' width='13' height='10' offsetX='37' offsetY='40' />
+	<image frame='27' x='78' y='13' width='14' height='10' offsetX='37' offsetY='40' />
+	<image frame='29' x='92' y='13' width='14' height='10' offsetX='37' offsetY='40' />
+	<image frame='30' x='106' y='13' width='14' height='11' offsetX='37' offsetY='39' />
+	<image frame='31' x='25' y='86' width='14' height='12' offsetX='37' offsetY='39' />
+	<image frame='32' x='39' y='86' width='17' height='14' offsetX='37' offsetY='38' />
+	<image frame='33' x='89' y='28' width='20' height='14' offsetX='37' offsetY='38' />
+	<image frame='34' x='89' y='42' width='20' height='14' offsetX='31' offsetY='38' />
+	<image frame='35' x='89' y='60' width='29' height='15' offsetX='22' offsetY='37' />
+	<image frame='36' x='89' y='75' width='22' height='13' offsetX='29' offsetY='38' />
+	<image frame='37' x='89' y='88' width='14' height='11' offsetX='37' offsetY='39' />
+	<image frame='38' x='103' y='88' width='14' height='10' offsetX='37' offsetY='40' />
+	<image frame='6' equals='5' offsetX='13' offsetY='48' />
+	<image frame='7' equals='5' offsetX='13' offsetY='48' />
+	<image frame='8' equals='5' offsetX='14' offsetY='48' />
+	<image frame='9' equals='0' offsetX='22' offsetY='49' />
+	<image frame='28' equals='27' offsetX='37' offsetY='40' />
+	<image frame='39' equals='26' offsetX='37' offsetY='40' />
+</tilesheet>

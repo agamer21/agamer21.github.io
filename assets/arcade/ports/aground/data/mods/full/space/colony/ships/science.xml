@@ -1,0 +1,75 @@
+<sheets>
+<tilesheet id='science.1' sheet='science.png' width='197' height='141' offsetX='-148' offsetY='-13'>
+	<image frame='0' x='737' y='1381' width='86' height='73' offsetX='180' offsetY='43' />
+	<image frame='1' x='826' y='1221' width='119' height='85' offsetX='180' offsetY='43' />
+	<image frame='2' x='196' y='1382' width='138' height='94' offsetX='180' offsetY='43' />
+	<image frame='3' x='0' y='1343' width='172' height='114' offsetX='180' offsetY='43' />
+	<image frame='4' x='899' y='1409' width='44' height='64' offsetX='247' offsetY='61' />
+	<image frame='5' x='924' y='1306' width='47' height='73' offsetX='266' offsetY='61' />
+	<image frame='6' x='675' y='798' width='172' height='106' offsetX='180' offsetY='51' />
+	<image frame='7' x='503' y='798' width='172' height='114' offsetX='180' offsetY='43' />
+	<image frame='8' x='826' y='1409' width='73' height='74' offsetX='118' offsetY='22' />
+	<image frame='9' x='826' y='1306' width='98' height='103' offsetX='93' offsetY='19' />
+	<image frame='10' x='847' y='798' width='128' height='129' offsetX='63' offsetY='12' />
+	<image frame='11' x='185' y='478' width='182' height='160' offsetX='9' offsetY='0' />
+	<image frame='12' x='480' y='1104' width='128' height='129' offsetX='63' offsetY='12' />
+	<image frame='13' x='0' y='478' width='185' height='160' offsetX='9' offsetY='0' />
+	<image frame='14' x='480' y='1233' width='123' height='129' offsetX='63' offsetY='12' />
+	<image frame='15' x='480' y='944' width='121' height='160' offsetX='9' offsetY='0' />
+	<image frame='16' x='608' y='1104' width='129' height='117' offsetX='180' offsetY='43' />
+	<image frame='17' x='866' y='1104' width='96' height='115' offsetX='180' offsetY='43' />
+	<image frame='18' x='480' y='1362' width='111' height='117' offsetX='180' offsetY='43' />
+	<image frame='19' x='737' y='1104' width='129' height='117' offsetX='180' offsetY='43' />
+	<image frame='20' x='352' y='1424' width='116' height='42' offsetX='193' offsetY='118' />
+	<image frame='21' x='675' y='904' width='81' height='38' offsetX='189' offsetY='120' />
+	<image frame='22' x='608' y='1338' width='114' height='109' offsetX='180' offsetY='51' />
+	<image frame='23' x='608' y='1221' width='129' height='117' offsetX='180' offsetY='43' />
+	<image frame='24' x='0' y='0' width='324' height='159' offsetX='85' offsetY='1' />
+	<image frame='25' x='324' y='0' width='324' height='159' offsetX='85' offsetY='1' />
+	<image frame='26' x='640' y='159' width='320' height='159' offsetX='89' offsetY='1' />
+	<image frame='27' x='648' y='0' width='321' height='159' offsetX='89' offsetY='1' />
+	<image frame='28' x='0' y='319' width='320' height='159' offsetX='89' offsetY='1' />
+	<image frame='29' x='0' y='159' width='320' height='160' offsetX='89' offsetY='0' />
+	<image frame='30' x='320' y='319' width='320' height='159' offsetX='89' offsetY='1' />
+	<image frame='31' x='320' y='159' width='320' height='160' offsetX='89' offsetY='0' />
+	<image frame='32' x='761' y='478' width='196' height='141' offsetX='149' offsetY='13' />
+	<image frame='33' x='640' y='319' width='197' height='141' offsetX='148' offsetY='13' />
+	<image frame='34' x='0' y='638' width='196' height='141' offsetX='149' offsetY='13' />
+	<image frame='35' x='0' y='779' width='196' height='141' offsetX='149' offsetY='13' />
+	<image frame='36' x='0' y='920' width='196' height='141' offsetX='149' offsetY='13' />
+	<image frame='37' x='367' y='478' width='197' height='141' offsetX='148' offsetY='13' />
+	<image frame='38' x='0' y='1061' width='196' height='141' offsetX='149' offsetY='13' />
+	<image frame='39' x='564' y='478' width='197' height='141' offsetX='148' offsetY='13' />
+	<image frame='40' x='0' y='1202' width='196' height='141' offsetX='149' offsetY='13' />
+</tilesheet>
+<tilesheet id='science.2' sheet='science.png' width='160' height='160'>
+	<image frame='0' x='825' y='638' width='151' height='146' offsetX='4' offsetY='7' />
+	<image frame='1' x='196' y='798' width='156' height='146' offsetX='4' offsetY='7' />
+	<image frame='2' x='356' y='638' width='160' height='157' offsetX='0' offsetY='3' />
+	<image frame='3' x='196' y='1090' width='151' height='146' offsetX='4' offsetY='7' />
+	<image frame='4' x='196' y='944' width='156' height='146' offsetX='4' offsetY='7' />
+	<image frame='5' x='196' y='638' width='160' height='160' offsetX='0' offsetY='0' />
+	<image frame='6' x='196' y='1236' width='151' height='146' offsetX='4' offsetY='7' />
+	<image frame='7' x='352' y='798' width='151' height='146' offsetX='4' offsetY='7' />
+	<image frame='8' x='172' y='1343' width='20' height='20' offsetX='70' offsetY='70' />
+	<image frame='9' x='172' y='1363' width='20' height='20' offsetX='70' offsetY='70' />
+	<image frame='10' x='172' y='1383' width='20' height='20' offsetX='70' offsetY='70' />
+	<image frame='11' x='172' y='1403' width='20' height='20' offsetX='70' offsetY='70' />
+	<image frame='12' x='172' y='1423' width='20' height='20' offsetX='70' offsetY='70' />
+	<image frame='13' x='0' y='1457' width='20' height='20' offsetX='70' offsetY='70' />
+	<image frame='14' x='20' y='1457' width='20' height='20' offsetX='70' offsetY='70' />
+	<image frame='15' x='40' y='1457' width='20' height='20' offsetX='70' offsetY='70' />
+</tilesheet>
+<tilesheet id='science.3' sheet='science.png' width='121' height='160' offsetX='-9'>
+	<image frame='0' x='737' y='1221' width='89' height='160' offsetX='14' offsetY='0' />
+	<image frame='1' x='837' y='319' width='125' height='157' offsetX='9' offsetY='0' />
+	<image frame='2' x='516' y='638' width='159' height='155' offsetX='8' offsetY='5' />
+	<image frame='3' x='675' y='638' width='150' height='158' offsetX='6' offsetY='0' />
+	<image frame='4' x='352' y='1104' width='126' height='160' offsetX='8' offsetY='0' />
+	<image frame='5' x='352' y='944' width='128' height='160' offsetX='15' offsetY='0' />
+	<image frame='6' x='601' y='944' width='121' height='160' offsetX='9' offsetY='0' />
+	<image frame='7' x='352' y='1264' width='122' height='160' offsetX='9' offsetY='0' />
+	<image frame='8' x='722' y='944' width='121' height='160' offsetX='9' offsetY='0' />
+	<image frame='9' x='843' y='944' width='121' height='160' offsetX='9' offsetY='0' />
+</tilesheet>
+</sheets>

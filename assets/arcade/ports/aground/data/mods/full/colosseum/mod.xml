@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mod>
+    <name>Colosseum</name>
+    <description>Allows you to fight bosses in a new special area.</description>
+    <author>Fancy Fish Games</author>
+    <version>1.0.0</version>
+    <init>
+		<procedure id="colosseum.return">
+			<action>
+				if(player.vehicle != null) player.vehicle.doDismount(true); setFlag("aliens.hostile", getGlobal("aliens.hostile.original"));
+				setPlayer(getGlobal("originalPlayer"), false, false); setGlobal("originalPlayer", null);
+				player.doTeleport(null, player.xPos, player.yTile, false, getGlobal("originalArea"));
+				setGlobal("originalArea", null); setGlobal("killCounts", null); setGlobal("achievement", null);
+			</action>
+		</procedure>
+		<player id="player.colosseum" layers="player" health="50" stamina="200" maxLevel="0" speed="15" talk_sfx="talking5" beardLayer="armor" canJumpIntoWater="false">
+			<stat id="health" /><stat id="stamina" /><stat id="weight" /><stat id="critical" /><stat id="evasion" />
+			<stat id="speed" /><stat id="endurance" /><stat id="mine_speed" flag="allow_hotkeys" /><stat id="sight" flag="allow_hotkeys" />
+			<stat id="attack" /><stat id="defense" /><stat id="cut" /><stat id="mine" flag="allow_hotkeys" />
+			<stat id="range" /><stat id="fishing" /><stat id="trap" flag="hunter_hut" /><stat id="bargaining" flag="allow_hotkeys" />
+			<stat id="spellcast" flag="spellcast" />
+			<slot id="weapon" /><slot id="shield" renderPriority="4" /><slot id="pickaxe" flag="allow_hotkeys" /><slot id="armor" renderPriority="1" />
+			<slot id="head" renderPriority="3" /><slot id="back" renderPriority="2" /><slot id="familiar" /><light tile="light.small" color="888888" />
+			<color id="skin" /><color id="hair" /><offset id="hair" count="9" stride="58" hide="true" /><offset id="beard" /><color id="eyes" /><color id="shirt" /><color id="pants" />
+			<onDeath><stop if="getGlobal('killCounts') == null" /><action>setGlobal("killCounts", null)</action><run procedure="colosseum.return" with="ellipse" /><stop /></onDeath>
+			<onKill><stop if="getGlobal('killCounts') == null" /><action>
+				map = getGlobal("killCounts"); var old = map.get(this.id);
+				if(old != null){if(old &lt;= this.count) map.remove(this.id); else map.set(this.id, old-this.count);}
+			</action><section if="!map.iterator().hasNext()">
+				<action>var a = player.getCurrentArea(); setGlobal("killCounts", null); player.fullRestore(); player.restoreOxygen(); a.removeObjectsInLayer(ENEMY_LAYER); player.setFlag(a.id, true);player.addVar("cp", getGlobal("points"));</action>
+				<achievement eval="getGlobal('achievement')" if="getGlobal('achievement') != null" />
+				<invokeLater seconds="2">
+					<show tooltip="popup" hold="100" text="colosseum.victory" x="0.5" y="0.5" />
+					<show tooltip="popup" scale="2" hold="100" text="common.victory" x="0.5" y="0.25" color="ffff00" bg="66000000" modal="true" />
+					<run procedure="colosseum.return" with="ellipse" />
+				</invokeLater>
+			</section><stop /></onKill>
+		</player>
+		<include id="lang.xml" />
+		<include id="items/items.xml" />
+		<include id="arena.xml" />
+		<area id="magic1" extends="magic1">
+			<onLoad>
+				<section if="area.getStructureById('spirit_door') == null">
+					<set id="door_x" value="randInt(2, 90)" />
+					<spreadTiles x="door_x" y="112" tile="invisible_block" on="magic1.stone2" count="100" />
+					<structure id="spirit_door" x="door_x" y="112"><teleport area="colosseum.arena" x="7.5" y="-1.75" allowReturn="true" /></structure>
+				</section>
+			</onLoad>
+		</area>
+    </init>
+</mod>

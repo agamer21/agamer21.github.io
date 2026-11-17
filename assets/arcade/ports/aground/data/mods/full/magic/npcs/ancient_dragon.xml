@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="cultivator" exp="500" giver="ancient_dragon_npc">
+		<kill id="plant_boss" name="quests.plant_boss" count="1" offsetX="2" />
+		<flag id="activate_growth" name="structure.growth" tile="plant_gem.ico" />
+	</quest>
+	<quest id="dragon_ship" exp="1000" giver="ancient_dragon_npc" achievement="dragon_ship">
+		<kill id="ice_boss" name="quests.ice_boss" count="1" />
+		<location id="magic2" x="16" y="-46" width="58" height="27" name="quests.floating_island" tile="ancient_dragon.ico" />
+		<object id="dragon_ship" name="quests.dragon_ship" count="1" />
+		<canComplete><complete quest="dragon_ship" /></canComplete>
+	</quest>
+	<npc id="ancient_dragon_npc" tile="ancient_dragon2" animation="ancient_dragon" idle_anim="ancient_dragon.sleep" action="talk" stopForPlayer="false" icon="ancient_dragon2.ico" indicatorX="-24" indicatorY="-24">
+		<hitbox x="0" y="0" width="50" height="64" />
+		<operate><section><pan y="96-this.yTile" seconds="0.5" /><choose>
+			<choose if="getFlag('final_boss_defeat')">
+				<section if="!getFlag('ancient_dragon_betrayal')">
+					<dialogue text="Huh... what... is someone there?" font="drachenklaue" speaker='this' />
+					<action>setFlag("ancient_dragon_betrayal", true)</action>
+					<dialogue section="dragon" id="win2" speaker="this" />
+					<dialogue section="dragon" id="betrayal1" speaker="player" />
+					<dialogue section="dragon" id="betrayal2" speaker="this" />
+					<dialogue section="dragon" id="betrayal3" speaker="this" />
+					<dialogue section="dragon" id="betrayal4" speaker="this" />
+					<dialogue section="dragon" id="betrayal5" speaker="this" />
+				</section>
+				<section if="!player.hasQuest('dragon_ship') && getFlag('exiled_evo_chamber')">
+					<dialogue section="dragon" id="ship9" speaker="player" />
+					<dialogue section="dragon" id="ship10" speaker="this" />
+					<dialogue section="dragon" id="ship11" speaker="this" />
+					<dialogue section="dragon" id="ship2.1" speaker="this" />
+					<quest id="dragon_ship">
+						<dialogue section="dragon" id="ship12" speaker="this" />
+					</quest>
+				</section>
+				<section if="!player.questComplete('dragon_ship') && getFlag('exiled_evo_chamber')">
+					<dialogue section="dragon" id="ship11" speaker="this" />
+					<dialogue section="dragon" id="ship2.1" speaker="this" />
+					<dialogue section="dragon" id="ship12" speaker="this" />
+				</section>
+				<section if="player.questComplete('dragon_ship') && !player.hasSeenItem('npc.dragon_backpack')">
+					<quest /><action>player.setSeenItem('npc.dragon_backpack')</action>
+					<dialogue section="dragon" id="ship7" speaker="this" /><dialogue section="dragon" id="dragon_backpack" speaker="this" />
+				</section>
+				<dialogue section="dragon" id="win1" speaker="this" />
+			</choose>
+			<section if="!getFlag('ancient_dragon_intro')">
+				<dialogue text="Huh... what... is someone there?" font="drachenklaue" speaker='this' />
+				<section if="player.questComplete('oldone')">
+					<dialogue section="dragon" id="intro1" speaker="this" />
+					<dialogue section="dragon" id="intro2" speaker="player" />
+					<dialogue section="dragon" id="intro3" speaker="this" />
+					<dialogue section="dragon" id="intro4" speaker="player" />
+					<dialogue section="dragon" id="intro5" speaker="this" />
+					<play object="this" animation="hover" loop="true" />
+					<lerp object="this" deltaX="4" deltaY="-4" seconds="1" modal="false" />
+					<pan deltaX="-4*Tile.SIZE" deltaY="4*Tile.SIZE" seconds="1" animate="this" />
+					<play object="this" animation="hover_fire" loop="true" />
+					<wait seconds="0.5"><operate object="this" /></wait>
+					<play object="this" animation="hover_hit" loop="true" />
+					<wait seconds="0.25"><operate object="this" /></wait>
+					<play object="this" animation="fly" loop="true" />
+					<lerp object="this" deltaX="-4" deltaY="4" seconds="1.5" modal="false" />
+					<pan deltaX="4*Tile.SIZE" deltaY="-4*Tile.SIZE" seconds="1.5" animate="this" />
+					<dialogue section="dragon" id="intro6" speaker="this" />
+					<dialogue section="dragon" id="intro7" speaker="player" />
+					<dialogue section="dragon" id="intro8" speaker="this" />
+					<action>setFlag("ancient_dragon_intro", true)</action>
+				</section>
+			</section>
+			<section if="!player.hasQuest('cultivator')">
+				<dialogue section="dragon" id="cultivator1" speaker="this" />
+				<dialogue section="dragon" id="cultivator2" speaker="this" />
+				<dialogue section="dragon" id="cultivator3" speaker="this" />
+				<quest id="cultivator" />
+			</section>
+			<section if="!player.questComplete('cultivator') && player.canCompleteQuest('cultivator')">
+				<complete quest="cultivator" />
+				<dialogue section="dragon" id="cultivator4" speaker="this" />
+				<item id="horn" count="2" modal="true" />
+				<dialogue section="dragon" id="cultivator5" speaker="this" />
+			</section>
+			<section if="!getFlag('ancient_dragon_betrayal')">
+				<action>setFlag('ancient_dragon_betrayal', true)</action>
+				<dialogue section="dragon" id="betrayal1" speaker="player" />
+				<dialogue section="dragon" id="betrayal2" speaker="this" />
+				<dialogue section="dragon" id="betrayal3" speaker="this" />
+				<dialogue section="dragon" id="betrayal4" speaker="this" />
+				<dialogue section="dragon" id="betrayal5" speaker="this" />
+				<dialogue section="dragon" id="betrayal6" speaker="this" />
+				<dialogue section="dragon" id="betrayal7" speaker="player" />
+				<dialogue section="dragon" id="betrayal8" speaker="this" />
+			</section>
+			<choose if="player.questComplete('go_east')">
+				<section if="!player.hasQuest('dragon_ship')">
+					<dialogue section="dragon" id="ship1" speaker="this" />
+					<dialogue section="dragon" id="ship2" speaker="this" />
+					<dialogue section="dragon" id="ship2.1" speaker="this" />
+					<quest id="dragon_ship" />
+				</section>
+				<section if="player.hasItem('revitalize_potion') && area.getLiveCount('ice_boss') > 0">
+					<quest /><item id="revitalize_potion" count="-1" modal="true" /><action>this.renderer.hide()</action>
+					<dialogue section="fish" id="revitalize7" speaker="this" />
+					<play object="this" animation="hover" loop="true" />
+					<lerp object="this" deltaX="8" deltaY="-8" seconds="2" modal="true" />
+					<wait seconds="0.5" />
+					<play object="this" animation="fly" loop="true" with="fade" />
+					<lerp object="this" deltaX="-8" deltaY="8" seconds="3" modal="true" />
+					<dialogue section="fish" id="revitalize8" speaker="this" />
+					<remove object="area.getObject('ice_boss')" /><action>player.addKillCount("ice_boss", 1)</action>
+				</section>
+				<section if="player.questComplete('dragon_ship') && !player.hasSeenItem('npc.dragon_backpack')">
+					<quest /><action>player.setSeenItem('npc.dragon_backpack')</action>
+					<dialogue section="dragon" id="ship7" speaker="this" /><dialogue section="dragon" id="dragon_backpack" speaker="this" />
+				</section>
+				<section if="player.questComplete('dragon_ship')">
+					<dialogue section="dragon" id="ship7" speaker="this" />
+					<dialogue section="dragon" id="ship8" speaker="this" />
+				</section>
+				<group>
+					<dialogue section="dragon" id="ship3" speaker="this" />
+					<section>
+						<dialogue section="dragon" id="ship4" speaker="this" />
+						<dialogue section="dragon" id="ship5" speaker="this" />
+						<dialogue section="dragon" id="ship6" speaker="this" />
+					</section>
+					<section>
+						<dialogue section="dragon" id="fish_village1" speaker="this" />
+						<dialogue section="dragon" id="fish_village2" speaker="this" />
+					</section>
+				</group>
+			</choose>
+			<group>
+				<dialogue section="dragon" id="cultivator6" speaker="this" if="player.questComplete('cultivator')" />
+				<section>
+					<dialogue section="dragon" id="fish_village1" speaker="this" />
+					<dialogue section="dragon" id="fish_village2" speaker="this" />
+				</section>
+			</group>
+		</choose></section></operate>
+	</npc>
+</data>

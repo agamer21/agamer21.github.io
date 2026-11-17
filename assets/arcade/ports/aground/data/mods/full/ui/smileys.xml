@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tilesheet id="smileys.png" width="15" height="15" />
+	<action>for(i in 0...100) evalXml('&lt;tile id="smiley'+i+'" sheet="smileys.png" x="'+i+'" />');</action>
+	<chat replace=":)" with="[tile=smiley0]" /><chat replace=":smile:" with="[tile=smiley0]" />
+	<chat replace=":glasses:" with="[tile=smiley1]" />
+	<chat replace=":D" with="[tile=smiley2]" /><chat replace=":grin:" with="[tile=smiley2]" />
+	<chat replace=";)" with="[tile=smiley3]" /><chat replace=":wink:" with="[tile=smiley3]" />
+	<chat replace=":P" with="[tile=smiley4]" /><chat replace=":tongue:" with="[tile=smiley4]" />
+	<chat replace=":(" with="[tile=smiley5]" /><chat replace=":frown:" with="[tile=smiley5]" />
+	<chat replace=":|" with="[tile=smiley6]" /><chat replace=":neutral:" with="[tile=smiley6]" />
+	<chat replace=":raise_eyebrow:" with="[tile=smiley7]" />
+	<chat replace=":'(" with="[tile=smiley8]" /><chat replace=":cry:" with="[tile=smiley8]" />
+	<chat replace=":/" with="[tile=smiley9]" /><chat replace=":unsure:" with="[tile=smiley9]" />
+	<chat replace=">:(" with="[tile=smiley10]" /><chat replace=":angry:" with="[tile=smiley10]" />
+	<chat replace=":skull:" with="[tile=smiley11]" />
+	<chat replace=":evil_grin:" with="[tile=smiley12]" />
+	<chat replace=":wut:" with="[tile=smiley13]" />
+	<chat replace=":XD:" with="[tile=smiley14]" />
+	<chat replace=":!:" with="[tile=smiley15]" />
+	<chat replace="^_^" with="[tile=smiley16]" />
+	<chat replace=":3" with="[tile=smiley17]" />
+	<chat replace=":kiss:" with="[tile=smiley18]" />
+	<chat replace=":nerd:" with="[tile=smiley19]" />
+	<chat replace=":cyclops:" with="[tile=smiley20]" />
+	<chat replace=":unamused:" with="[tile=smiley21]" />
+	<chat replace=":S" with="[tile=smiley22]" />
+	<chat replace=":stare:" with="[tile=smiley23]" />
+	<chat replace="X_X" with="[tile=smiley24]" /><chat replace=":dead:" with="[tile=smiley24]" />
+	<chat replace=":?:" with="[tile=smiley25]" />
+	<chat replace=":laugh:" with="[tile=smiley26]" />
+	<chat replace=":love:" with="[tile=smiley27]" />
+	<chat replace=":sick:" with="[tile=smiley28]" />
+	<chat replace=":creepy_mask:" with="[tile=smiley29]" />
+	<chat replace=":glare:" with="[tile=smiley30]" />
+	<chat replace="O.O" with="[tile=smiley31]" /><chat replace=":surprised:" with="[tile=smiley31]" />
+	<chat replace="8)" with="[tile=smiley32]" /><chat replace=":sunglasses:" with="[tile=smiley32]" />
+	<chat replace=":baby:" with="[tile=smiley33]" />
+	<chat replace=":zany:" with="[tile=smiley34]" />
+	<chat replace=":elder:" with="[tile=smiley35]" />
+	<chat replace=":clown:" with="[tile=smiley36]" />
+	<chat replace=":tired:" with="[tile=smiley37]" />
+	<chat replace=":grimacing:" with="[tile=smiley38]" />
+	<chat replace=":gray:" with="[tile=smiley39]" />
+	<chat replace=":smirk:" with="[tile=smiley40]" />
+	<chat replace=":sleep:" with="[tile=smiley41]" />
+	<chat replace=":nose:" with="[tile=smiley42]" />
+	<chat replace=":vampire:" with="[tile=smiley43]" />
+	<chat replace=":pink:" with="[tile=smiley44]" />
+	<chat replace=":dizzy:" with="[tile=smiley45]" />
+	<chat replace=":listen:" with="[tile=smiley46]" />
+	<chat replace=":eat:" with="[tile=smiley47]" />
+	<chat replace=":alien:" with="[tile=smiley48]" />
+	<chat replace=":robot:" with="[tile=smiley49]" />
+	<chat replace=">_<" with="[tile=smiley50]" />
+	<chat replace=":poop:" with="[tile=smiley51]" />
+	<chat replace=":old:" with="[tile=smiley52]" />
+	<chat replace=":young:" with="[tile=smiley53]" />	
+	<chat replace=":ninja:" with="[tile=smiley54]" />
+	<chat replace=":stasis:" with="[tile=smiley55]" />
+	<chat replace=":headless:" with="[tile=smiley56]" />
+	<chat replace=":mask:" with="[tile=smiley57]" />
+	<chat replace=":bleeding:" with="[tile=smiley58]" />
+	<chat replace=":fight:" with="[tile=smiley59]" />
+	<chat replace=":vr:" with="[tile=smiley60]" />
+	<chat replace=":no_mouth:" with="[tile=smiley61]" />
+	<chat replace=":core:" with="[tile=smiley62]" />
+	<chat replace=":emo:" with="[tile=smiley63]" />
+	<chat replace=":bloody:" with="[tile=smiley64]" />
+	<chat replace=":cat:" with="[tile=smiley65]" />
+	<chat replace=":censored:" with="[tile=smiley66]" />
+	<chat replace=":reading:" with="[tile=smiley67]" />
+	<chat replace=":rainbow:" with="[tile=smiley68]" />
+	<chat replace=":eyepatch:" with="[tile=smiley69]" />
+	<chat replace=":teeth:" with="[tile=smiley70]" />
+	<chat replace=":target:" with="[tile=smiley71]" />	
+	<chat replace=":pig:" with="[tile=smiley72]" />
+	<chat replace=":picasso:" with="[tile=smiley73]" />
+	<chat replace=":bomb:" with="[tile=smiley74]" />
+	<chat replace=":french:" with="[tile=smiley75]" />
+	<chat replace=":grimacing2:" with="[tile=smiley76]" />
+	<chat replace=":unicorn:" with="[tile=smiley77]" />
+	<chat replace=":beard:" with="[tile=smiley78]" />
+	<chat replace=":monocle:" with="[tile=smiley79]" />
+	<chat replace=":magnifying_glass:" with="[tile=smiley80]" />
+	<chat replace=":eye:" with="[tile=smiley81]" />
+	<chat replace=":bite:" with="[tile=smiley82]" />
+	<chat replace=":mouth:" with="[tile=smiley83]" />
+	<chat replace=":mummy:" with="[tile=smiley84]" />
+	<chat replace=":blindfold:" with="[tile=smiley85]" />
+	<chat replace=":cowboy:" with="[tile=smiley86]" />
+	<chat replace=":apple:" with="[tile=smiley87]" />
+	<chat replace=":yay:" with="[tile=smiley88]" />
+	<chat replace=":fist:" with="[tile=smiley89]" />
+</data>

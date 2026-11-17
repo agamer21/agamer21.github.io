@@ -1,0 +1,32 @@
+<sheets>
+<tilesheet id='museum_sheet.1' sheet='museum_sheet.png' width='32' height='16'>
+	<image frame='0' x='32' y='0' width='25' height='12' offsetX='7' offsetY='2' />
+	<image frame='1' x='0' y='0' width='32' height='12' offsetX='0' offsetY='2' />
+</tilesheet>
+<tilesheet id='museum_sheet.2' sheet='museum_sheet.png' width='16' height='32'>
+	<image frame='0' x='12' y='12' width='12' height='25' offsetX='2' offsetY='7' />
+	<image frame='1' x='0' y='12' width='12' height='32' offsetX='2' offsetY='0' />
+</tilesheet>
+<tilesheet id='museum_sheet.3' sheet='museum_sheet.png' width='16' height='16'>
+	<image frame='0' x='0' y='44' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='1' x='0' y='55' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='3' x='12' y='37' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='4' x='12' y='48' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='5' x='24' y='12' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='6' x='36' y='12' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='7' x='48' y='12' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='8' x='24' y='23' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='9' x='36' y='23' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='10' x='48' y='23' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='11' x='24' y='34' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='12' x='24' y='45' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='13' x='24' y='56' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='14' x='36' y='34' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='15' x='48' y='34' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='16' x='36' y='45' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='17' x='36' y='56' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='18' x='48' y='45' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='19' x='48' y='56' width='12' height='11' offsetX='4' offsetY='5' />
+	<image frame='2' equals='0' offsetX='4' offsetY='5' />
+</tilesheet>
+</sheets>

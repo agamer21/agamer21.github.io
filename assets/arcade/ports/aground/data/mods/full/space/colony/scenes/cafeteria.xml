@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<scene id="cafeteria">
+		<include id="cafe.xml" includeRoot="true" />
+		<tile id="food" sheet="cafe.png" />
+		<animation id="cheesesteak" equals="single" />
+		<animation id="chili" x="1" count="6" />
+		<animation id="chops" x="7" count="1" />
+		<animation id="draught" x="8" count="6" />
+		<animation id="pasta" x="14" count="1" />
+		<animation id="fillet" x="15" count="1" />
+		<animation id="fritters" x="16" count="6" />
+		<animation id="nuggets" x="22" count="6" />
+		<animation id="paste" x="28" count="1" />
+		<animation id="potato_salad" x="29" count="6" />
+		<animation id="shake" x="35" count="6" />
+		<animation id="shot" x="41" count="6" />
+		<animation id="sliders" x="47" count="1" />
+		<animation id="souffle" x="48" count="6" />
+		<animation id="tonic.skull"><frame visible="false" length="6" /><frame x="60" count="12" /><frame visible="false" length="6" /></animation>
+		<animation id="tonic" x="54" count="6" repeat="4"><append tile="scene.cafeteria.food" animation="scene.cafeteria.tonic.skull" /></animation>
+		<animation id="wings" x="72" count="1" />
+		<layer id="regen_stamina" tile="food" animation="shot" />
+		<layer id="regen_health" tile="food" animation="shake" />
+		<layer id="regen_power" tile="food" animation="chili" />
+		<layer id="attack" tile="food" animation="sliders" />
+		<layer id="defense" tile="food" animation="fillet" />
+		<layer id="mine" tile="food" animation="draught" />
+		<layer id="speed" tile="food" animation="souffle" />
+		<layer id="farsight" tile="food" animation="fritters" />
+		<layer id="porky" tile="food" animation="chops" />
+		<layer id="endurance" tile="food" animation="paste" />
+		<layer id="bargaining" tile="food" animation="cheesesteak" />
+		<layer id="light" tile="food" animation="potato_salad" />
+		<layer id="oxygen" tile="food" animation="wings" />
+		<layer id="reset" tile="food" animation="pasta" />
+		<layer id="knock_out" tile="food" animation="nuggets" />
+		<layer id="toxic" tile="food" animation="tonic" />
+		<tile id="lid" sheet="cafe.png" x="73" />
+		<animation id="lid" count="13" />
+		<layer id="lid" tile="lid" animation="single" />
+		<tile id="waiter" sheet="cafe.png" x="86" />
+		<animation id="waiter" count="14" />
+		<layer id="waiter" tile="waiter" animation="waiter" />
+		<layer id="colony.bg1" tile="colony.bg1" />
+		<show id="serve">
+			<layer id="colony.bg1" />
+			<layer id="waiter" /><layer eval="getGlobal('order')" /><layer id="lid" />
+			<wait seconds="1" /><sound id="dinnerbell" />
+			<play object="lid" animation="lid" /><hide id="lid" />
+			<wait seconds="3" />
+			<dialogue eval="'cafeteria.desc.'+getGlobal('order')" />
+			<wait seconds="2" />
+		</show>
+	</scene>
+</data>

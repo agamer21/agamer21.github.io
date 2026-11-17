@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="death_door.xml" />
+	
+	<include id="struc.xml" includeRoot="true" />
+	<tile id="spirit_storehouse" sheet="struc.png" />
+	<animation id="spirit_storehouse.idle" equals="item8" />
+	<structure id="spirit_storehouse" tile="spirit_storehouse" type="storehouse" main="true" inventory="player.areas.get('spirit_box.void').getStructureById('storehouse').inventory" removeButton="structure.uproot">
+		<removeBy><action>this.onDismantle(player); player.addItem("storehouse_seed");</action></removeBy>
+	</structure>
+	
+	<include id="enemies.xml" />
+	<include id="npcs.xml" />
+	<include id="trees.xml" />
+	
+	<include id="parallax.xml" />
+	<tile id="spirit_block" sheet="{core}/tiles/tiles.png" x="148" />
+	<object id="spirit_lava" tile="lava" animation="ore" layer="top" overlapVehicle="true">
+		<tile id="spirit_block" animation="item8" behind="true" x="-0.5" y="-0.5" />
+		<over><damage object="player" attacker="this" damage="10" directional="false" critical="false" ignoreArmor="true" /></over>
+	</object>
+	<animation id="spirit_chest.idle" equals="item7" />
+	<structure id="spirit_chest" tile="spirit_box.ico">
+		<tooltip section="actions" id="open" />
+		<operate>
+			<action if="!getFlag('spirit_chest')">setFlag('spirit_chest', true); player.areas.get('spirit_box.void').getStructureById('storehouse').inventory.addItems(getItem("spirit_gem"), 5)</action>
+			<window type="storehouse" inventory="player.areas.get('spirit_box.void').getStructureById('storehouse').inventory" title="common.spirit_storehouse" />
+		</operate>
+	</structure>
+	<procedure id="spirit.path">
+		<action>setBack(13, 17, "spirit_ladder");</action>
+		<action>setBack(13, 16, "spirit_ladder");</action><wait seconds="0.25" />
+		<action>setBack(13, 15, "spirit_ladder");</action><wait seconds="0.25" />
+		<action>setBack(13, 14, "spirit_ladder");</action><wait seconds="0.25" />
+		<action>setBack(13, 13, "spirit_ladder");</action><wait seconds="0.25" />
+		<action>var x = 13; var y = 12; setTile(x, y, null); area.addObject(ObjectInfo.make("spirit_lava", x*Tile.SIZE, y*Tile.SIZE)); setBack(x, y, "spirit_ladder");</action>
+	</procedure>
+	<structure id="spirit_exit_hq" extends="spirit_door" animation="spirit_door">
+		<afterTeleport><structure id="spirit_door" x="98" if="area.getStructureById('spirit_door') == null"><teleport area="spirit" x="20" y="27" /></structure></afterTeleport>
+	</structure>
+	<area id="spirit" tile_anim="item8" backDarkness="1" height="1" background="spirit" shouldLight="false" viewHidden="true" canFly="false" placeLadder="false">
+		<tiles from="world.png" x="0" y="-1">
+			<tile id="spirit_block" color="000000" /><tile id="spirit_ladder" color="00ff00" layer="back" />
+			<tile id="spirit_ladder" color="ffff00" layer="back">area.addObject(ObjectInfo.make("spirit_lava", x*Tile.SIZE, y*Tile.SIZE))</tile>
+			<tile color="ff8000">area.addObject(ObjectInfo.make("spirit_tree_ice", x*Tile.SIZE, y*Tile.SIZE))</tile>
+			<tile color="00ffff">area.addObject(ObjectInfo.make("ice_bush", x*Tile.SIZE, y*Tile.SIZE))</tile>
+			<tile color="ff00ff">getStructure("spirit_chest").build(null, area, x*Tile.SIZE, y*Tile.SIZE);</tile>
+			<tile color="808080">area.addObject(ObjectInfo.make("spirit_guide", x*Tile.SIZE, y*Tile.SIZE))</tile>
+			<tile color="0000ff">var s = getStructure("spirit_door").build(null, area, x*Tile.SIZE, y*Tile.SIZE); s.area_id = "mars"; s.x = 91*Tile.SIZE; s.y = 5*Tile.SIZE;</tile>
+			<tile color="ff0000">var s = getStructure("spirit_exit_hq").build(null, area, x*Tile.SIZE, y*Tile.SIZE); s.area_id = "alien_hq"; s.x = 100*Tile.SIZE; s.y = -Tile.SIZE;</tile>
+		</tiles>
+		<connection area="spirit" fromX="-10" toX="46" />
+		<connection area="spirit" fromX="46" toX="-10" />
+		<connection area="spirit" dir="down" fromY="30" toY="-2" />
+		<connection area="spirit" dir="up" fromY="-2" toY="30" />
+		<spawner id="spirit_imp" time="5000" count="1" fromX="10" toX="35" fromY="-1" toY="3" spawnWidth="32" />
+		<spawner id="spirit_ox" time="5000" count="1" fromX="0" toX="35" fromY="6" toY="8" spawnWidth="32" spawnHeight="64" />
+		<spawner id="venatrix" time="5000" count="1" fromX="4" toX="33" fromY="15" toY="20" spawnWidth="32" />
+		<spawner id="spirit_fox" time="5000" count="1" fromX="5" toX="24" fromY="23" toY="27" spawnWidth="32" />
+		<spawner id="spirit_fish" time="5000" count="3" fromX="4" toX="31" fromY="14" toY="23" spawnWidth="32" />
+		
+		<spawner id="ice_elemental" time="5000" count="1" fromX="10" toX="35" fromY="-1" toY="3" spawnWidth="32" />
+		<spawner id="earth_elemental" time="5000" count="1" fromX="0" toX="35" fromY="6" toY="8" spawnWidth="32" />
+		<spawner id="plant_elemental2" time="5000" count="1" fromX="4" toX="33" fromY="15" toY="20" spawnWidth="32" />
+		<spawner id="fire_elemental" time="5000" count="1" fromX="5" toX="24" fromY="23" toY="27" spawnWidth="32" />
+		<spawner id="water_elemental2" time="5000" count="1" fromX="4" toX="33" fromY="15" toY="23" spawnWidth="32" />
+		<init><runAreaLoad /><action>
+			area.spawner.spawnAll("ice_elemental"); area.spawner.spawnAll("spirit_ox"); area.spawner.spawnAll("venatrix"); area.spawner.spawnAll("spirit_fox"); area.spawner.spawnAll("spirit_fish");
+			area.spawner.spawnAll("spirit_imp"); area.spawner.spawnAll("earth_elemental"); area.spawner.spawnAll("plant_elemental2"); area.spawner.spawnAll("fire_elemental"); area.spawner.spawnAll("water_elemental2");
+		</action></init>
+		<onLoad>
+			<action>player.gui.coins.changeCurrency("spirit", "spirit")</action><music id="spirit" seconds="1" />
+			<action if="!player.getFlag('alien_hq.locked') && getFlag('final_boss_defeat') && !getFlag('magic_path_end') && (player.vehicle == null || !player.vehicle.isDrone())">setFlag('magic_path_end', true);</action>
+		</onLoad>
+		<onLeave><action>player.gui.coins.changeCurrency("coins", "coins"); setGameTime(24);</action></onLeave>
+		<updateHidden><run procedure="spirit_world_hidden" /></updateHidden>
+	</area>
+</data>

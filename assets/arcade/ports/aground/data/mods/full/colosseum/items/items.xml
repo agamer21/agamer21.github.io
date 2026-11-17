@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<procedure id="change_element">
+		<set id="id" value="this.xml.exists('elementMod')?this.xml.get('elementMod'):this.id" />
+		<menu section="elements" yalign="0.5" closeable="true">
+			<choice id="normal" if="this.xml.get('elementNormal') != 'false'"><action>setName(Item.setParameter(name, "m", null))</action></choice>
+			<choice id="fire"><action>if(Item.exists(id+".fire")) setName(Item.setParameter(name, "m", id+".fire")); else setName(Item.setParameter(name, "m", null));</action></choice>
+			<choice id="water"><action>if(Item.exists(id+".water")) setName(Item.setParameter(name, "m", id+".water")); else setName(Item.setParameter(name, "m", null));</action></choice>
+			<choice id="ice"><action>if(Item.exists(id+".ice")) setName(Item.setParameter(name, "m", id+".ice")); else setName(Item.setParameter(name, "m", null));</action></choice>
+			<choice id="earth"><action>if(Item.exists(id+".earth")) setName(Item.setParameter(name, "m", id+".earth")); else setName(Item.setParameter(name, "m", null));</action></choice>
+			<choice id="plant"><action>if(Item.exists(id+".plant")) setName(Item.setParameter(name, "m", id+".plant")); else setName(Item.setParameter(name, "m", null));</action></choice>
+		</menu>
+		<action>if(player.vehicle != null){if(player.vehicle.renderer != null) player.vehicle.renderer.equipmentChanged(player);} else if(player.renderer != null) player.renderer.equipmentChanged();</action>
+	</procedure>
+	<procedure id="change_element_focus">
+			<set id="gems" value="player.getItemCount('focus_gem')" global="true" />
+			<choose>
+				<section if="gems >= 1">
+					<menu section="common">
+						<dialogue title="colosseum.focus_gem" />
+						<choice id="yes">
+							<action>player.addItem("focus_gem", -1)</action>
+							<run procedure="change_element" />
+						</choice>
+						<choice id="no" />
+					</menu>
+				</section>
+				<dialogue title="colosseum.fail_focus_gem" />
+			</choose>
+	</procedure>
+	<tilesheet id="items.png" width="16" height="10" />
+	<tile id="spirit_armor.ico" sheet="items.png" x="0" />
+	<tile id="spirit_bow.ico" sheet="items.png" x="1" />
+	<tile id="spirit_scythe.ico" sheet="items.png" x="2" />
+	<tile id="spirit_cape.ico" sheet="items.png" x="10" />
+		
+	<item id="spirit_armor.fire" type="none"><modifiers elementDefense="2" element="fire" color="ff3333" colorScale="1.5"><light tile="light.largest" color="ff3333" /></modifiers></item>
+	<item id="spirit_armor.water" type="none"><modifiers elementDefense="2" element="water" color="3333ff" colorScale="1.5"><light tile="light.largest" color="6666ff" /></modifiers></item>
+	<item id="spirit_armor.ice" type="none"><modifiers elementDefense="2" element="ice" color="33ffff" colorScale="1.5"><light tile="light.largest" color="33ffff" /></modifiers></item>
+	<item id="spirit_armor.earth" type="none"><modifiers elementDefense="2" element="earth" color="ffcc33" colorScale="1.5"><light tile="light.largest" color="ffcc33" /></modifiers></item>
+	<item id="spirit_armor.plant" type="none"><modifiers elementDefense="2" element="plant" color="33ff33" colorScale="1.5"><light tile="light.largest" color="33ff33" /></modifiers></item>
+
+	<include id="equip.xml" includeRoot="true" />
+	<tile id="spirit_armor" sheet="equip.png" x="0" y="0" />
+	<item id="spirit_armor" type="equipment" slot="head" cost="0" weight="0" defense="2" elementDefense="4" icon="spirit_armor.ico" action="equip" viewHidden="true" desc="item.descriptions.change_element" color="ff33ff" colorScale="1.5" canModify="false">
+		<action id="use" name="elements.change" closeWindow="false"><run procedure="change_element_focus" /></action><use slot="armor" />
+		<light tile="light.largest" color="ff33ff" /><equipCost health="-2" stamina="2" injured="true" />
+	</item>
+	<tile id="spirit_helm" sheet="equip.png" x="70" y="0" />
+	<animation id="equipment.spirit_armor.idle" x="57" count="1"><append tile="spirit_helm" animation="single" /></animation>
+	<animation id="equipment.spirit_armor.walk" x="47" count="10"><append tile="spirit_helm" animation="equipment.walk" /></animation>
+	<animation id="equipment.spirit_armor.hit" x="41" count="6"><append tile="spirit_helm" animation="equipment.hit" /></animation>
+	<animation id="equipment.spirit_armor.death" x="0" count="41" />
+		
+	<item id="spirit_weapon.fire" type="none"><modifiers attack="2" spirit="1" element="fire" color="ff3333" colorScale="1.5" /></item>
+	<item id="spirit_weapon.water" type="none"><modifiers attack="2" spirit="1" element="water" color="3333ff" colorScale="1.5" /></item>
+	<item id="spirit_weapon.ice" type="none"><modifiers attack="2" spirit="1" element="ice" color="33ffff" colorScale="1.5" /></item>
+	<item id="spirit_weapon.earth" type="none"><modifiers attack="2" spirit="1" element="earth" color="ffcc33" colorScale="1.5" /></item>
+	<item id="spirit_weapon.plant" type="none"><modifiers attack="2" spirit="1" element="plant" color="33ff33" colorScale="1.5" /></item>
+		
+	<tile id="spirit_bow" sheet="equip.png" x="64" />
+	<animation id="equipment.spirit_bow.idle" x="0" count="1" glow="true" />
+	<animation id="equipment.spirit_bow" x="0" count="6" shift="2" glow="true" />
+	<tile id="spirit_bolt" sheet="equip.png" x="58" />
+	<animation id="spirit_bolt" x="0" count="6" glow="true" />
+	<item id="spirit_bow" type="equipment" elementMod="spirit_weapon" slot="weapon" cost="0" weight="0" attack="5" spirit="1" stamina="3" range="12" icon="spirit_bow.ico" behindPlayer="false" delay="4" arms="bow.arms" hideArms="true" underwater="true" desc="item.descriptions.change_element" color="ff33ff" colorScale="1.5" tintProjectile="true" sfx="spirit_bow" canModify="false">
+		<action id="equip" /><action id="use" name="elements.change" closeWindow="false"><run procedure="change_element_focus" /></action><use slot="shield" />
+		<projectile tile="spirit_bolt" animation="spirit_bolt" speed="4" pierce="true" passTile="true" offsetX="16" hpSteal="-0.25" hit_sfx="bullet" />
+	</item>
+		
+	<item id="spirit_scythe" type="equipment" elementMod="spirit_weapon" melee_range="1" cost="0" slot="weapon" weight="0" icon="spirit_scythe.ico" attack="8" spirit="1" stamina="3" movement_walk="walk_rswing" knockback="10" underwater="true" sounds="sword" desc="item.descriptions.change_element" color="ff33ff" colorScale="1.5" hpSteal="-0.25" sfx="spirit_scythe" canModify="false">
+		<action id="equip" /><action id="use" name="elements.change" closeWindow="false"><run procedure="change_element_focus" /></action>
+	</item>
+	<tile id="spirit_scythe" sheet="equip.png" x="71" offsetX="-16" />
+	<animation id="equipment.spirit_scythe" x="0" count="10" shift="2" glow="true" />
+	<animation id="equipment.spirit_scythe.idle" x="10" count="1" glow="true" />
+		
+	<item id="spirit_cape" type="tool" slot="back" action="equip" cost="0" weight="0" capacity="300" icon="spirit_cape.ico" animation="item6" durability="1" durabilityName="common.cooldown" hide="true">
+		<flight height="10" cost="2" speed="4" maxWeight="1000" /><equipCost storage="spirit" cost="2" durability="-1" full="false" />
+	</item>
+	<tile id="spirit_cape" sheet="equip.png" x="82" />
+	<animation id="equipment.spirit_cape.idle" x="47" count="6" />
+	<animation id="equipment.spirit_cape.walk" x="53" count="10" />
+	<animation id="equipment.spirit_cape.hit" x="41" count="6" />
+	<animation id="equipment.spirit_cape.death" x="0" count="41" />
+	<animation id="equipment.spirit_cape.fly.self" x="63" count="6" />
+	<animation id="equipment.spirit_cape.hover.self" equals="equipment.spirit_cape.fly.self" />
+		
+	<tilesheet id="spirit.png" width="8" height="8" />
+    <tile id="spirit" sheet="spirit.png" />
+	<bar id="spirit" tile="spirit" color="990099" />
+	<animation id="spirit" count="9" />
+	<item id="spirit_battery" type="none" durability="200" storage="spirit" cost="0" weight="0" />
+	
+	<include id="spirit_death.xml" includeRoot="true" />
+	<tile id="spirit.corpse" sheet="spirit_death.png" />
+	<animation id="spirit.corpse" x="0" count="6" />
+	<animation id="spirit.orb" x="6" count="6" />
+	<object id="spirit.orb" tile="spirit.corpse" animation="spirit.orb" layer="enemy" save="false" overlapVehicle="true">
+		<over><stop if="!exists('power')" /><sound id="item" /><set id="count" value="power" global="true" />
+			<show tooltip="popup" text="warning.lose_spirit{amt:+[global=count]}" x="0.5" y="0.4" /><action>if(player.getStorage("spirit").getMaxValue() == 0){
+			var i = Item.get("spirit_battery"); player.inventory.addItems(i, 1, i.getDurability());
+		} player.getStorage("spirit").addValue(power);</action><remove object="this" /></over>
+	</object>
+	<object id="spirit.corpse" tile="spirit.corpse" animation="spirit.corpse" removeOnComplete="true" layer="enemy" save="false">
+		<onComplete>
+			<object id="spirit.orb" x="this.xPos/Tile.SIZE" y="this.yTile/Tile.SIZE">
+				this.vars.set("power", power); Movement.seek(this, player, 10);
+			</object>
+		</onComplete>
+	</object>
+	<procedure id="spirit.death" extends="spirit.death"><section if="killer != null">
+		<set id="power" value="this.info.xml.exists('spirit_power')?Std.parseInt(this.info.xml.get('spirit_power')):10" />
+		<object id="spirit.corpse" x="this.xPos/Tile.SIZE-0.5" y="this.yTile/Tile.SIZE+0.5">this.vars.set("power", power)</object>
+	</section></procedure>
+		
+	<area id="spirit_box.void"><structure id="storehouse" x="0" /></area>
+	<tile id="spirit_box.ico" sheet="items.png" x="3" />
+	<item id="spirit_box" type="tool" cost="0" weight="0" icon="spirit_box.ico" animation="item7" underground="true" canStore="false">
+		<action id="use" name="open"><choose>
+			<dialogue section="warning" id="spirit" if="player.getStorage('spirit').getValue() < 5" />
+			<section>
+				<action>player.getStorage("spirit").loseValue(5)</action><show tooltip="popup" text="warning.lose_spirit{amt:-5}" x="0.5" y="0.4" />
+				<window type="storehouse" inventory="player.areas.get('spirit_box.void').getStructureById('storehouse').inventory" title="item.names.spirit_box" max_weight="5000" />
+			</section>
+		</choose></action>
+	</item>
+</data>

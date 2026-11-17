@@ -1,0 +1,6 @@
+<tilesheet id='parallax.png' width='768' height='144'>
+	<image frame='0' x='0' y='55' width='768' height='37' offsetX='0' offsetY='82' />
+	<image frame='1' x='0' y='0' width='768' height='55' offsetX='0' offsetY='89' />
+	<image frame='2' x='0' y='130' width='753' height='14' offsetX='7' offsetY='130' />
+	<image frame='3' x='0' y='92' width='506' height='38' offsetX='130' offsetY='106' />
+</tilesheet>

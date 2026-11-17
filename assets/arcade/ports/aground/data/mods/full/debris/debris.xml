@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<animation id="debris3" count="3" />
+	<include id="ocean.xml" includeRoot="true" />
+	<tile id="metal_debris2" sheet="ocean.png" />
+	<tile id="metal_debris3" sheet="ocean.png" x="3" />
+	<tile id="metal_debris4" sheet="ocean.png" x="6" />
+	<tile id="metal_debris5" sheet="ocean.png" x="9" />
+	<tile id="metal_debris6" sheet="ocean.png" x="12" />
+	<tile id="metal_debris7" sheet="ocean.png" x="15" />
+	<object id="metal_debris2" animation="debris3" tile="metal_debris2" fps="2" action="collect" layer="item" submarine="true">
+		<operate><action>player.addItem("titanium", 4)</action><remove object="this" /></operate>
+	</object>
+	<object id="metal_debris3" animation="debris3" tile="metal_debris3" fps="2" action="collect" layer="item" submarine="true">
+		<operate><action>player.addMultipleItems("titanium", 1, "ship_parts", 1)</action><remove object="this" /></operate>
+	</object>
+	<object id="metal_debris4" extends="metal_debris3" tile="metal_debris4" />
+	<object id="metal_debris5" extends="metal_debris2" tile="metal_debris5" />
+	<object id="metal_debris6" extends="metal_debris3" tile="metal_debris6" />
+	<object id="metal_debris7" extends="metal_debris2" tile="metal_debris7" />
+	
+	<tile id="power_core" sheet="debris16.png" />
+	<tile id="power_core_debris1" sheet="debris16.png" x="4" />
+	<tile id="power_core_debris2" sheet="debris16.png" x="5" />
+	<tile id="power_core_debris3" sheet="debris16.png" x="6" />
+	<tile id="power_core_debris4" sheet="debris16.png" x="7" />
+	<object id="power_core_debris1" tile="power_core_debris1" action="collect" layer="item" submarine="true">
+		<operate><action>player.addItem("power_core_parts", 1)</action><remove object="this" /></operate>
+	</object>
+	<object id="power_core_debris2" tile="power_core_debris2" extends="power_core_debris1" />
+	<object id="power_core_debris3" tile="power_core_debris3" extends="power_core_debris1" />
+	<object id="power_core_debris4" tile="power_core_debris4" extends="power_core_debris1" />
+    
+    <tile id="life_pod_debris1" sheet="debris16.png" x="8" />
+    <tile id="life_pod_debris2" sheet="debris16.png" x="9" />
+    <tile id="life_pod_debris3" sheet="debris16.png" x="10" />
+    <tile id="life_pod_debris4" sheet="debris16.png" x="11" />
+	
+	<structure id="life_pod_debris1" tile="life_pod_debris1" name="check_logs" type="dialogue" submarine="true" achievement="life_pod" />
+	<structure id="life_pod_debris2" tile="life_pod_debris2" extends="life_pod_debris1" />
+	<structure id="life_pod_debris3" tile="life_pod_debris3" extends="life_pod_debris1" />
+	<structure id="life_pod_debris4" tile="life_pod_debris4" extends="life_pod_debris1" />
+	
+	<structure id="life_pod_debris_corpse" tile="life_pod_debris1" name="check_logs" type="dialogue" submarine="true" achievement="life_pod">
+		<operate>
+			<section if="!this.isRead(player)">
+				<dialogue section="medicom" id="lifepod1" />
+				<item id="bandage" count="6" modal="true" />
+			</section>
+		</operate>
+	</structure>
+	
+	<include id="ship.xml" includeRoot="true" />
+	<tile id="ship_debris1" sheet="ship.png" />
+	<tile id="ship_debris2" sheet="ship.png" x="1" />
+	<tile id="ship_debris3" sheet="ship.png" x="2" />
+	<tile id="ship_debris4" sheet="ship.png" x="3" />
+	<tile id="ship_debris5" sheet="ship.png" x="4" />
+	<tile id="ship_debris6" sheet="ship.png" x="5" />
+	<tile id="ship_debris7" sheet="ship.png" x="6" />
+	<tile id="ship_debris8" sheet="ship.png" x="7" />
+	<tile id="ship_debris9" sheet="ship.png" x="8" />
+	<tile id="ship_debris10" sheet="ship.png" x="9" />
+	<tile id="ship_debris11" sheet="ship.png" x="10" />
+	<tile id="ship_debris12" sheet="ship.png" x="11" />
+	<object id="ship_debris1" tile="ship_debris1" action="inspect" layer="item">
+		<operate>
+			<choose>
+				<dialogue section="player" id="escort_ship" if="player.hasQuest('water_cave') && !getFlag('mirrows.sacrifice') && !getFlag('final_boss_defeat')" />
+				<dialogue section="player" id="escort_ship2" />
+			</choose><action>setFlag('escort_ship', true)</action>
+		</operate>
+	</object>
+	<object id="ship_debris2" tile="ship_debris2" extends="ship_debris1" />
+	<object id="ship_debris3" tile="ship_debris3" extends="ship_debris1" />
+	<object id="ship_debris4" tile="ship_debris4" extends="ship_debris1" />
+	<object id="ship_debris5" tile="ship_debris5" extends="ship_debris1" />
+	<object id="ship_debris6" tile="ship_debris6" extends="ship_debris1" />
+	<object id="ship_debris7" tile="ship_debris7" extends="ship_debris1" />
+	<object id="ship_debris8" tile="ship_debris8" extends="ship_debris1" />
+	<object id="ship_debris9" tile="ship_debris9" action="collect" layer="item">
+		<operate><action>player.addItem("ship_parts", 1)</action><remove object="this" /></operate>
+	</object>
+	<object id="ship_debris10" tile="ship_debris10" extends="ship_debris9" />
+	<object id="ship_debris11" tile="ship_debris11" extends="ship_debris9" />
+	<object id="ship_debris12" tile="ship_debris12" extends="ship_debris9" />
+</data>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="pirates" exp="750" giver="fisherman" achievement="pirates">
+		<kill id="pirate_ship1" name="quests.pirates" count="1" />
+		<kill id="pirate_ship2" name="quests.pirates" count="1" />
+	</quest>
+	
+	<npc id="fisherman" extends="fisherman">
+		<operate>
+			<choose if="getFlag('final_boss_defeat')">
+				<choose if="hasHomeworld(player)">
+					<section if="!onHomeworld(this.area, player)">
+						<run procedure="to.homeworld" /><dialogue section="fisherman" id="win4" speaker="this" />
+						<section if="area.getObject('fisherman.cat') != null">
+							<dialogue section="fisherman" id="win5" speaker="this" />
+							<dialogue section="fisherman" id="cat5" speaker="this" />
+						</section>
+						<remove object="this" /><object id="fisherman" x="15" area="player.getString('homeworld')" />
+					</section>
+					<dialogue section="fisherman" id="win2" speaker="this" />
+				</choose>
+				<dialogue section="fisherman" id="win3" speaker="this" />
+			</choose>
+			<section if="player.questComplete('factory') && !player.hasQuest('pirates') && ((player.questComplete('fisherman_cat') && getFlag('fisherman_scene')) || player.areas.exists('science3'))">
+				<dialogue section="pirates" id="intro1" speaker="this" />
+				<dialogue section="pirates" id="intro2" speaker="this" />
+				<dialogue section="pirates" id="intro3" speaker="this" />
+				<quest id="pirates" />
+			</section>
+			<section if="player.questComplete('factory') && player.hasQuest('pirates') && player.canCompleteQuest('pirates') && !player.questComplete('pirates') ">
+				<complete quest="pirates" /><section if="area.getStructureById('inn') == null">
+					<dialogue section="hybrid" id="pirates_no_inn" speaker="this" /><stop />
+				</section>
+				<dialogue section="pirates" id="complete1" speaker="this" />
+				<scene id="inn" show="pirates" showToAll="true" />
+			</section>
+			<group if="player.questComplete('factory') && player.hasQuest('pirates') && !player.questComplete('pirates') && player.questComplete('fisherman_cat') && getFlag('fisherman_scene')">
+				<dialogue section="pirates" id="hint1" speaker="this" />
+				<dialogue section="pirates" id="hint2" speaker="this" />
+			</group>
+		</operate>
+	</npc>
+</data>

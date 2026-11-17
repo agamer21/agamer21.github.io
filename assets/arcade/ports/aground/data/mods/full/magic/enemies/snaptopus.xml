@@ -1,0 +1,19 @@
+<tilesheet id='snaptopus.png' width='25' height='22' offsetX="-38" offsetY='-8'>
+	<image frame='0' x='0' y='0' width='25' height='26' offsetX='39' offsetY='4' />
+	<image frame='1' x='0' y='26' width='23' height='29' offsetX='39' offsetY='1' />
+	<image frame='2' x='25' y='0' width='40' height='20' offsetX='21' offsetY='7' />
+	<image frame='3' x='23' y='26' width='55' height='23' offsetX='6' offsetY='4' />
+	<image frame='4' x='23' y='49' width='59' height='25' offsetX='1' offsetY='2' />
+	<image frame='5' x='65' y='0' width='23' height='22' offsetX='1' offsetY='10' />
+	<image frame='6' x='23' y='74' width='26' height='23' offsetX='37' offsetY='7' />
+	<image frame='7' x='23' y='97' width='25' height='19' offsetX='38' offsetY='8' />
+	<image frame='8' x='49' y='74' width='25' height='21' offsetX='38' offsetY='9' />
+	<image frame='9' x='0' y='55' width='23' height='22' offsetX='38' offsetY='9' />
+	<image frame='10' x='0' y='77' width='22' height='22' offsetX='39' offsetY='10' />
+	<image frame='11' x='49' y='95' width='25' height='21' offsetX='39' offsetY='11' />
+	<image frame='12' x='74' y='74' width='25' height='21' offsetX='39' offsetY='11' />
+	<image frame='13' x='0' y='99' width='21' height='21' offsetX='41' offsetY='11' />
+	<image frame='14' x='78' y='26' width='20' height='22' offsetX='43' offsetY='9' />
+	<image frame='15' x='82' y='49' width='19' height='21' offsetX='42' offsetY='8' />
+	<image frame='16' x='74' y='95' width='20' height='22' offsetX='39' offsetY='7' />
+</tilesheet>

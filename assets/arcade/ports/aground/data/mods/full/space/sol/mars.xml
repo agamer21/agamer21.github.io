@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="mars" width="256" height="96" hasO2="false" background="mars" planet="mars" looping="true" name="system.planet.mars">
+		<tiles id="desert.dirt_top" y="0" /><mine start="0" end="0.01" backTile="desert.scorched" />
+		<tiles id="desert.dirt" start="0" end="0.5" empty="front|back" />
+		<tiles id="basalt" start="0.5" end="1" />
+		<tiles id="blackstone" y="95" />
+		<appendArea id="mars.sea" offsetX="32" offsetY="20" />
+		<action>for(x in 0...16){setTile(x, 0, "snow"); setTile(x+128, 0, "snow");}</action>
+		<set id="light" value="0" />
+		<run procedure="alchemist_cave" /><action>mine(92, 0); setBack(92, 0, "bedrock"); for(y in 1...40) setTile(92, -y, "invisible_block");</action>
+		<ore id="iron" start="0" end="0.4" percent="0.0375" tile="desert.dirt" />
+		<ore id="gold" start="0.3" end="0.5" percent="0.0175" tile="desert.dirt" />
+		<ore id="quartz" start="0.4" end="0.5" percent="0.0025" tile="desert.dirt" />
+		<ore id="exotic_matter" start="0.9" end="1.0" percent="0.00125" tile="basalt" />
+		<ore id="chromium" start="0.9" end="1.0" percent="0.0025" tile="basalt" />
+		<ore id="evo_shard" start="0.7" end="1.0" percent="0.005" tile="basalt" />
+		<ore id="uranium" start="0.7" end="1" percent="0.0125" tile="basalt" />
+		<ore id="diamond" start="0.5" end="0.9" percent="0.0125" tile="basalt" />
+		<ore id="titanium" start="0.5" end="0.9" percent="0.0125" tile="basalt" />
+		<ore id="lava" start="0.6" end="0.8" percent="1" tile="basalt" />
+		<object id="exiled" x="87" y="4.5" />
+		<structure id="recipe_pillar" x="20" recipe="make_drain_chainsaw" />
+		<structure id="recipe_pillar" x="200" recipe="make_spirit_gem2" />
+		<object id="spirit_chest" x="136">this.inventory.addItems(Item.get("wyrm_pen_blueprint"), 1); this.inventory.addItems(Item.get("lab_blueprint"), 1);</object>
+		<fishing>
+			<loot id="toothfish" p="8" difficulty="1" />
+			<loot id="rockfish" p="12" difficulty="2" />
+			<loot id="coral_cod" p="1" difficulty="3" />
+			<loot id="pearl" p="1" difficulty="5" achievement="clam_pearl" />
+		</fishing>
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<music id="mars" seconds="1" /><action>area.getObject('exiled').renderer.scaleX = -1;</action>
+			<weather type="fog" image="{core}/science1/sand.png" alpha="0.3" color="ffdd99" x="-100" y="-10" width="500" height="12" dx="4" dy="0.05" if="area.getStructureById('terraformer') == null" />
+			<structure id="exiled.tv" x="91" y="5" if="area.getStructureById('exiled.tv') == null" />
+		</onLoad>
+	</area>
+	<area id="mars.sea" width="192" height="32">
+		<mine start="0.25" end="0.75" /><action>for(y in 0...32) for(x in 0...192) if(area.getTileId(offsetX+x, offsetY+y, BASE_LAYER) == -1) area.setWater(offsetX+x, offsetY+y);</action>
+		<objects id="coral1" count="2" fromX="0" toX="192" fromY="0" toY="32" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="coral2" count="2" fromX="0" toX="192" fromY="0" toY="32" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="coral3" count="2" fromX="0" toX="192" fromY="0" toY="32" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="coral4" count="2" fromX="0" toX="192" fromY="0" toY="32" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="coral5" count="2" fromX="0" toX="192" fromY="0" toY="32" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="seaweed" count="10" fromX="0" toX="192" fromY="0" toY="32" width="2" height="2" underwater="true" bottom="true" />
+		<spawner id="jellyfish" time="5000" count="12" fromX="0" toX="192" fromY="0" toY="32" spawnWidth="128" underwater="true" />
+		<spawner id="spirit_fish" time="10000" count="3" fromX="0" toX="192" fromY="0" toY="32" spawnWidth="128" underwater="true" />
+		<spawner id="mars_fish" time="5000" count="12" fromX="0" toX="192" fromY="0" toY="32" spawnWidth="128" underwater="true" />
+		<spawner id="clam" time="5000" count="8" fromX="0" toX="192" fromY="0" toY="32" spawnWidth="64" underwater="true" bottom="true" />
+		<init><action>area.spawner.spawnAll("jellyfish"); area.spawner.spawnAll("spirit_fish"); area.spawner.spawnAll("mars_fish"); area.spawner.spawnAll("clam");</action></init>
+	</area>
+</data>

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="blueprints.xml" />
+	<recipe id="sub" object="sub" description="item.descriptions.sub" type="sub_pen" achievement="sub">
+		<item id="titanium" count="5" />
+		<item id="steel_bar" count="5" />
+		<item id="gold_bar" count="5" />
+		<item id="silicon" count="5" />
+	</recipe>
+	<recipe id="craft_torpedo_launcher" creates="torpedo_launcher" type="sub_pen">
+		<item id="steel_bar" count="2" />
+		<item id="gold_bar" count="2" />
+		<item id="silicon" count="2" />
+	</recipe>
+	<recipe id="craft_torpedo" creates="torpedo" type="sub_pen">
+		<item id="sulfur" count="3" />
+		<item id="steel_bar" count="1" />
+		<item id="silicon" count="1" />
+	</recipe>
+	<action>
+		function isSub(object, layer){
+			return object.info.xml.get("type") == "submarine" &amp;&amp; object.info.xml.get("drone") != "true";
+		}
+		function getSubInDock(dock, player){
+			return dock.area == null?null:dock.area.getActionObject(dock.getInnerBounds(true), null, isSub);
+		}
+	</action>
+	<structure id="sub_pen" width="59" height="20" image="sub_pen.png" offsetY="21" type="crafting" onTop="true" spawnY="this.tile_y+1" overlapVehicle="true">
+		<recipe type="sub_pen" /><tooltip section="common" id="manage" />
+		<listItem title="structure.tooltip.sub_inv" enabled="getSubInDock(this, player) != null" fail="warning.no_sub">
+			<set id="v" value="getSubInDock(this, player)" />
+			<window type="storehouse" inventory="v.inventory" titleMutable="v.getTitle(player)" includeStorehouse="true" />
+		</listItem>
+		<light tile="light.large" color="ffffcc" offsetX="30" />
+		<over>
+			<action if="player.vehicle != null && player.vehicle.info.id == 'sub'">player.vehicle.refuel()</action>
+        </over>
+		<hitbox x="0" y="0" width="59" height="42" />
+	</structure>
+	
+	<recipe id="jet" object="jet" description="item.descriptions.jet" type="airport" achievement="jet">
+		<item id="titanium" count="9" />
+		<item id="steel_bar" count="9" />
+		<item id="silicon" count="5" />
+	</recipe>
+	<recipe id="craft_jet_gun" creates="jet_gun" type="airport">
+		<item id="steel_bar" count="2" /><item id="titanium" count="1" />
+	</recipe>
+	<recipe id="craft_missile_launcher" creates="missile_launcher" type="airport">
+		<item id="steel_bar" count="2" />
+		<item id="titanium" count="2" />
+		<item id="silicon" count="1" />
+	</recipe>
+	<recipe id="craft_missile" creates="missile" type="airport">
+		<item id="sulfur" count="3" />
+		<item id="steel_bar" count="1" />
+		<item id="silicon" count="1" />
+	</recipe>
+	<recipe id="craft_rocket_launcher" creates="rocket_launcher" type="airport">
+		<item id="steel_bar" count="2" />
+		<item id="titanium" count="2" />
+		<item id="silicon" count="1" />
+	</recipe>
+	<recipe id="craft_patrol_boat_launcher" creates="patrol_boat_launcher" type="airport">
+		<item id="steel_bar" count="2" />
+		<item id="titanium" count="2" />
+		<item id="silicon" count="1" />
+	</recipe>
+	
+	<animation id="airport.open" count="6" />
+	<animation id="airport.close" count="6" reverse="true" />
+	<animation id="airport.active" x="6" count="6" />
+	<structure id="airport" width="100" height="80" image="airport.png" type="crafting" powered="true" repairType="mechanic">
+		<tooltip section="common" id="manage" /><recipe type="airport" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<over><play object="this" animation="open" /><action>this.loopAnimation("active")</action></over>
+		<out><play object="this" animation="close" /><action>this.loopAnimation("idle")</action></out>
+	</structure>
+	
+	<recipe id="jeep" object="jeep" description="item.descriptions.jeep" type="car_factory" achievement="jeep">
+		<item id="steel_bar" count="9" />
+		<item id="silicon" count="3" />
+	</recipe>
+	<recipe id="craft_jeep_gun" creates="jeep_gun" type="car_factory">
+		<item id="steel_bar" count="2" /><item id="titanium" count="1" />
+	</recipe>
+	<recipe id="bigdrill" object="bigdrill" description="item.descriptions.bigdrill" type="car_factory">
+		<item id="titanium" count="9" />
+		<item id="steel_bar" count="9" />
+		<item id="silicon" count="5" />
+		<item id="ship_parts" count="1" />
+		<craft>
+			<section if="player.hasContact('mirrows') && !getFlag('bigdrill')">
+				<action>setFlag('bigdrill', true)</action>
+				<call id="mirrows" incoming="true"><caller id="mirrow_d" npc="mirrow_d.npc" /></call>
+				<dialogue section="mirrows" id="boring_machine" speaker="mirrow_d" />
+				<call id="mirrows" end="true" />
+			</section>
+		</craft>
+	</recipe>
+	<recipe id="craft_ship_parts" creates="ship_parts" type="spfactory" available="getFlag('make_ship_parts')" first="true">
+		<type id="no_uncraft" /><item id="gold_bar" count="5" />
+		<item id="titanium" count="5" />
+		<item id="silicon" count="5" />
+		<item id="uranium" count="5" />
+	</recipe>
+	<recipe id="craft_jetpack" creates="jetpack" type="car_factory">
+		<type id="tech_resource" />
+		<item id="ultra_backpack" count="1" />
+		<item id="titanium" count="4" />
+		<item id="silicon" count="1" />
+		<item id="uranium" count="1" />
+	</recipe>
+	<recipe id="craft_generator" creates="generator" type="car_factory" value="0">
+		<item id="titanium" count="3" />
+		<item id="silicon" count="3" />
+		<item id="steel_bar" count="3" />
+		<item id="gold_bar" count="3" />
+	</recipe>
+	<recipe id="craft_battery_unit" creates="battery_unit" type="car_factory" value="0"><item id="sulfur" count="2" /><item id="steel_bar" count="2" /></recipe>
+	<recipe id="craft_cable" creates="cable" count="6" type="factory">
+		<item id="silicon" count="1" />
+		<item id="iron" count="1" />
+	</recipe>
+	<recipe id="craft_water_pump" creates="water_pump" type="car_factory">
+		<item id="gold_bar" count="2" />
+		<item id="silicon" count="2" />
+	</recipe>
+	
+	<animation id="car_factory.off" count="1" x="7" />
+	<animation id="car_factory.on" equals="car_factory.off" />
+	<animation id="car_factory.operate" x="8" count="8" />
+	<animation id="car_factory.open" x="16" count="8" />
+	<animation id="car_factory.open.noflash" x="0" count="8" reverse="true" />
+	<animation id="car_factory.close" x="0" count="7" />
+	
+	<animation id="car_factory.off.light" count="1" x="3" length="2" />
+	<animation id="car_factory.on.light" equals="car_factory.off.light" />
+	<animation id="car_factory.operate.light" x="4" count="4" length="2" />
+	<animation id="car_factory.open.light" x="8" count="4" length="2" />
+	<animation id="car_factory.open.noflash.light" x="0" count="4" length="2" reverse="true" />
+	<animation id="car_factory.close.light" x="0" count="4" length="2" />
+	<structure id="car_factory" width="106" height="80" image="factory2.png" extends="factory" name="factory" repairType="mechanic">
+		<recipe type="car_factory" />
+	</structure>
+	
+	<animation id="com_station.idle" count="10" />
+	<object id="com_placeholder" width="32" height="32" layer="item" />
+	<structure id="com_station" width="32" height="32" image="com_station.png" name="operate" repairType="mechanic">
+		<operate>
+			<section if="getFlag('final_boss_defeat') && !getFlag('colony_world')">
+				<action>setFlag('colony_world', true);</action><dialogue title="mechanic.com_station_incoming{planet:[text=system.planet.colony]}" />
+				<scene id="colony" show="com_station" with="fade" /><stop />
+			</section>
+			<window type="nav" system="area.planet.system"><section if="planetName != null">
+				<dialogue eval="'mechanic.com_station1{planet:'+planetName+'}'" />
+				<choose>
+					<dialogue section="mechanic" id="com_station_self" if="planet == area.planet" />
+					<section if="planetXml.get('id') == 'colony' && getFlag('final_boss_defeat')">
+						<dialogue section="colony" id="com_station1" />
+					  <choose>
+						<dialogue section="colony" id="com_station4" if="!getFlag('colony')"/>
+						<dialogue section="colony" id="win3" />
+					  </choose>
+					</section>
+					<section if="planetXml.get('id') == 'unnature'">
+						<dialogue section="mechanic" id="com_station2.5" />
+						<dialogue section="unnature" id="com_station" />
+					</section>
+					<section if="planetXml.get('id') == 'earth'">
+						<dialogue section="mechanic" id="com_station2.5" />
+						<section if="!getFlag('call_earth')">
+							<action>setFlag('call_earth', true)</action>
+							<call id="mechanic" incoming="true" />
+							<dialogue section="mechanic" id="com_station3" speaker="mechanic" />
+							<dialogue section="mechanic" id="com_station4" speaker="player" />
+							<dialogue section="mechanic" id="com_station5" speaker="mechanic" />
+							<dialogue section="mechanic" id="com_station6" speaker="mechanic" />
+							<call id="mechanic" end="true" />
+						</section>
+					</section>
+					<dialogue section="mechanic" id="com_station2" />
+				</choose>
+			</section></window>
+		</operate>
+	</structure>
+	
+	<include id="house.xml" includeRoot="true" />
+	<tile id="house" sheet="house.png" />
+	<animation id="house.light_off" x="9" count="1" />
+	<animation id="house.off" x="0" count="1">
+		<append tile="house" animation="house.light_off" />
+	</animation>
+	<animation id="house.windows_off" x="18" count="1" />
+	<animation id="house.night.off" x="0" count="1">
+		<append tile="house" animation="house.windows_off" />
+		<append tile="house" animation="house.light_off" />
+	</animation>
+	<animation id="house.smoke" x="11" count="7" />
+	<animation id="house.light_on" x="10" count="1" length="7" glow="true" />
+	<animation id="house.on" x="0" count="1" length="7">
+		<append tile="house" animation="house.smoke" />
+		<append tile="house" animation="house.light_on" />
+	</animation>
+	<animation id="house.windows_on" x="19" count="1" length="7" glow="true" />
+	<animation id="house.night.on" x="0" count="1" length="7">
+		<append tile="house" animation="house.windows_on" />
+		<append tile="house" animation="house.smoke" />
+		<append tile="house" animation="house.light_on" />
+	</animation>
+	<animation id="house_door.closed" x="1" count="1" />
+	<animation id="house_door.closing" x="1" count="8" reverse="true" />
+	<animation id="house_door.opening" x="1" count="8" />
+	<action>
+		house_upgrades = ["storehouse", "farm", "stall", "dockhouse"];
+		house_npcs = ["builder", "miner", "farmer", "trader"];
+		function checkHouseUpgrade(e){
+			var s = e.value; if(house_upgrades.indexOf(s.info.id) != -1) s.setInfo(getStructure(s.info.id+"2"));
+		}
+		function checkHouseUpgradeNPC(e){
+			var n = e.value; if(house_npcs.indexOf(n.info.id) != -1) setNPCUpgrade(n, n.info.id+".upgrade", 3, 2);
+		}
+		function setNPCUpgrade(o, tile, speed, mine){
+			o.setTileId(tile); o.speed = speed; if(o.idle != null &amp;&amp; o.idle.minePower > 0) o.idle.minePower = mine;
+		}
+	</action>
+	<structure id="house" tile="house" sleep="true" powered="true" name="enter" nightAnimation="house.night" behind="true" repairType="mechanic">
+		<tile id="house" animation="house_door.closed" fps="15" y="0" />
+		<over><action>var door = this.getTileById("house"); if(door != null) door.playAnimation("house_door.opening", false)</action></over>
+		<out><action>var door = this.getTileById("house"); if(door != null) door.playAnimation("house_door.closing", false)</action></out>
+		<operate>
+			<choose>
+				<section if="this.isPowered()">
+					<choose if="area.id == 'start' && !getFlag('bombardment') && !getFlag('final_boss_defeat')">
+						<scene id="house" show="first" with="fade" if="!getFlag('house_intro')" showToAll="true">
+							<action>setFlag('house_intro', true);</action>
+						</scene>
+					</choose><action>player.restoreHealth();</action>
+				</section>
+				<dialogue section="warning" id="not_powered_house" />
+			</choose>
+			<action>player.restoreStamina();</action><save sleep="true" />
+		</operate>
+		<light tile="light.large" color="fae1b5" offsetX="30" offsetY="45" ifAnim="house.night.on" />
+		<addedToArea><displayAction>
+			for(h in house_upgrades) for(s in area.getStructuresById(h)) s.setInfo(getStructure(h+"2"));
+			for(n in house_npcs) for(o in area.getObjectsById(n)) setNPCUpgrade(o, n+".upgrade", 3, 2);
+			area.addEventListener("add_structure", checkHouseUpgrade); area.objects.addEventListener("add_object", checkHouseUpgradeNPC);
+		</displayAction></addedToArea>
+		<removedFromArea><displayAction>
+			for(h in house_upgrades) for(s in area.getStructuresById(h)) s.setInfo(getStructure(h));
+			for(n in house_npcs) for(o in area.getObjectsById(n)) setNPCUpgrade(o, n, 4, 1);
+			area.removeEventListener("add_structure", checkHouseUpgrade); area.objects.removeEventListener("add_object", checkHouseUpgradeNPC);
+		</displayAction></removedFromArea>
+	</structure>
+	
+	<include id="kitchen.xml" includeRoot="true" />
+	<tile id="house_kitchen" sheet="kitchen.png" />
+	<animation id="house_kitchen.off" equals="single" />
+	<animation id="house_kitchen.on" equals="single" />
+	<animation id="house_kitchen.windows.off" x="1" count="1" />
+	<animation id="house_kitchen.night.off" count="1">
+		<append tile="house_kitchen" animation="house_kitchen.windows.off" />
+	</animation>
+	<animation id="house_kitchen.windows.on" x="2" count="1" />
+	<animation id="house_kitchen.night.on" count="1">
+		<append tile="house_kitchen" animation="house_kitchen.windows.on" />
+	</animation>
+	<animation id="house_kitchen.night.over" x="3" count="6" />
+	<animation id="house_kitchen.over" x="9" count="6" />
+	<structure id="house_kitchen" tile="house_kitchen" type="crafting" powered="true" name="kitchen" nightAnimation="house_kitchen.night" connectTo="house">
+		<recipe type="kitchen3" />
+		<recipe type="kitchen2" />
+		<recipe type="kitchen" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<light tile="light.default" color="fae1b5" offsetX="30" offsetY="45" ifAnim="house_kitchen.night.on" />
+		<light tile="light.default" color="fae1b5" offsetX="30" offsetY="45" ifAnim="house_kitchen.night.over" />
+	</structure>
+	
+	<animation id="storehouse2.idle" x="7" count="1" />
+	<animation id="storehouse2.closing" count="8" />
+	<animation id="storehouse2.opening" count="8" reverse="true" />
+	<structure id="storehouse2" alias="storehouse" width="66" height="90" image="storehouse.png" type="storehouse" main="true" name="storehouse" animation="storehouse2" repairType="mechanic" />
+	
+	<include id="farm.xml" />
+	<tile id="farm2" sheet="farm.1" x="16" />
+	<tile id="farm2.weathervane" sheet="farm.1" x="0" />
+	<tile id="farm2.pumpkin" sheet="farm.1" x="24" />
+	<tile id="pen2" sheet="farm.2" />
+	<animation id="farm2.idle" equals="single" />
+	<animation id="farm2.closing" count="8" reverse="true" />
+	<animation id="farm2.opening" count="8" />
+	<animation id="farm2.halloween.idle" count="1">
+		<append tile="farm2.pumpkin" animation="farm2.idle" />
+	</animation>
+	<animation id="farm2.halloween.closing" count="8" reverse="true">
+		<append tile="farm2.pumpkin" animation="farm2.closing" />
+	</animation>
+	<animation id="farm2.halloween.opening" count="8">
+		<append tile="farm2.pumpkin" animation="farm2.opening" />
+	</animation>
+	<animation id="farm2.weathervane" count="16" />
+	<animation id="farm2.wreath" x="16" count="8" glow="true" />
+	<animation id="farm2.lights" x="24" count="8" glow="true" />
+	<structure id="farm2" alias="farm" tile="farm2" type="farm" name="farm" animation="isDate(10,31,3)?'farm2.halloween':'farm2'" repairType="mechanic">
+		<tile id="farm2.weathervane" animation="farm2.weathervane" x="0" y="0" />
+		<tile id="farm2" animation="farm2.lights" x="0" y="0" if="isDate(12,27,7)" />
+		<tile id="farm2" animation="farm2.wreath" x="0" y="0" if="isDate(12,27,7)" />
+	</structure>
+	<structure id="stall2" alias="stall" extends="stall" width="" height="" image="" tile="pen2" destroyRemove="" />
+	
+	<include id="advanced_lab.xml" includeRoot="true" />
+	<tile id="advanced_lab" sheet="advanced_lab.png" />
+	<animation id="advanced_lab.off" count="1" x="16" />
+	<animation id="advanced_lab.lights" x="8" count="8" glow="true" />
+	<animation id="advanced_lab.interior" x="0" count="8" glow="true" />
+	<animation id="advanced_lab.on" count="1" x="16" length="8">
+		<append tile="advanced_lab" animation="advanced_lab.lights" />
+	</animation>
+	<animation id="advanced_lab.operate" count="1" x="23" length="8">
+		<append tile="advanced_lab" animation="advanced_lab.interior" behind="true" />
+		<append tile="advanced_lab" animation="advanced_lab.lights" />
+	</animation>
+	<animation id="advanced_lab.open" x="16" count="8">
+		<append tile="advanced_lab" animation="advanced_lab.interior" behind="true" />
+		<append tile="advanced_lab" animation="advanced_lab.lights" />
+	</animation>
+	<animation id="advanced_lab.close"  x="16" count="8" reverse="true">
+		<append tile="advanced_lab" animation="advanced_lab.interior" behind="true" />
+		<append tile="advanced_lab" animation="advanced_lab.lights" />
+	</animation>
+	<structure id="advanced_lab" tile="advanced_lab" powered="true" type="crafting" repairType="mechanic">
+		<recipe type="advanced_lab" /><recipe type="tech_resource" />
+		<over><play object="this" animation="open" /><action>this.loopAnimation("operate")</action></over>
+		<out><play object="this" animation="close" /><action>this.loopAnimation("idle")</action></out>
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+	</structure>
+	<recipe id="craft_solar_generator" creates="solar_generator" type="advanced_lab">
+		<item id="ship_parts" count="1" />
+		<item id="silicon" count="5" />
+		<item id="titanium" count="2" />
+	</recipe>
+	<recipe id="craft_power_core" creates="power_core" type="advanced_lab">
+		<item id="power_core_parts" count="4" />
+	</recipe>
+	<recipe id="craft_power_core2" creates="power_core" type="advanced_lab">
+		<item id="ship_parts" count="2" /><item id="exotic_matter" count="1" />
+	</recipe>
+	<recipe id="craft_ship_parts2" creates="ship_parts" type="advanced_lab">
+		<type id="no_uncraft" /><item id="gold_bar" count="3" />
+		<item id="titanium" count="3" />
+		<item id="silicon" count="3" />
+		<item id="uranium" count="3" />
+	</recipe>
+	
+	<include id="nuclear_plant.xml" includeRoot="true" />
+	<tile id="nuclear_plant" sheet="nuclear_plant.png" />
+	<animation id="nuclear_plant.off" count="1" x="1" />
+	<animation id="nuclear_plant.on" count="8" x="2" />
+	<recipe id="pp_fuel_uranium" fuel="2000" type="nuclear_plant"><item id="uranium" /></recipe>
+	<recipe id="craft_nuclear_generator" creates="nuclear_generator" type="nuclear_plant" value="0">
+		<item id="steel_bar" count="10" />
+		<item id="titanium" count="5" />
+		<item id="silicon" count="5" />
+		<item id="ship_parts" count="1" />
+	</recipe>
+	<recipe id="craft_nuke" creates="nuke" type="nuclear_plant">
+		<item id="sulfur" count="3" />
+		<item id="steel_bar" count="1" />
+		<item id="silicon" count="2" />
+		<item id="uranium" count="2" />
+	</recipe>
+	<structure id="nuclear_plant" tile="nuclear_plant" type="powerplant" name="power_plant" maxFuel="10000" repairType="mechanic">
+		<recipe type="nuclear_plant" /><recipe id="pp_battery" />
+		<listItem icon="power" title="common.recharge_batteries" enabled="this.isPowered()" fail="warning.not_powered">
+			<action>player.restorePowerFrom(this, 25)</action>
+		</listItem>
+		<light tile="nuclear_plant" offsetX="75" offsetY="64" />
+	</structure>
+	
+	<animation id="teleportal.start" count="5" />
+	<animation id="teleportal.stop" count="5" reverse="true" />
+	<animation id="teleportal.active" x="5" count="9" />
+	<structure id="teleportal" width="32" height="16" image="teleportal.png" powered="true" name="operate" includeName="true" repairType="mechanic">
+		<operate>
+			<section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section>
+			<window type="portal" structure="teleportal" acceptArea="var s = area.getSystem(); return area.isVisitable(player) && s != null && s == this.area.getSystem()">
+				<action with="ellipse">player.teleportTo(portal_area, portal_x, portal_y);</action>
+				<functionButton title="actions.rename">
+					<window type="input" initial="this.name" message="world.rename" maxLength="30">
+						<action>this.name=result;</action>
+					</window>
+				</functionButton>
+			</window>
+		</operate>
+		<over><play object="this" animation="start" /><action>this.loopAnimation("active")</action></over>
+		<out><play object="this" animation="stop" /><action>this.loopAnimation("idle")</action></out>
+	</structure>
+	
+	<include id="bunker.xml" />
+	
+	<structure id="secret_door" width="64" height="128" image="secret_door.png" name="activate">
+		<operate><set id="gem" value="'earth_key'" /><set id="into" value="'megolemech_door'" /><set id="achievement" value="null" /><set id="sfx" value="null" /><run procedure="activate.gem_structure" /></operate>
+	</structure>
+	
+	<animation id="megolemech_door.idle" equals="single" />
+	<animation id="megolemech_door.close" x="1" count="45" reverse="true" />
+	<animation id="megolemech_door.open" x="1" count="45" />
+	<animation id="megolemech_door.opened" x="46" count="8" />
+	<structure id="megolemech_door" width="64" height="128" image="secret_door.png" name="enter">
+		<over><play object="this" animation="open" /><action>this.loopAnimation("opened")</action></over>
+		<out><play object="this" animation="close" /><action>this.loopAnimation("idle")</action></out>
+		<operate><choose><return with="fade" if="area.id == 'megolemech_room'" /><teleport area="megolemech_room" x="2" y="8" allowReturn="true" with="fade" /></choose></operate>
+	</structure>
+	
+	<area id="megolemech_room" width="20" height="10" background="black" external="science3">
+		<tiles id="stone" start="0" end="1" />
+		<action>for(y in 1...9) for(x in 1...19) mine(x, y)</action>
+		<tiles id="blackstone" x="0" />
+		<tiles id="blackstone" x="19" />
+		<tiles id="blackstone" y="0" />
+		<tiles id="blackstone" y="9" />
+		<ore id="lava" start="0" end="1" percent="1" tile="blackstone" />
+		<object id="megolemech" x="14" y="8" />
+		<structure id="megolemech_factory" x="7" y="8" />
+		<structure id="megolemech_door" x="1" y="8" />
+	</area>
+</data>

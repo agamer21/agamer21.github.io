@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<enemy id="colosseum.mirrow_d" extends="mirrow_d">
+		<onDeath><stop complete="true" /></onDeath>
+	</enemy>
+	<enemy id="colosseum.mirrow_n" extends="mirrow_n">
+		<onDeath><stop complete="true" /></onDeath>
+	</enemy>
+	<area id="colosseum.mirrows" width="32" height="16">
+		<tiles id="ship" start="0" end="1" />
+		<action>for(y in 7...10) for(x in 8...24) mine(x, y);</action>
+		<light x="20" y="8" size="3" /><light x="21" y="8" size="3" /><light x="20" y="9" size="3" /><light x="21" y="9" size="3" />
+		<structure id="medivat.full1" x="16" y="9" />
+		<structure id="sci1.light" x="10" y="9" />
+		<structure id="sci1.light" x="14" y="9" />
+		<structure id="sci1.light" x="18" y="9" />
+		<structure id="sci1.light" x="22" y="9" />
+		<object id="colosseum.mirrow_n" x="13" y="8" />
+		<object id="colosseum.mirrow_d" x="13" y="9" />
+		<structure id="colosseum_exit" x="18" y="9" />
+	</area>
+	<procedure id="colosseum.mirrows">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 200); setGlobal("achievement", "mirrows");
+		var map = new StringMap(); map.set("colosseum.mirrow_d", 1); map.set("colosseum.mirrow_n", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("battery"), 2); player.inventory.addItems(getItem("bullet"), 20);
+		player.inventory.addItems(getItem("berries"), 10); player.inventory.addItems(getItem("chainsaw"), 1); player.inventory.addItems(getItem("hamburger"), 6);
+		player.inventory.addItems(getItem("landmine"), 3); player.stats.get("speed").permaBuff(2); player.stats.get("health").permaBuff(20); player.restoreHealth();</action>
+		<equip id="revolver" fromInventory="false" />
+		<equip id="drill" fromInventory="false" />
+		<equip id="titanium_armor" fromInventory="false" />
+		<equip id="ice_shield" fromInventory="false" />
+		<equip id="headlamp" fromInventory="false" />
+		<equip id="shadow_cape" fromInventory="false" />
+		<teleport area="colosseum.mirrows" x="21" y="9" temporary="true" />
+	</procedure>
+</data>

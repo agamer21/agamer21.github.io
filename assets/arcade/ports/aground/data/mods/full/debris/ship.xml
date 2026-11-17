@@ -1,0 +1,14 @@
+<tilesheet id='ship.png' width='64' height='32' offsetY="-32">
+	<image frame='0' x='0' y='0' width='61' height='21' offsetX='2' offsetY='43' />
+	<image frame='1' x='61' y='0' width='56' height='12' offsetX='6' offsetY='52' />
+	<image frame='2' x='0' y='21' width='57' height='22' offsetX='2' offsetY='42' />
+	<image frame='3' x='57' y='21' width='63' height='19' offsetX='1' offsetY='45' />
+	<image frame='4' x='0' y='43' width='50' height='18' offsetX='0' offsetY='46' />
+	<image frame='5' x='57' y='40' width='59' height='24' offsetX='3' offsetY='40' />
+	<image frame='6' x='0' y='61' width='42' height='12' offsetX='17' offsetY='52' />
+	<image frame='7' x='0' y='73' width='55' height='18' offsetX='3' offsetY='46' />
+	<image frame='8' x='57' y='64' width='60' height='13' offsetX='3' offsetY='51' />
+	<image frame='9' x='57' y='77' width='58' height='18' offsetX='1' offsetY='46' />
+	<image frame='10' x='61' y='12' width='56' height='8' offsetX='4' offsetY='56' />
+	<image frame='11' x='0' y='91' width='51' height='11' offsetX='6' offsetY='53' />
+</tilesheet>

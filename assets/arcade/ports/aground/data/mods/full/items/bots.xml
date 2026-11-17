@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="worker_bot.xml" includeRoot="true" />
+	<tile id="worker_bot" sheet="worker_bot.png" />
+	<animation id="worker_bot.idle" x="23" count="6" />
+	<animation id="worker_bot.idle2" x="23" count="6" repeat="2" />
+	<animation id="worker_bot.treads" x="16" count="6" />
+	<animation id="worker_bot.carry" x="22" count="1" />
+	<animation id="worker_bot.arm1" x="0" count="1" />
+	<animation id="worker_bot.arm2" x="1" count="1" />
+	<animation id="worker_bot.walk" x="23" count="6">
+		<append tile="worker_bot" animation="worker_bot.treads" />
+	</animation>
+	
+	<animation id="worker_bot.builder.idle" x="8" count="1" length="6">
+		<append tile="worker_bot" animation="worker_bot.idle" />
+		<append tile="worker_bot" animation="worker_bot.arm2" />
+	</animation>
+	<animation id="worker_bot.builder.walk" x="8" count="1" length="6">
+		<append tile="worker_bot" animation="worker_bot.walk" />
+		<append tile="worker_bot" animation="worker_bot.arm2" />
+	</animation>
+	<animation id="worker_bot.builder.build" equals="worker_bot.builder.idle" />
+	
+	<npc id="worker_bot.base" speed="3" tile="worker_bot" action="vehicle.pack_up" night="true">
+		<light tile="light.headlamp" offsetX="-61" color="999999" /><operate>
+			<window type="prompt" eval="'vehicle.pack_up_item{item:[object='+this.info.id+']}'">
+				<remove object="this" /><item eval="this.info.id" />
+			</window>
+		</operate>
+	</npc>
+	<npc id="worker_bot.builder" extends="worker_bot.base" item="worker_bot.builder">
+		<idle class="build">
+			<collect><loot id="wood" /></collect>
+			<collect>
+				<loot p="2" />
+				<loot id="berries" p="4" />
+				<loot id="red_berries" p="1" />
+			</collect>
+		</idle>
+	</npc>
+	
+	<animation id="worker_bot.miner.idle" x="9" count="1" length="6">
+		<append tile="worker_bot" animation="worker_bot.idle" />
+		<append tile="worker_bot" animation="worker_bot.arm2" />
+	</animation>
+	<animation id="worker_bot.miner.walk" x="9" count="1" length="6">
+		<append tile="worker_bot" animation="worker_bot.walk" />
+		<append tile="worker_bot" animation="worker_bot.arm2" />
+	</animation>
+	<animation id="worker_bot.miner_arm" x="9" count="1" />
+	<animation id="worker_bot.miner.mine" x="10" count="6">
+		<append tile="worker_bot" animation="worker_bot.miner_arm" />
+		<append tile="worker_bot" animation="worker_bot.idle2" />
+		<append tile="worker_bot" animation="worker_bot.arm2" />
+	</animation>
+
+	<npc id="worker_bot.miner" mine="4" extends="worker_bot.base" item="worker_bot.miner">
+		<idle class="mineOre"><loot id="coal" /></idle>
+	</npc>
+	
+	
+	<animation id="worker_bot.farmer.idle" x="6" count="1" length="6">
+		<append tile="worker_bot" animation="worker_bot.idle" />
+		<append tile="worker_bot" animation="worker_bot.arm2" />
+	</animation>
+	<animation id="worker_bot.farmer.walk" x="6" count="1" length="6">
+		<append tile="worker_bot" animation="worker_bot.walk" />
+		<append tile="worker_bot" animation="worker_bot.arm2" />
+	</animation>
+	<animation id="worker_bot.farmer.hoe" x="2" count="6" repeat="2">
+		<append tile="worker_bot" animation="worker_bot.idle2" />
+		<append tile="worker_bot" animation="worker_bot.arm2" />
+	</animation>
+	
+	<npc id="worker_bot.farmer" extends="worker_bot.base" idle="tendFarm" farm="farm" item="worker_bot.farmer">
+		<farm id="hydroponics" /><farm id="wyrm_pen" /><farm id="coral_pen" />
+	</npc>
+	
+	<animation id="worker_bot.carry.idle" x="0" count="1" length="6">
+		<append tile="worker_bot" animation="worker_bot.idle" />
+		<append tile="worker_bot" animation="worker_bot.carry" />
+	</animation>
+	<animation id="worker_bot.carry.walk" x="0" count="1" length="6">
+		<append tile="worker_bot" animation="worker_bot.walk" />
+		<append tile="worker_bot" animation="worker_bot.carry" />
+	</animation>
+	<tile id="worker_bot.ico" sheet="items.png" x="95" />
+	<familiar id="worker_bot" type="ground" sight="4" talk_sfx="robot">
+		<light tile="light.headlamp" offsetX="-61" color="999999" />
+	</familiar>
+	<item id="worker_bot" type="animal" cost="1250" weight="10" slot="familiar" capacity="100" icon="worker_bot.ico" animation="item6" needsO2="false">
+		<action id="equip" /><action id="rename" />
+		<familiar id="worker_bot" tile="worker_bot" animation="worker_bot.carry" />
+	</item>
+	
+	<recipe id="worker_bot" creates="worker_bot" type="advanced_lab" achievement="worker_bot">
+		<item id="titanium" count="2" />
+		<item id="silicon" count="6" />
+		<item id="ship_parts" count="1" />
+	</recipe>
+	<item id="worker_bot.builder" name="npc>worker_bot.builder" type="object" cost="1250" weight="20" desc="item.descriptions.worker_bot_builder" icon="worker_bot" animation="worker_bot.builder.idle" iconOffsetY="-6">
+		<action id="plant" name="vehicle.deploy" object="worker_bot.builder" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true" />
+	</item>
+	<item id="worker_bot.miner" name="npc>worker_bot.miner" type="object" cost="1250" weight="20" desc="item.descriptions.worker_bot_miner" icon="worker_bot" animation="worker_bot.miner.idle" iconOffsetY="-6">
+		<action id="plant" name="vehicle.deploy" object="worker_bot.miner" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true" />
+	</item>
+	<item id="worker_bot.farmer" name="npc>worker_bot.farmer" type="object" cost="1250" weight="20" desc="item.descriptions.worker_bot_farmer" icon="worker_bot" animation="worker_bot.farmer.idle" iconOffsetY="-6">
+		<action id="plant" name="vehicle.deploy" object="worker_bot.farmer" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true" />
+	</item>
+	<recipe id="worker_bot_builder" creates="worker_bot.builder" type="advanced_lab" achievement="worker_bot">
+		<item id="titanium" count="2" />
+		<item id="silicon" count="6" />
+		<item id="ship_parts" count="1" />
+	</recipe>
+	<recipe id="worker_bot_miner" creates="worker_bot.miner" type="advanced_lab" achievement="worker_bot">
+		<item id="titanium" count="2" />
+		<item id="silicon" count="6" />
+		<item id="ship_parts" count="1" />
+	</recipe>
+	<recipe id="worker_bot_farmer" creates="worker_bot.farmer" type="advanced_lab" achievement="worker_bot">
+		<item id="titanium" count="2" />
+		<item id="silicon" count="6" />
+		<item id="ship_parts" count="1" />
+	</recipe>
+	
+	<include id="war_bot.xml" includeRoot="true" />
+	<tile id="war_bot" sheet="war_bot.png" />
+	<animation id="war_bot.gun_arm" x="0" count="6" />
+	<animation id="war_bot.gun_arm2" x="0" count="6" repeat="2" />
+	<animation id="war_bot.gun_arm.fire" x="20" count="6" />
+	<animation id="war_bot.legs" x="6" count="1" />
+	<animation id="war_bot.legs.walk" x="26" count="4" repeat="3" />
+	<animation id="war_bot.arm" x="7" count="1" />
+	<animation id="war_bot.idle" x="8" count="6">
+		<append tile="war_bot" animation="war_bot.gun_arm" behind="true" />
+		<append tile="war_bot" animation="war_bot.legs" />
+		<append tile="war_bot" animation="war_bot.arm" />
+	</animation>
+	<animation id="war_bot.walk" x="8" count="6" repeat="2">
+		<append tile="war_bot" animation="war_bot.gun_arm2" behind="true" />
+		<append tile="war_bot" animation="war_bot.legs.walk" />
+		<append tile="war_bot" animation="war_bot.arm" />
+	</animation>
+	<animation id="war_bot.attack" x="8" count="6">
+		<append tile="war_bot" animation="war_bot.gun_arm.fire" behind="true" />
+		<append tile="war_bot" animation="war_bot.legs" />
+		<append tile="war_bot" animation="war_bot.arm" />
+	</animation>
+	<tile id="war_bot.bolt" sheet="war_bot.png" x="14" offsetX="8" offsetY="8" />
+	<animation id="war_bot.bolt" x="3" count="3" glow="true" />
+	<animation id="war_bot.bolt.impact" x="0" count="3" glow="true" />
+	<npc id="patrol_bot" animation="war_bot" extends="worker_bot.base" tile="war_bot" item="patrol_bot">
+		<light tile="light.small" /><idle class="hunt" maxWeight="5">
+			<attack type="projectile" damage="6" range="7" sfx="hunter_bot_attack">
+				<projectile tile="war_bot.bolt" animation="war_bot.bolt" speed="4" offsetY="2" delay="4">
+					<hitEffect tile="war_bot.bolt" animation="war_bot.bolt.impact" color="9999ff" />
+				</projectile>
+			</attack>
+		</idle>
+	</npc>
+	
+	<familiar id="war_bot" type="ground" costPerSecond="0.25" talk_sfx="robot">
+		<light tile="light.small" /><attack type="projectile" damage="6" cost="10" range="7" sfx="hunter_bot_attack">
+			<projectile tile="war_bot.bolt" animation="war_bot.bolt" speed="4" offsetY="2" delay="4">
+				<hitEffect tile="war_bot.bolt" animation="war_bot.bolt.impact" color="9999ff" />
+			</projectile>
+		</attack>
+	</familiar>
+	
+	<tile id="war_bot.ico" sheet="items.png" x="101" />
+	<item id="war_bot" type="animal" cost="1250" weight="10" durability="500" slot="familiar" icon="war_bot.ico" animation="item8" needsO2="false">
+		<action id="equip" /><action id="rename" /><equipCost storage="power" cost="25" durability="-100" full="false" />
+		<familiar id="war_bot" tile="war_bot" animation="war_bot" />
+	</item>
+	
+	<recipe id="war_bot" creates="war_bot" type="advanced_lab">
+		<item id="titanium" count="2" />
+		<item id="silicon" count="6" />
+		<item id="ship_parts" count="1" />
+	</recipe>
+	<item id="patrol_bot" name="npc>patrol_bot" type="object" cost="1250" weight="20" icon="war_bot.ico" animation="item8">
+		<action id="plant" name="vehicle.deploy" object="patrol_bot" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true" />
+	</item>
+	<recipe id="patrol_bot" creates="patrol_bot" type="advanced_lab" icon="war_bot.ico anim=item8">
+		<item id="titanium" count="2" />
+		<item id="silicon" count="6" />
+		<item id="ship_parts" count="1" />
+	</recipe>
+</data>

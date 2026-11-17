@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="vehicles.xml" />
+	<tile id="exo_mech" sheet="vehicles.3" />
+	<animation id="exo_mech.empty" x="54" count="6" />
+	<animation id="exo_mech.idle" x="108" count="6" />
+	<animation id="exo_mech.mount" x="34" count="20" reverse="true" />
+	<animation id="exo_mech.dismount" x="34" count="20" />
+	<animation id="exo_mech.move" x="92" count="16" />
+	<animation id="exo_mech.fly" x="26" count="8" />
+	<animation id="exo_mech.hover" equals="exo_mech.fly" />
+	<procedure id="check_exo_mech_equip">
+		<set id="s" value="this.getStructure(this.xPos, this.yTop())" />
+		<choose>
+			<section if="s != null && s.info.xml.get('exo_mech_equip') == 'true'"><set id="v" value="this" /><run procedure="exo_mech_equip" /></section>
+			<dialogue section="warning" id="factory_vehicle_equip" />
+		</choose><stop />
+	</procedure>
+	<vehicle id="exo_mech" tile="exo_mech" health="600" speed="4" defense="12" fps="20" fuel="20000" efficiency="0" underwater="true" type="spaceship" tooltip="structure.tooltip.operate" canJump="false" icon="exo_mech.ico" title="item.names.exo_mech" blood="science.explosion.med" flight_height="999" max_weight="4000" flyMove="false" hitDamage="4" death_sfx="explosion" block_behind="true" block_move="true" item="exo_mech">
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="exo_mech" value="this.health"><parameter id="l" value="this.equipment.getItemId('attack')" /><parameter id="p" value="this.equipment.getItemId('defend')" /><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<init><set id="partial" value="0" /></init>
+		<onFrame>
+			if(this.blocking){var of = Math.floor(frames*2.5); partial += frames*2.5-of; if(partial >= 1){of++; partial -= 1;} if(of > 0) this.useFuel(of);}
+		</onFrame>
+        <shield tile="exo_fighter" animation="exo_fighter.shields" hit_front="exo_fighter.shields.hit" hit_back="exo_fighter.shields.hit" showBaseOnHit="false" hit_sfx="ship_shield" />
+		<repair id="chromium" value="250" />
+		<fuel id="exotic_matter" fuel="1000" />
+		<slot id="attack"><run procedure="check_exo_mech_equip" /></slot>
+		<slot id="defend"><run procedure="check_exo_mech_equip" /></slot>
+		<light tile="light.strong" color="6cd3f0" flicker="true" />
+		<mount><action>setGameScale(2)</action></mount>
+		<onDismount><window type="prompt" message="warning.spaceship_exit" if="var flight = player.getFlight(); return this.exitFlying() && (flight == null || this.tile_y <= -flight.flight.height)" on="no"><stop /></window></onDismount>
+	</vehicle>
+	
+	<tile id="exo_mech.chainsaw" sheet="vehicles.3" x="0" />
+	<animation id="equipment.exo_mech.chainsaw.idle" x="76" count="1" />
+	<animation id="equipment.exo_mech.chainsaw.move" x="76" count="16" />
+	<animation id="equipment.exo_mech.chainsaw" x="0" count="12" shift="2" />
+	<item id="exo_mech.chainsaw" type="none" slot="attack" equipOn="exo_mech" cost="0" power="150" mine="9" weight="0" attack="20" cut="20" critical="true" melee_range="4" icon="exo_mech.chainsaw.ico" unequip="false" sfx="chainsaw" underwater="true">
+		<onEquip><action>object.mine_power = this.info.mine; object.mineSlot = "attack";</action></onEquip>
+		<onUnequip><action>object.mine_power = 0; object.mineSlot = null;</action></onUnequip>
+	</item>
+		
+	<tile id="exo_mech.gun" sheet="vehicles.3" x="0" />
+	<animation id="equipment.exo_mech.gun.idle" x="60" count="1" />
+	<animation id="equipment.exo_mech.gun.move" x="60" count="16" />
+	<animation id="exo_mech.gun.fire"><frame visible="false" /><frame x="20" count="6" glow="true" /></animation>
+	<animation id="equipment.exo_mech.gun" x="12" count="8" shift="2"><append tile="exo_mech.gun" animation="exo_mech.gun.fire" /></animation>
+	<tile id="exo_mech.gun.projectile" sheet="vehicles.4" />
+	<animation id="exo_mech.gun" x="4" count="4" glow="true" />
+	<animation id="exo_mech.gun.impact" x="0" count="4" glow="true" />
+	<item id="exo_mech.gun" type="none" slot="attack" equipOn="exo_mech" cost="0" power="300" weight="0" attack="20" range="18" icon="exo_mech.gun.ico" unequip="false" sfx="plasma_gun" underwater="true">
+		<projectile tile="exo_mech.gun.projectile" animation="exo_mech.gun" speed="8" pierce="true" critical="true" delay="2" offsetX="-64" offsetY="8" overlap="0.125">
+			<hitEffect tile="exo_mech.gun.projectile" animation="exo_mech.gun.impact" color="99ccff" />
+		</projectile>
+	</item>
+		
+	<item id="exo_shields" type="none" slot="defend" equipOn="exo_mech" cost="0" weight="0" use="block" icon="exo_shields.ico" animation="item4" unequip="false" />
+	<item id="exo_mech.light" type="none" slot="defend" equipOn="exo_mech" cost="0" weight="0" icon="exo_mech.light.ico" unequip="false">
+		<light tile="light.largest" scale="2" offsetX="-32" />
+	</item>
+	
+	<item id="exo_mech" type="object" cost="0" weight="100" icon="exo_mech.ico" durability="600" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="exo_mech" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" on_air="true" underground="true" underwater="true">
+			<action>
+				object.setHealth(this.getFeed()); p = Item.getParameter(this.getNameStr(), "l"); d = Item.getParameter(this.getNameStr(), "p");
+				f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+			</action>
+			<equip eval="p" to="object" fromInventory="false" if="p != null" /><equip eval="d" to="object" fromInventory="false" if="d != null" />
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="chromium" value="250" />
+	</item>
+	
+	<tile id="exo_fighter" sheet="vehicles.1" />
+	<animation id="exo_fighter.idle" x="0" count="8" />
+	<animation id="exo_fighter.impulse" x="8" count="8" glow="true" />
+	<animation id="exo_fighter.fly" x="0" count="8"><append tile="exo_fighter" animation="exo_fighter.impulse" /></animation>
+	<animation id="exo_fighter.hover" equals="exo_fighter.idle" />
+	<animation id="exo_fighter.shields" x="29" count="8" />
+	<animation id="exo_fighter.shields.hit" x="21" count="8" />
+	<animation id="exo_fighter.ftl" x="0" count="7">
+		<append tile="exo_fighter" animation="exo_fighter.impulse" />
+		<append tile="jumpship" animation="jumpship.ftl.bubble" y="14" />
+	</animation>
+	<animation id="exo_fighter.fire" x="16" count="5" glow="true"><frame visible="false" length="3" /></animation>
+	<animation id="exo_fighter.attack" x="0" count="8"><append tile="exo_fighter" animation="exo_fighter.fire" /></animation>
+	<animation id="exo_fighter.fire_slow" x="16" count="5" glow="true"><frame visible="false" length="19" /></animation>
+	<animation id="exo_fighter.attack_slow" x="0" count="8" repeat="3"><append tile="exo_fighter" animation="exo_fighter.fire_slow" /></animation>
+	<tile id="exo_fighter.bolt" sheet="vehicles.2" />
+	<animation id="exo_fighter.bolt" x="5" count="4" glow="true" />
+	<animation id="exo_fighter.bolt.impact" x="0" count="5" glow="true" />
+	<hitEffect id="exo_fighter.bolt" tile="exo_fighter.bolt" animation="exo_fighter.bolt.impact" color="99ccff" />
+	<vehicle id="exo_fighter" tile="exo_fighter" health="600" speed="10" defense="12" fps="15" fuel="2000" efficiency="0" type="spaceship" attack_move="true" icon="exo_fighter.ico" title="item.names.exo_fighter" blood="science.explosion.med" underwater="true" flight_height="999" max_weight="4000" death_sfx="explosion" block_icon="fighter.shields.ico" block_behind="true" block_move="true" includeName="true" allowRename="false" item="exo_fighter">
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="exo_fighter" value="this.fuel" name="this.name"><parameter id="f" value="Std.string(this.health)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<repair id="chromium" value="250" />
+		<fuel id="exotic_matter" fuel="200" />
+		<light tile="light.strong" color="98ff98" flicker="true" />
+		<init><set id="partial" value="0" /></init>
+		<onFrame>
+			if(this.blocking){var of = Math.floor(frames*0.125); partial += frames*0.125-of; if(partial >= 1){of++; partial -= 1;} if(of > 0) this.useFuel(of);}
+		</onFrame>
+		<shield tile="exo_fighter" animation="exo_fighter.shields" hit_front="exo_fighter.shields.hit" hit_back="exo_fighter.shields.hit" showBaseOnHit="false" hit_sfx="ship_shield" />
+		<mount><action>setGameScale(2)</action></mount>
+		<attack type="projectile" damage="12" range="14" cost="10" scaleCost="false" fireAll="true">
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="15" offsetX="-20" offsetY="-35" overlap="0.25" delay="1" critical="true" hitEffect="exo_fighter.bolt" fire_sfx="plasma_gun" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="15" offsetX="-20" offsetY="35" overlap="0.25" delay="1" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="15" offsetX="-20" offsetY="-7" overlap="0.25" delay="2" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="15" offsetX="-20" offsetY="7" overlap="0.25" delay="2" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="15" offsetX="-20" offsetY="-35" overlap="0.25" delay="3" critical="true" hitEffect="exo_fighter.bolt" fire_sfx="plasma_gun" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="15" offsetX="-20" offsetY="35" overlap="0.25" delay="3" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="15" offsetX="-20" offsetY="-7" overlap="0.25" delay="4" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="15" offsetX="-20" offsetY="7" overlap="0.25" delay="4" critical="true" hitEffect="exo_fighter.bolt" />
+		</attack>
+		<onDismount><window type="prompt" message="warning.spaceship_exit" if="var flight = player.getFlight(); return this.exitFlying() && (flight == null || this.tile_y <= -flight.flight.height)" on="no"><stop /></window></onDismount>
+	</vehicle>
+		
+	<familiar id="exo_fighter" type="flying" costPerSecond="0" bounceHeight="0" underwater="true" alignCenter="true">
+		<attack type="projectile" damage="12" range="14" cost="10" scaleCost="false" fireAll="true" animation="attack_slow">
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="-35" overlap="0.25" delay="1" critical="true" hitEffect="exo_fighter.bolt" fire_sfx="plasma_gun" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="35" overlap="0.25" delay="1" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="-7" overlap="0.25" delay="2" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="7" overlap="0.25" delay="2" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="-35" overlap="0.25" delay="3" critical="true" hitEffect="exo_fighter.bolt" fire_sfx="plasma_gun" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="35" overlap="0.25" delay="3" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="-7" overlap="0.25" delay="4" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="7" overlap="0.25" delay="4" critical="true" hitEffect="exo_fighter.bolt" />
+		</attack>
+	</familiar>
+	<item id="exo_fighter" type="object" cost="0" weight="100" icon="exo_fighter.ico" durability="2000" durabilityName="common.fuel" durabilityIcon="power" slot="familiar" needsO2="false" flyOrbit="true" canModify="false">
+		<action id="equip" enabled="Item.getParameter(name, 'p') != null" />
+		<action id="use" name="npc.talk" enabled="Item.getParameter(name, 'p') != null" autoSelect="false"><scene id="colony" show="pilot" with="fade" /></action>
+		<action id="plant" name="vehicle.deploy" object="exo_fighter" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" on_air="true" underground="true" underwater="true" enabled="Item.getParameter(name, 'p') == null">
+			<action>
+				object.setFuel(this.getFeed()); object.name = this.getNameStr(); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setHealth(Std.parseInt(f));
+			</action>
+		</action>
+		<action id="feed" alt="feed_all" alt_name="fuel_all" name="common.fuel" full="warning.max_fuel" auto="common.auto_fuel" select="common.add_fuel" sfx="fuel" />
+		<food id="exotic_matter" value="200" />
+		<familiar id="exo_fighter" tile="exo_fighter" animation="exo_fighter" />
+	</item>
+		
+	<recipe id="exo_mech" object="exo_mech" type="exo_factory">
+		<item id="ship_parts" count="5" />
+		<item id="titanium" count="10" />
+		<item id="chromium" count="5" />
+		<item id="ai_core" count="1" />
+	</recipe>
+	<recipe id="exo_fighter" object="exo_fighter" type="exo_factory">
+		<item id="ship_parts" count="5" />
+		<item id="titanium" count="10" />
+		<item id="chromium" count="5" />
+		<item id="ai_core" count="1" />
+	</recipe>
+	<recipe id="exo_mech.chainsaw" creates="exo_mech.chainsaw" type="exo_mech_equip"><item id="ship_parts" count="5" /><item id="chromium" count="5" /></recipe>
+	<recipe id="exo_mech.gun" creates="exo_mech.gun" type="exo_mech_equip"><item id="ship_parts" count="5" /><item id="chromium" count="5" /></recipe>
+	<recipe id="exo_shields" creates="exo_shields" type="exo_mech_equip"><item id="ship_parts" count="5" /><item id="chromium" count="5" /></recipe>
+	<recipe id="exo_mech.light" creates="exo_mech.light" type="exo_mech_equip"><item id="ship_parts" count="1" /><item id="chromium" count="1" /></recipe>
+	<recipe id="craft_shovel2" creates="shovel2" type="exo_factory">
+		<item id="iron" count="2" /><item id="chromium" count="1" />
+	</recipe>
+</data>

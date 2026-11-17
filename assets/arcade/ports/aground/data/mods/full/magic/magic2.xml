@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="magic2.grass" sheet="{core}/tiles/tiles.png" x="146"><tile sheet="{core}/tiles/tiles.png" x="144" /></tile>
+	<dig id="magic2.grass" cost="3" grass="true" />
+	<tile id="magic2.dirt_sand1" sheet="{core}/tiles/tiles.png" x="146"><tile sheet="{core}/tiles/tiles.png" x="85" /></tile>
+	<tile id="magic2.dirt_sand2" sheet="{core}/tiles/tiles.png" x="146"><tile sheet="{core}/tiles/tiles.png" x="84" /></tile>
+	<tile id="magic2.dirt_sand3" sheet="{core}/tiles/tiles.png" x="146"><tile sheet="{core}/tiles/tiles.png" x="88" /></tile>
+	<dig id="magic2.dirt_sand1" cost="0" />
+	<dig id="magic2.dirt_sand2" cost="0" />
+	<dig id="magic2.dirt_sand3" cost="0" />
+	<enemy id="crawler2" extends="crawler" night="" captureId="crawler" />
+	<enemy id="plant_elemental2" extends="plant_elemental" night="" captureId="plant_elemental" />
+	<area id="magic2" background="magic2" width="96" height="96" planet="start">
+		<tiles id="magic2.grass" y="0" />
+		<tiles id="magic1.stone" start="0" end="0.5" empty="true" />
+		<tiles id="magic1.stone2" start="0.5" end="1" empty="true" />
+		<shore x="-1" top="sand_top" bottom="sand" flip="true" dock="dock_empty" trans1="magic2.dirt_sand1" trans2="magic2.dirt_sand2" />
+		<shore x="96" top="sand_top" bottom="sand" dock="dock_empty_flip" trans1="magic2.dirt_sand1" trans2="magic2.dirt_sand3" />
+		<appendArea id="fish_village" offsetX="112" offsetY="79" />
+		<appendArea id="magic2.floating.big" offsetX="12" offsetY="-32" />
+		<appendArea id="magic2.pyramid" offsetX="-50" offsetY="-8" />
+		<appendArea id="sea_floor"><params area_left="-250" area_right="260" area_width="160" area_height="96" /></appendArea>
+		<action>for(y in 0...79) setTile(95, y, "invisible_block")</action>
+		
+		<ore id="spirit_gem" start="0.40" end="0.5" percent="0.000625" tile="magic1.stone" />
+		<ore id="quartz" start="0.40" end="0.5" percent="0.00625" tile="magic1.stone" />
+		<ore id="blood_gem" start="0.2" end="0.5" percent="0.00625" tile="magic1.stone" />
+		<ore id="alter_gem" start="0.0" end="0.4" percent="0.00625" tile="magic1.stone" />
+		<ore id="coal" start="0.0" end="0.3" percent="0.0125" tile="magic1.stone" />
+		<ore id="iron" start="0.0" end="0.3" percent="0.0125" tile="magic1.stone" />
+		<ore id="focus_gem" start="0.0" end="0.3" percent="0.0125" tile="magic1.stone" />
+		<ore id="lava" start="0.35" end="0.5" percent="1" tile="magic1.stone" />
+		<ore id="quartz" start="0.5" end="0.85" percent="0.0175" tile="magic1.stone2" />
+		<ore id="diamond" start="0.5" end="0.85" percent="0.0125" tile="magic1.stone2" />
+		<ore id="titanium" start="0.6" end="0.95" percent="0.0125" tile="magic1.stone2" />
+		<ore id="blood_gem" start="0.7" end="1" percent="0.00625" tile="magic1.stone2" />
+		<ore id="spirit_gem" start="0.8" end="0.95" percent="0.0125" tile="magic1.stone2" />
+		<ore id="uranium" start="0.9" end="1" percent="0.00625" tile="magic1.stone2" />
+		<ore id="evo_shard" start="0.9" end="1" count="15" tile="magic1.stone2" />
+		
+		<set id="pillar_x" value="randInt(2, 93)" />
+		<spreadTiles x="pillar_x" y="32" tile="invisible_block" on="magic1.stone" count="100" />
+		<structure id="recipe_pillar" x="pillar_x" y="32" recipe="make_queen_drill" />
+		
+		<objects id="purple_tree" y="-1" startX="-3" endX="92" minDist="8" maxDist="10" array="trees" />
+		<spawner id="crawler2" time="5000" count="7" fromX="0" toX="92" fromY="-1" toY="-1" />
+		<object id="plant_boss" x="45" />
+		<objects id="ice_bush" y="-1" between="trees" pos="0.4" percent="0.5" />
+		<objects id="ice_bush" y="-1" between="trees" pos="0.7" percent="0.5" />
+		<objects id="purple_golem" start="0.15" end="0.35" percent="0.0075" tile="magic1.stone" />
+		<objects id="magic_wyrm" start="0.2" end="0.3" count="3" tile="magic1.stone" />
+		<spawner id="magic_wyrm" time="4000" count="5" fromX="1" toX="94" fromY="30" toY="40" tile="magic1.stone" />
+		<object id="plant_elemental2" x="91" y="-1" />
+		<spawner id="plant_elemental2" time="5000" count="1" fromX="1" toX="95" fromY="-1" toY="-1" />
+		<spawner id="jellyfish" time="5000" count="12" fromX="-100" toX="228" fromY="3" toY="70" spawnWidth="128" underwater="true" />
+		<spawner id="shark" time="5000" count="12" fromX="-100" toX="228" fromY="3" toY="70" spawnWidth="128" underwater="true" />
+		<spawner id="scale_fish" time="5000" count="4" fromX="112" toX="200" fromY="40" toY="70" spawnWidth="128" underwater="true" />
+		<spawner id="snaptopus" time="5000" count="4" fromX="112" toX="200" fromY="20" toY="50" spawnWidth="128" underwater="true" />
+		<spawner id="flapper" time="5000" count="20" fromX="-100" toX="228" fromY="3" toY="70" spawnWidth="128" underwater="true" />
+		<spawner id="skyfish" time="5000" count="12" fromX="-100" toX="228" fromY="3" toY="70" spawnWidth="128" underwater="true" />
+		<spawner id="kraken" time="50000" count="1" fromX="-200" toX="-50" fromY="10" toY="60" spawnWidth="256" spawnHeight="256" underwater="true" />
+		<spawner id="clam" time="5000" count="10" fromX="-100" toX="228" fromY="3" toY="77" spawnWidth="32" underwater="true" bottom="true" />
+		<spawner id="blue_crab" time="5000" count="10" fromX="-100" toX="228" fromY="3" toY="77" spawnWidth="32" underwater="true" bottom="true" />
+		<fishing>
+			<loot id="rusty_axe" p="6" />
+			<loot id="rockfish" p="12" difficulty="2" />
+			<loot id="coral_cod" p="1" difficulty="3" />
+			<loot id="fin" p="4" difficulty="4" />
+			<loot id="pearl" p="1" difficulty="5" achievement="clam_pearl" />
+		</fishing>
+		<structure id="recipe_pillar" x="7" recipe="make_water_helm" />
+		<structure id="recipe_pillar" x="20" y="-33" recipe="make_helium_pack" />
+		<connection area="magic1" fromX="-250" toX="260" />
+		<connection area="science3" fromX="260" toX="-240" />
+		<init><runAreaLoad /><action>area.spawner.spawnAll('crawler2'); area.spawner.spawnAll('scale_fish'); area.spawner.spawnAll('snaptopus'); area.spawner.spawnAll('shark'); area.spawner.spawnAll('flapper'); area.spawner.spawnAll('skyfish'); area.spawner.spawnAll('jellyfish'); area.spawner.spawnAll('kraken'); area.spawner.spawnAll("clam"); area.spawner.spawnAll("blue_crab");</action></init>
+		<onLoad>
+            <appendArea id="magic2.pyramid" offsetX="-50" offsetY="-8" if="area.getObject('ancient_dragon_npc') == null && !getFlag('dragon_sanctuary')" />
+			<music id="magic2" seconds="1" /><weather type="snow" fromY="-50" toY="-7" />
+			<action>_x = 2.0</action>
+			<repeat count="12">
+				<tile id="jelly" animation="jelly" renderer="spirit" bob="true" x="_x+random()*5" y="-5+random()*3.5" fromX="2" toX="92" onTop="true" />
+				<action>_x += 7.5;</action>
+			</repeat>
+			<tile id="fish_near" animation="fish_near" type="random" x="114+random()*30" y="70+random()*8" fromX="114" toX="174" />
+			<tile id="fish_near" animation="fish_near" type="random" x="144+random()*30" y="70+random()*8" fromX="114" toX="174" />
+			<repeat count="8">
+				<tile id="fish_near2" animation="fish_near2" type="random" x="113+random()*62" y="70+random()*8" fromX="113" toX="175" />
+			</repeat>
+		</onLoad>
+	</area>
+	<area id="fish_village" width="64" height="16">
+		<tiles id="sand" start="0" end="1" /><tiles id="sand_top" y="0" />
+		<ore id="oil" start="0.25" end="1" percent="0.0125" tile="sand" />
+		
+		<action>for(y in -8...0) for(x in -16...0){if(x == -1) area.setWaterBlock(offsetX+x, offsetY+y); mine(x, y);}</action>
+		
+		<structure id="light_weed" x="15" />
+		<structure id="light_weed" x="39" />
+		<structure id="fish.library" x="6" />
+		<structure id="fish.market" x="30" />
+		<structure id="fish.house" x="55" />
+		<object id="fish_librarian" x="10" />
+		<object id="fish_merchant" x="34" />
+		<object id="fish_villager" x="24" />
+		<object id="seaweed" x="0" /><object id="seaweed" x="2" /><object id="seaweed" x="20" /><object id="seaweed" x="42" /><object id="seaweed" x="52" /><object id="seaweed" x="60" />
+		<object id="coral5" x="17" /><object id="coral1" x="26" /><object id="coral4" x="45" /><object id="coral2" x="49" />
+		<object id="water_elemental" x="40" y="-1" />
+		<spawner id="water_elemental" time="5000" count="1" fromX="5" toX="60" fromY="-1" toY="-1" enabled="!isNight()" underwater="true" />
+	</area>
+		
+	<procedure id="drag_factory.tiles"><action>
+		for(y in (offsetY-2)...offsetY) setBack(offsetX+18, y, "empty");
+		for(y in (offsetY-3)...offsetY) setBack(offsetX+19, y, "empty");
+		for(y in (offsetY-4)...(offsetY-2)) setBack(offsetX+21, y, "empty");
+		for(y in (offsetY-7)...(offsetY-2)) setBack(offsetX+22, y, "empty");
+		for(y in (offsetY-4)...offsetY) setBack(offsetX+24, y, "empty");
+		for(x in (offsetX+20)...(offsetX+24)) setBack(x, offsetY-2, "empty");
+		setBack(offsetX+23, offsetY-7, "empty"); setBack(offsetX+23, offsetY-3, "empty");
+		for(x in (offsetX+38)...(offsetX+41)) setBack(x, offsetY-1, "empty");
+		for(x in (offsetX+39)...(offsetX+44)) setBack(x, offsetY-2, "empty");
+		for(x in (offsetX+45)...(offsetX+47)) setBack(x, offsetY-2, "empty");
+		for(x in (offsetX+40)...(offsetX+47)) setBack(x, offsetY-3, "empty");
+		for(x in (offsetX+41)...(offsetX+44)) setBack(x, offsetY-6, "empty");
+		for(x in (offsetX+43)...(offsetX+46)) setBack(x, offsetY-4, "empty");
+		for(x in (offsetX+43)...(offsetX+45)) setBack(x, offsetY-5, "empty");
+		for(y in (offsetY-8)...(offsetY-6)) setBack(offsetX+41, y, "empty");
+		setBack(offsetX+40, offsetY-4, "empty"); setBack(offsetX+46, offsetY-1, "empty");
+	</action></procedure>
+	<area id="magic2.floating.big">
+		<shape type="trapezoid">
+			<top y="0" fromX="0" toX="64" />
+			<bottom y="19" fromX="19" toX="45" />
+		</shape>
+		<tiles id="stone" start="0" end="0.5" />
+		<tiles id="magic1.stone" start="0.5" end="1.0" />
+		<tiles id="snow" top="0" />
+		<tiles id="snow_stone" top="1" />
+		
+		<ore id="diamond" start="0.3" end="0.5" percent="0.0025" tile="stone" />
+		<ore id="gold" start="0.3" end="0.5" percent="0.0125" tile="stone" />
+		<ore id="iron" start="0.0" end="0.3" percent="0.02" tile="stone" />
+		<ore id="coal" start="0.0" end="0.3" percent="0.02" tile="stone" />
+		<ore id="spirit_gem" start="0.9" end="1" percent="0.000625" tile="magic1.stone" />
+		<ore id="quartz" start="0.9" end="1" percent="0.00625" tile="magic1.stone" />
+		<ore id="blood_gem" start="0.7" end="1" percent="0.00625" tile="magic1.stone" />
+		<ore id="alter_gem" start="0.5" end="0.9" percent="0.00625" tile="magic1.stone" />
+		<ore id="focus_gem" start="0.5" end="0.8" percent="0.0375" tile="magic1.stone" />
+		<ore id="evo_shard" start="0.6" end="0.8" count="5" tile="magic1.stone" />
+		<ore id="lava" start="0.6" end="0.8" percent="1" tile="magic1.stone" />
+		
+		<objects id="purple_golem" start="0.6" end="0.9" percent="0.0075" tile="magic1.stone" />
+		<objects id="magic_wyrm" start="0.65" end="0.85" count="3" tile="magic1.stone" />
+
+		<objects id="conifer_snow" y="-1" startX="-4" endX="63" minDist="6" maxDist="6" />
+		<objects id="bush_snow" y="-1" fromX="1" toX="64" percent="0.25" />
+		<objects id="red_bush_snow" y="-1" fromX="1" toX="64" percent="0.175"  />
+		
+		<object id="ice_boss" x="28" y="-4" />
+		
+		<structure id="drag_factory" x="16" y="3" />
+		<onLoad>
+			<run procedure="drag_factory.tiles" if="area.getTile(offsetX+18, offsetY-1, BACK_LAYER) == null" />
+		</onLoad>
+	</area>
+		
+	<area id="magic2.pyramid">
+		<shape type="trapezoid">
+			<top y="0" fromX="0" toX="20" />
+			<bottom y="24" fromX="-10" toX="30" />
+		</shape>
+		<tiles eval="'markings'+randInt(1,9)" start="0" end="1" />
+		<ore id="evo_shard" start="0.8" end="1" count="5" />
+		<object id="ancient_dragon_npc" x="6" />
+	</area>
+		
+	<area id="magic1" extends="magic1">
+		<connection area="magic2" fromX="260" toX="-250" />
+		<spawner id="flapper" time="5000" count="25" fromX="-100" toX="228" fromY="3" toY="78" spawnWidth="128" underwater="true" />
+		<onLoad>
+			<section if="area.getStructureById('death_door') == null">
+				<set id="door_x" value="randInt(2, 92)" />
+				<spreadTiles x="door_x" y="185" tile="invisible_block" on="bedrock" count="100" />
+				<structure id="death_door" x="door_x" y="185" />
+			</section>
+		</onLoad>
+		<onRead>
+			<structure id="evo_chamber" x="16" y="12" if="version < 66 && area.getObject('alien') == null && area.getStructureById('evo_chamber') == null" />
+		</onRead>
+	</area>
+</data>

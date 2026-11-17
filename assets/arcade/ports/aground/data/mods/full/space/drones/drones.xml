@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="sheet.xml" />
+	<tile id="drone.ship" sheet="sheet.1" x="0" />
+	<animation id="drone.ship.idle" count="8" />
+	<animation id="drone.ship.fly" x="8" count="5" glow="true">
+		<frame visible="false" length="3" />
+		<append tile="drone.ship" animation="drone.ship.idle" behind="true" />
+	</animation>
+	<animation id="drone.ship.ftl" x="8" count="5" glow="true">
+		<frame visible="false" length="3" />
+		<append tile="drone.ship" animation="drone.ship.idle" behind="true" />
+		<append tile="jumpship" animation="jumpship.ftl.bubble" />
+	</animation>
+	<animation id="drone.ship.hover" equals="drone.ship.fly" />
+	<animation id="drone.ship.shields" x="4" count="8" glow="true" offsetX="39" offsetY="-13.5" />
+	<animation id="drone.ship.shields.front" x="0" count="4" glow="true" offsetX="39" offsetY="-13.5" />
+	<vehicle id="drone.ship" tile="drone.ship" health="500" fuel="500" useBatteries="false" efficiency="0" fuelName="power" defense="7" drone="true" droneControl="drone_control" speed="8" type="spaceship" tooltip="structure.tooltip.operate" blood="science.explosion.med" underground="false" title="itemName('item.names>drone.ship', this.name)" flight_height="999" attack_move="true" death_sfx="explosion" block_icon="fighter.shields.ico" block_move="true" item="drone.ship" allowRename="true">
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="drone.ship" value="this.health" name="this.name"><parameter id="p" value="this.equipment.getItemId('attack')" /><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<repair id="titanium" value="250" />
+		<mount><action>setGameScale(2)</action></mount>
+		<light tile="light.fighter" /><slot id="attack" />
+        <init><set id="partial" value="0" /></init>
+		<onFrame>
+			var f2 = frames*2; var of = Math.floor(f2); partial += f2-of; if(partial >= 1){of++; partial -= 1;}
+			var p = of*2; if(this.blocking) p -= of*2; if(p > 0) this.addFuel(p); else if(p &lt; 0) this.useFuel(-p);
+		</onFrame>
+		<shield tile="fighter.shields" animation="drone.ship.shields" hit_front="drone.ship.shields.front" hit_sfx="ship_shield" />
+	</vehicle>
+	<tile id="drone.drill" sheet="sheet.2" />
+	<animation id="drone.drill.idle" count="10" />
+	<animation id="drone.drill.move" x="10" count="8" />
+	<vehicle id="drone.drill" tile="drone.drill" health="500" defense="7" speed="3" type="mining" title="itemName('item.names>drone.drill', this.name)" underwater="true" drone="true" droneControl="drone_control" fuel="20000" blood="science.explosion.med" death_sfx="explosion" walk_sfx="drone_drill" mine="7" hitDamage="4" mine_fuel="2" item="drone.drill" allowRename="true">
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>player.vehicle.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="drone.drill" value="this.health" name="this.name"><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<repair id="titanium" value="250" /><fuel id="uranium" fuel="2000" />
+		<light tile="light.largest" />
+	</vehicle>
+	<tile id="drone.sub" sheet="sheet.3" />
+	<animation id="drone.sub.idle" x="16" count="8" />
+	<animation id="drone.sub.move">
+		<frame visible="false" /><frame x="12" glow="true" /><frame visible="false" /><frame x="13" glow="true" /><frame visible="false" /><frame x="14" glow="true" /><frame visible="false" /><frame x="15" glow="true" />
+		<append tile="drone.sub" animation="drone.sub.idle" />
+	</animation>
+	<animation id="drone.sub.fire1" count="7" glow="true"><append tile="drone.sub" animation="drone.sub.idle" behind="true" /></animation>
+	<animation id="drone.sub.fire2" x="7" count="2" glow="true"><append tile="drone.sub" animation="drone.sub.idle" behind="true" /></animation>
+	<animation id="drone.sub.fire3" x="9" count="3" glow="true"><append tile="drone.sub" animation="drone.sub.idle" behind="true" /></animation>
+	<tile id="light.drone.sub" sheet="{core}/player/light256.png">
+		<tile sheet="{core}/science1/items/headlamp_light.png" offsetX="-64" offsetY="58" />
+	</tile>
+	<tile id="drone.sub.bolt" sheet="sheet.4" />
+	<animation id="drone.sub.bolt" count="3" x="4" glow="true" />
+	<animation id="drone.sub.bolt.impact" count="4" glow="true" />
+	<hitEffect id="drone.sub.bolt" tile="drone.sub.bolt" animation="drone.sub.bolt.impact" color="9999ff" />
+	<vehicle id="drone.sub" tile="drone.sub" health="500" defense="7" speed="6" oxygen="0" type="submarine" attack_move="true" title="itemName('item.names>drone.sub', this.name)" fuel="500" useBatteries="false" efficiency="0" fuelName="power" drone="true" droneControl="drone_control" blood="science.explosion.med" death_sfx="explosion" walk_sfx="submarine_move" attack_icon="drone.sub.fire.ico" attack_icon_anim="item6" item="drone.sub" allowRename="true">
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>player.vehicle.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="drone.sub" value="this.health" name="this.name"><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<light tile="light.drone.sub" />
+		<mount><action>setGameScale(2)</action></mount>
+		<repair id="titanium" value="250" />
+		<init><set id="partial" value="0" /></init>
+		<onFrame>
+			var f2 = frames*2; var of = Math.floor(f2); partial += f2-of; if(partial >= 1){of++; partial -= 1;} if(of > 0) this.addFuel(of);
+		</onFrame>
+		<attack type="projectile" damage="12" range="18" cost="100" scaleCost="false" oneCost="true" hits="3" sfx="drone_sub_fire">
+			<pre animation="fire1"><projectile tile="drone.sub.bolt" animation="drone.sub.bolt" speed="12" delay="6" offsetX="-30" offsetY="13" overlap="0.25" hitEffect="drone.sub.bolt" underwater="true" /></pre>
+			<cont animation="fire2"><projectile tile="drone.sub.bolt" animation="drone.sub.bolt" speed="12" delay="1" offsetX="-30" offsetY="13" overlap="0.25" hitEffect="drone.sub.bolt" underwater="true" /></cont>
+			<cont animation="fire3"><projectile tile="drone.sub.bolt" animation="drone.sub.bolt" speed="12" delay="1" offsetX="-30" offsetY="13" overlap="0.25" hitEffect="drone.sub.bolt" underwater="true" /></cont>
+		</attack>
+	</vehicle>
+		
+	<animation id="drone.scout.idle" equals="item4" />
+	<animation id="drone.scout.move" equals="item4" />
+	<animation id="drone.scout.fly" equals="item4" />
+	<animation id="drone.scout.hover" equals="item4" />
+	<vehicle id="drone.scout" tile="drone.scout.ico" animation="drone.scout" health="100" defense="4" speed="6" flight_height="40" underwater="true" title="itemName('item.names>drone.scout', this.name)" drone="true" droneControl="drone_control" blood="science.explosion.sm" death_sfx="explosion" item="drone.scout" allowRename="true">
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>player.vehicle.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" /><item id="drone.scout" value="this.health" name="this.name" />
+			</section></invokeLater>
+		</listItem>
+		<collectBounds x="-8" y="-8" width="32" height="32" />
+		<light tile="light.strong" />
+		<mount><action>setGameScale(2)</action></mount>
+		<repair id="steel_bar" value="100" />
+	</vehicle>
+		
+	<item id="drone.ship" type="object" cost="0" weight="100" icon="drone.ship.ico" durability="500" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="drone.ship" onGrass="false" on_air="true" overlapBlueprints="true" overlapStructures="true" removeBushes="false">
+			<action>
+				object.setHealth(this.getFeed()); p = Item.getParameter(this.getNameStr(), "p");
+				object.name = this.getNameStr(); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+			</action>
+			<equip eval="p" to="object" fromInventory="false" if="p != null" />
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="titanium" value="250" />
+	</item>
+		
+	<item id="drone.drill" type="object" cost="0" weight="60" icon="drone.drill.ico" durability="500" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="drone.drill" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true" underwater="true">
+			<action>
+				object.setHealth(this.getFeed()); object.name = this.getNameStr(); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+			</action>
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="titanium" value="250" />
+	</item>
+		
+	<item id="drone.sub" type="object" cost="0" weight="100" icon="drone.sub.ico" durability="500" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="drone.sub" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underwater="only">
+			<action>
+				object.setHealth(this.getFeed()); object.name = this.getNameStr(); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+			</action>
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="titanium" value="250" />
+	</item>
+		
+	<item id="drone.scout" type="object" cost="0" weight="10" icon="drone.scout.ico" animation="item4" durability="100" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="drone.scout" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" on_air="true" underground="true" underwater="true">
+			<areaConstraint enabled="!area.isOrbit() || !area.shouldLight()" fail="warning.no_build_orbit" /><action>object.setHealth(this.getFeed()); object.name = this.getNameStr();</action>
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="steel_bar" value="100" />
+	</item>
+		
+	<recipe id="craft_drone.ship" creates="drone.ship" type="drone_lab">
+        <item id="ai_core" count="1" />
+        <item id="ship_parts" count="6" />
+        <item id="titanium" count="20" />
+        <item id="power_core" count="3" />
+	</recipe>
+	<recipe id="craft_drone.drill" creates="drone.drill" type="drone_lab">
+        <item id="ai_core" count="1" />
+        <item id="ship_parts" count="3" />
+        <item id="titanium" count="10" />
+        <item id="uranium" count="3" />
+	</recipe>
+	<recipe id="craft_drone.sub" creates="drone.sub" type="drone_lab">
+        <item id="ai_core" count="1" />
+        <item id="ship_parts" count="4" />
+        <item id="titanium" count="20" />
+        <item id="power_core" count="1" />
+	</recipe>
+	<recipe id="craft_drone.scout" creates="drone.scout" type="drone_lab">
+        <item id="ai_core" count="1" />
+        <item id="ship_parts" count="1" />
+        <item id="titanium" count="1" />
+		<item id="steel_bar" count="2" />
+	</recipe>
+</data>

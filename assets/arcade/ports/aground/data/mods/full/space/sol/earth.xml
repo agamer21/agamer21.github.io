@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="parallax.xml" />
+	<planet id="earth" height="80">
+		<orbit id="earth.orbit" width="256" height="64" background="earth.orbit" name="system.planet.earth_orbit" type="none" distress="!player.hasQuest('keycard')">
+			<area id="earth.city" x="0" />
+			<area id="earth.desert" x="192" />
+			<objects id="metal_debris2" width="4" height="4" count="2" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="metal_debris3" width="4" height="4" count="2" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="metal_debris4" width="4" height="4" count="2" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="metal_debris5" width="4" height="4" count="2" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="metal_debris6" width="4" height="4" count="2" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="metal_debris7" width="4" height="4" count="2" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+
+			<objects id="station_debris1" width="8" height="8" count="1" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="station_debris2" width="8" height="8" count="1" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="station_debris3" width="8" height="8" count="1" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="station_debris4" width="8" height="8" count="1" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="station_debris5" width="8" height="8" count="1" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="station_debris6" width="8" height="8" count="1" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="station_debris7" width="8" height="8" count="1" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="station_debris8" width="8" height="8" count="1" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<objects id="station_debris9" width="8" height="8" count="1" fromX="4" toX="252" fromY="4" toY="60" ground="false" />
+			<spawner id="alien.fighter" time="10000" count="1" fromX="2" toX="254" fromY="10" toY="54" ground="false" />
+			<init><runAreaLoad /></init>
+			<onLoad><music id="earth" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /><run procedure="scavenger.signal" /></onLoad>
+		</orbit>
+	</planet>
+	<include id="bunker.xml" />
+	<include id="objects.xml" />
+	<include id="meteor.xml" />
+	<tile id="meteor1" sheet="meteor.1" />
+	<tile id="meteor2" sheet="meteor.2" />
+	<tile id="meteor_impact" sheet="meteor.3" />
+	<animation id="meteor_impact" count="9" glow="true" />
+	<object id="meteor_impact" tile="meteor_impact" animation="meteor_impact" layer="top" fps="10" removeOnComplete="true" save="false">
+		<addedToArea><action>
+			count = 0.0; function canDamage(o){
+				return o.attackPower(1, 1, 0, null, false) > 0 &amp;&amp; o.getDefense(false, false, false) &lt; 16;
+			}
+		</action></addedToArea>
+		<onFrame>count += frames; if(count >= 8){count -= 8; for(o in this.getOverlappingObjects(canDamage)) o.damage(5, FLAG_IGNORE_DEFENSE|FLAG_HIDE_ATTACKER);}</onFrame>
+	</object>
+	<set id="meteor.time" value="0" global="true" />
+	<procedure id="earth.meteors">
+		<section if="area.id == current_area && !player.questComplete('bombardment_shield2')">
+        <section if="area.isActivePlayer() && Math.abs(getGlobal('meteor.time')-getGameTime()) > 0.03125">
+		<set id="x" value="randInt(1, 192)" />
+		<projectile tile="meteor1" animation="item6" speed="3" damage="50" dx="-1" dy="1" spawnX="256-x" spawnY="-64" range="96" glow="true">
+			<removed><object id="meteor_impact" x="this.tile_x-2" y="this.tile_y" /></removed>
+		</projectile>
+		<projectile tile="meteor2" animation="item6" speed="3" damage="50" dx="0" dy="1" spawnX="x" spawnY="-64" range="68" glow="true">
+			<removed><object id="meteor_impact" x="this.tile_x-1.5" y="this.tile_y" /></removed>
+		</projectile><set id="meteor.time" value="getGameTime()" global="true" /></section>
+		<invokeLater seconds="2" paused="true"><run procedure="earth.meteors" /></invokeLater></section>
+	</procedure>
+		
+	<enemy id="ghost2" extends="ghost" hidden="true" glow="true" trapped="spirit_bow" capture="8" color="ff33ff" colorScale="1.25" />
+	
+	<area id="earth.city" x="-16" width="256" height="96" background="earth" planet="earth" name="system.planet.earth" external="earth.ruins">
+		<tiles id="sand" start="0.0625" end="0.3" /><tiles id="sand_top" top="0" includeShape="false" />
+		<mine start="0.0625" end="0.125" /><mine start="0.3125" end="0.375" />
+		<tiles id="basalt" start="0.3" end="0.6" /><tiles id="obsidian" start="0.6" end="1" />
+		<action>
+			var r_area = areas.get("earth.ruins");
+			var ruins = []; for(i in 0...9) ruins.push(i); shuffle(ruins); var widths = []; var total = 0.0;
+			for(i in 0...ruins.length){var v = getTile("earth.ruins"+ruins[i]).getInnerBounds().width/Tile.SIZE; widths.push(v); total += Math.ceil(v);}
+			var ar = []; var sx = 0; var sz = Math.round((256-total)/10); for(i in 0...ruins.length){
+				ar.push(sx); sx += sz; ar.push(sx); sx += Math.ceil(widths[i]);
+			} ar.push(sx); ar.push(255); var i = 1; var idx = 0;
+			function _setTile(x, y, t){setTile(x, y, t); setBack(x, y, null);} var dcount = 0; var pos = [5, 33, 61];
+			while(i+1 &lt; ar.length){
+				var sy = randInt(-10, 10); var w = widths[idx]; var ri = ruins[idx];
+				var d = getStructure("earth.ruins"+ri).build(null, area, Math.floor((ar[i]-16+(Math.ceil(w)-w)*0.5)*Tile.SIZE), (sy-1)*Tile.SIZE);
+				if(ri >= 6){
+					if(dcount == 1){
+						var b = d.getInnerBounds(false); d.info.modifyHitbox(b);
+						var o = ObjectInfo.make("scavenger.distress", Math.round(b.x+(b.width-Tile.SIZE)*0.5), d.yPos); area.addObject(o);
+					} d.area_id = "earth.ruins"; d.x = pos[dcount]*Tile.SIZE; d.y = 5*Tile.SIZE; dcount++;
+					var de = getStructure("earth.door").build(null, r_area, d.x, d.y);
+					var b = d.getInnerBounds(false); d.info.modifyHitbox(b);
+					de.area_id = area.id; de.x = Math.round(b.x+(b.width-Tile.SIZE)*0.5); de.y = d.yPos;
+				} for(y in sy...20) for(x in ar[i]...ar[i+1]) _setTile(x-16, y, "concrete"); idx++; i += 2;
+			} for(y in 20...40) for(x in 0...256) _setTile(x-16, y, "concrete");
+			for(y in 40...96){_setTile(-16, y, "bedrock"); _setTile(255-16, y, "bedrock");}
+			for(y in 28...33) for(x in -16...240){_setTile(x, y, "subway"); if(y != 28 &amp;&amp; y != 32) mine(x, y);}
+			for(x in 0...64) getStructure("subway.section").build(null, area, (x*4-16)*Tile.SIZE, 31*Tile.SIZE);
+            var ar = []; var x = randInt(4, 8); while(x &lt; 60){ar.push(x); x += randInt(4, 8);}
+            var len = (ar.length-5)>>1; var caveins = []; var doors = []; var last = 0; for(i in 0...len){
+                var to = Math.round((i+1)*ar.length/(len+1)); var dar = []; for(j in last...to) dar.push(ar[j]); doors.push(dar); last = to+1; caveins.push(ar[to]);
+            } var dar = []; for(j in last...ar.length) dar.push(ar[j]); doors.push(dar);
+			var o = ObjectInfo.make("ship_chest", -15*Tile.SIZE, 31*Tile.SIZE); o.inventory.addItems(Item.get("disabled_keycard"), 1); area.addObject(o);
+			var o = ObjectInfo.make("ship_chest", (63*4-14)*Tile.SIZE, 31*Tile.SIZE); o.inventory.addItems(Item.get("disabled_keycard"), 1); area.addObject(o);
+			for(dar in doors) shuffle(dar); var left = doors[0].shift(); var right = doors[doors.length-1].shift();
+            for(x in caveins) getStructure("subway.cavein").build(null, area, (x*4-16)*Tile.SIZE, 31*Tile.SIZE);
+            var d = getStructure("subway.door").build(null, area, (left*4-16)*Tile.SIZE, 31*Tile.SIZE);
+            d.area_id = area.id; d.x = Math.round((right*4-14.5)*Tile.SIZE); d.y = 31*Tile.SIZE;
+            var d = getStructure("subway.door").build(null, area, (right*4-16)*Tile.SIZE, 31*Tile.SIZE);
+            d.area_id = area.id; d.x = Math.round((left*4-14.5)*Tile.SIZE); d.y = 31*Tile.SIZE;
+            for(i in 0...3){
+				var di = (i == 0)?0:(i == 1?randInt(1, doors.length-1):doors.length-1);
+				var d = getStructure("subway.door").build(null, area, (doors[di].shift()*4-16)*Tile.SIZE, 31*Tile.SIZE);
+				d.area_id = "earth.ruins"; d.x = pos[i]*Tile.SIZE; d.y = 39*Tile.SIZE;
+				var de = getStructure("earth.door").build(null, r_area, d.x, d.y);
+				de.area_id = area.id; de.x = d.xPos+Tile.SIZE; de.y = d.yPos;
+			} for(dar in doors) for(d in dar) getStructure("subway.door.broken").build(null, area, (d*4-16)*Tile.SIZE, 31*Tile.SIZE);
+		</action>
+		<action>for(y in 0...20) for(x in 0...256) if(area.getTileString(x-16, y, BACK_LAYER) == "sand_top") area.setWater(x-16, y);</action>
+		<set id="underwater_chest_items" value="earth_chest_items" />
+		<appendArea id="sea_floor"><params area_left="-250" area_right="290" area_width="224" area_height="96" /></appendArea>
+		
+		<ore id="quartz" start="0.2" end="0.3" percent="0.00025" tile="sand" />
+		<ore id="iron" start="0.1" end="0.3" percent="0.00125" tile="sand" />
+		<ore id="coal" start="0.0" end="0.25" percent="0.00375" tile="sand" />
+		
+		<ore id="uranium" start="0.0" end="0.5" percent="0.0025" tile="concrete" />
+		<ore id="titanium" start="0.0" end="0.5" percent="0.0125" tile="concrete" />
+		<ore id="iron" start="0.0" end="0.5" percent="0.0375" tile="concrete" />
+		
+		<ore id="diamond" start="0.5" end="0.6" percent="0.0125" tile="basalt" />
+		<ore id="gold" start="0.3" end="0.6" percent="0.0125" tile="basalt" />
+		<ore id="oil" start="0.3" end="0.5" percent="0.0275" tile="basalt" />
+		
+		<ore id="exotic_matter" start="0.9" end="1.0" percent="0.00025" tile="obsidian" />
+		<ore id="quartz" start="0.6" end="0.7" percent="0.0125" tile="obsidian" />
+		<ore id="uranium" start="0.7" end="1" percent="0.0025" tile="obsidian" />
+		<ore id="lava" start="0.7" end="0.8" percent="1" tile="obsidian" />
+		
+		<spawner id="enemy_drone" time="12000" count="5" fromX="-14" toX="238" fromY="-30" toY="-15" ground="false" />
+		<spawner id="enemy_sub" time="12000" count="5" fromX="-200" toX="265" fromY="3" toY="70" spawnWidth="256" underwater="true" />
+		<spawner id="hunter_bot" time="8000" count="5" fromX="-14" toX="238" fromY="29" toY="31" />
+		<spawner id="construct_bot" time="8000" count="5" fromX="-14" toX="238" fromY="29" toY="31" />
+		<spawner id="ghost2" time="10000" count="4" fromX="-14" toX="238" fromY="-30" toY="-1" bottom="true" />
+		<objects id="medical_bot" count="1" fromX="-14" toX="70" fromY="31" toY="31" width="2" />
+		<objects id="medical_bot.rogue" count="1" fromX="154" toX="238" fromY="31" toY="31" width="2" />
+		<objects id="turret" count="3" fromX="-14" toX="238" fromY="-11" toY="-2" width="4" height="2" offsetX="16" bottom="true" />
+		<objects id="turret" count="2" fromX="-14" toX="238" fromY="31" toY="31" width="4" height="2" offsetX="16" />
+		
+		<connection area="earth.desert" fromX="290" toX="-250" />
+		<connection area="earth.desert" fromX="-250" toX="290" />
+		
+		<fishing>
+			<loot id="toothfish" p="12" difficulty="1" />
+			<loot id="titanium" p="4" difficulty="3" />
+			<loot id="coral_cod" p="1" difficulty="3" />
+			<loot id="electric_eel" p="4" difficulty="4" achievement="electric_eel" />
+			<loot id="ship_parts" p="0.5" difficulty="6" />
+		</fishing>
+		
+		<init><runAreaLoad /><action>area.spawner.spawnAll("enemy_drone"); area.spawner.spawnAll("enemy_sub"); area.spawner.spawnAll("hunter_bot"); area.spawner.spawnAll("construct_bot"); area.spawner.spawnAll("ghost2");</action></init>
+		<onLoad><music id="earth" seconds="1" /><set id="current_area" value="area.id" /><run procedure="earth.meteors" /><action if="!player.questComplete('keycard')">setFlag("drones.attack", true)</action></onLoad>
+	</area>
+		
+	<tile id="earth.bunker" sheet="bunker.1" />
+	<animation id="earth.bunker.idle" x="6" count="6" />
+	<animation id="earth.bunker_door.closed" x="0" count="1" />
+	<animation id="earth.bunker_door.closing" x="0" count="6" reverse="true" />
+	<animation id="earth.bunker_door.opening" x="0" count="6" />
+	<structure id="earth.bunker" tile="earth.bunker" sleep="true" name="enter">
+		<tile id="earth.bunker" animation="earth.bunker_door.closed" fps="15" y="0" />
+		<over><action>var door = this.getTileById("earth.bunker"); if(door != null) door.playAnimation("earth.bunker_door.opening", false)</action></over>
+		<out><action>var door = this.getTileById("earth.bunker"); if(door != null) door.playAnimation("earth.bunker_door.closing", false, function(p){p.playAnimation("earth.bunker_door.closed", true);})</action></out>
+		<operate>
+			<section if="!player.hasQuest('keycard')"><run procedure="scavenger.intro" /><stop /></section>
+			<choose>
+				<scene id="scavenger" show="first" with="fade" if="!getFlag('scavenger_hut')" showToAll="true">
+					<action>setFlag('scavenger_hut', true);</action>
+				</scene>
+			</choose>
+			<action>player.fullRestore(); player.restorePower(false);</action><save sleep="true" />
+		</operate>
+		<light tile="light.large" color="9ce1eb" offsetX="30" offsetY="45" />
+	</structure>
+	<tile id="earth.lab" sheet="bunker.2" />
+	<animation id="earth.lab.off" x="0" count="1" />
+	<animation id="earth.lab.on" x="1" count="6" />
+	<structure id="earth.lab" tile="earth.lab" type="crafting" name="factory" display="earth_lab" title="common.earth_lab" powered="true" fullHeight="true" repairType="mechanic">
+		<recipe type="drone_lab" /><recipe type="advanced_lab" /><recipe type="tech_resource" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<light tile="light.largest" color="9ce1eb" offsetX="53" offsetY="45" />
+		<light tile="light.largest" color="9ce1eb" offsetX="187" offsetY="45" />
+	</structure>
+		
+	<area id="earth.ruins" external="earth.city" powered="true">
+		<action>setBack(23, 22, "ruin.floor"); setBack(44, 22, "ruin.floor"); for(_y in 0...2){var y = 4+_y*32; setBack(4, y, "ruin.floor"); setBack(60, y, "ruin.floor");}</action>
+		<maze floor="ruin.floor" wall="ruin.wall" width="7" height="11" tilesPerCell="4" />
+		<maze floor="ruin.floor" wall="ruin.wall" x="40" width="7" height="11" tilesPerCell="4" />
+		<action>
+			for(y in 16...28){for(x in 24...44){setTile(x, y, null); setBack(x, y, "ruin.floor");} setTile(24, y, "ruin.wall"); setTile(43, y, "ruin.wall");}
+			for(x in 28...40){
+				for(y in 0...4) setTile(x, y, "ruin.wall"); for(y in 4...12) setBack(x, y, "ruin.floor");
+				for(y in 12...16) setTile(x, y, "ruin.wall"); for(y in 28...32) setTile(x, y, "ruin.wall");
+				for(y in 32...40) setBack(x, y, "ruin.floor"); for(y in 40...44) setTile(x, y, "ruin.wall");
+			} for(y in 12...16) mine(33, y); for(y in 28...32) mine(33, y);
+			setTile(33, 15, "concrete"); setTile(33, 28, "concrete"); setTile(33, 12, "concrete"); setTile(33, 31, "concrete");
+		</action>
+		<object id="earth.door" x="24" y="22" />
+		<object id="earth.door" x="43" y="22" />
+		<object id="scavenger" x="34" y="11" />
+		<structure id="earth.bunker" x="32" y="11" />
+		<structure id="bunker_depot" x="36" y="11" />
+		<object id="earth.wreckage2" x="28" y="11" />
+		<structure id="earth.lab" x="27" y="27" />
+		<structure id="vending_machine" x="29" y="39" />
+		<structure id="blueprint_printer" x="31" y="34" />
+		<structure id="earth.conveyor" x="33" y="34" />
+		<structure id="paper_maker" x="35" y="34" />
+		<structure id="earth.arm1" x="34" y="33" />
+		<structure id="earth.light" x="31" y="33" />
+		
+		<objects id="earth.wreckage1" count="4" fromX="4" toX="64" fromY="4" toY="40" width="4" height="2" offsetX="16" top="back" />
+		<objects id="earth.wreckage2" count="4" fromX="4" toX="64" fromY="4" toY="40" width="4" height="2" offsetX="16" bottom="back" />
+		<objects id="earth.wreckage3" count="4" fromX="4" toX="64" fromY="4" toY="40" width="4" height="2" offsetX="16" top="back" />
+		<objects id="earth.wreckage4" count="4" fromX="4" toX="64" fromY="4" toY="40" width="4" height="2" offsetX="16" top="back" />
+		<objects id="laser_trap" count="4" fromX="4" toX="24" fromY="4" toY="40" width="3" height="2" offsetX="16" bottom="back" />
+		<objects id="lightning_trap" count="4" fromX="44" toX="64" fromY="4" toY="40" width="3" height="2" offsetX="16" bottom="back" />
+		<objects id="turret" count="1" fromX="4" toX="24" fromY="4" toY="40" width="4" height="2" offsetX="16" bottom="back" />
+		<objects id="turret" count="1" fromX="44" toX="64" fromY="4" toY="40" width="4" height="2" offsetX="16" bottom="back" />
+		<objects structure="earth.light" count="4" fromX="4" toX="64" fromY="4" toY="40" width="6" height="2" offsetX="32" top="back" />
+		<objects structure="earth.light.off" count="4" fromX="4" toX="64" fromY="4" toY="40" width="6" height="2" offsetX="32" top="back" />
+		<objects structure="earth.arm1" count="2" fromX="4" toX="64" fromY="4" toY="40" width="4" height="2" offsetX="16" top="back" />
+		<objects structure="earth.arm2" count="2" fromX="4" toX="64" fromY="4" toY="40" width="4" height="2" offsetX="16" top="back" />
+		<objects structure="earth.arm3" count="2" fromX="4" toX="64" fromY="4" toY="40" width="4" height="2" offsetX="16" top="back" />
+		<objects id="ship_chest" count="1" fromX="4" toX="24" fromY="4" toY="40" width="2" height="2" bottom="back">
+			this.inventory.addItems(Item.get("jetpack"), 1);
+		</objects>
+		<set id="x" value="4" /><repeat count="2">
+			<objects id="ship_chest" count="1" fromX="x" toX="20+x" fromY="4" toY="40" width="2" height="2" bottom="back">
+				this.inventory.addItems(Item.get("silicon"), 4);
+				this.inventory.addItems(Item.get("titanium"), 4);
+			</objects>
+			<objects id="ship_chest" count="2" fromX="x" toX="20+x" fromY="4" toY="40" width="2" height="2" bottom="back">
+				this.inventory.addItems(Item.get("antimatter_missile"), 1);
+			</objects>
+			<objects id="ship_chest" count="2" fromX="x" toX="20+x" fromY="4" toY="40" width="2" height="2" bottom="back">
+				this.inventory.addItems(Item.get("exotic_matter"), 1);
+			</objects><set id="x" value="44" />
+		</repeat>
+		<object id="ship_chest" x="38" y="39">this.inventory.addItems(Item.get("exotic_matter"), 3);</object>
+		<object id="ship_chest" x="28" y="39">this.inventory.addItems(Item.get("coin_purse"), 1, 10000);</object>
+		<set id="ar" value="[]" /><action>for(i in 9...13) ar.push("ship_debris"+i);</action>
+		<repeat count="ar.length>>1"><objects id="ar.pop()" fromX="4" toX="24" fromY="4" toY="40" width="4" height="2" count="1" layer="item" bottom="back" /></repeat>
+		<repeat count="ar.length"><objects id="ar.pop()" fromX="44" toX="64" fromY="4" toY="40" width="4" height="2" count="1" layer="item" bottom="back" /></repeat>
+		<objects id="power_core_debris1" fromX="28" toX="40" fromY="32" toY="40" count="1" />
+		<objects id="power_core_debris2" fromX="28" toX="40" fromY="32" toY="40" count="1" />
+		<spawner id="hunter_bot" time="12000" count="3" fromX="4" toX="24" fromY="4" toY="40" />
+		<spawner id="construct_bot" time="12000" count="2" fromX="44" toX="64" fromY="4" toY="40" />
+		<init><runAreaLoad /><action>area.spawner.spawnAll("hunter_bot"); area.spawner.spawnAll("construct_bot")</action></init>
+		<onLoad>
+			<locate id="scavenger.distress" hide="true" />
+			<music id="earth_ruins" seconds="1" /><action if="!player.questComplete('keycard')">setFlag("drones.attack", true)</action>
+			<section if="area.getStructureById('earth.computer2') == null">
+				<structure id="earth.computer2" x="25" y="27" />
+				<set id="x" value="4" /><repeat count="2">
+					<objects structure="earth.computer1" count="1" fromX="x" toX="20+x" fromY="4" toY="40" width="2" height="2" bottom="back" dialogue="'scavenger.log'+(x == 4?1:4)" />
+					<objects structure="earth.computer1" count="1" fromX="x" toX="20+x" fromY="4" toY="40" width="2" height="2" bottom="back" dialogue="'scavenger.log'+(x == 4?2:5)" />
+					<objects structure="earth.computer1" count="1" fromX="x" toX="20+x" fromY="4" toY="40" width="2" height="2" bottom="back" dialogue="'scavenger.log'+(x == 4?3:6)" />
+					<set id="x" value="44" />
+				</repeat>
+			</section>
+		</onLoad>
+	</area>
+		
+	<item id="earth_lab_blueprint" type="blueprint" cost="15000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="earth.lab" underground="true">
+			<item id="ship_parts" count="2" /><item id="steel_bar" count="25" /><item id="silicon" count="4" /><item id="ai_core" count="1" />
+		</action>
+	</item>
+		
+	<action>
+		function earth_chest_items(this){
+			var r = random(); if(r &lt; 0.2) this.inventory.addItems(Item.get("exotic_matter"), 1);
+			else if(r &lt; 0.4) this.inventory.addItems(Item.get("gold_bar"), 2);
+			else if(r &lt; 0.5) this.inventory.addItems(Item.get("sugar_seed"), 3);
+			else if(r &lt; 0.6) this.inventory.addItems(Item.get("battery"), 1);
+			else if(r &lt; 0.7) this.inventory.addItems(Item.get("silicon"), 5);
+			else if(r &lt; 0.8) this.inventory.addItems(Item.get("titanium"), 3);
+			else if(r &lt; 0.9) this.inventory.addItems(Item.get("diamond"), 2);
+			else this.inventory.addItems(Item.get("electric_eel"), 1);
+		}
+	</action>
+	
+	<area id="earth.desert" width="160" height="96" background="earth.desert" planet="earth" name="system.planet.earth">
+		<appendArea id="earth.mountain" offsetX="120" offsetY="-31" />
+		<tiles id="desert.dirt_top" y="0" empty="true" />
+		<tiles id="bedrock" y="95" empty="true" />
+		<tiles id="desert.dirt" start="0" end="0.5" empty="true" />
+		<tiles id="basalt" start="0.5" end="1" empty="true" />
+		<appendArea id="science1.crater" offsetX="24" offsetY="0" />
+		<action>area.removeStructure(area.getStructureById('crashed_ship.crack1'), null);
+		area.removeStructure(area.getStructureById('crashed_ship.crack2'), null); area.removeStructure(area.getStructureById('crashed_ship'), null);</action>
+		<structure id="crashed_ship.destroyed" x="35" y="20" />
+		<set id="ar" value="['inn.destroyed','house.destroyed','elevator.destroyed','airport.destroyed','nuclear_plant.destroyed','advanced_lab.destroyed','factory.destroyed']" />
+		<repeat count="ar.length"><objects structure="ar.pop()" count="1" fromX="5" toX="120" fromY="-1" toY="-1" width="10" /></repeat>
+		<shore x="-1" top="sand_top" bottom="sand" flip="true" dock="dock_empty" trans1="desert.dirt_sand1" trans2="desert.dirt_sand2" />
+		<shore x="160" top="sand_top" bottom="sand" dock="dock_empty_flip" trans1="desert.dirt_sand1" trans2="desert.dirt_sand3" />
+		<set id="underwater_chest_items" value="earth_chest_items" />
+		<appendArea id="sea_floor"><params area_left="-250" area_right="290" area_width="160" area_height="96" /></appendArea>
+		<ore id="oil" start="0.0" end="0.5" percent="0.0375" tile="desert.dirt" />
+		<ore id="iron" start="0.2" end="0.5" percent="0.0125" tile="desert.dirt" />
+		<ore id="sulfur" start="0.4" end="0.5" percent="0.0025" tile="desert.dirt" />
+		<ore id="uranium" start="0.9" end="1.0" percent="0.000625" tile="basalt" />
+		<ore id="diamond" start="0.8" end="1.0" percent="0.0125" tile="basalt" />
+		<ore id="gold" start="0.5" end="1.0" percent="0.0125" tile="basalt" />
+		<ore id="oil" start="0.5" end="0.8" percent="0.0375" tile="basalt" />
+		<objects id="treasure_chest" start="0.1" end="0.3" count="4" tile="desert.dirt">
+			this.inventory.addItems(Item.get("battery"), 1);
+		</objects>
+		<objects id="treasure_chest" start="0.3" end="0.5" count="3" tile="desert.dirt">
+			this.inventory.addItems(Item.get("bullet"), 15);
+		</objects>
+		<objects id="treasure_chest" start="0.5" end="1.0" count="3" tile="desert.dirt">
+			this.inventory.addItems(Item.get("shell"), 15);
+		</objects>
+		<objects id="stinger" start="0.2" end="0.4" count="15" tile="desert.dirt" />
+		<spawner id="stinger" time="4000" count="15" fromX="1" toX="158" fromY="6" toY="92" />
+		<spawner id="ghost2" time="10000" count="4" fromX="1" toX="158" fromY="-1" toY="-1" />
+		<connection area="earth.city" fromX="290" toX="-250" />
+		<connection area="earth.city" fromX="-250" toX="290" />
+		
+		<fishing>
+			<loot id="toothfish" p="12" difficulty="1" />
+			<loot id="rockfish" p="6" difficulty="2" />
+			<loot id="coral_cod" p="1" difficulty="3" />
+			<loot id="electric_eel" p="4" difficulty="4" achievement="electric_eel" />
+			<loot id="ship_parts" p="0.25" difficulty="6" />
+		</fishing>
+		
+		<init><runAreaLoad /><action>area.spawner.spawnAll("ghost2");</action></init>
+		<onLoad>
+			<music id="earth_ruins" seconds="1" /><set id="current_area" value="area.id" /><run procedure="earth.meteors" />
+			<weather type="fog" image="{core}/science1/sand.png" alpha="0.3" color="ffdd99" x="0" y="-10" width="160" height="12" dx="4" dy="0.05" if="area.getStructureById('terraformer') == null" />
+			<section if="area.getStructureById('earth.medibed') == null">
+				<action>
+					for(y in 3...6) for(x in 132...140){mine(x, y); setBack(x, y, "lab.floor"+(y == 3?'1':'2'));}
+					for(x in 132...140) for(y in 0...2){setOre(x, y+1, null); setOre(x, y+6, null); setTile(x, y+1, "lab.floor1"); setTile(x, y+6, "lab.floor1");}
+					for(y in 1...8) for(x in 0...2){setOre(x+130, y, null); setOre(x+140, y, null); setTile(x+130, y, "lab.floor1"); setTile(x+140, y, "lab.floor1");}
+					mine(130, 5); mine(131, 5); for(x in 120...130){mine(x, 5); setOre(x, 5, "rail");}
+					for(y in -1...5){mine(120, y); setOre(120, y, "rail");} area.setBlockNPC(131, 5);
+				</action>
+				<structure id="earth.light" x="133" y="4" />
+				<structure id="earth.light" x="137" y="4" />
+				<structure id="earth.arm3" x="135" y="4" />
+				<structure id="earth.medibed" x="132" y="5" />
+				<structure id="earth.conveyor" x="135" y="5" />
+				<structure id="earth.computer3" x="138" y="5" />
+				<object id="earth.door" x="130" y="5" pre="true">this.health=1</object>
+				<object id="ship_chest" x="137" y="5" />
+				<object id="professor" x="136" y="5" />
+			</section>
+		</onLoad>
+	</area>
+	
+	<area id="earth.mountain">
+		<shape type="trapezoid">
+			<top y="0" fromX="12" toX="20" />
+			<bottom y="32" fromX="0" toX="32" />
+		</shape>
+		<tiles id="ice_wall" start="0" end="0.5" />
+		<tiles id="snow" top="0" />
+		<tiles id="obsidian" start="0.5" end="1" />
+		<action>
+			for(x in 14...18){setTile(x, 7, "ice_wall"); setTile(x, 8, "ice_wall"); if(x != 14 &amp;&amp; x != 17) mine(x, 8); setTile(x, 9, "ice_wall");}
+		</action>
+		<object id="ice_chest" x="15.5" y="8">this.inventory.addItems(Item.get("blueprint_paper"), 15); this.inventory.addItems(Item.get("evo_shard"), 6); this.inventory.addItems(Item.get("ice_gem"), 1);</object>
+		<ore id="coal" start="0.5" end="1" percent="0.0375" tile="obsidian" />
+		<objects id="icer" start="0.0" end="0.5" count="4" tile="ice_wall" />
+	</area>
+</data>

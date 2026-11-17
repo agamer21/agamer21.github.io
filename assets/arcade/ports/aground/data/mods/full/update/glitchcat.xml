@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="cat2.xml" includeRoot="true" />
+	<tile id="cat2" sheet="cat2.png" />
+	<tile id="cat2.ico" sheet="cat2.png" x="2" />
+	
+	<animation id="glitchcat.talk" x="0" count="23" />
+	<animation id="glitchcat.idle"><frame x="4" count="2" /><frame x="9" count="2" /><frame x="14" count="2" /><frame x="19" count="2" /><frame x="23" /></animation>
+	<animation id="glitchcat.walk" equals="glitchcat.idle" />
+	<sound id="glitchtalk" />
+	<tile id="cat_arrow" sheet="{core}/animals/glitchcat.2" x="20" />
+	<hitEffect id="cat_arrow" tile="cat" animation="cat.attack1" color="ff9999" />
+	<item id="cat_arrow" type="equipment" cost="3" weight="0.25" icon="cat.ico" attack="4" action="fire" with="bow">
+		<projectile tile="cat_arrow" animation="item8" speed="3" fps="20" offsetY="4" fire_sfx="meow" hit_sfx="shadowcat_attack" knockback="5" pierce="true" hitEffect="cat_arrow">
+			<removed><choose if="this.hit == null && !area.isEmptyTile(this.tile_x, this.tile_y+1)"><object id="cat_arrow" x="this.tile_x-Utils.sign(this.dx)" y="this.tile_y" if="area.hasTile(this.tile_x, this.tile_y)" /><object id="cat_arrow" x="this.tile_x" y="this.tile_y" /></choose></removed>
+		</projectile>
+	</item>
+	<recipe id="craft_cat_arrow" creates="cat_arrow" type="glitchcat">
+		<item id="arrow" count="1" />
+	</recipe>
+	
+	<item id="cat_ice_arrow" type="equipment" cost="3" weight="0.5" icon="cat.ico" attack="10" action="fire" with="bow" color="99ccff" colorScale="2" element="ice">
+		<projectile tile="cat_arrow" animation="item8" speed="3" fps="20" offsetY="4" fire_sfx="meow" hit_sfx="shadowcat_attack" pierce="true" color="99ccff" colorScale="2" hitEffect="freeze" knockback="5" />
+	</item>
+	<item id="cat_fire_arrow" extends="cat_ice_arrow" action="fire" with="bow" color="ff9911" colorScale="2" element="fire">
+		<projectile tile="cat_arrow" animation="item8" speed="3" fps="20" offsetY="4" fire_sfx="meow" hit_sfx="shadowcat_attack" pierce="true" color="ff9911" colorScale="2" hitEffect="fire_med_dot" glow="true" knockback="5" />
+	</item>
+	<item id="cat_water_arrow" extends="cat_ice_arrow" action="fire" with="bow" color="4444ff" colorScale="1.5" element="water">
+		<projectile tile="cat_arrow" animation="item8" speed="3" fps="20" offsetY="4" fire_sfx="meow" hit_sfx="shadowcat_attack" pierce="true" color="4444ff" colorScale="1.5" hitEffect="splash" knockback="12" />
+	</item>
+	<item id="cat_drain_arrow" extends="cat_ice_arrow" action="fire" with="bow" color="9911ff" colorScale="2" element="">
+		<projectile tile="cat_arrow" animation="item8" speed="3" fps="20" offsetY="4" fire_sfx="meow" hit_sfx="shadowcat_attack" pierce="true" color="9911ff" colorScale="2" hpSteal="2" knockback="5" />
+	</item>
+	<recipe id="make_cat_ice_arrow" creates="cat_ice_arrow" type="enchantments">
+		<item id="cat_arrow" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	<recipe id="make_cat_fire_arrow" creates="cat_fire_arrow" type="enchantments">
+		<item id="cat_arrow" count="1" />
+		<item id="fire_tusk" count="1" />
+	</recipe>
+	<recipe id="make_cat_water_arrow" creates="cat_water_arrow" type="enchantments">
+		<item id="cat_arrow" count="1" />
+		<item id="fire_tusk" count="1" />
+		<item id="yeti_fur" count="1" />
+	</recipe>
+	<recipe id="make_cat_drain_arrow" creates="cat_drain_arrow" type="enchantments">
+		<item id="cat_arrow" count="1" />
+		<item id="dragonblood" count="1" />
+	</recipe>
+	
+	<item id="no_anim" type="none"><modifiers animation="single" /></item>
+	<item id="chest" alias="cat_chest"><parameter id="t" value="cat.ico" /></item>
+	<item id="chest" alias="black_cat_chest"><parameter id="t" value="black_cat.ico" /></item>
+	<item id="chest" alias="alt_cat_chest"><parameter id="t" value="cat2.ico" /></item>
+	<item id="chest" alias="octo_cat_chest"><parameter id="t" value="octo_cat.ico" /></item>
+	<item id="minecart" alias="cat_minecart"><parameter id="t" value="cat.ico" /><parameter id="m" value="no_anim" /></item>
+	<tile id="cat_chest" sheet="{core}/animals/cat.png" x="22" />
+	<tile id="black_cat_chest" sheet="{mod:full_version}/magic/items/black_cat.png" x="22" />
+	<tile id="octo_cat.ico" sheet="{mod:full_version}/magic/npcs/witch.4" x="9" offsetY="-5" />
+	<tile id="octo_cat_chest" sheet="{mod:full_version}/magic/npcs/witch.4" x="5" />
+	<itemObject id="cat_chest" tile="cat_chest" />
+	<itemObject id="black_cat_chest" tile="black_cat_chest" />
+	<itemObject id="alt_cat_chest" tile="cat2" />
+	<itemObject id="octo_cat_chest" tile="octo_cat_chest" />
+	<itemObject id="cat_minecart" tile="cat" animation="cat.walk" />
+	<recipe id="craft_cat_chest" creates="chest" type="glitchcat">
+		<parameter id="t" value="cat.ico" /><parameter id="a" value="cat_chest" />
+		<item id="chest" count="1" />
+	</recipe>
+	<recipe id="craft_black_cat_chest" creates="chest" type="glitchcat">
+		<parameter id="t" value="black_cat.ico" /><parameter id="a" value="black_cat_chest" />
+		<item id="chest" count="1" />
+	</recipe>
+	<recipe id="craft_alt_cat_chest" creates="chest" type="glitchcat">
+		<parameter id="t" value="cat2.ico" /><parameter id="a" value="alt_cat_chest" />
+		<item id="chest" count="1" />
+	</recipe>
+	<recipe id="craft_octo_cat_chest" creates="chest" type="glitchcat">
+		<parameter id="t" value="octo_cat.ico" /><parameter id="a" value="octo_cat_chest" />
+		<item id="chest" count="1" />
+	</recipe>
+	<recipe id="craft_cat_minecart" creates="minecart" type="glitchcat">
+		<parameter id="t" value="cat.ico" /><parameter id="a" value="cat_minecart" /><parameter id="m" value="no_anim" />
+		<item id="minecart" count="1" />
+	</recipe>
+	<npc id="glitchcat" tile="glitchcat" action="talk" talk_sfx="glitchtalk" night="true" flying="true" underwater="true" waterTint="false" canBombard="false" layer="top">
+		<idle class="defaultNPCIdle" />
+		<operate>
+			<section if="player.getFlag('glitchcat')">
+				<dialogue section="glitchcat" id="intro3" speaker='this' />
+				<run object="glitchcat" event="menu" />
+				<dialogue section="glitchcat" id="intro4" speaker='this' />
+				<run object="glitchcat" event="disappear" />
+			</section>
+			<section>
+				<dialogue section="glitchcat" id="intro1" speaker='this' />
+				<run object="glitchcat" event="menu" />
+				<dialogue section="glitchcat" id="intro2" speaker='this' />
+				<action>player.setFlag('glitchcat', true)</action>
+				<run object="glitchcat" event="disappear" />
+			</section>
+		</operate>
+		<menu>
+			<window type="craft" includeStorehouse="true" title="glitchcat.title">
+				<recipe type="glitchcat" />
+				<listItem icon="cat.ico" title="glitchcat.start_rain" enabled="area.renderer.weather.get('cats_bg') == null">
+					<run procedure="rain_cats_dogs" />
+				</listItem>
+				<listItem icon="wolf.ico" title="glitchcat.end_rain" enabled="area.renderer.weather.get('cats_bg') != null">
+					<run procedure="end_rain_cats_dogs" />
+				</listItem>
+				<listItem icon="coal.ico" title="glitchcat.ore_to_cat">
+					<window type="items" includeStorehouse="true" title="glitchcat.select_ore" incNone="true" filter="function(i){return i.type.id == 'resource' && Tile.exists(i.id);}">
+						<action>
+							var o = getGlobal("glitchcat_ore"); if(o != null){o.tile.sheet = o.sheet; o.tile.x = o.x; o.tile.y = o.y;} if(item != null){
+								var d = getTile(item.id).base; setGlobal("glitchcat_ore", {tile:d, sheet:d.sheet, x:d.x, y:d.y}); d.sheet = getTile(random()>0.5?"cat":"black_cat").base.sheet; d.x = 12; d.y = 0;
+							} else setGlobal("glitchcat_ore",null);
+							for(i in 0...10){var c = area.renderer.getChildAt(i); if(c != null &amp;&amp; c.layer == ORE_LAYER){c.init(null); break;}}
+						</action>
+					</window>
+				</listItem>
+			</window>
+		</menu>
+		<disappear>
+			<sound id="teleport_book" />
+			<hitEffect object="this" tile="alchemist" animation="alchemist.teleport" runPaused="true" />
+			<lerp object="this" rotation="360" alpha="0" seconds="1" /><remove object="this" />
+		</disappear>
+	</npc>
+	
+	<procedure id="summon_glitchcat">
+			<object id="glitchcat" x="player.tile_x-player.getFacing()" y="player.tile_y" name="glitchcat" /><action>glitchcat.renderer.alpha = 0; glitchcat.renderer.rotation=360;</action>
+			<sound id="teleport_book" /><hitEffect object="glitchcat" tile="alchemist" animation="alchemist.teleport" runPaused="true" />
+			<lerp object="glitchcat" rotation="0" alpha="1" seconds="1" />
+	</procedure>
+	<item id="cheeseburger" extends="cheeseburger">
+		<action id="use" name="summon" consume="true" enabled="player.getFlag('glitchcat')"><run procedure="summon_glitchcat" /></action>
+	</item>
+	
+	<action>function rainCatsDogs(e){runProcedure("rain_cats_dogs", null, e.target);}</action>
+	<procedure id="rain_cats_dogs"><section if="area.renderer.weather.get('cats_bg') == null">
+		<weather type="fog" image="bg.png" alpha="0.9" x="-1000" y="-20" width="2000" height="25" dx="-0.05" dy="1" id="cats_bg" />
+		<weather type="fog" image="mg.png" alpha="0.9" x="-1000" y="-20" width="2000" height="25" dx="0" dy="1.33333333333" id="cats_mg" />
+		<weather type="fog" image="fg.png" alpha="0.9" x="-1000" y="-20" width="2000" height="25" dx="0.1" dy="2" id="cats_fg" />
+		<action if="area.renderer.parallax_back.parent != null">var p = area.renderer.parallax_back.parent; p.addChild(area.renderer.weather.get("cats_bg")); p.addChild(area.renderer.weather.get("cats_mg")); p.addChild(area.renderer.weather.get("cats_fg"));</action>
+		<action>player.removeEventListener("teleport", rainCatsDogs); player.addEventListener("teleport", rainCatsDogs);</action>
+	</section></procedure>
+	<procedure id="end_rain_cats_dogs">
+		<weather clear="cats_bg" />
+		<weather clear="cats_mg" />
+		<weather clear="cats_fg" />
+		<action>player.removeEventListener("teleport", rainCatsDogs);</action>
+	</procedure>
+	
+	<quest id="glitchcat" giver="alchemist" exp="300">
+		<item id="cat" count="1" />
+		<item id="alter_gem" count="1" />
+	</quest>
+	<npc id="alchemist_magic" extends="alchemist_magic">
+		<operate>
+			<section if="player.questComplete('alter_gem') && !player.hasQuest('glitchcat') && isDate(4,1,0)">
+				<dialogue section="glitchcat" id="quest1" speaker="this" />
+				<dialogue section="glitchcat" id="quest2" speaker="this" /><quest id="glitchcat" />
+			</section>
+			<section if="player.canCompleteQuest('glitchcat')">
+				<complete quest="glitchcat" /><dialogue section="glitchcat" id="quest3" speaker="this" />
+				<dialogue section="glitchcat" id="quest4" speaker="this" />
+				<run procedure="summon_glitchcat" />
+				<dialogue section="glitchcat" id="quest5" speaker="this" />
+			</section>
+		</operate>
+	</npc>
+	<npc id="alchemist" extends="alchemist">
+		<operate>
+			<run procedure="alchemist.endgame" if="getFlag('final_boss_defeat') && !getFlag('alchemist.win')" />
+			<section if="player.questComplete('alter_gem') && !player.hasQuest('glitchcat') && isDate(4,1,0)">
+				<dialogue section="glitchcat" id="quest1" speaker="this" />
+				<dialogue section="glitchcat" id="quest2" speaker="this" /><quest id="glitchcat" />
+			</section>
+			<section if="player.canCompleteQuest('glitchcat')">
+				<complete quest="glitchcat" /><dialogue section="glitchcat" id="quest3" speaker="this" />
+				<dialogue section="glitchcat" id="quest4" speaker="this" />
+				<run procedure="summon_glitchcat" />
+				<dialogue section="glitchcat" id="quest5" speaker="this" />
+			</section>
+		</operate>
+	</npc>
+</data>

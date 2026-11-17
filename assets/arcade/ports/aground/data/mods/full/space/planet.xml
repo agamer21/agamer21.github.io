@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tilesheet id="atmos.png" width="256" height="66" />
+	<include id="ground.xml" includeRoot="true" />
+	<parallax id="stars" mapBG="0" skyColor="0">
+		<layer p="0" glow="true" max_depth="10000"><tile sheet="night_bg.png" x="0" y="0" /></layer>
+		<layer p="0" glow="true" max_depth="10000">
+			<tile id="sun" animation="sun" fps="5" rise="5" set="20" dir="left" pathHeight="96" pathTop="-16" sun="true" />
+			<tile id="start_moon1" rise="19" set="6" dir="left" pathHeight="96" pathTop="-16" />
+			<tile id="start_moon2" rise="22" set="4" dir="left" pathHeight="96" pathTop="-16" />
+		</layer>
+		<layer p="0" py="0.0125" max_depth="10000"><tile sheet="atmos.png" dy="100" /></layer>
+		<layer p="0" py="0.0125" id="start.ground" scroll="0.0078125" max_depth="10000"><tile sheet="ground.png" x="1" dy="22" /></layer>
+		<layer p="0" py="0.0125" id="start.clouds" scroll="0.03125" max_depth="10000"><tile sheet="ground.png" x="0" dy="22" /></layer>
+		<layer type="back" />
+	</parallax>
+	<planet id="start" height="80">
+		<orbit id="start.orbit" width="576" height="64" background="stars" name="system.planet.start_orbit{char:c}" type="none" hasEnemy="true">
+			<area id="labyrinth_end" x="0" />
+			<area id="farming" x="64" />
+			<area id="science2" x="128" />
+			<area id="science1" x="192" />
+			<area id="start" x="256" />
+			<area id="magic1" x="320" />
+			<area id="magic2" x="384" />
+			<area id="science3" x="448" />
+			<area id="snow_island" x="512" />
+			<init><runAreaLoad /></init>
+			<onLoad>
+				<music id="orbit.start" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" />
+				<scene id="start.space" show="enemy_ship_free" with="fade" if="!getFlag('enemy_ship_free') && isBombardment(player) && (player.getVar('free.dragon_fighter') > 0 || player.getVar('free.dragon_bomber') > 0 || player.getVar('free.dragon_cruiser') > 0)" showToAll="true">
+					<action>setFlag('enemy_ship_free', true)</action><run procedure='enemy_ship.free' />
+				</scene>
+			</onLoad>
+		</orbit>
+	</planet>
+	<include id="dwarf/planet.xml" />
+	<include id="gas.xml" />
+	<tile id="start.gas.base" sheet="gas.2" x="0" />
+	<animation id="start.gas.base" count="3" length="15" color="8fa9a9" />
+	<parallax id="gas.orbit" mapBG="0" skyColor="0">
+		<layer p="0" glow="true" max_depth="10000"><tile sheet="night_bg.png" x="0" y="0" /></layer>
+		<layer p="0" glow="true" max_depth="10000">
+			<tile id="sun" animation="sun" fps="5" rise="5" set="20" dir="left" pathHeight="96" pathTop="-16" sun="true" />
+		</layer>
+		<layer p="0" py="0.0125" max_depth="10000"><tile id="start.gas.base" animation="start.gas.base" offsetY="22"  /></layer>
+		<layer p="0" py="0.0125" scroll="0.015625" max_depth="10000" color="51b092"><tile sheet="gas.1" x="0" dy="22" /></layer>
+		<layer p="0" py="0.0125" scroll="0.03125" max_depth="10000" color="6fa061"><tile sheet="gas.1" x="1" dy="22" /></layer>
+		<layer p="0" py="0.0125" scroll="0.0625" max_depth="10000" color="5db2b2"><tile sheet="gas.1" x="2" dy="22" /></layer>
+		<layer type="back" />
+	</parallax>
+  <planet id="start.gas" height="80">
+    <orbit id="start.gas" width="1024" height="96" background="gas.orbit" name="system.planet.start_orbit{char:d}" type="none" canEnterPlanet="(player.vehicle != null && player.vehicle.getId() == 'mecha_dragon_ship') || player.areas.exists('hidden_world')">
+      <area id="hidden_world" x="0" />
+      <spawner id="npc.alien.fighter" time="10000" count="2" fromX="2" toX="254" fromY="10" toY="54" ground="false" enabled="getFlag('dragon_sanctuary')"/>
+      <init><runAreaLoad /></init>
+      <onLoad><music id="orbit" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+    </orbit>
+  </planet>
+	<data type="textGroup" />
+	<textGroup id="planet.nav">
+		<text id="system" align="center" color="ffffff" scale="0.5" width="49" height="8" x="12" y="3" />
+		<text id="system.desc" reveal="true" color="ffffff" scale="0.5" width="86" x="7" y="125" />
+		<text id="planet" align="center" color="ffffff" scale="0.5" width="69" height="8" x="183" y="97" />
+		<text id="planet.desc" reveal="true" color="ffffff" scale="0.5" width="67" x="184" y="107" />
+	</textGroup>
+	<textGroup id="star.nav">
+		<text id="system" align="center" color="ffffff" scale="0.5" width="49" height="8" x="12" y="3" />
+		<text id="system.desc" reveal="true" color="ffffff" scale="0.5" width="86" x="7" y="125" />
+	</textGroup>
+	<system id="start" bgm="voyage" x="128" y="72">
+		<planet id="start.dwarf" tile="planet2" animation="planet.start.dwarf" orbit="orbit1" offsetX="-54" offsetY="-15" name="system.planet.start{char:b}" />
+		<planet id="start" tile="planet7" animation="planet.start" orbit="orbit2" offsetX="-23" offsetY="-4" name="system.planet.start{char:c}" />
+		<planet id="start.gas" tile="planet8" animation="planet.start.gas" orbit="orbit4" offsetX="53" offsetY="38" name="system.planet.start{char:d}" eval_desc="player.areas.exists('hidden_world')?'system.planet.desc>start.gas2':'system.planet.desc>start.gas'" />
+	</system>
+	
+	<data type="renderOverlay" />
+	<action>
+		function hasEnemyShip(area){
+			for(o in area.getAllObjects()) if(o.info.id.substring(0,6) == "alien.") return true; return false;
+		}
+		function displayEnemyLocator(player, p){
+			return player.hasItemStorehouse("alien_locator") &amp;&amp; (p.orbit.xml.get('hasEnemy') == 'true' || (player.areas.exists(p.orbit.id) &amp;&amp; hasEnemyShip(player.areas.get(p.orbit.id))));
+		}
+	</action>
+	<renderOverlay id="planet">
+		<tile id="alien_locator" renderer="static" animation="alien_locator" fps="10" scale="0.5" x="94/Tile.SIZE" y="62/Tile.SIZE" if="displayEnemyLocator(player, this.planet)" />
+		<tile id="distress_signal" renderer="static" animation="distress_signal" fps="10" x="94/Tile.SIZE-1" y="58/Tile.SIZE-1" if="eval(this.planet.orbit.xml.get('distress')) == true" />
+	</renderOverlay>
+	<renderOverlay id="star" />
+	
+	<include id="modules.xml" />
+	
+	<tilesheet id="radar.png" width="128" height="32" /><tile id="orbit.radar" sheet="radar.png" /><animation id="orbit.radar" count="12" />
+	<include id="ships.xml" />
+	<include id="scene.xml" />
+	
+	<tilesheet id="ftl.png" width="256" height="144" />
+	<tile id="ftl" sheet="ftl.png" />
+	<animation id="ftl.engage" x="0" count="12"><frame x="12" count="4" /></animation>
+	<animation id="ftl.disengage" x="0" count="12" reverse="true" />
+	<recipe id="default_jump_cost"><item id="exotic_matter" /></recipe>
+	
+	<include id="drones/drones.xml" />
+	<include id="sol/system.xml" />
+	<include id="unnature/planet.xml" />
+	<include id="depths/planet.xml" />
+	<include id="endgame.xml" />
+</data>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<player id="werewolf.colosseum" layers="player.werewolf" health="100" stamina="200" maxLevel="0" speed="15" canJumpIntoWater="false" talk_sfx="talking5" animation="player.werewolf" tileWidth="26" armColor="shirt" alwaysShowArms="true" eqArmBase="324">
+		<stat id="health" /><stat id="stamina" /><stat id="weight" /><stat id="critical" /><stat id="evasion" />
+		<stat id="speed" /><stat id="endurance" /><stat id="mine_speed" flag="allow_hotkeys" /><stat id="sight" flag="allow_hotkeys" />
+		<stat id="attack" /><stat id="defense" /><stat id="cut" /><stat id="mine" flag="allow_hotkeys" />
+		<stat id="range" /><stat id="trap" flag="hunter_hut" /><stat id="fishing" flag="fisherman_intro" />
+		<stat id="bargaining" flag="allow_hotkeys" /><stat id="spellcast" flag="spellcast" />
+		<slot id="weapon" noneItem="dexterous_paws" /><slot id="shield" renderPriority="3" noneItem="dexterous_paws" />
+		<slot id="pickaxe" flag="allow_hotkeys" noneItem="dexterous_paws" /><slot id="armor" renderPriority="1" /><slot id="head" />
+		<light tile="light.small" color="888888" />
+		<color id="shirt" name="create.character.fur" /><color id="hair" /><offset id="werewolf_hair" name="create.character.hair_style" /><color id="eyes" />
+		<onDeath><run object="player.colosseum" event="onDeath" /></onDeath>
+		<onKill><run object="player.colosseum" event="onKill" /></onKill>
+	</player>
+	<area id="colosseum.chimera" width="32" height="16" shouldLight="false" lightTiles="false" blockTeleport="true">
+		<tiles id="lab.floor1" start="0" end="1" />
+		<action>for(y in 6...12) for(x in 8...24) mine(x, y, 0, "lab.floor2");</action>
+		<structure id="medivat.full3" x="10" y="11" />
+		<structure id="medivat.full4" x="13" y="11" />
+		<structure id="earth.arm3" x="11" y="7" />
+		<structure id="earth.conveyor" x="11" y="11" />
+		<structure id="earth.light" x="9" y="7" />
+		<structure id="earth.light" x="13" y="7" />
+		<structure id="earth.computer3" x="15" y="11" />
+		<structure id="medivat.full2" x="18" y="11" />
+		<structure id="medivat.full1" x="21" y="11" />
+		<structure id="earth.arm3" x="19" y="7" />
+		<structure id="earth.conveyor" x="19" y="11" />
+		<structure id="earth.light" x="17" y="7" />
+		<structure id="earth.light" x="21" y="7" />
+		<object id="chimera" x="8" y="11" />
+		<structure id="colosseum_exit" x="18" y="11" />
+	</area>
+	<procedure id="colosseum.chimera">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 500);
+		var map = new StringMap(); map.set("chimera", 1); setGlobal("killCounts", map); changePlayer("werewolf.colosseum", false);
+		player.inventory.addItems(getItem("cheeseburger"), 6); player.inventory.addItems(getItem("cake"), 10); player.inventory.addItems(getItem("red_berries"), 8);
+		player.stats.get("attack").permaBuff(1); player.stats.get("speed").permaBuff(4);</action>
+		<equip id="werewolf_claws" fromInventory="false" />
+		<equip id="werewolf_heal_body" fromInventory="false" />
+		<equip id="werewolf_cunning_head" fromInventory="false" />
+		<teleport area="colosseum.chimera" x="22" y="10" temporary="true" />
+	</procedure>
+</data>

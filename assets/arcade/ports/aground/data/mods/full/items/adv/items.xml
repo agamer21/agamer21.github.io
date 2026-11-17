@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="sheet.xml" includeRoot="true" />
+	<tile id="cyborg_plate" sheet="sheet.png" x="0" offsetX="2" offsetY="2" />
+	<animation id="equipment.cyborg_plate.idle" x="41" count="8" offsetX="-3" offsetY="-2" />
+	<animation id="equipment.cyborg_plate.walk" x="55" count="10" />
+	<animation id="equipment.cyborg_plate.hit" x="49" count="6" />
+	<animation id="equipment.cyborg_plate.death" x="0" count="41" />
+	<item id="cyborg_plate" type="none" slot="armor" cost="0" weight="0" defense="8" icon="cyborg_plate.ico" animation="item6" unequip="false">
+		<action id="use" name="common.remove" closeWindow="false"><run procedure="remove_cyborg" /></action>
+		<equipCost health="-10" storage="power" cost="10" injured="true" />
+	</item>
+	
+	<recipe id="cyborg_plate" creates="cyborg_plate" type="operation_table" available="player.questComplete('cyborg2')">
+		<item id="titanium" count="6" /><item id="ship_parts" count="2" /><item id="carapace" count="2" />
+	</recipe>
+	
+	<tile id="cyborg_visor" sheet="sheet.png" x="65" offsetX="-1" />
+	<animation id="equipment.cyborg_visor.idle" x="8" count="8" />
+	<animation id="equipment.cyborg_visor.hit" x="24" count="6" offsetX="3" offsetY="2" />
+	<animation id="cyborg_visor.fire" x="16" count="8" />
+	<animation id="equipment.cyborg_visor.fire" x="30" count="8" offsetX="2" offsetY="2">
+		<append tile="cyborg_visor" animation="cyborg_visor.fire" />
+	</animation>
+	<animation id="cyborg_visor.bolt" x="4" count="4" offsetX="12" />
+	<animation id="cyborg_visor.bolt.impact" x="0" count="4" offsetX="12" />
+	<action>
+		function getEnemyInRange(o, range, attack, cut, spirit){
+			function filterDefense(o){return o.info.xml.nodeName() == "enemy" &amp;&amp; o.attackPower(attack, cut, spirit, null, false) > 0 &amp;&amp; o.getDefense(false, false, false) &lt; attack &amp;&amp; o.isHostile();}
+			var b = o.getClosest(range*Tile.SIZE, 1, true, filterDefense); return b == null?null:b.object;
+		}
+	</action>
+	<item id="cyborg_visor" type="none" slot="head" cost="0" weight="0" attack="12" power="25" range="10" underwater="true" icon="cyborg_visor.ico" unequip="false" enableAttack="true" desc="item.descriptions.auto_fire">
+		<action id="use" name="common.remove" closeWindow="false"><run procedure="remove_cyborg" /></action>
+		<equipCost storage="power" cost="1" />
+		<light tile="light.strong" color="ff9898" flicker="true" /><identify tile="cyborg.identify" acquire="cyborg.acquire" animation="cyborg.identify" color="f61414" />
+		<handleSecond><section if="(player.equipment.getStateI('head')&NO_ATTACK) == 0 && getEnemyInRange(player, this.info.range+player.stats.getInt('range'), this.info.attack, this.info.cut, this.info.spirit) != null && player.getPower() >= this.info.storageCost">
+			<action>player.renderer.setItemAnimation("head", "fire", false); player.losePower(this.info.storageCost);</action>
+			<invokeLater seconds="0.4"><projectile tile="cyborg_visor" animation="cyborg_visor.bolt" speed="5" dx="player.getDX()" spawner="player" damage="this.info.attack" range="this.info.range+player.stats.getInt('range')" width="24" fire_sfx="laser" underwater="true" if="player != null && player.area != null">
+				<hitEffect tile="cyborg_visor" animation="cyborg_visor.bolt.impact" color="ff9999" />
+			</projectile></invokeLater>
+		</section></handleSecond>
+	</item>
+	
+	<recipe id="cyborg_visor" creates="cyborg_visor" type="operation_table" available="player.questComplete('cyborg2')">
+		<item id="ship_parts" count="2" /><item id="carapace" count="2" />
+	</recipe>
+	
+	<tile id="cyborg_core" x="115" sheet="sheet.png" />
+	<animation id="equipment.cyborg_core.idle" count="8" />
+	<animation id="equipment.cyborg_core.fly.self" x="8" count="4" />
+	<animation id="equipment.cyborg_core.hover.self" equals="equipment.cyborg_core.fly.self" />
+	<item id="cyborg_core" type="none" slot="back" cost="0" weight="0" capacity="450" icon="cyborg_core.ico" unequip="false" animation="item8">
+		<action id="use" name="common.remove" closeWindow="false"><run procedure="remove_cyborg" /></action> 
+		<flight height="999" cost="0" speed="5" maxWeight="1000"><equipCost storage="power" cost="10" /></flight>
+		<equipCost storage="power" cost="-20" />
+	</item>
+	
+	<recipe id="cyborg_core" creates="cyborg_core" type="operation_table" available="player.questComplete('cyborg2')">
+		<item id="power_core" count="1" /><item id="antigrav_pack" count="1" /><item id="carapace" count="2" />
+	</recipe>
+	
+	<tile id="cyborg_chainsaw" sheet="sheet.png" x="103" offsetX="-7" />
+	<animation id="equipment.cyborg_chainsaw.idle" x="8" count="4" />
+	<animation id="equipment.cyborg_chainsaw" count="8" shift="2" />
+	<item id="cyborg_chainsaw" type="none" slot="weapon" cost="0" weight="0" attack="15" cut="16" power="40" knockback="5" stamina="1" icon="cyborg_chainsaw.ico" animation="item4" unequip="false" sfx="chainsaw" movement_walk="walk_rswing" underwater="true">
+		<action id="use" name="common.remove" closeWindow="false"><run procedure="remove_cyborg" /></action> 
+		<onHit type="tree" tile="chainsaw" animation="chainsaw.wood" />
+		<onHit type="enemy" tile="chainsaw" animation="chainsaw.blood" />
+	</item>
+	
+	<recipe id="cyborg_chainsaw" creates="cyborg_chainsaw" type="operation_table" available="player.questComplete('cyborg2')">
+		<item id="ship_parts" count="2" /><item id="carapace" count="2" />
+	</recipe>
+	
+	<tile id="cyborg_railgun" sheet="sheet.png" x="127" />
+	<animation id="equipment.cyborg_railgun" x="0" count="8" />
+	<animation id="equipment.cyborg_railgun.idle" x="8" count="8" />
+	<animation id="cyborg_railgun.bolt" x="20" count="4" offsetX="16" />
+	<animation id="cyborg_railgun.bolt.impact" x="16" count="4" offsetX="16" />
+	<item id="cyborg_railgun" type="none" slot="shield" use="attack" cost="0" weight="0" movement_walk="walk_lswing" attack="20" power="20" range="16" sfx="plasma_gun" icon="cyborg_railgun.ico" animation="item4" unequip="false" projectile="iron" underwater="true">
+		<action id="use" name="common.remove" closeWindow="false"><run procedure="remove_cyborg" /></action>
+		<projectile tile="cyborg_railgun" animation="cyborg_railgun.bolt" speed="5" pierce="true">
+			<hitEffect tile="cyborg_railgun" animation="cyborg_railgun.bolt.impact" color="ff9999" />
+		</projectile>
+	</item>
+	
+	<recipe id="cyborg_railgun" creates="cyborg_railgun" type="operation_table" available="player.questComplete('cyborg2')">
+		<item id="ship_parts" count="2" /><item id="magnegem" count="4" /><item id="carapace" count="2" />
+	</recipe>
+	
+	<tile id="exo_armor" sheet="sheet.png" x="151" offsetX="2" offsetY="2" />
+	<animation id="equipment.exo_armor.idle" x="41" count="8" offsetX="-3" offsetY="-2" />
+	<animation id="equipment.exo_armor.walk" x="55" count="10" />
+	<animation id="equipment.exo_armor.hit" x="49" count="6" />
+	<animation id="equipment.exo_armor.death" x="0" count="41" />
+	<item id="exo_armor" type="equipment" slot="armor" cost="6000" weight="10" defense="12" durability="250" icon="exo_armor.ico" animation="item4" breakable="false" durabilityName="common.fuel">
+		<action id="equip" /><action id="feed" alt="feed_all" alt_name="fuel_all" name="common.fuel" full="warning.max_fuel" auto="common.auto_fuel" select="common.add_fuel" sfx="fuel" />
+		<food id="exotic_matter" value="250" /><equipCost stamina="-5" />
+	</item>
+	
+	<tile id="exo_drill" sheet="sheet.png" x="216" />
+	<animation id="equipment.exo_drill.idle" x="0" count="1" />
+	<animation id="equipment.exo_drill" x="1" count="8" />
+	<item id="exo_drill" type="equipment" durability="10000" durabilityName="common.fuel" slot="pickaxe" cost="6000" mine="9" breakPower="2" behindPlayer="false" weight="10" icon="exo_drill.ico" animation="item4" breakable="false" movement_walk="walk_lswing" hideOffhand="true" durabilityWarning="warning.fuel" loop="laserdrill">
+		<action id="equip" /><action id="feed" alt="feed_all" alt_name="fuel_all" name="common.fuel" full="warning.max_fuel" auto="common.auto_fuel" select="common.add_fuel" sfx="fuel" />
+		<food id="exotic_matter" value="10000" />
+	</item>
+	
+	<tile id="exo_pack" x="245" sheet="sheet.png" />
+	<animation id="equipment.exo_pack.idle" count="8" />
+	<animation id="equipment.exo_pack.fly.self" x="8" count="4" />
+	<animation id="equipment.exo_pack.hover.self" equals="equipment.exo_pack.fly.self" />
+	<item id="exo_pack" type="tool" slot="back" action="equip" cost="8000" weight="0" capacity="450" icon="exo_pack.ico" animation="item8">
+		<flight height="999" cost="0" speed="5" maxWeight="1500"><equipCost storage="power" cost="5" /></flight>
+		<equipCost storage="power" cost="-5" />
+	</item>
+	
+	<tile id="stealth_helm" x="269" sheet="sheet.png" />
+	<animation id="equipment.stealth_helm.idle" count="8" offsetX="-1" />
+	<animation id="equipment.stealth_helm.hit" x="8" count="6" offsetX="2" offsetY="2" />
+	<animation id="stealth_helm.acquire" x="0" count="12" color="14bb22" />
+	<animation id="stealth_helm.identify" x="12" count="5" color="14bb22" />
+	<item id="stealth_helm" type="equipment" slot="head" oxygen="50" action="equip" cost="1750" weight="1" icon="stealth_helm.ico" animation="item8" hair="false" durability="5" durabilityName="common.cooldown" hide="true">
+		<light tile="light.strong" color="98ff98" flicker="true" /><identify tile="cyborg.identify" acquire="stealth_helm.acquire" animation="stealth_helm.identify" color="14bb22" />
+		<equipCost durability="-1" storage="power" cost="10" full="false" />
+	</item>
+	
+	<tile id="exo_sword" sheet="sheet.png" x="257" offsetX="-7" />
+	<animation id="equipment.exo_sword.idle" x="8" count="4" />
+	<animation id="equipment.exo_sword" count="8" shift="2" />
+	<item id="exo_sword" type="equipment" slot="weapon" cost="6000" weight="10" melee_range="1" attack="14" critical="true" knockback="5" stamina="2" icon="exo_sword.ico" durability="250" durabilityName="common.fuel" breakable="false" durabilityWarning="warning.fuel" animation="item4" movement_walk="walk_rswing" underwater="true" sfx="dragonsword">
+		<action id="equip" /><action id="feed" alt="feed_all" alt_name="fuel_all" name="common.fuel" full="warning.max_fuel" auto="common.auto_fuel" select="common.add_fuel" sfx="fuel" />
+		<food id="exotic_matter" value="100" />
+	</item>
+	
+	<tile id="exo_gun" sheet="sheet.png" x="225" />
+	<animation id="equipment.exo_gun.idle" x="16" count="4" />
+	<animation id="equipment.exo_gun" x="8" count="8" />
+	<animation id="exo_gun.bolt" x="4" count="4" offsetX="16" />
+	<animation id="exo_gun.bolt.impact" x="0" count="4" offsetX="16" />
+	<item id="exo_gun" type="equipment" slot="shield" use="attack" cost="6000" repeat="12" weight="8" attack="14" range="8" icon="exo_gun.ico" movement_walk="walk_lswing" durability="100" durabilityName="common.fuel" breakable="false" durabilityWarning="warning.fuel" underwater="true" sfx="laser">
+		<action id="equip" /><action id="feed" alt="feed_all" alt_name="fuel_all" name="common.fuel" full="warning.max_fuel" auto="common.auto_fuel" select="common.add_fuel" sfx="fuel" />
+		<food id="exotic_matter" value="50" />
+		<projectile tile="exo_gun" animation="exo_gun.bolt" speed="4" critical="true">
+			<hitEffect tile="exo_gun" animation="exo_gun.bolt.impact" color="99ccff" />
+		</projectile>
+	</item>
+	
+	<recipe id="exo_sword" creates="exo_sword" type="exo_factory" available="getFlag('exo_sword')" value="0">
+		<item id="ship_parts" count="2" /><item id="chromium" count="5" /><item id="titanium" count="5" />
+	</recipe>
+	<recipe id="exo_gun" creates="exo_gun" type="exo_factory" available="getFlag('exo_gun')" value="0">
+		<item id="ship_parts" count="2" /><item id="chromium" count="5" /><item id="titanium" count="5" />
+	</recipe>
+	<recipe id="exo_drill" creates="exo_drill" type="exo_factory" value="0">
+		<item id="ship_parts" count="2" /><item id="chromium" count="5" /><item id="titanium" count="5" />
+	</recipe>
+	<recipe id="exo_armor" creates="exo_armor" type="exo_factory" available="getFlag('exo_armor')" value="0">
+		<item id="ship_parts" count="2" /><item id="chromium" count="5" /><item id="titanium" count="5" />
+	</recipe>
+	<recipe id="exo_pack" creates="exo_pack" type="exo_factory" available="getFlag('exo_pack')">
+		<item id="antigrav_pack" count="1" /><item id="power_core" count="1" />
+	</recipe>
+	<recipe id="stealth_helm" creates="stealth_helm" type="exo_factory" available="getFlag('stealth_helm')" value="0">
+		<item id="ship_parts" count="1" /><item id="exotic_matter" count="1" />
+	</recipe>
+	
+	<recipe id="research_exo_sword" creates="exo_sword" title="common.research_item{item:>>item.names.exo_sword}" type="research" fuel_cost="1000" available="getFlag('colony_world') && !getFlag('exo_sword')">
+		<onComplete><action>queue.removeItems(this, queue.getCount(this, false), false); setFlag('exo_sword', true);</action><show tooltip="popup" text="common.research_complete{item:[item=exo_sword]}{structure:[color=770000][text=common.exo_factory][/color]}" x="0.5" y="0.25" hold="80" /></onComplete>
+	</recipe>
+	<recipe id="research_exo_gun" creates="exo_gun" title="common.research_item{item:>>item.names.exo_gun}" type="research" fuel_cost="1000" available="getFlag('colony_world') && !getFlag('exo_gun')">
+		<onComplete><action>queue.removeItems(this, queue.getCount(this, false), false); setFlag('exo_gun', true);</action><show tooltip="popup" text="common.research_complete{item:[item=exo_gun]}{structure:[color=770000][text=common.exo_factory][/color]}" x="0.5" y="0.25" hold="80" /></onComplete>
+	</recipe>
+	<recipe id="research_exo_armor" creates="exo_armor" title="common.research_item{item:>>item.names.exo_armor}" type="research" fuel_cost="1000" available="getFlag('colony_world') && !getFlag('exo_armor')">
+		<onComplete><action>queue.removeItems(this, queue.getCount(this, false), false); setFlag('exo_armor', true);</action><show tooltip="popup" text="common.research_complete{item:[item=exo_armor]}{structure:[color=770000][text=common.exo_factory][/color]}" x="0.5" y="0.25" hold="80" /></onComplete>
+	</recipe>
+	<recipe id="research_exo_pack" creates="exo_pack" title="common.research_item{item:>>item.names.exo_pack}" type="research" fuel_cost="1000" available="getFlag('colony_world') && !getFlag('exo_pack')">
+		<onComplete><action>queue.removeItems(this, queue.getCount(this, false), false); setFlag('exo_pack', true);</action><show tooltip="popup" text="common.research_complete{item:[item=exo_pack]}{structure:[color=770000][text=common.exo_factory][/color]}" x="0.5" y="0.25" hold="80" /></onComplete>
+	</recipe>
+	<recipe id="research_stealth_helm" creates="stealth_helm" title="common.research_item{item:>>item.names.stealth_helm}" type="research" fuel_cost="1000" available="getFlag('colony_world') && !getFlag('stealth_helm')">
+		<onComplete><action>queue.removeItems(this, queue.getCount(this, false), false); setFlag('stealth_helm', true);</action><show tooltip="popup" text="common.research_complete{item:[item=stealth_helm]}{structure:[color=770000][text=common.exo_factory][/color]}" x="0.5" y="0.25" hold="80" /></onComplete>
+	</recipe>
+	
+	<item id="shovel2" type="tool" cost="750" weight="6" icon="shovel2.ico" action="fill" maxFill="9" underwater="true" />
+	
+	<item id="alien_locator" type="tool" cost="0" weight="0" icon="alien_locator.ico" animation="item12" />
+	<tile id="alien_locator" sheet="sheet.png" x="283" /><animation id="alien_locator" count="11" />
+</data>

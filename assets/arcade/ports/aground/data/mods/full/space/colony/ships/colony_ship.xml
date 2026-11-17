@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+    <include id="colony.xml" />
+	<tile id="colony_ship.exterior" sheet="colony.1" x="4">
+		<tile sheet="colony.1" x="0" /><tile sheet="colony.1" x="1" /><tile sheet="colony.1" x="2" /><tile sheet="colony.1" x="3" />
+	</tile>
+	<tile id="colony_ship.interior" sheet="colony.1" x="10">
+		<tile sheet="colony.1" x="5" /><tile sheet="colony.1" x="6" /><tile sheet="colony.1" x="7" /><tile sheet="colony.1" x="8" /><tile sheet="colony.1" x="9" />
+	</tile>
+	<structure id="colony_ship" extends="station.module" tile="colony_ship.exterior">
+		<hitbox x="Tile.SIZE*5" y="Tile.SIZE*3" width="this.width-13*Tile.SIZE" height="this.height-7*Tile.SIZE" />
+	</structure>
+	<tile id="colony.command" sheet="colony.2" />
+	<animation id="colony.command.idle" equals="item6" />
+	<structure id="colony.command" tile="colony.command" />
+	
+	<tile id="colony._shields" sheet="colony.8" x="0" />
+	<animation id="colony.shields.idle"><frame visible="false" length="6" /><append tile="fighter._shields" animation="fighter.shields.idle" /></animation>
+	<animation id="colony.shields.over" x="0" count="6" />
+	<structure id="colony.shields" tile="colony._shields" extends="fighter.shields" room="false" />
+	
+	<object id="colony.medibed" tile="earth.doodad" animation="earth.medibed.idle" overlapNPC="true" layer="item" fps="10">
+		<over><action>this.playAnimation("earth.medibed.over", null, true)</action></over>
+		<out><action>this.playAnimation("earth.medibed.idle", null, true)</action></out>
+	</object>
+	<structure id="colony.quarters" extends="earth.door" animation="earth.door" type="none">
+		<tooltip section="actions" id="rest_quarters" />
+		<operate><action>player.fullRestore();</action><save sleep="true" /></operate>
+	</structure>
+	<structure id="colony.museum" extends="earth.door" animation="earth.door" type="none">
+		<operate><teleport area="colony.museum" x="4" y="15" allowReturn="true" with="ellipse" /></operate>
+	</structure>
+	
+	<tile id="colony.food_dealer" sheet="colony.3" x="0" offsetX="16" offsetY="16" />
+	<animation id="colony.food_dealer.idle" count="4" />
+	<animation id="colony.food_dealer.talk" x="4" count="10" />
+	<tile id="colony.mineral_dealer" sheet="colony.3" x="14" offsetX="16" offsetY="16" />
+	<animation id="colony.mineral_dealer.idle" count="4" />
+	<animation id="colony.mineral_dealer.talk" x="4" count="10" />
+	<tile id="colony.weaps_dealer" sheet="colony.3" x="48" offsetX="16" offsetY="16" />
+	<animation id="colony.weaps_dealer.idle" count="6" />
+	<animation id="colony.weaps_dealer.talk" x="6" count="10" />
+	<tile id="colony.waiter_bot" sheet="colony.3" x="28" />
+	<animation id="colony.waiter_bot.idle" count="4" />
+	<animation id="colony.waiter_bot.walk" x="4" count="10" />
+	<animation id="colony.waiter_bot.serve" x="14" count="6" />
+	<animation id="colony.waiter_bot.clear" x="14" count="6" reverse="true" />
+	
+	<tile id="colony.mineral_market" sheet="colony.4" />
+	<tile id="colony.weaps_market" sheet="colony.4" x="1" />
+	<animation id="colony.shop.idle"><frame x="0" /><frame x="2" /><frame x="4" /><frame x="6" /><frame x="8" /><frame x="10" /></animation>
+	<structure id="colony.weaps_market" tile="colony.weaps_market" animation="colony.shop" type="market" restock="5000" name="weaps_market" fullHeight="true" powered="true" show_offers="this.isPowered()">
+		<tile id="colony.weaps_dealer" name="bot" animation="colony.weaps_dealer.idle" fps="10" y="1" />
+		<item id="ultra_backpack" min="1" max="1" if="true" />
+		<item id="revolver" min="1" max="1" />
+		<item id="shotgun" min="1" max="1" />
+		<item id="bullet" min="20" max="40" />
+		<item id="shell" min="10" max="20" />
+		<item id="rocket_launcher" min="1" max="1" />
+		<item id="missile" min="5" max="10" />
+		<item id="chainsaw" min="1" max="1" />
+		<item id="net" min="10" max="15" />
+		<item id="trap" min="5" max="10" />
+		<item id="map" min="1" max="1" if="player.getItemCount('map') == 0" />
+		<item id="clock" min="1" max="1" if="player.getItemCount('clock') == 0" />
+		
+		<select count="3">
+			<item id="laser_drill" min="1" max="1" />
+			<item id="energy_shield" min="1" max="1" />
+			<item id="space_armor" min="1" max="1" />
+			<item id="space_helm" min="1" max="1" />
+			<item id="laser_gun" min="1" max="1" />
+		</select>
+		
+		<item id="antigrav_pack" min="1" max="1" />
+		<item id="worker_bot" min="1" max="1" />
+		<item id="war_bot" min="1" max="1" />
+		<item id="nuke" min="5" max="10" />
+		<item id="antimatter_missile" min="0" max="5" />
+		
+		<buy type="equipment" /><buy type="tool" /><buy type="object" />
+		<over><action>var t = this.getTileById("bot"); if(t != null) t.setAnimation("colony.weaps_dealer.talk")</action></over>
+		<out><action>var t = this.getTileById("bot"); if(t != null) t.setAnimation("colony.weaps_dealer.idle")</action></out>
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section><run procedure="sci1_coin_quest" /></operate>
+	</structure>
+	
+	<structure id="colony.mineral_market" tile="colony.mineral_market" animation="colony.shop" type="market" restock="5000" name="mineral_market" fullHeight="true" powered="true" show_offers="this.isPowered()">
+		<tile id="colony.mineral_dealer" name="bot" animation="colony.mineral_dealer.idle" fps="10" y="1" />
+		<item id="wood" min="10" max="30" />
+		<item id="coal" min="10" max="20" />
+		<item id="iron" min="10" max="30" />
+		<item id="quartz" min="5" max="10" />
+		<item id="gold" min="5" max="10" />
+		<item id="diamond" min="5" max="10" />
+		<item id="iron_bar" min="5" max="10" />
+		<item id="steel_bar" min="5" max="10" />
+		<item id="sulfur" min="10" max="20" />
+		<item id="refined_oil" min="5" max="10" />
+		<item id="silicon" min="5" max="10" />
+		<item id="titanium" min="10" max="20" />
+		<item id="uranium" min="5" max="10" />
+		<item id="ship_parts" min="5" max="5" />
+		<item id="exotic_matter" min="2" max="2" />
+		<item id="ai_core" min="5" max="5" />
+		<buy type="resource" />
+		<over><action>var t = this.getTileById("bot"); if(t != null) t.setAnimation("colony.mineral_dealer.talk")</action></over>
+		<out><action>var t = this.getTileById("bot"); if(t != null) t.setAnimation("colony.mineral_dealer.idle")</action></out>
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section><run procedure="sci1_coin_quest" /></operate>
+	</structure>
+	
+	<structure id="colony.food_market" width="48" height="32" type="market" restock="5000" name="food_market" fullHeight="true" speechY="-8" powered="true" show_offers="this.isPowered()" dismantleWarning="warning.dismantle_cafeteria">
+		<tile id="colony.food_dealer" name="bot" animation="colony.food_dealer.idle" fps="10" y="-0.5" />
+		<item id="red_berries" min="5" max="20" />
+		<item id="ice_berries" min="5" max="20" />
+		<item id="fruit" min="20" max="40" />
+		<item id="sugar" min="10" max="20" />
+		<item id="pig" min="0" max="1" />
+		<item id="chicken" min="0" max="2" />
+		<item id="cow" min="0" max="1" />
+		<item id="pie" min="40" max="60" />
+		<item id="toothfish" min="40" max="60" />
+		<item id="steak" min="10" max="20" />
+		<item id="bread" min="40" max="60" />
+		<item id="pancakes" min="40" max="60" />
+		<item id="hamburger" min="10" max="20" />
+		<item id="pizza" min="10" max="20" />
+		<item id="omelette" min="10" max="20" />
+		<item id="cheeseburger" min="10" max="20" />
+		<item id="cooking_oil" min="5" max="10" />
+		<item id="fried_rice" min="5" max="10" />
+		<item id="bacon" min="5" max="10" />
+		<item id="ice_cream" min="5" max="10" />
+		<item id="cloth" min="20" max="40" />
+		<item id="wheat_seed" min="2" max="4" />
+		<item id="orchard_seed" min="2" max="4" />
+		<item id="sugar_seed" min="1" max="1" />
+		<item id="cotton_seed" min="1" max="1" />
+		<item id="rice_seed" min="1" max="1" />
+		<item id="bush_seed" min="0" max="1" />
+		<item id="red_bush_seed" min="0" max="1" />
+		<buy type="food" /><buy type="animal" />
+		<over><action>var t = this.getTileById("bot"); if(t != null) t.setAnimation("colony.food_dealer.talk")</action></over>
+		<out><action>var t = this.getTileById("bot"); if(t != null) t.setAnimation("colony.food_dealer.idle")</action></out>
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section><run procedure="sci1_coin_quest" /></operate>
+	</structure>
+	
+	<tile id="colony.cafeteria" sheet="colony.7" x="34"><tile sheet="colony.7" x="35" /></tile>
+	<tile id="colony.cafeteria.sign" sheet="colony.7" x="12" />
+	<animation id="colony.cafeteria.sign" x="6" count="1" />
+	<animation id="colony.cafeteria.operate" x="0" count="6" />
+	<animation id="colony.cafeteria.open" x="6" count="16" />
+	<animation id="colony.cafeteria.close" x="6" count="16" reverse="true" />
+	
+	<tile id="colony.factory" sheet="colony.6" />
+	<animation id="colony.factory.idle" equals="single" />
+	<animation id="colony.factory.operate" x="1" count="10" />
+	<animation id="colony.factory.open" x="11" count="10" />
+	<animation id="colony.factory.close" x="11" count="10" reverse="true" />
+	<structure id="colony.factory" tile="colony.factory" type="crafting" name="factory" fullHeight="true" powered="true">
+		<recipe type="airport" includeObjects="false" />
+		<recipe type="car_factory" />
+		<recipe type="factory" />
+		<recipe type="net" />
+		<recipe type="workshop" />
+		<recipe type="smelter" />
+		<recipe type="workbench" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<over><play object="this" animation="open" /><action>this.loopAnimation("operate")</action></over>
+		<out><play object="this" animation="close" /><action>this.loopAnimation("idle")</action></out>
+	</structure>
+	
+	<tile id="colony.drone_factory" sheet="colony.5" />
+	<animation id="colony.drone_factory.idle" equals="single" />
+	<animation id="colony.drone_factory.operate" x="11" count="10" />
+	<animation id="colony.drone_factory.open" x="25" count="10" />
+	<animation id="colony.drone_factory.close" x="25" count="10" reverse="true" />
+	<structure id="colony.drone_factory" tile="colony.drone_factory" type="crafting" name="factory" title="common.earth_lab" fullHeight="true" spawnY="this.tile_y+2" powered="true" display="structure>colony.drone_factory">
+		<recipe type="drone_lab" /><recipe type="advanced_lab" /><recipe type="tech_resource" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<over><play object="this" animation="open" /><action>this.loopAnimation("operate")</action></over>
+		<out><play object="this" animation="close" /><action>this.loopAnimation("idle")</action></out>
+	</structure>
+	
+	<animation id="colony.exo_factory.idle" equals="single" />
+	<animation id="colony.exo_factory.operate" x="1" count="10"><append tile="colony.drone_factory" animation="colony.drone_factory.operate" behind="true" /></animation>
+	<animation id="colony.exo_factory.open"><frame visible="false" length="6" /><frame x="21" count="4" /><append tile="colony.drone_factory" animation="colony.drone_factory.open" behind="true" /></animation>
+	<animation id="colony.exo_factory.close"><frame x="21" count="4" reverse="true" /><frame visible="false" length="6" /><append tile="colony.drone_factory" animation="colony.drone_factory.close" behind="true" /></animation>
+	<structure id="colony.exo_factory" extends="colony.drone_factory" exo_mech_equip="true">
+		<recipe type="exo_factory" />
+		<listItem title="structure.tooltip.change_equip" enabled="return getExoInFactory(this) != null" fail="warning.no_vehicle_equip">
+			<set id="v" value="getExoInFactory(this)" /><run procedure="exo_mech_equip" />
+		</listItem>
+	</structure>
+	
+	<item id="drone_factory_upgrade" type="blueprint" cost="20000" weight="0" icon="blueprint.ico">
+		<action id="upgrade" upgrade="colony.drone_factory" structure="colony.exo_factory" dismantle="false">
+			<item id="chromium" count="5" />
+			<item id="ship_parts" count="3" />
+			<item id="ai_core" count="3" />
+		</action>
+	</item>
+	
+	<structure id="colony_ship.interior" extends="station.module.interior" tile="colony_ship.interior">
+		<exit x="-1" y="11" height="2" /><exit x="-1" y="23" height="2" /><exit x="4" y="23" height="2" />
+		<exit x="width" y="11" height="2" /><exit x="width-5" y="11" height="2" />
+		<vexit x="21" y="height" width="2" /><vexit x="21" y="height-3" width="2" />
+		<addedToArea><section if="built">
+			<structure id="colony.command" x="this.tile_x+4" y="this.tile_y-24" />
+			<object id="ship.doorh" x="this.tile_x+13" y="this.tile_y-24" />
+			<object id="ship.doorv" x="this.tile_x+7" y="this.tile_y-23" /><object id="ship.doorv" x="this.tile_x+10" y="this.tile_y-23" />
+			<structure id="colony.shields" x="this.tile_x+10" y="this.tile_y-26" />
+			<object id="ship.doorh" x="this.tile_x+13" y="this.tile_y-26" />
+			<object id="ship.doorh" x="this.tile_x+16" y="this.tile_y-19" /><object id="ship.doorh" x="this.tile_x+16" y="this.tile_y-20" />
+			<object id="ship.doorh" x="this.tile_x+23" y="this.tile_y-17" /><object id="ship.doorh" x="this.tile_x+38" y="this.tile_y-17" />
+			<object id="ship.doorv" x="this.tile_x+25" y="this.tile_y-24" /><object id="ship.doorv" x="this.tile_x+36" y="this.tile_y-24" />
+			<object id="ship.doorv" x="this.tile_x+26" y="this.tile_y-14" /><object id="ship.doorv" x="this.tile_x+35" y="this.tile_y-14" />
+			<object id="medical_bot" x="this.tile_x+17.4375" y="this.tile_y-21" />
+			<object id="colony.medibed" x="this.tile_x+16.75" y="this.tile_y-17" /><object id="colony.medibed" x="this.tile_x+18.25" y="this.tile_y-17" />
+			<object id="colony.medibed" x="this.tile_x+16.75" y="this.tile_y-19" /><object id="colony.medibed" x="this.tile_x+18.25" y="this.tile_y-19" />
+			<structure id="colony.quarters" x="this.tile_x+24" y="this.tile_y-15" /><structure id="colony.museum" x="this.tile_x+36" y="this.tile_y-15" />
+			<structure id="colony.mineral_market" x="this.tile_x+28" y="this.tile_y-15" /><structure id="colony.weaps_market" x="this.tile_x+31" y="this.tile_y-15" />
+			<structure id="colony.cafeteria" x="this.tile_x+26" y="this.tile_y-22" /><structure id="colony.food_market" x="this.tile_x+33" y="this.tile_y-22" />
+			<object id="colony.waiter_bot" x="this.tile_x+27" y="this.tile_y-22" />
+			<structure id="colony.factory" x="this.tile_x+7" y="this.tile_y-11" />
+			<structure id="colony.drone_factory" x="this.tile_x+14" y="this.tile_y-11" />
+			<tiles from="colony_tiles.png" x="this.tile_x+1" y="this.tile_y-28"><tile id="empty" color="000000" /><tile id="no_place" color="ff0000" layer="back" /></tiles>
+		</section></addedToArea>
+	</structure>
+		
+	<tile id="colony.plate" sheet="colony.9" x="0" offsetY="-4" />
+	<tile id="colony.food1" sheet="colony.9" x="1" offsetY="-4" />
+	<tile id="colony.food2" sheet="colony.9" x="2" offsetY="-4" />
+	<tile id="colony.food3" sheet="colony.9" x="3" offsetY="-4" />
+	<tile id="colony.cup" sheet="colony.9" x="4" offsetY="3" />
+	<tile id="colony.drink1" sheet="colony.9" x="5" offsetY="3" />
+	<tile id="colony.drink2" sheet="colony.9" x="6" offsetY="3" />
+	<tile id="colony.drink3" sheet="colony.9" x="7" offsetY="3" />
+	<tile id="colony.drink4" sheet="colony.9" x="8" offsetY="3" />
+	
+	<item id="weap_market_blueprint" type="blueprint" cost="20000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="colony.weaps_market" underground="true">
+			<item id="ai_core" count="2" /><item id="ship_parts" count="2" /><item id="chromium" count="8" /><item id="silicon" count="8" />
+		</action>
+	</item>
+	<item id="mineral_market_blueprint" type="blueprint" cost="20000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="colony.mineral_market" underground="true">
+			<item id="ai_core" count="2" /><item id="ship_parts" count="2" /><item id="chromium" count="8" /><item id="silicon" count="8" />
+		</action>
+	</item>
+	<item id="cafeteria_blueprint" type="blueprint" cost="20000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="colony.cafeteria2" underground="true">
+			<item id="ai_core" count="4" /><item id="ship_parts" count="4" /><item id="chromium" count="8" /><item id="silicon" count="8" />
+		</action>
+	</item>
+	<include id="colony_mobile.xml" />
+</data>

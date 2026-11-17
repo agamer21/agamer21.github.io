@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<enemy id="colosseum.final_boss" extends="final_boss">
+		<onDeath>
+			<shake count="10" dx="2" seconds="2" />
+			<remove objectsById="final_boss.launcher" /><remove objectsById="final_boss.launcher2" />
+			<object id="colosseum.final_boss.stage2" x="(this.xPos+78)/Tile.SIZE" y="(this.yTile-78)/Tile.SIZE">if(this.renderer != null) this.renderer.scaleX = this.getFacing();</object>
+			<stop complete="true" />
+		</onDeath>
+	</enemy>
+	<enemy id="colosseum.final_boss.stage2" extends="final_boss.stage2">
+		<onDeath>
+			<action if="exists('orbs')">while(orbs.length > 0) area.removeObject(orbs.pop());</action>
+			<shake count="10" dx="2" seconds="2" />
+			<stop complete="true" />
+		</onDeath>
+	</enemy>
+	<area id="colosseum.final_boss" x="96" width="64" height="30">
+		<tiles id="cells1" start="0" end="1" />
+		<spreadTiles x="128" y="15" tile="cells2" on="cells1" layer="back" count="500" />
+		<mine start="0" end="1" />
+		<tiles id="blackstone.ore" y="0" /><tiles id="blackstone.ore" y="29" />
+		<tiles id="blackstone.ore" x="96" /><tiles id="blackstone.ore" x="159" />
+		<ore id="lava" start="0" end="1" percent="1" tile="blackstone.ore" />
+		<structure id="alien_hq.heart" x="120" y="20" />
+		<object id="colosseum.final_boss" x="121.75" y="21.25" />
+		<structure id="colosseum_exit" x="102" y="28" />
+	</area>
+	<procedure id="colosseum.final_boss">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 1000);
+		var map = new StringMap(); map.set("colosseum.final_boss.stage2", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.stats.get("health").permaBuff(50); player.restoreHealth(); player.stats.get("spellcast").permaBuff(3);
+		player.inventory.addItems(getItem("meteor_book"), 1); player.inventory.addItems(getItem("flood_book"), 1);
+		player.inventory.addItems(getItem("growth_book"), 1); player.inventory.addItems(getItem("spikes_book"), 1);
+		player.inventory.addItems(getItem("tornado_book"), 1); player.inventory.addItems(getItem("focus_gem"), 20);
+		player.inventory.addItems(getItem("cheeseburger"), 10); player.inventory.addItems(getItem("cake"), 40); player.stats.get("speed").permaBuff(4);</action>
+		<equip id="staff" fromInventory="false" name="umeteor_book,mstaff.fire&" forceName="false" />
+		<equip id="shield_book" fromInventory="false" />
+		<equip id="magne_queen_drill" fromInventory="false" />
+		<equip id="spirit_robes" fromInventory="false" />
+		<equip id="witch_hat" fromInventory="false" />
+		<equip id="plant_bag" fromInventory="false" />
+		<equip id="black_cat" fromInventory="false" />
+		<teleport area="colosseum.final_boss" x="104" y="28" temporary="true" />
+	</procedure>
+</data>

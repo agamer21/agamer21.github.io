@@ -1,0 +1,30 @@
+<sheets><tilesheet id='lifepod.1' sheet='lifepod.png' width='16' height='16' offsetX="-8" offsetY="-8">
+	<image frame='0' x='0' y='0' width='24' height='21' offsetX='4' offsetY='8' />
+	<image frame='1' x='24' y='0' width='23' height='21' offsetX='4' offsetY='8' />
+	<image frame='2' x='0' y='21' width='25' height='25' offsetX='3' offsetY='4' />
+	<image frame='3' x='47' y='0' width='24' height='21' offsetX='4' offsetY='8' />
+	<image frame='4' x='25' y='21' width='23' height='21' offsetX='4' offsetY='8' />
+	<image frame='5' x='48' y='21' width='25' height='25' offsetX='3' offsetY='4' />
+	<image frame='6' x='0' y='46' width='24' height='21' offsetX='4' offsetY='8' />
+	<image frame='7' x='0' y='67' width='23' height='21' offsetX='4' offsetY='8' />
+	<image frame='8' x='24' y='46' width='25' height='25' offsetX='3' offsetY='4' />
+	<image frame='9' x='49' y='46' width='24' height='21' offsetX='4' offsetY='8' />
+	<image frame='10' x='0' y='88' width='16' height='16' offsetX='8' offsetY='8' />
+	<image frame='13' x='24' y='71' width='16' height='16' offsetX='8' offsetY='8' />
+	<image frame='20' x='24' y='87' width='16' height='16' offsetX='8' offsetY='8' />
+	<image frame='21' x='40' y='71' width='16' height='16' offsetX='8' offsetY='8' />
+	<image frame='22' x='56' y='71' width='16' height='16' offsetX='8' offsetY='8' />
+	<image frame='23' x='40' y='87' width='16' height='16' offsetX='8' offsetY='8' />
+	<image frame='24' x='25' y='42' width='14' height='3' offsetX='9' offsetY='23' />
+	<image frame='25' x='56' y='87' width='17' height='20' offsetX='9' offsetY='6' />
+	<image frame='11' equals='10' offsetX='8' offsetY='8' />
+	<image frame='12' equals='10' offsetX='8' offsetY='8' />
+	<image frame='14' equals='13' offsetX='8' offsetY='8' />
+	<image frame='15' equals='10' offsetX='8' offsetY='8' />
+	<image frame='16' equals='10' offsetX='8' offsetY='8' />
+	<image frame='17' equals='10' offsetX='8' offsetY='8' />
+	<image frame='18' equals='10' offsetX='8' offsetY='8' />
+	<image frame='19' equals='10' offsetX='8' offsetY='8' />
+</tilesheet><tilesheet id='lifepod.2' sheet='lifepod.png' width='16' height='10'>
+	<image frame='0' x='0' y='89' width='16' height='10' offsetX='0' offsetY='0' />
+</tilesheet></sheets>

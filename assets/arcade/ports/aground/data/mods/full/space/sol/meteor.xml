@@ -1,0 +1,29 @@
+<sheets>
+<tilesheet id='meteor.1' sheet='meteor.png' width='20' height='20' offsetX="-5" offsetY="-9">
+	<image frame='0' x='128' y='32' width='31' height='30' offsetX='1' offsetY='2' />
+	<image frame='1' x='128' y='64' width='30' height='31' offsetX='1' offsetY='1' />
+	<image frame='2' x='128' y='0' width='30' height='32' offsetX='1' offsetY='0' />
+	<image frame='3' x='125' y='127' width='30' height='30' offsetX='1' offsetY='2' />
+	<image frame='4' x='128' y='95' width='30' height='31' offsetX='1' offsetY='1' />
+	<image frame='5' x='125' y='157' width='29' height='30' offsetX='2' offsetY='2' />
+</tilesheet>
+<tilesheet id='meteor.2' sheet='meteor.png' width='28' height='28' offsetX="-10" offsetY="-15">
+	<image frame='0' x='123' y='190' width='36' height='47' offsetX='6' offsetY='1' />
+	<image frame='1' x='86' y='237' width='36' height='47' offsetX='6' offsetY='1' />
+	<image frame='2' x='48' y='238' width='37' height='47' offsetX='6' offsetY='0' />
+	<image frame='3' x='122' y='237' width='36' height='46' offsetX='7' offsetY='2' />
+	<image frame='4' x='48' y='190' width='38' height='48' offsetX='5' offsetY='0' />
+	<image frame='5' x='86' y='190' width='37' height='47' offsetX='5' offsetY='1' />
+</tilesheet>
+<tilesheet id='meteor.3' sheet='meteor.png' width='64' height='64'>
+	<image frame='0' x='0' y='190' width='48' height='64' offsetX='8' offsetY='0' />
+	<image frame='1' x='0' y='127' width='63' height='63' offsetX='0' offsetY='1' />
+	<image frame='2' x='0' y='0' width='64' height='64' offsetX='0' offsetY='0' />
+	<image frame='3' x='64' y='0' width='64' height='63' offsetX='0' offsetY='1' />
+	<image frame='4' x='0' y='64' width='64' height='63' offsetX='0' offsetY='1' />
+	<image frame='5' x='64' y='64' width='64' height='63' offsetX='0' offsetY='1' />
+	<image frame='6' x='63' y='127' width='62' height='62' offsetX='0' offsetY='2' />
+	<image frame='7' x='0' y='254' width='43' height='26' offsetX='9' offsetY='38' />
+	<image frame='8' x='0' y='280' width='13' height='5' offsetX='27' offsetY='59' />
+</tilesheet>
+</sheets>

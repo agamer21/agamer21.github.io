@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="bunker" exp="1000"><item id="magnegem" count="10" /></quest>
+	<quest id="station" exp="1000"><item id="exotic_matter" count="4" /></quest>
+	
+	<include id="underground.xml" />
+	<tile id="bunker" sheet="underground.1" />
+	<animation id="bunker.off" x="0" count="1" />
+	<animation id="bunker.on" x="9" count="4" />
+	<animation id="bunker_door.closed" x="1" count="4" />
+	<animation id="bunker_door.closing" x="5" count="4" reverse="true" />
+	<animation id="bunker_door.opening" x="5" count="4" />
+	
+	<structure id="bunker" tile="bunker" sleep="true" powered="true" name="enter" behind="true" fullHeight="true" repairType="mechanic">
+		<tile id="bunker" animation="bunker_door.closed" fps="15" y="0" />
+		<over><action>var door = this.getTileById("bunker"); if(door != null) door.playAnimation("bunker_door.opening", false)</action></over>
+		<out><action>var door = this.getTileById("bunker"); if(door != null) door.playAnimation("bunker_door.closing", false, function(p){p.playAnimation("bunker_door.closed", true);})</action></out>
+		<operate>
+			<choose>
+				<section if="this.isPowered()">
+					<action>player.restoreHealth();</action>
+				</section>
+				<dialogue section="warning" id="not_powered_house" />
+			</choose>
+			<action if="var b = this.getBounds(); b.inflate(Tile.SIZE*3, 0); var s = area.getStructure(b, true, function(s){return s.info.id == 'o2_generator';}); return s != null && s.isPowered()">player.restoreOxygen();</action>
+			<action>player.restoreStamina();</action><save sleep="true" />
+		</operate>
+		<light tile="light.large" color="9ce1eb" offsetX="30" offsetY="45" />
+	</structure>
+	<item id="bunker_blueprint" type="blueprint" cost="7500" weight="0" icon="blueprint.ico">
+		<action id="build" structure="bunker" underground="true">
+			<item id="steel_bar" count="16" /><item id="silicon" count="2" />
+		</action>
+	</item>
+
+	<tile id="bunker_kitchen" sheet="underground.2" offsetX="-3" />
+	<animation id="bunker_kitchen.off" x="5" count="1" />
+	<animation id="bunker_kitchen.on" x="0" count="1" />
+	<animation id="bunker_kitchen.over" x="1" count="4" />
+	<structure id="bunker_kitchen" tile="bunker_kitchen" type="crafting" powered="true" name="kitchen" title="common.bunker_kitchen" display="bunker_kitchen" connectTo="bunker" fullHeight="true">
+		<recipe type="kitchen3" />
+		<recipe type="kitchen2" />
+		<recipe type="kitchen" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<light tile="light.default" color="9ce1eb" offsetX="20" offsetY="45" />
+	</structure>
+	<item id="bunker_kitchen_blueprint" type="blueprint" cost="7500" weight="0" icon="blueprint.ico">
+		<action id="build" structure="bunker_kitchen" underground="true">
+			<constraint enabled="s != null && s.info.id == 'bunker'" x="s.xPos+s.info.width" fail="warning.structure_adjacent_right{structure:[structure=bunker]}">
+				s = area.getStructureInTile(tile_x-3, tile_y);
+			</constraint>
+			<item id="steel_bar" count="16" /><item id="silicon" count="2" />
+		</action>
+	</item>
+		
+	<tile id="bunker_depot" sheet="underground.3" />
+	<animation id="bunker_depot.idle" equals="single" />
+	<animation id="bunker_depot.closing" count="8" reverse="true" />
+	<animation id="bunker_depot.opening" count="8" />
+	<structure id="bunker_depot" tile="bunker_depot" type="storehouse" main="true" name="enter" title="common.bunker_depot" fullHeight="true" powered="true" repairType="mechanic">
+		<operate>
+			<action if="!player.hasItemStorehouse('stone_pickaxe')">this.inventory.addItems(Item.get("stone_pickaxe"), 1)</action>
+			<action if="!player.hasItemStorehouse('stone_axe')">this.inventory.addItems(Item.get("stone_axe"), 1)</action>
+		</operate>
+		<light tile="light.default" color="9ce1eb" offsetX="33" offsetY="45" />
+	</structure>
+	<item id="bunker_depot_blueprint" type="blueprint" cost="7500" weight="0" icon="blueprint.ico">
+		<action id="build" structure="bunker_depot" underground="true">
+			<item id="steel_bar" count="16" /><item id="silicon" count="2" />
+		</action>
+	</item>
+		
+	<tile id="hydroponics" sheet="underground.4" />
+	<animation id="hydroponics.off" x="3" count="1" />
+	<animation id="hydroponics.on" x="5" count="6" />
+	<animation id="hydroponics.apples" x="0" count="2" />
+	<animation id="hydroponics.apples.idle" x="2" count="1" />
+	<animation id="hydroponics.sugar" x="11" count="2" />
+	<animation id="hydroponics.sugar.idle" x="13" count="1" />
+	<animation id="hydroponics.wheat" x="14" count="2" />
+	<animation id="hydroponics.wheat.idle" x="16" count="1" />
+	<animation id="hydroponics.cotton" x="17" count="2" />
+	<animation id="hydroponics.cotton.idle" x="19" count="1" />
+	<animation id="hydroponics.rice" x="20" count="2" />
+	<animation id="hydroponics.rice.idle" x="22" count="1" />
+	<animation id="hydroponics.pumpkin" x="23" count="2" />
+	<animation id="hydroponics.pumpkin.idle" x="25" count="1" />
+	<animal id="hydroponics.orchard_seed" flip="false" includeActions="false" growthAnim="hydroponics.apples">
+		<farmable item="wood" min="1" max="4" time="20" />
+		<farmable item="fruit" min="1" max="4" time="20" />
+		<tile id="hydroponics" animation="hydroponics.apples.idle" x="0" y="0" />
+	</animal>
+	<animal id="hydroponics.sugar_seed" flip="false" includeActions="false" growthAnim="hydroponics.sugar">
+		<farmable item="sugar" min="1" max="4" time="20" />
+		<tile id="hydroponics" animation="hydroponics.sugar.idle" x="0" y="0" />
+	</animal>
+	<animal id="hydroponics.wheat_seed" flip="false" includeActions="false" growthAnim="hydroponics.wheat">
+		<farmable item="wheat" min="2" max="8" time="20" />
+		<tile id="hydroponics" animation="hydroponics.wheat.idle" x="0" y="0" />
+	</animal>
+	<animal id="hydroponics.cotton_seed" flip="false" includeActions="false" growthAnim="hydroponics.cotton">
+		<farmable item="cotton" min="2" max="8" time="20" />
+		<tile id="hydroponics" animation="hydroponics.cotton.idle" x="0" y="0" />
+	</animal>
+	<animal id="hydroponics.rice_seed" flip="false" includeActions="false" growthAnim="hydroponics.rice">
+		<farmable item="rice" min="1" max="4" time="30" />
+		<tile id="hydroponics" animation="hydroponics.rice.idle" x="0" y="0" />
+	</animal>
+	<animal id="hydroponics.pumpkin_seed" flip="false" includeActions="false" growthAnim="hydroponics.pumpkin">
+		<farmable item="pumpkin" min="1" max="4" time="20" />
+		<tile id="hydroponics" animation="hydroponics.pumpkin.idle" x="0" y="0" />
+	</animal>
+	<structure id="hydroponics" tile="hydroponics" animals="1" type="pen" name="crop" prefix="hydroponics." powered="true" selectAnimal="structure.plant" fullHeight="true" attachFarm="bunker_farm">
+		<sprite>
+			<tile x="4" showUnpowered="false" /><animal i="0" showUnpowered="false" /><self />
+		</sprite>
+		<animal id="orchard_seed" />
+		<animal id="sugar_seed" />
+		<animal id="wheat_seed" />
+		<animal id="cotton_seed" />
+		<animal id="rice_seed" />
+		<animal id="pumpkin_seed" />
+		<light tile="light.default" color="f9f5c8" offsetX="16" offsetY="16" />
+		<operate><dialogue section="warning" id="not_powered" if="!this.isPowered()" /></operate>
+	</structure>
+	<item id="hydroponics_blueprint" type="blueprint" cost="7500" weight="0" icon="blueprint.ico">
+		<action id="build" structure="hydroponics" underground="true">
+			<item id="steel_bar" count="16" /><item id="silicon" count="2" />
+		</action>
+	</item>
+
+	<tile id="bunker_factory" sheet="underground.5" />
+	<animation id="bunker_factory.off" x="8" count="1" />
+	<animation id="bunker_factory.on" x="9" count="1" />
+	<animation id="bunker_factory.open" x="9" count="8" />
+	<animation id="bunker_factory.close" x="9" count="8" reverse="true" />
+	<animation id="bunker_factory.operate" x="0" count="8" />
+	<structure id="bunker_factory" tile="bunker_factory" type="crafting" name="factory" display="bunker_factory" title="common.bunker_factory" powered="true" fullHeight="true" repairType="mechanic">
+		<recipe type="car_factory" />
+		<recipe type="spfactory" />
+		<recipe type="factory" />
+		<recipe type="net" />
+		<recipe type="workshop" />
+		<recipe type="smelter" />
+		<recipe type="workbench" />
+		<over><play object="this" animation="open" /><action>this.loopAnimation("operate")</action></over>
+		<out><play object="this" animation="close" /><action>this.loopAnimation("idle")</action></out>
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<light tile="light.large" color="9ce1eb" offsetX="53" offsetY="45" />
+	</structure>
+	<item id="bunker_factory_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="bunker_factory" underground="true">
+			<item id="ship_parts" count="1" /><item id="steel_bar" count="16" /><item id="silicon" count="2" />
+		</action>
+	</item>
+		
+	<tile id="bunker_market" sheet="underground.7" />
+	<animation id="bunker_market.idle" x="16" count="8" />
+	<animation id="bunker_market.screen" x="8" count="8" offsetY="-75" glow="true" />
+	<structure id="bunker_market" tile="bunker_market" fullHeight="true" behind="true" priority="-2" remove="false">
+		
+	</structure>
+	<tile id="bunker_merchant.food" sheet="underground.6" offsetX="2" offsetY="-3" />
+	<animation id="bunker_merchant.idle">
+		<frame x="1" length="4" />
+		<frame x="0" length="2" />
+		<frame x="1" length="32" />
+	</animation>
+	<animation id="bunker_merchant.food.idle" equals="bunker_merchant.idle" />
+	<animation id="bunker_merchant.food.talk" x="2" count="8"><append tile="bunker_market" animation="bunker_market.screen" behind="true" /></animation>
+	<structure id="bunker_merchant.food" tile="bunker_merchant.food" type="market" restock="5000" name="food_market" fullHeight="true" speechX="-8">
+		<item id="red_berries" min="5" max="20" />
+		<item id="ice_berries" min="5" max="20" />
+		<item id="fruit" min="20" max="40" />
+		<item id="sugar" min="10" max="20" />
+		<item id="pig" min="1" max="1" />
+		<item id="chicken" min="1" max="2" />
+		<item id="cow" min="1" max="1" />
+		<item id="pie" min="40" max="60" />
+		<item id="toothfish" min="40" max="60" />
+		<item id="steak" min="10" max="20" />
+		<item id="bread" min="40" max="60" />
+		<item id="pancakes" min="40" max="60" />
+		<item id="hamburger" min="10" max="20" />
+		<item id="pizza" min="10" max="20" />
+		<item id="omelette" min="10" max="20" />
+		<item id="cheeseburger" min="10" max="20" />
+		<item id="cooking_oil" min="5" max="10" />
+		<item id="fried_rice" min="5" max="10" />
+		<item id="bacon" min="5" max="10" />
+		<item id="ice_cream" min="5" max="10" />
+		<item id="cloth" min="20" max="40" />
+		<item id="wheat_seed" min="2" max="4" />
+		<item id="orchard_seed" min="2" max="4" />
+		<item id="sugar_seed" min="1" max="1" />
+		<item id="cotton_seed" min="1" max="1" />
+		<item id="rice_seed" min="1" max="1" />
+		<item id="bush_seed" min="1" max="1" />
+		<item id="red_bush_seed" min="1" max="1" />
+		<buy type="food" /><buy type="animal" />
+		<over><action>this.loopAnimation("talk")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<operate><run procedure="sci1_coin_quest" /></operate>
+		<light tile="light.default" color="9ce1eb" offsetX="16" offsetY="11" />
+	</structure>
+	<tile id="bunker_merchant.weaps" sheet="underground.6" x="28" offsetX="-4" offsetY="-1" />
+	<animation id="bunker_merchant.weaps.idle" equals="bunker_merchant.food.idle" />
+	<animation id="bunker_merchant.weaps.talk" equals="bunker_merchant.food.talk" />
+	<structure id="bunker_merchant.weaps" tile="bunker_merchant.weaps" type="market" restock="5000" name="weaps_market" fullHeight="true" speechX="-8">
+		<item id="ultra_backpack" min="1" max="1" if="true" />
+		<item id="revolver" min="1" max="1" />
+		<item id="shotgun" min="1" max="1" />
+		<item id="bullet" min="20" max="40" />
+		<item id="shell" min="10" max="20" />
+		<item id="steel_pickaxe" min="1" max="1" />
+		<item id="steel_axe" min="1" max="1" />
+		<item id="steel_hammer" min="1" max="1" />
+		<item id="steel_sword" min="1" max="1" />
+		<item id="steel_armor" min="1" max="1" />
+		<item id="kite_shield" min="1" max="1" />
+		<item id="rocket_launcher" min="1" max="1" />
+		<item id="missile" min="5" max="10" />
+		<item id="chainsaw" min="1" max="1" />
+		<item id="net" min="10" max="15" />
+		<item id="trap" min="5" max="10" />
+		<item id="map" min="1" max="1" if="player.getItemCount('map') == 0" />
+		<item id="clock" min="1" max="1" if="player.getItemCount('clock') == 0" />
+		<buy type="equipment" /><buy type="tool" /><buy type="object" />
+		<over><action>this.loopAnimation("talk")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<operate><run procedure="sci1_coin_quest" /></operate>
+		<light tile="light.default" color="9ce1eb" offsetX="16" offsetY="11" />
+	</structure>
+	<tile id="bunker_merchant.ore" sheet="underground.6" x="10" />
+	<animation id="bunker_merchant.ore.idle" count="6" />
+	<animation id="bunker_merchant.ore.open" x="14" count="4" />
+	<animation id="bunker_merchant.ore.close" x="14" count="4" reverse="true" />
+	<animation id="bunker_merchant.ore.talk" x="6" count="8"><append tile="bunker_market" animation="bunker_market.screen" behind="true" /></animation>
+	<npc id="bunker.ore_merchant" tile="empty" indicatorY="-3">
+		<operate><choose if="!getFlag('final_boss_defeat')">
+			<quest if="!getFlag('ore_merchant')" />
+			<choose if="!isBombardment(player) || player.hasQuest('bunker')">
+				<quest if="!player.hasQuest('bunker')" />
+				<quest if="player.canCompleteQuest('bunker')" />
+				<quest if="player.questComplete('bunker') && !player.hasQuest('station')" />
+				<quest if="player.canCompleteQuest('station')" />
+			</choose>
+		</choose></operate>
+	</npc>
+	<structure id="bunker_merchant.ore" tile="bunker_merchant.ore" type="market" restock="5000" name="mineral_market" fullHeight="true" speechX="-8">
+		<item id="wood" min="10" max="30" />
+		<item id="coal" min="10" max="20" />
+		<item id="iron" min="10" max="30" />
+		<item id="quartz" min="5" max="5" />
+		<item id="gold" min="5" max="5" />
+		<item id="diamond" min="5" max="5" />
+		<item id="iron_bar" min="5" max="5" />
+		<item id="steel_bar" min="5" max="5" />
+		<item id="sulfur" min="10" max="20" />
+		<item id="refined_oil" min="5" max="5" />
+		<item id="silicon" min="5" max="10" />
+		<item id="titanium" min="10" max="20" />
+		<item id="uranium" min="5" max="5" />
+		<buy type="resource" />
+		<over><play object="this" animation="open" /><action>this.loopAnimation("talk")</action></over>
+		<out><play object="this" animation="close" /><action>this.loopAnimation("idle")</action></out>
+		<addedToArea>
+			<set id="npc" value="area.getNPC('bunker.ore_merchant')" /><choose>
+				<object id="bunker.ore_merchant" x="this.tile_x" y="this.tile_y" if="npc == null" />
+				<move object="npc" x="this.tile_x" y="this.tile_y" />
+			</choose>
+		</addedToArea>
+		<operate><section if="!getFlag('final_boss_defeat')">
+			<section if="!getFlag('ore_merchant')">
+				<action>setFlag('ore_merchant', true)</action><dialogue section="merchants" id="intro1" speaker="player" />
+				<dialogue section="merchants" id="intro2" /><dialogue section="merchants" id="intro3" /><stop />
+			</section>
+			<section if="!isBombardment(player) || player.hasQuest('bunker')">
+				<section if="!player.hasQuest('bunker')">
+					<dialogue section="merchants" id="bunker1" /><dialogue section="merchants" id="bunker2" /><quest id="bunker" /><stop />
+				</section>
+				<section if="player.canCompleteQuest('bunker')">
+					<complete quest="bunker" /><dialogue section="merchants" id="bunker3" />
+					<action>player.addMultipleItems("bunker_blueprint", 1, "bunker_kitchen_blueprint", 1, "bunker_depot_blueprint", 1, "hydroponics_blueprint", 1, "bunker_factory_blueprint", 1, "bunker_farm_blueprint", 1)</action><stop />
+				</section>
+				<section if="player.questComplete('bunker') && !player.hasQuest('station')">
+					<dialogue section="merchants" id="station1" /><dialogue section="merchants" id="station2" /><quest id="station" /><stop />
+				</section>
+				<section if="player.canCompleteQuest('station')">
+					<complete quest="station" /><dialogue section="merchants" id="station3" /><dialogue section="merchants" id="station4" />
+					<action>player.addMultipleItems("small_module_blueprint", 1, "large_module_blueprint", 1, "station_dock_blueprint", 1, "connector_module_blueprint", 1)</action><stop />
+				</section>
+			</section>
+			</section><run procedure="sci1_coin_quest" />
+		</operate>
+		<light tile="light.default" color="9ce1eb" offsetX="16" offsetY="11" />
+	</structure>
+	<object id="bunker_market.counter" tile="bunker_market" animation="item8" layer="item" behind="true" />
+	
+	<tilesheet id="vending.png" width="32" height="32" />
+	<tile id="vending_machine" sheet="vending.png" />
+	<animation id="vending_machine.off" equals="single" />
+	<animation id="vending_machine.on" x="1" count="9" />
+	<structure id="vending_machine" tile="vending_machine" type="market" name="operate" restock="5000" powered="true" fullHeight="true" restockMessage="none" show_offers="this.isPowered()">
+		<item id="wood" min="10" max="30" />
+		<item id="coal" min="10" max="20" />
+		<item id="iron" min="10" max="30" />
+		<item id="sulfur" min="10" max="20" />
+		<item id="diamond" min="5" max="5" />
+		<item id="steel_bar" min="5" max="5" />
+		<item id="gold_bar" min="5" max="5" />
+		<item id="refined_oil" min="5" max="5" />
+		<item id="silicon" min="5" max="10" />
+		<item id="titanium" min="10" max="20" />
+		<item id="uranium" min="5" max="5" />
+		<item id="ultra_backpack" min="1" max="1" if="true" />
+		<item id="revolver" min="1" max="1" />
+		<item id="shotgun" min="1" max="1" />
+		<item id="bullet" min="20" max="40" />
+		<item id="shell" min="10" max="20" />
+		<item id="rocket_launcher" min="1" max="1" />
+		<item id="missile" min="5" max="10" />
+		<item id="chainsaw" min="1" max="1" />
+		<item id="map" min="1" max="1" if="player.getItemCount('map') == 0" />
+		<item id="clock" min="1" max="1" if="player.getItemCount('clock') == 0" />
+		<item id="hamburger" min="10" max="20" />
+		<item id="pizza" min="10" max="20" />
+		<item id="omelette" min="10" max="20" />
+		<item id="cheeseburger" min="10" max="20" />
+		<item id="cooking_oil" min="5" max="10" />
+		<item id="fried_rice" min="5" max="10" />
+		<item id="ice_cream" min="5" max="10" />
+		<item id="cloth" min="20" max="40" />
+		<item id="wheat_seed" min="2" max="4" />
+		<item id="orchard_seed" min="2" max="4" />
+		<item id="sugar_seed" min="1" max="1" />
+		<item id="cotton_seed" min="1" max="1" />
+		<item id="rice_seed" min="1" max="1" />
+		<buy type="food" /><buy type="animal" /><buy type="equipment" /><buy type="tool" /><buy type="object" /><buy type="resource" />
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<light tile="light.default" color="9ce1eb" offsetX="16" offsetY="8" />
+	</structure>
+	<item id="vending_machine_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="vending_machine" underground="true">
+			<item id="ship_parts" count="1" /><item id="steel_bar" count="8" /><item id="silicon" count="8" />
+		</action>
+	</item>
+		
+	<tile id="bunker_farm" sheet="underground.8" />
+	<animation id="bunker_farm.off" x="0" count="1" />
+	<animation id="bunker_farm.on" x="9" count="1" />
+	<animation id="bunker_farm.open" x="9" count="8" />
+	<animation id="bunker_farm.close" x="9" count="8" reverse="true" />
+	<animation id="bunker_farm.operate" x="1" count="8" />
+	<structure id="bunker_farm" tile="bunker_farm" type="farm" name="farm" display="bunker_farm" selectAnimal="structure.plant" powered="true" fullHeight="true" repairType="mechanic">
+		<over><play object="this" animation="open" /><action>this.loopAnimation("operate")</action></over>
+		<out><play object="this" animation="close" /><action>this.loopAnimation("idle")</action></out>
+		<operate><section if="!this.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section></operate>
+		<light tile="light.large" color="9ce1eb" offsetX="53" offsetY="45" />
+	</structure>
+	<item id="bunker_farm_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="bunker_farm" underground="true">
+			<item id="ship_parts" count="1" /><item id="steel_bar" count="16" /><item id="silicon" count="2" />
+		</action>
+	</item>
+</data>

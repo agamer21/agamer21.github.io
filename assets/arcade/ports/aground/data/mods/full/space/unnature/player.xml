@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<action>
+		function unequipAll(e, o, incUnequip){
+			for(s in e.getSlots()){
+				e.unequip(s, o); if(incUnequip &amp;&amp; e.getItem(s) != null) e.forceEquip(s, o);
+			}
+		}
+	</action>
+	<procedure id="changePlayerForm"><action>
+		unequipAll(player.equipment, player, true); unequipAll(player.vanity, player, true); var old = player; changePlayer(id); player.experience = old.experience;
+		copyMap(old.stickyItems, player.stickyItems); copyMap(old.seen_items, player.seen_items); player.inventory.copyFrom(old.inventory);
+		var len = old.hotkeys.length; for(i in 0...len) player._setHotkey(i, old.hotkeys[i]);
+		for(p in old.stats) if(p.perma_buff != 0){var s = player.stats.get(p.id); s.permaBuff(p.perma_buff-s.perma_buff);}
+		for(s in old.skills.skills.keys()) player.skills.set(s, old.skills.get(s)); player.fullRestore();
+	</action></procedure>
+	
+	<procedure id="player.werewolf">
+		<action>
+			s = player.createSimpleSprite('idle'); id = "player.werewolf"; var r = player.renderer; s.x = r.x; s.y = r.y; s.scaleX = r.scaleX;
+			if(!player.offsets.exists("werewolf_hair")){var ar = getOffsets("werewolf_hair"); player.offsets.set("werewolf_hair", ar[player.offsets.get("hair").hidden?ar.length-1:0].offset);}
+			var s = player.stats.get("speed"); if(s.perma_buff &lt; 4) s.permaBuff(4-s.perma_buff);
+		</action>
+		<run procedure="changePlayerForm" />
+		<action>
+			player.equipment.forceEquip("weapon", player, getItem("werewolf_paws").asItem());
+			player.equipment.forceEquip("armor", player, getItem("werewolf_body").asItem());
+			player.equipment.forceEquip("head", player, getItem("werewolf_head").asItem());
+			var r = player.renderer; r.scaleX = s.scaleX; r.alpha = 0; r.parent.addChild(s);
+		</action>
+		<lerp object="s" alpha="0" seconds="1" modal="false" /><lerp object="player" alpha="1" seconds="1" modal="false" /><invokeLater><action>s.parent.removeChild(s);</action></invokeLater>
+	</procedure>
+	
+	<include id="werewolf.xml" includeRoot="true" />
+	<tile id="player.werewolf" sheet="werewolf.png" offsetX="-11" />
+	<tile id="player.werewolf.arms" sheet="werewolf.png" x="476" />
+	<tile id="player.werewolf.arms.fx" sheet="werewolf.png" x="487" />
+	<animation id="player.werewolf.arms.fx.attack" x="0" count="2"><frame visible="false" length="4" /><frame x="2" count="2" /><frame visible="false" length="2" /></animation>
+	<animation id="player.werewolf.arms.fx.mine" x="4" count="8" /> 
+	<item id="werewolf_paws" type="none" slot="weapon" use="block" cost="0" weight="0" attack="6" cut="3" mine="3" delay="1" stamina="5" scaleCost="false" icon="werewolf_paws.ico" unequip="false" sfx="shadowcat_attack" underwater="true" vehicleFail="getFlag('splicer_defeat')?null:'warning.werewolf_vehicle{item:[item='+this.info.id+']}'" hideArms="true" behindPlayer="false">
+		<use slot="shield" /><use slot="pickaxe" /><hit delay="5" />
+		<onHit type="tree" tile="chainsaw" animation="chainsaw.wood" />
+		<onHit type="enemy" tile="chainsaw" animation="chainsaw.blood" />
+	</item>
+	<tile id="werewolf_paws" sheet="werewolf.png" x="312" />
+	<animation id="equipment.werewolf_paws.weapon.idle" x="57" count="1" color="shirt" colorScale="1.564" />
+	<animation id="equipment.werewolf_paws.weapon.walk" x="71" count="10" color="shirt" colorScale="1.564" />
+	<animation id="equipment.werewolf_paws.weapon.hit" x="51" count="6" color="shirt" colorScale="1.564" />
+	<animation id="equipment.werewolf_paws.weapon.death" x="10" count="41" color="shirt" colorScale="1.564" />
+	<animation id="equipment.werewolf_paws.weapon.swim" x="66" count="5" length="2" color="shirt" colorScale="1.564" />
+	<animation id="equipment.werewolf_paws.shield" x="81" count="1" offsetX="1" color="shirt" colorScale="1.564" />
+	<animation id="equipment.werewolf_paws.shield.idle" equals="equipment.werewolf_paws.shield" />
+	<animation id="equipment.werewolf_paws.pickaxe" x="58" count="8" color="shirt" colorScale="1.564"><append tile="player.werewolf.arms.fx" animation="player.werewolf.arms.fx.mine" /></animation>
+	<animation id="equipment.werewolf_paws.weapon" x="0" count="10" color="shirt" colorScale="1.564"><append tile="player.werewolf.arms.fx" animation="player.werewolf.arms.fx.attack" /></animation>
+	
+	<item id="werewolf_claws" extends="werewolf_paws" attack="12" cut="7" mine="7" icon="werewolf_claws.ico" animation="item6" />
+	<item id="dexterous_paws" extends="werewolf_paws" icon="dexterous_paws.ico" animation="item6" />
+	<tile id="werewolf_claws" sheet="werewolf.png" x="394" />
+	<animation id="equipment.werewolf_claws.weapon.idle" x="57" count="1"><append tile="werewolf_paws" animation="equipment.werewolf_paws.weapon.idle" behind="true" /></animation>
+	<animation id="equipment.werewolf_claws.weapon.walk" x="71" count="10"><append tile="werewolf_paws" animation="equipment.werewolf_paws.weapon.walk" behind="true" /></animation>
+	<animation id="equipment.werewolf_claws.weapon.hit" x="51" count="6"><append tile="werewolf_paws" animation="equipment.werewolf_paws.weapon.hit" behind="true" /></animation>
+	<animation id="equipment.werewolf_claws.weapon.death" x="10" count="41"><append tile="werewolf_paws" animation="equipment.werewolf_paws.weapon.death" behind="true" /></animation>
+	<animation id="equipment.werewolf_claws.weapon.swim" x="66" count="5" length="2"><append tile="werewolf_paws" animation="equipment.werewolf_paws.weapon.swim" behind="true" /></animation>
+	<animation id="equipment.werewolf_claws.shield" x="81" count="1" offsetX="1"><append tile="werewolf_paws" animation="equipment.werewolf_paws.shield" behind="true" /></animation>
+	<animation id="equipment.werewolf_claws.shield.idle" equals="equipment.werewolf_claws.shield" />
+	<animation id="equipment.werewolf_claws.pickaxe" x="58" count="8"><append tile="werewolf_paws" animation="equipment.werewolf_paws.pickaxe" behind="true" /></animation>
+	<animation id="equipment.werewolf_claws.weapon" x="0" count="10"><append tile="werewolf_paws" animation="equipment.werewolf_paws.weapon" behind="true" /></animation>
+	
+	<item id="werewolf_body" type="none" slot="armor" cost="0" weight="0" defense="5" capacity="50" icon="werewolf_body.ico" unequip="false" />
+	<item id="werewolf_heal_body" extends="werewolf_body" defense="8" capacity="100" oxygen="50" icon="werewolf_heal_body.ico" desc="item.descriptions.boost_stat{stat:endurance}{value:1}">
+		<equipCost health="-5" />
+		<onEquip><action>player.stats.get("endurance").add(1)</action></onEquip>
+		<onUnequip><action>player.stats.get("endurance").add(-1)</action></onUnequip>
+	</item>
+	<item id="werewolf_stealth_body" extends="werewolf_body" defense="7" icon="werewolf_stealth_body.ico" desc="item.descriptions.boost_stat{stat:speed}{value:2}" durability="5" durabilityName="common.cooldown" hide="true">
+		<description text="item.descriptions.boost_stat{stat:evasion}{value:5}" />
+		<description text="item.descriptions.cost_per_s{value:[tile=stamina] [text=common.stamina] +5}" />
+		<equipCost durability="-1" />
+		<handleSecond><action>player.addStamina(5);</action></handleSecond>
+		<onEquip><action>player.stats.get("speed").add(2); player.stats.get("evasion").add(5);</action></onEquip>
+		<onUnequip><action>player.stats.get("speed").add(-2); player.stats.get("evasion").add(-5);</action></onUnequip>
+	</item>
+	<item id="werewolf_head" type="none" slot="head" cost="0" weight="0" icon="werewolf_head.ico" viewHidden="true" unequip="false">
+		<light tile="light.default" color="98ff98" /><identify tile="cyborg.identify" acquire="stealth_helm.acquire" animation="stealth_helm.identify" color="14bb22" />
+	</item>
+	<item id="werewolf_cunning_head" extends="werewolf_head" icon="werewolf_cunning_head.ico" desc="item.descriptions.boost_stat{stat:sight}{value:1}">
+		<description text="item.descriptions.boost_stat{stat:critical}{value:5}" />
+		<description text="item.descriptions.spirit_detector" />
+		<onEquip><action>player.stats.get("sight").add(1); player.stats.get("critical").add(5);</action><radar id="spirit_detector_werewolf" tile="spirit_detector" animation="spirit_detector" padding="2" overwrite="false" centerOn="player" scale="16" structureId="spirit_detector_structure" objectId="spirit_detector_object" /></onEquip>
+		<onUnequip><action>player.stats.get("sight").add(-1); player.stats.get("critical").add(-5);</action><radar id="spirit_detector_werewolf" hide="true" /></onUnequip>
+		<light tile="light.largest" color="98ff98" />
+	</item>
+		
+	<tile id="werewolf_ferocious_head" sheet="werewolf.png" x="582" /><!-- NOTE this has to be updated when hairstyles are added -->
+	<tile id="player.werewolf.base" sheet="werewolf.png" x="9"><tile sheet="werewolf.png" x="6" /></tile>
+	<animation id="werewolf_ferocious_head.head" x="25" count="20" />
+	<animation id="werewolf_ferocious_head.eyes" x="0" count="5"><frame visible="false" length="15" /></animation>
+	<animation id="werewolf_ferocious_head.chin" x="45" count="20" />
+	<animation id="werewolf_ferocious_head.belly" x="5" count="1" offsetX="11" />
+	<animation id="werewolf_ferocious_head.hair" x="63" count="20" offsetX="11" offset="werewolf_hair" />
+	<animation id="equipment.werewolf_ferocious_head" x="5" count="20">
+		<append tile="werewolf_ferocious_head" animation="werewolf_ferocious_head.head" color="shirt" colorScale="1.564" behind="true" />
+		<append tile="player.werewolf" animation="werewolf_ferocious_head.belly" behind="true" />
+		<append tile="player.werewolf.base" animation="single" color="shirt" colorScale="1.564" behind="true" />
+		<append tile="werewolf_ferocious_head" animation="werewolf_ferocious_head.eyes" color="eyes" colorScale="1.564" />
+		<append tile="werewolf_ferocious_head" animation="werewolf_ferocious_head.chin" />
+		<append tile="player.werewolf" animation="werewolf_ferocious_head.hair" color="hair" colorScale="1.564" />
+	</animation>
+	<animation id="equipment.werewolf_ferocious_head.idle" equals="hidden" />
+	<animation id="player.werewolf.howl"><frame visible="false" length="100" /></animation>
+	<item id="werewolf_ferocious_head" extends="werewolf_head" icon="werewolf_ferocious_head.ico" stamina="60">
+		<ability hotkey="8" icon="werewolf_ferocious_head.ico" available="player.renderer.equipComplete == null">
+			<action>player.loseStamina(this.getStamina(player)); player.renderer.useItem(this); player.hidden.set(null); player.playAnimation("howl"); player.renderer.onComplete = null;</action>
+			<object id="chilling_howl" x="(player.getCenterX()-64)/Tile.SIZE" y="(player.getCenterY()+48)/Tile.SIZE" pre="true">this.vars.set("spawner", player); this.vars.set("damage", 3);</object>
+		</ability>
+		<light tile="light.largest" color="98ff98" />
+	</item>
+		
+	<item id="werewolf_dna" type="none" icon="unnature_dna.ico" cost="0" weight="1">
+		<description eval="'unnature.evolves{item:[item='+this.xml.get('rightIcon')+']}'" />
+		<action id="use" closeWindow="false"><choose>
+			<action if="player.info.id != 'player.werewolf'">player.showWarning(getText('unnature.only_werewolf'))</action>
+			<action if="player.isEquipped(this.xml.get('rightIcon'))">player.showWarning(getText('unnature.already_evolved{item:[item='+this.xml.get('rightIcon')+']}'))</action>
+			<action>var item = getItem(this.xml.get('rightIcon')); if(item != null){item = player.equipment.forceEquip(item.xml.get("slot"), player, item.asItem()); if(item != null &amp;&amp; item.info.hasActionId("equip")) player.inventory.addItems(item.info, 1, item.value, item.getNameStr()); consume();}</action>
+		</choose></action>
+	</item>
+	<item id="dino_dna" type="tool" icon="unnature_dna.ico" cost="0" weight="1" />
+	<item id="werewolf_claws_dna" extends="werewolf_dna" type="tool" rightIcon="werewolf_claws" addInfo="werewolf_claws" />
+	<item id="dexterous_paws_dna" type="tool" icon="unnature_dna.ico" rightIcon="dexterous_paws" cost="0" weight="1">
+		<action id="use" closeWindow="false"><choose>
+			<action if="player.info.id != 'player.werewolf'">player.showWarning(getText('unnature.only_werewolf'))</action>
+			<action if="var item = player.equipment.getItem('weapon'); return item == null || item.info.hasActionId('equip')">player.showWarning(getText('unnature.already_evolved{item:[item=dexterous_paws]}'))</action>
+			<action>var item = player.equipment.forceEquip("weapon", player); if(item != null &amp;&amp; item.info.hasActionId("equip")) player.inventory.addItems(item.info, 1, item.value, item.getNameStr()); consume();</action>
+		</choose></action>
+	</item>
+	<item id="werewolf_heal_body_dna" extends="werewolf_dna" type="tool" rightIcon="werewolf_heal_body" addInfo="werewolf_heal_body" />
+	<item id="werewolf_cunning_head_dna" extends="werewolf_dna" type="tool" rightIcon="werewolf_cunning_head" addInfo="werewolf_cunning_head" />
+	<item id="werewolf_ferocious_head_dna" extends="werewolf_dna" type="tool" rightIcon="werewolf_ferocious_head" addInfo="werewolf_ferocious_head" />
+	<item id="werewolf_stealth_body_dna" extends="werewolf_dna" type="tool" rightIcon="werewolf_stealth_body" addInfo="werewolf_stealth_body" />
+	<recipe id="werewolf_claws_dna" creates="werewolf_claws_dna" type="splicer"><item id="dino_dna" count="1" /></recipe>
+	<recipe id="dexterous_paws_dna" creates="dexterous_paws_dna" type="splicer"><item id="dino_dna" count="1" /></recipe>
+	<recipe id="werewolf_heal_body_dna" creates="werewolf_heal_body_dna" type="splicer"><item id="dino_dna" count="1" /></recipe>
+	<recipe id="werewolf_stealth_body_dna" creates="werewolf_stealth_body_dna" type="splicer" available="player.seen_items.exists('werewolf_stealth_body_dna')"><item id="dino_dna" count="1" /></recipe>
+	<recipe id="werewolf_cunning_head_dna" creates="werewolf_cunning_head_dna" type="splicer"><item id="dino_dna" count="1" /></recipe>
+	<recipe id="werewolf_ferocious_head_dna" creates="werewolf_ferocious_head_dna" type="splicer" available="player.seen_items.exists('werewolf_ferocious_head_dna')"><item id="dino_dna" count="1" /></recipe>
+	
+	<tile id="player.werewolf.stars" sheet="{core}/player/layers.png" offsetX="4" offsetY="-1" />
+	<tile id="player.werewolf.death" sheet="{core}/player/layers.png" offsetX="5" />
+	<layers id="player.werewolf" width="27" height="16" cols="6" rows="11">
+		<layer tile="player.werewolf" color="shirt"><!-- legs -->
+			<frame x="9" length="2" /><frame x="11" count="5" />
+			<frame visible="false" length="59" />
+		</layer>
+		<layer tile="player.werewolf" color="shirt"><!-- body -->
+			<frame x="6" length="8" />
+			<frame x="1" />
+			<frame x="56" count="10" />
+			<frame x="72" count="6" />
+			<frame x="137" count="41" />
+		</layer>
+		<layer tile="player.werewolf" color="shirt"><!-- head -->
+			<frame x="8" length="8" />
+			<frame x="3" />
+			<frame x="26" count="10" />
+			<frame x="84" count="6" />
+			<frame x="219" count="41" />
+		</layer>
+		<layer tile="player.werewolf"><!-- belly -->
+			<frame x="5" length="8" />
+			<frame x="0" />
+			<frame x="46" count="10" />
+			<frame x="66" count="6" />
+			<frame x="96" count="41" />
+		</layer>
+		<layer tile="player.werewolf"><!-- nose+teeth -->
+			<frame x="10" length="8" />
+			<frame x="4" />
+			<frame x="36" count="10" />
+			<frame x="90" count="6" />
+			<frame x="260" count="41" />
+		</layer>
+		<layer tile="player.werewolf" color="eyes"><!-- eyes -->
+			<frame x="7" /><frame visible="false" /><frame x="7" length="6" />
+			<frame x="2" />
+			<frame x="16" count="10" />
+			<frame x="78" count="6" />
+			<frame x="178" count="41" />
+		</layer>
+		<layer tile="player.werewolf" color="hair" offset="werewolf_hair"><!-- hair -->
+			<frame x="47" length="3" /><frame x="48" count="5" /><frame x="47" offsetX="-1" />
+			<frame x="53" count="10" />
+			<frame x="41" count="6" />
+			<frame x="0" count="41" />
+		</layer>
+		<layer tile="player.werewolf.stars"><!-- uncolored -->
+			<frame visible="false" length="19" />
+			<frame x="64" count="2" /><frame visible="false" /><frame x="66" /><!-- hit stars -->
+			<frame visible="false" length="8" />
+			<frame x="110" count="2" /><!-- dead eyes -->
+		</layer>
+		<layer tile="player.werewolf.death"><!-- uncolored -->
+			<frame visible="false" length="25" />
+			<frame x="235" count="6" /><frame visible="false" />
+			<frame x="241" count="11" /><frame visible="false" length="4" />
+			<frame x="252" count="2" /><frame visible="false" length="4" />
+			<frame x="254" count="2" />
+		</layer>
+	</layers>
+	
+	<animation id="player.werewolf.idle" equals="player.idle" />
+	<animation id="player.werewolf.idle.arms" tile="player.werewolf.arms" x="0" count="1" offsetX="1" />
+	<animation id="player.werewolf.sleep" equals="player.sleep" />
+	<animation id="player.werewolf.sleep.arms" equals="player.werewolf.idle.arms" />
+	<animation id="player.werewolf.walk" count="10" x="9" />
+	<tile id="player.werewolf.pant" sheet="werewolf.png" x="311" offsetX="-11" />
+	<animation id="player.werewolf.pant.walk">
+		<frame x="-10" /><frame x="-9" count="3" offsetX="-1" /><frame x="-6" count="2" /><frame x="-4" count="3" offsetX="-1" /><frame x="-1" />
+	</animation>
+	<animation id="player.werewolf.walk.heavy" count="10" x="9">
+		<append tile="player.werewolf.pant" animation="player.werewolf.pant.walk" />
+		<append tile="player.werewolf.pant" animation="equipment.walk" color="shirt" colorScale="1.564" />
+	</animation>
+	<animation id="player.werewolf.walk.arms" tile="player.werewolf.arms" x="1" count="10" />
+	<animation id="player.werewolf.walk.heavy.arms" equals="player.werewolf.walk.arms" />
+	<animation id="player.werewolf.swim" equals="player.swim" />
+	<animation id="player.werewolf.swim.arms" tile="werewolf_paws" count="5" x="66" length="2" />
+	<animation id="player.werewolf.swim.top" equals="player.swim.top" />
+	<animation id="player.werewolf.mine" count="1" x="8" length="10" />
+	<animation id="player.werewolf.mine.arms" equals="player.werewolf.idle.arms" />
+	<animation id="player.werewolf.mine2" equals="player.werewolf.mine" />
+	<animation id="player.werewolf.mine2.arms" equals="player.werewolf.idle.arms" />
+	<animation id="player.werewolf.pant.mine" x="-10" count="10" offsetX="-1" />
+	<animation id="player.werewolf.mine3" count="1" x="8" length="10">
+		<append tile="player.werewolf.pant" animation="player.werewolf.pant.mine" />
+	</animation>
+	<animation id="player.werewolf.mine3.arms" equals="player.werewolf.idle.arms" />
+	<animation id="player.werewolf.hit" x="19" count="6" />
+	<animation id="player.werewolf.hit.arms" tile="player.werewolf.arms">
+		<frame x="0" offsetX="-3" />
+		<frame x="0" />
+		<frame x="0" offsetX="1" length="4" />
+	</animation>
+	<animation id="player.werewolf.death" x="25" count="41" />
+	<animation id="player.werewolf.death.arms" tile="werewolf_paws" x="10" count="41" />
+	<animation id="player.werewolf.ride" equals="player.ride" />
+	<animation id="player.werewolf.ride.arms" equals="player.werewolf.idle.arms" />
+	<player id="player.werewolf" layers="player.werewolf" health="100" stamina="200" maxLevel="30" speed="15" talk_sfx="talking5" foundItemPopup="true" animation="player.werewolf" tileWidth="26" armColor="shirt" alwaysShowArms="true" eqArmBase="324">
+		<respawn area="unnature" x="-1" y="-1" if="!getFlag('splicer_defeat')" />
+		<skill id="health" maxLevel="20" /><skill id="stamina" maxLevel="20" /><skill id="weight" maxLevel="20" />
+		<skill id="critical" maxLevel="10" /><skill id="evasion" maxLevel="10" />
+		<skill id="mine_speed" maxLevel="5" /><skill id="sight" maxLevel="3" />
+		<skill id="attack" maxLevel="3" /><skill id="defense" maxLevel="3" /><skill id="cut" maxLevel="3" />
+		<skill id="range" maxLevel="5" /><skill id="trap" maxLevel="3" /><skill id="bargaining" maxLevel="5" />
+		<skill id="fishing" maxLevel="3" /><skill id="oxygen" maxLevel="8" /><skill id="spellcast" maxLevel="5" />
+		<stat id="health" /><stat id="stamina" /><stat id="regen_health" flag="never_set" /><stat id="regen_stamina" flag="never_set" />
+		<stat id="weight" /><stat id="critical" /><stat id="evasion" />
+		<stat id="speed" /><stat id="endurance" /><stat id="mine_speed" flag="allow_hotkeys" /><stat id="sight" flag="allow_hotkeys" />
+		<stat id="attack" /><stat id="defense" /><stat id="cut" /><stat id="mine" flag="allow_hotkeys" />
+		<stat id="range" /><stat id="trap" flag="hunter_hut" /><stat id="fishing" flag="fisherman_intro" />
+		<stat id="oxygen" flag="show_oxygen" /><stat id="bargaining" flag="allow_hotkeys" />
+		<stat id="spellcast" flag="spellcast" /><stat id="reset" flag="never_set" /><stat id="timer" flag="never_set" />
+		<stat id="regen_power" flag="never_set" /><stat id="light" flag="never_set" />
+		<slot id="weapon" noneItem="dexterous_paws" /><slot id="shield" renderPriority="3" noneItem="dexterous_paws" />
+		<slot id="pickaxe" flag="allow_hotkeys" noneItem="dexterous_paws" /><slot id="armor" renderPriority="1" /><slot id="head" />
+		<slot id="back" vanity="true" renderPriority="2" flag="splicer_defeat" /><slot id="familiar" flag="splicer_defeat" /><light tile="light.small" color="888888" />
+		<color id="shirt" name="create.character.fur" /><color id="hair" /><offset id="werewolf_hair" name="create.character.hair_style" /><color id="eyes" />
+		<addItem><run procedure="player.addItem" /></addItem>
+		<changeEquip><run procedure="player.changeEquip" /></changeEquip>
+		<adjustSkills><achievement id="skills" if="player.getUsedSkillPoints() >= 500" /></adjustSkills>
+		<init><run procedure="player.init" /></init>
+		<handleSecond><run procedure="player.handleSecond" /></handleSecond>
+		<modLight id='1' tile='light.largest' color='ccffcc' flicker='true' />
+		<onDeath><action>this.state.removeEventListener("update_flag", check_splicer_defeat); var t = this.stats.get("timer"); t.removeEventListener("updated", splicer_lab_timer); t.clearTempBuff();</action></onDeath>
+		<onDisconnect><action>this.state.removeEventListener("update_flag", check_splicer_defeat); var t = this.stats.get("timer"); t.removeEventListener("updated", splicer_lab_timer); t.clearTempBuff();</action></onDisconnect>
+	</player>
+	<offsets type="werewolf_hair" addHidden="true">
+		<offset start="499" count="1" stride="63" />
+	</offsets>
+</data>

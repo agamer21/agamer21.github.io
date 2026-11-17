@@ -11,12 +11,9 @@
   <header class="player-header">
     <a href="/#games" aria-label="Back to AG Arcade">← AG Arcade</a>
     <h1>Angry Birds Star Wars II</h1>
+    <button id="fullscreen" type="button">Fullscreen</button>
   </header>
-  <main class="port-launcher">
-    <img src="/assets/arcade/icons/angry-birds-star-wars-2.jpg" width="144" height="144" alt="">
-    <p>Launch Jedi birds and use the Force.</p>
-    <a class="port-play" href="https://nawsif.github.io/absw2/" target="_blank" rel="noopener">Play in a new tab ↗</a>
-    <p class="port-return">Close the game tab to return here.</p>
-  </main>
+  <iframe id="game" class="player-frame" src="/assets/arcade/ports/angry-birds-star-wars-2/" title="Angry Birds Star Wars II" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+  <script src="/assets/arcade/embedded-player.js" defer></script>
 </body>
 </html>

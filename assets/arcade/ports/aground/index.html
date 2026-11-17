@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Aground</title>
+
+	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="icon" href="data:,">
+
+	<script type="text/javascript" src="lib/soundjs.min.js"></script>
+	<script type="text/javascript" src="Aground.js?version=2.0.7"></script>
+
+	<script>
+		window.addEventListener ("touchmove", function (event) { event.preventDefault (); }, false);
+		if (typeof window.devicePixelRatio != 'undefined' && window.devicePixelRatio > 2) {
+			var meta = document.getElementById ("viewport");
+			meta.setAttribute ('content', 'width=device-width, initial-scale=' + (2 / window.devicePixelRatio) + ', user-scalable=no');
+		}
+	</script>
+
+	<style>
+		:root {
+			--bg: #111111;
+			--track: #2a2a2a;
+			--accent: #d8a12f;
+			--text: #e8e8e8;
+			--muted: #9a9a9a;
+		}
+
+		* { box-sizing: border-box; }
+		html, body {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			background: var(--bg);
+			font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+		}
+
+		#openfl-content {
+			position: fixed;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			background: #000000;
+		}
+
+		#openfl-content canvas {
+			display: block;
+		}
+
+		#loading {
+			position: fixed;
+			inset: 0;
+			z-index: 10;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 0;
+			background: var(--bg);
+			color: var(--text);
+			text-align: center;
+			transition: opacity 0.5s ease, visibility 0.5s ease;
+		}
+
+		#loading.hidden {
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+		}
+
+		#loading .game-title {
+			font-size: 52px;
+			font-weight: 600;
+			color: var(--text);
+			user-select: none;
+		}
+
+		#loading .bar-track {
+			margin-top: 44px;
+			width: 340px;
+			max-width: 70vw;
+			height: 6px;
+			border-radius: 999px;
+			background: var(--track);
+			overflow: hidden;
+		}
+
+		#load-bar-fill {
+			height: 100%;
+			width: 0%;
+			border-radius: 999px;
+			background: var(--accent);
+			transition: width 0.2s ease-out;
+		}
+
+		#load-percent {
+			margin-top: 18px;
+			font-size: 16px;
+			font-weight: 400;
+			color: var(--text);
+			font-variant-numeric: tabular-nums;
+			user-select: none;
+		}
+
+		#load-status {
+			margin-top: 6px;
+			font-size: 13px;
+			font-weight: 400;
+			color: var(--muted);
+			user-select: none;
+		}
+
+	</style>
+
+</head>
+<body>
+
+	<div id="openfl-content"></div>
+
+	<div id="loading" role="status" aria-live="polite">
+		<div class="game-title">Aground</div>
+		<div class="bar-track"><div id="load-bar-fill"></div></div>
+		<div id="load-percent">0%</div>
+		<div id="load-status">Loading assets</div>
+	</div>
+
+	<script type="text/javascript">
+		var ASSET_BASE = "";
+		var ASSET_COUNTS = [["images", 442], ["texts", 408]];
+		var ASSET_TOTAL = ASSET_COUNTS.reduce(function (sum, item) { return sum + item[1]; }, 0);
+		var loadedAssets = 0;
+		var loadingDone = false;
+
+		var overlay = document.getElementById("loading");
+		var barFill = document.getElementById("load-bar-fill");
+		var percentLabel = document.getElementById("load-percent");
+		var statusLabel = document.getElementById("load-status");
+
+		function assetFinished() {
+			if (loadingDone) { return; }
+			loadedAssets = Math.min(loadedAssets + 1, ASSET_TOTAL);
+			var percent = Math.floor(loadedAssets / ASSET_TOTAL * 100);
+			barFill.style.width = percent + "%";
+			percentLabel.textContent = percent + "%";
+			if (loadedAssets >= ASSET_TOTAL) {
+				loadingDone = true;
+				statusLabel.textContent = "Ready";
+				barFill.style.width = "100%";
+				percentLabel.textContent = "100%";
+				overlay.classList.add("hidden");
+				window.setTimeout(function () { overlay.remove(); }, 600);
+			}
+		}
+
+		function rewriteAssetUrl(url) {
+			if (typeof url !== "string") { return url; }
+			if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(url)) { return url; }
+			return ASSET_BASE + url.replace(/^\.?\//, "");
+		}
+
+		if (window.fetch) {
+			var nativeFetch = window.fetch.bind(window);
+			window.fetch = function (input, init) {
+				if (typeof input === "string") {
+					input = rewriteAssetUrl(input);
+				} else if (input && input.url) {
+					input = new Request(rewriteAssetUrl(input.url), input);
+				}
+				return nativeFetch(input, init);
+			};
+		}
+
+		var NativeXMLHttpRequest = window.XMLHttpRequest;
+		window.XMLHttpRequest = function () {
+			var request = new NativeXMLHttpRequest();
+			var nativeOpen = request.open.bind(request);
+			request.open = function (method, url) {
+				var args = Array.prototype.slice.call(arguments);
+				args[1] = rewriteAssetUrl(args[1]);
+				request.addEventListener("loadend", assetFinished);
+				return nativeOpen.apply(request, args);
+			};
+			return request;
+		};
+		window.XMLHttpRequest.prototype = NativeXMLHttpRequest.prototype;
+		window.XMLHttpRequest.UNSENT = NativeXMLHttpRequest.UNSENT;
+		window.XMLHttpRequest.OPENED = NativeXMLHttpRequest.OPENED;
+		window.XMLHttpRequest.HEADERS_RECEIVED = NativeXMLHttpRequest.HEADERS_RECEIVED;
+		window.XMLHttpRequest.LOADING = NativeXMLHttpRequest.LOADING;
+		window.XMLHttpRequest.DONE = NativeXMLHttpRequest.DONE;
+
+		var NativeImage = window.Image;
+		window.Image = function () {
+			var image = new NativeImage();
+			image.crossOrigin = "anonymous";
+			image.addEventListener("load", assetFinished);
+			image.addEventListener("error", assetFinished);
+			return image;
+		};
+		window.Image.prototype = NativeImage.prototype;
+
+		lime.embed ("openfl-content", 0, 0, "000000", ASSET_BASE);
+	</script>
+
+</body>
+</html>

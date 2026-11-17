@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="traps.xml" />
+	
+	<tile id="earth_trap" sheet="traps.1" />
+	<animation id="earth_trap.place" x="5" count="1" />
+	<animation id="earth_trap.spring" x="6" count="10" />
+	<animation id="earth_trap.capture" x="16" count="1" />
+	<animation id="earth_trap.caught" equals="earth_trap.capture" />
+	<animation id="earth_trap.break" x="0" count="5" />
+	<item id="earth_trap" type="object" cost="0" weight="1" icon="earth_trap.ico" action="place" object="trap" capture="2" element="earth" sfx="earthtrap" />
+	<itemObject id="earth_trap" tile="earth_trap" />
+	
+	<tile id="fire_trap" sheet="traps.1" x="17" />
+	<animation id="fire_trap.place" x="5" count="6" />
+	<animation id="fire_trap.spring" x="11" count="10" />
+	<animation id="fire_trap.capture" x="21" count="8" />
+	<animation id="fire_trap.caught" equals="fire_trap.capture" />
+	<animation id="fire_trap.break" x="0" count="5" />
+	<item id="fire_trap" type="object" cost="0" weight="1" icon="fire_trap.ico" action="place" object="trap" capture="2" element="fire" placeLoop="true" sfx="firetrap" />
+	<itemObject id="fire_trap" tile="fire_trap" />
+	
+	<tile id="water_trap" sheet="traps.1" x="106" />
+	<animation id="water_trap.place" x="5" count="6" />
+	<animation id="water_trap.spring" x="11" count="10" />
+	<animation id="water_trap.capture" x="21" count="7" />
+	<animation id="water_trap.caught" equals="water_trap.capture" />
+	<animation id="water_trap.break" x="0" count="5" />
+	<item id="water_trap" type="object" cost="0" weight="1" icon="water_trap.ico" action="place" object="trap" capture="2" element="water" placeLoop="true" underwater="true" sfx="water_effect" />
+	<itemObject id="water_trap" tile="water_trap" />
+	
+	<tile id="ice_trap" sheet="traps.1" x="46" />
+	<animation id="ice_trap.place" x="3" count="6" />
+	<animation id="ice_trap.spring" x="9" count="10" />
+	<animation id="ice_trap.capture" x="19" count="6" />
+	<animation id="ice_trap.caught" equals="ice_trap.capture" />
+	<animation id="ice_trap.break" x="0" count="3" />
+	<item id="ice_trap" type="object" cost="0" weight="1" icon="ice_trap.ico" action="place" object="trap" capture="2" element="ice" placeLoop="true" sfx="ice_effect" />
+	<itemObject id="ice_trap" tile="ice_trap" />
+	
+	<tile id="plant_trap" sheet="traps.1" x="71" />
+	<animation id="plant_trap.place" x="3" count="1" />
+	<animation id="plant_trap.spring" x="4" count="10" />
+	<animation id="plant_trap.capture" x="14" count="1" />
+	<animation id="plant_trap.caught" equals="plant_trap.capture" />
+	<animation id="plant_trap.break" x="0" count="3" />
+	<item id="plant_trap" type="object" cost="0" weight="1" icon="plant_trap.ico" action="place" object="trap" capture="2" element="plant" sfx="planttrap" />
+	<itemObject id="plant_trap" tile="plant_trap" />
+	
+	<tile id="enchanted_net" sheet="traps.1" x="86" />
+	<animation id="enchanted_net.place" x="6" count="1" />
+	<animation id="enchanted_net.spring" x="7" count="5" />
+	<animation id="enchanted_net.capture" x="0" count="6" />
+	<animation id="enchanted_net.caught" equals="enchanted_net.capture" />
+	<animation id="enchanted_net.break" x="12" count="8" />
+	<item id="enchanted_net" type="object" cost="0" weight="1" icon="enchanted_net.ico" action="place" object="trap" capture="3" sfx="enchantmenttrap" />
+	<itemObject id="enchanted_net" tile="enchanted_net" />
+
+	<tile id="magnetrap" sheet="traps.2" />
+	<animation id="magnetrap.place" x="6" count="6" />
+	<animation id="magnetrap.spring" x="12" count="6" />
+	<animation id="magnetrap.capture" x="0" count="6" />
+	<animation id="magnetrap.caught" equals="magnetrap.capture" />
+	<animation id="magnetrap.break" x="12" count="6" reverse="true" />
+	<item id="magnetrap" type="object" cost="0" weight="1" icon="magnetrap.ico" animation="item7" action="place" object="trap" capture="5" sfx="enchantmenttrap" placeLoop="true" underwater="true" on_air="true" />
+	<itemObject id="magnetrap" tile="magnetrap" />
+	
+	<tile id="advanced_net" sheet="traps.1" x="134" />
+	<animation id="advanced_net.place" x="4" count="1" />
+	<animation id="advanced_net.spring" x="5" count="6" />
+	<animation id="advanced_net.capture" x="11" count="1" />
+	<animation id="advanced_net.caught" equals="advanced_net.capture" />
+	<animation id="advanced_net.break" x="0" count="4" />
+	<item id="advanced_net" type="object" cost="200" weight="1" icon="advanced_net.ico" action="place" object="trap" capture="3" />
+	<itemObject id="advanced_net" tile="advanced_net" />
+	<recipe id="make_advanced_net" creates="advanced_net" type="car_factory">
+		<item id="silk" count="5" /><item id="cloth" count="2" />
+	</recipe>
+	
+	
+	<item id="horn" extends="horn"><modifiers attack="1" /></item>
+	<item id="ice_heart" extends="ice_heart"><modifiers defense="1" /></item>
+	
+	<include id="equip.xml" />
+	<tile id="water_helm" sheet="equip.1" x="42" />
+	<item id="water_helm" type="equipment" cost="0" slot="head" oxygen="200" weight="1" icon="water_helm.ico" animation="item10" action="equip" hair="false" element="water">
+		<light tile="light.large" color="98ffff" />
+	</item>
+	<animation id="equipment.water_helm.idle" x="0" count="10" />
+	<animation id="equipment.water_helm.hit" x="10" count="6" />
+	
+	<item id="fish_scale" type="potion" cost="150" weight="1" icon="fish_scale.ico" animation="item8" />
+	
+	<include id="spellbooks.xml" />
+	
+	<tile id="coral_bow" sheet="equip.1" x="0" />
+	<animation id="equipment.coral_bow.idle" x="0" count="1" />
+	<animation id="equipment.coral_bow" equals="equipment.recurve_bow" />
+	<tile id="coral_bolt" sheet="equip.2" />
+	<animation id="coral_bolt" x="0" count="6" glow="true" />
+	<animation id="coral_bolt.impact" x="6" count="6" glow="true" />
+	<item id="coral_bow" type="spellbook" slot="weapon" cost="2000" weight="5" attack="8" stamina="20" range="9" icon="coral_bow.ico" behindPlayer="false" fire_sfx="bow" delay="4" arms="bow.arms" hideArms="true" underwater="true" staminaStat="spellcast" sfx="coralbow">
+		<action id="equip" /><use slot="shield" />
+		<projectile tile="coral_bolt" animation="coral_bolt" speed="4" offsetY="2">
+			<hitEffect tile="coral_bolt" animation="coral_bolt.impact" color="f466d8" />
+		</projectile>
+	</item>
+	
+	<structure id="magic_forge" extends="magic_forge">
+		<item id="fin" /><item id="pearl" /><item id="helium_sac" /><item id="evo_gem" /><item id="fish_scale" />
+	</structure>
+	
+	<animation id="item11" count="11" />
+	<item id="evo_shard" type="potion" cost="400" weight="2" icon="evo_shard.ico" animation="item11" />
+	<item id="evo_gem" type="potion" cost="2000" weight="5" icon="evo_gem.ico" animation="item11">
+		<action id="transform_other" name="transform" consume="true">
+			<transform from="adult_dragon" to="ancient_dragon" />
+			<transform from="golem" to="golemech" />
+			<transform from="wyrm" to="wyrm_queen" />
+		</action>
+	</item>
+	<vehicle id="fly_adult_dragon" extends="fly_adult_dragon" allowModifier="true">
+		<listItem icon="ancient_dragon.ico" enabled="!this.horizontal" title="structure.tooltip.evolve_dragon" fail="this.horizontal?'warning.no_flying':'warning.ingredients'" if="player.seen_items.exists('evo_gem')">
+			<tooltip type="requires" requires="quests.requires">
+				<requirement icon="evo_gem.ico" title="item.names.evo_gem" count="player.getItemCount('evo_gem')" of="1" />
+			</tooltip>
+			<item id="evo_gem" count="-1" /><set id="_name" value="this.name" />
+			<object id="fly_ancient_dragon" x="this.xPos/Tile.SIZE" y="this.yTile/Tile.SIZE" pre="true">this.name = _name;</object>
+			<action>this.setHealth(0, false); this.doDismount(true); fly_ancient_dragon.setFuel(this.fuel); fly_ancient_dragon.inventory.copyFrom(this.inventory); this.inventory.clear(); fly_ancient_dragon.mount(player);</action>
+			<remove object="this" /><closeWindows />
+		</listItem>
+	</vehicle>
+	
+	<item id="helium_pack" type="tool" slot="back" action="equip" cost="5000" weight="0" capacity="400" icon="helium_pack.ico" durability="40" breakable="false" durabilityName="common.cooldown">
+		<flight height="20" cost="0" speed="5" maxWeight="500"><equipCost durability="5" /></flight><equipCost durability="-4" />
+	</item>
+	<tile id="helium_pack" sheet="equip.3" x="12" />
+	<animation id="equipment.helium_pack.idle" x="8" count="8" offsetX="9" />
+	<animation id="equipment.helium_pack.fly.self" count="8" offsetX="9" offsetY="2" />
+	<animation id="equipment.helium_pack.hover.self" equals="equipment.helium_pack.fly.self" />
+	
+	<item id="blue_claw" type="equipment" cost="0" slot="weapon" weight="1" melee_range="1.5" durability="1" icon="blue_claw.ico" attack="16" stamina="3" action="equip" movement_walk="walk_rswing" knockback="10" element="water" underwater="true" durabilityName="common.uses" sfx="blueclaw" />
+	<tile id="blue_claw" sheet="equip.4" x="8" offsetX="-8" />
+	<animation id="equipment.blue_claw" count="8" />
+	<animation id="equipment.blue_claw.idle" count="1" />
+	
+	<item id="coral_sword" type="spellbook" cost="2000" slot="weapon" weight="10" durability="1000" icon="coral_sword.ico" attack="11" stamina="20" action="equip" movement_walk="walk_rswing" knockback="5" underwater="true" sounds="sword" staminaStat="spellcast" durabilityName="common.enchantment" sfx="coralsword" />
+	<tile id="coral_sword" sheet="equip.5" offsetY="-4" />
+	<animation id="equipment.coral_sword" x="1" count="10" offsetX="-8" offsetY="-2" shift="2" />
+	<animation id="equipment.coral_sword.idle" count="1" offsetX="8" />
+	
+	<item id="clam_gun" type="equipment" cost="0" slot="shield" use="attack" weight="2" melee_range="2" durability="50" icon="clam.ico" attack="10" stamina="5" action="equip" movement_walk="walk_lswing" knockback="10" element="water" underwater="true" durabilityName="common.uses" sfx="clamgun" plant_book="true" />
+	<tile id="clam_gun" sheet="equip.4" x="0" offsetX="-16" />
+	<animation id="equipment.clam_gun" count="8" />
+	<animation id="equipment.clam_gun.idle" count="1" />
+	
+	<item id="queen_drill" type="equipment" durability="2000" durabilityName="common.feed" slot="pickaxe" cost="0" mine="5" behindPlayer="false" weight="10" icon="queen_drill.ico" breakable="false" movement_walk="walk_lswing" hideOffhand="true" equip_fps="20" durabilityWarning="common.hungry{item:[item=queen_drill]}" loop="queendrill">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<vert><dig x="-1" y="0" /><dig x="-1" y="-1" /></vert><horiz><dig x="0" y="-1" /><dig x="-1" y="0" /><dig x="-1" y="-1" /></horiz>
+		<food id="pig" value="300" />
+		<food id="chicken" value="500" />
+		<food id="cow" value="1000" />
+		<food id="steak" value="125" />
+		<food id="coal" value="125" />
+	</item>
+	<tile id="queen_drill" sheet="equip.5" x="11" offsetX="-8" offsetY="-8" />
+	<animation id="equipment.queen_drill" count="3" />
+	<animation id="equipment.queen_drill.idle" x="3" count="1" />
+	<animation id="equipment.queen_drill.walk" x="4" count="3" />
+	
+	<item id="magne_queen_drill" type="equipment" durability="1000" durabilityName="common.feed" slot="pickaxe" cost="0" mine="9" breakPower="0.5" behindPlayer="false" weight="10" icon="magne_queen_drill.ico" breakable="false" movement_walk="walk_lswing" hideOffhand="true" equip_fps="20" durabilityWarning="common.hungry{item:[item=magne_queen_drill]}" loop="queendrill">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<vert><dig x="-1" y="0" /><dig x="-1" y="-1" /></vert><horiz><dig x="0" y="-1" /><dig x="-1" y="0" /><dig x="-1" y="-1" /></horiz>
+		<food id="magnegem" value="1000" />
+	</item>
+	<tile id="magne_queen_drill" sheet="equip.6" x="0" offsetX="-16" offsetY="0" />
+	<animation id="equipment.magne_queen_drill" x="1" count="3" />
+	<animation id="equipment.magne_queen_drill.idle" x="0" count="1" />
+	
+	<tile id="wand" sheet="equip.3" x="46" offsetX="-8" />
+	<animation id="equipment.wand.idle" x="0" count="1" offsetY="4" />
+	<animation id="equipment.wand" x="1" count="8" />
+    <animation id="fireball_small.wand" count="6" color="44ff99" colorScale="2" />
+	<item id="wand" type="spellbook" slot="weapon" cost="0" weight="1" attack="8" stamina="20" range="9" icon="wand.ico" delay="4" underwater="true" movement_walk="walk_rswing" staminaStat="spellcast" sfx="magicwand">
+		<action id="equip" />
+		<projectile tile="fireball_small" animation="fireball_small.wand" speed="3" offsetY="4" glow="true" hit_sfx="bolt_hit" knockback="10">
+			<light tile="light.small" color="00cc00" />
+		</projectile><light tile="light.default" color="99ff99" offsetX="-16" />
+	</item>
+	
+	<animation id="flying_broom.ico"><frame x="0" /><frame x="0" offsetY="1" /></animation>
+	<item id="flying_broom" type="spellbook" slot="shield" action="equip" cost="0" weight="2" icon="flying_broom.ico" animation="flying_broom.ico" fps="1" movement_walk="walk_lswing">
+		<flight height="30" cost="2" speed="4" maxWeight="1000" />
+	</item>
+	<tile id="flying_broom" sheet="equip.1" x="58" />
+	<animation id="equipment.flying_broom.idle" count="1" offsetX="1" />
+	<animation id="equipment.flying_broom.hover.self" x="1" count="3" offsetX="3" offsetY="3">
+        <frame x="4" count="3" offsetX="3" offsetY="4" parentY="1" />
+    </animation>
+	<animation id="equipment.flying_broom.fly.self" equals="equipment.flying_broom.hover.self" />
+	
+	<item id="robes" type="spellbook" slot="armor" cost="0" durability="500" weight="2" defense="1" elementDefense="4" icon="robes.ico" element="resist" action="equip" repair="dark_fur" durabilityName="common.enchantment">
+		<equipCost stamina="-4" daylight="false" />
+	</item>
+	<tile id="robes" sheet="equip.1" x="66" />
+	<animation id="equipment.robes.idle" x="45" count="1" />
+	<animation id="equipment.robes.walk" x="47" count="10" />
+	<animation id="equipment.robes.hit" x="41" count="6" />
+	<animation id="equipment.robes.death" x="0" count="41" />
+
+	<item id="witch_hat" type="spellbook" slot="head" cost="0" weight="2" icon="witch_hat.ico" action="equip" desc="item.descriptions.boost_stat{stat:spellcast}{value:2}" hair="9">
+		<onEquip><action>player.stats.get("spellcast").add(2)</action></onEquip>
+		<onUnequip><action>player.stats.get("spellcast").add(-2)</action></onUnequip>
+	</item>
+	<tile id="witch_hat" sheet="equip.1" x="65" />
+	
+	<include id="black_cat.xml" includeRoot="true" />
+	<tile id="black_cat" sheet="black_cat.png" x="0" y="0" />
+	<animation id="black_cat.idle" equals="cat.idle" />
+	<animation id="black_cat.walk" equals="cat.walk" />
+	<animation id="black_cat.attack1" equals="cat.attack1" />
+	<animation id="black_cat.attack2" equals="cat.attack2" />
+	<animation id="black_cat.talk" equals="cat.talk" />
+	<animation id="black_cat.swim">
+		<frame visible="false" length="8" /><append tile="sea_witch_cat" animation="sea_witch_cat.swim.walk" />
+	</animation>
+	<animation id="black_cat.swim.idle">
+		<frame visible="false" length="8" /><append tile="sea_witch_cat" animation="sea_witch_cat.swim.idle" />
+	</animation>
+	<item id="black_cat" type="animal" cost="100" weight="2" durability="2000" slot="familiar" icon="black_cat.ico" viewHidden="true" desc="item.descriptions.boost_stat{stat:spellcast}{value:1}">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<onEquip><action>player.stats.get("spellcast").add(1)</action></onEquip>
+		<onUnequip><action>player.stats.get("spellcast").add(-1)</action></onUnequip>
+		<familiar id="cat" tile="black_cat" animation="black_cat" underwater="true" />
+		<food id="rat" value="200" />
+		<food id="meat" value="75" />
+		<food id="steak" value="125" />
+		<food id="hamburger" value="300" />
+		<food id="cheeseburger" value="500" />
+		<food id="toothfish" value="125" />
+		<food id="rockfish" value="300" />
+		<food id="coral_cod" value="750" />
+		<food id="chicken" value="500" />
+	</item>
+	<item id="dark_fur" extends="dark_fur"><modifyTransform from="cat" to="black_cat" /><modifiers viewHidden="true" /></item>
+	<item id="helium_sac" extends="helium_sac"><modifiers oxygen="50" needsO2="false" flyOrbit="true" /></item>
+	
+	<item id="pumpkin_helm" type="equipment" slot="head" cost="0" weight="1" icon="pumpkin_helm.ico" animation="item7" action="equip" defense="1" hair="false">
+		<light tile="light.large" color="fae1b5" flicker="true" />
+	</item>
+	<tile id="pumpkin_helm" sheet="equip.1" x="123" />
+	<animation id="equipment.pumpkin_helm.idle" count="7" x="0" />
+	
+	<item id="scale_mail" extends="titanium_armor" durability="1000" defense="5" icon="scale_mail.ico" oxygen="50" repair="fish_scale" element="water" color="bc3eff" tintIcon="false" capacity="50" durabilityName="common.enchantment" max_depth="100" />
+	<recipe id="make_scale_mail" creates="scale_mail" type="enchantments">
+		<item id="steel_armor" count="1" />
+		<item id="fish_scale" count="5" />
+	</recipe>
+	
+	<item id="alien_heart" type="potion" cost="600" weight="2" icon="alien_heart.ico" animation="item6" />
+	
+	<item id="modifier.fire" type="none"><modifiers element="fire" /></item>
+	<item id="modifier.water" type="none"><modifiers element="water" /></item>
+	<item id="modifier.ice" type="none"><modifiers element="ice" /></item>
+	<item id="modifier.earth" type="none"><modifiers element="earth" /></item>
+	<item id="venatrix_seed" type="potion" cost="0" weight="2" icon="venatrix_seed.ico" animation="item6" element="plant" elementMod="modifier" elementNormal="false" desc="item.descriptions.change_element" canModify="false">
+		<action id="plant" sfx="plant_seed" object="'spirit_tree_'+item._getElement(name).id" eval="true" onGrass="false"><achievement id="spirit_tree" /></action>
+		<action id="use" name="elements.change" closeWindow="false"><run procedure="change_element_focus" /></action>
+	</item>
+	<animation id="item20" count="20" />
+	<item id="storehouse_seed" type="potion" cost="0" weight="10" icon="storehouse_seed.ico" animation="item20">
+		<action id="plant" sfx="plant_seed" structure="spirit_storehouse" onGrass="false" buildTime="15"><plantCost><item id="spirit_gem" count="1" /></plantCost></action>
+	</item>
+	
+	<item id="spirit_gem2" type="potion" cost="2400" weight="5" icon="spirit_gem2.ico" animation="item8" placeLoop="true" action="place" object="trap" capture="6" captureType="spirit" underwater="true" />
+	<animation id="spirit_gem2.place" equals="item8" />
+	<animation id="spirit_gem2.caught"><frame visible="false" /></animation>
+	<tile id="spirit_capture" sheet="equip.5" x="34" offsetX="-8" offsetY="-8" /><animation id="spirit_capture" count="8" glow="true" />
+	<animation id="spirit_gem.capture" count="1" length="8"><append tile="spirit_capture" animation="spirit_capture" /></animation>
+	<animation id="spirit_gem2.capture" count="8"><append tile="spirit_capture" animation="spirit_capture" /></animation>
+	<recipe id="make_spirit_gem2" creates="spirit_gem2" type="enchantments">
+		<type id="no_uncraft" /><item id="spirit_gem" count="1" />
+		<item id="evo_gem" count="1" />
+	</recipe>
+	
+	<item id="spirit_fox_helm" type="equipment" slot="head" cost="0" weight="0" attack="12" spirit="2" stamina="20" range="10" staminaStat="spellcast" icon="spirit_fox.ico" action="equip" hair="false" element="fire" enableAttack="true" desc="item.descriptions.auto_fire" viewHidden="true">
+		<light tile="light.large" color="ffff98" />
+		<identify tile="cyborg.identify" acquire="spacefarer.acquire" animation="spacefarer.identify" color="cccc66" />
+		<handleSecond><section if="!player.isUnderwater() && (player.equipment.getStateI('head')&NO_ATTACK) == 0 && getEnemyInRange(player, this.info.range+player.stats.getInt('range'), this.info.attack, this.info.cut, this.info.spirit) != null && player.getStamina() >= this.info.getStamina(player)">
+			<action>player.renderer.setItemAnimation("head", "fire", false); player.loseStamina(this.info.getStamina(player));</action>
+			<projectile tile="fireball_small" animation="fireball_small" speed="3" dx="player.getDX()" spawner="player" damage="this.info.attack" spirit="this.info.spirit" range="this.info.range+player.stats.getInt('range')" hitEffect="fire_sm_dot" fire_sfx="fireball" knockback="5" element="fire">
+				<light tile="light.small" color="cc5500" />
+			</projectile>
+		</section></handleSecond>
+	</item>
+	<tile id="spirit_fox_helm" sheet="equip.7" offsetY="-8" />
+	<animation id="equipment.spirit_fox_helm.idle" x="4" count="1" />
+	<animation id="equipment.spirit_fox_helm.fire" x="0" count="4" />
+	
+	<tile id="spirit_robes" sheet="equip.1" x="197" />
+	<item id="spirit_robes" type="spellbook" slot="armor" durability="1000" cost="0" weight="0" defense="4" elementDefense="6" icon="spirit_robes.ico" action="equip" desc="item.descriptions.change_element" durabilityName="common.enchantment" color="ff33ff" colorScale="1.5" elementMod="spirit_armor" canModify="false">
+		<action id="use" name="elements.change" closeWindow="false"><run procedure="change_element_focus" /></action>
+		<light tile="light.largest" color="ff33ff" /><equipCost stamina="-6" daylight="false" />
+		<description text="item.descriptions.boost_stat{stat:spellcast}{value:1}" />
+		<onEquip><action>player.stats.get("spellcast").add(1)</action></onEquip>
+		<onUnequip><action>player.stats.get("spellcast").add(-1)</action></onUnequip>
+	</item>
+	<animation id="equipment.spirit_robes.idle" x="45" count="1" />
+	<animation id="equipment.spirit_robes.walk" x="47" count="10" />
+	<animation id="equipment.spirit_robes.hit" x="41" count="6" />
+	<animation id="equipment.spirit_robes.death" x="0" count="41" />
+	
+	<tile id="spirit_glaive" sheet="equip.8" offsetX="-8" offsetY="-8" />
+	<item id="spirit_glaive" type="equipment" slot="weapon" elementMod="spirit_weapon" melee_range="1.5" expandTop="0.625" expandBottom="0.625" cost="0" weight="0" attack="1" spirit="1" stamina="20" icon="spirit_glaive.ico" movement_walk="walk_rswing" knockback="10" underwater="true" desc="item.descriptions.change_element" color="ff33ff" colorScale="1.5" staminaStat="spellcast" canModify="false">
+		<action id="equip" /><use slot="shield" /><action id="use" name="elements.change" closeWindow="false"><run procedure="change_element_focus" /></action>
+	</item>
+	<animation id="equipment.spirit_glaive.idle" x="12" count="1" />
+	<animation id="equipment.spirit_glaive" x="0" count="12" shift="2" />
+	
+	<animation id="spirit_chest" count="7" glow="true" />
+	<item id="spirit_chest" extends="chest" icon="spirit_box.ico" animation="spirit_chest" color="663399" colorScale="1.5" renderer="spirit" openAnim="false" />
+	<recipe id="make_spirit_chest" creates="spirit_chest" type="enchantments">
+		<item id="chest" count="1" />
+		<item id="spirit_gem" count="1" />
+	</recipe>
+	
+	<item id="dragon_seed" type="potion" cost="0" weight="0" icon="hq_seed.ico" animation="hq_seed.ico" />
+	
+	<item id="element_table" type="tool" cost="0" weight="0" icon="element_table.ico">
+		<action id="use" name="structure.tooltip.read" closeWindow="false">
+			<show type="tile" tile="pentagram" id="pentagram" x="0.5" y="0.5" seconds="0.16" />
+			<wait /><hide id="pentagram" seconds="0.16" />
+		</action>
+	</item>
+		
+	<animation id="carapace.acquire" x="0" count="12" color="cc66cc" />
+	<animation id="carapace.identify" x="12" count="5" color="cc66cc" />
+	<tile id="carapace_armor" sheet="equip.1" x="130" />
+	<item id="carapace_armor" type="equipment" cost="0" weight="15" slot="armor" durability="500" element="resist" icon="carapace_armor.ico" action="equip" oxygen="200" defense="12" capacity="450" hair="false" beard="false" repair="blood_gem" durabilityName="common.enchantment" max_depth="100">
+		<use slot="head" /><use slot="back" />
+		<light tile="light.large" color="ff77ff" />
+		<identify tile="cyborg.identify" acquire="carapace.acquire" animation="carapace.identify" color="cc66cc" />
+	</item>
+	<animation id="equipment.carapace_armor.idle" x="47" count="10" />
+	<animation id="equipment.carapace_armor.walk" x="57" count="10" />
+	<animation id="equipment.carapace_armor.hit" x="41" count="6" />
+	<animation id="equipment.carapace_armor.death" x="0" count="41" />
+		
+	<recipe id="make_carapace_armor" creates="carapace_armor" type="lab" available="getFlag('carapace_armor')">
+		<item id="scale_mail" count="1" />
+		<item id="alien_heart" count="3" />
+		<item id="evo_gem" count="3" />
+		<item id="blood_gem" count="5" />
+	</recipe>
+		
+	<item id="ftl_broom" type="spellbook" slot="shield" use="block" block="stamina" blockIgnoreArmor="true" action="equip" cost="0" weight="2" icon="ftl_broom.ico" animation="flying_broom.ico" fps="1" movement_walk="walk_lswing" canJump="true" underwater="true" loop="shield_book" staminaStat="spellcast">
+		<flight height="999" cost="2" speed="6" maxWeight="1500" />
+	</item>
+	<tile id="ftl_broom" sheet="equip.5" x="42" offsetY="-8" />
+	<animation id="equipment.ftl_broom.carry.idle" count="1" offsetX="8" />
+	<animation id="equipment.ftl_broom.carry.hover.self" equals="equipment.flying_broom.hover.self" />
+	<animation id="equipment.ftl_broom.carry.fly.self" equals="equipment.flying_broom.hover.self" />
+	<animation id="equipment.ftl_broom.carry.ftl" x="7" count="3" offsetX="3" offsetY="3">
+        <frame x="10" count="3" offsetX="3" offsetY="4" parentY="1" />
+    </animation>
+	<animation id="equipment.ftl_broom.idle" x="13" count="6" offsetY="4" />
+	
+	<item id="mega_earth_armor" type="equipment" slot="armor" cost="0" durability="2000" weight="20" defense="14" icon="mega_earth_armor.ico" animation="item6" element="earth" action="equip" reflect="2" repair="earth_gem" durabilityName="common.enchantment" />
+	<tile id="mega_earth_armor" sheet="equip.1" x="254" />
+	<animation id="equipment.mega_earth_armor.idle" x="47" count="5" offsetX="1" />
+	<animation id="equipment.mega_earth_armor.walk" x="52" count="10" />
+	<animation id="equipment.mega_earth_armor.hit" x="41" count="6" />
+	<animation id="equipment.mega_earth_armor.death" x="0" count="41" />
+	
+	<item id="mega_earth_helm" type="equipment" slot="head" cost="0" oxygen="50" durability="2000" weight="5" defense="3" icon="mega_earth_helm.ico" animation="item6" action="equip" hair="false" element="earth" repair="earth_gem" durabilityName="common.enchantment" attack="16" stamina="15" range="10" enableAttack="true" desc="item.descriptions.auto_fire">
+		<light tile="light.strong" color="ff9898" flicker="true" /><identify tile="cyborg.identify" acquire="cyborg.acquire" animation="cyborg.identify" color="f61414" />
+		<handleSecond><section if="(player.equipment.getStateI('head')&NO_ATTACK) == 0 && getEnemyInRange(player, this.info.range+player.stats.getInt('range'), this.info.attack, this.info.cut, this.info.spirit) != null && player.getStamina() >= this.info.getStamina(player)">
+			<action>player.renderer.setItemAnimation("head", "fire", false); player.loseStamina(this.info.getStamina(player));</action>
+			<projectile tile="mega_earth_helm.projectile" animation="mega_earth_helm.projectile" width="16" height="16" speed="2" dx="player.getDX()" spawner="player" damage="this.info.attack" spirit="this.info.spirit" range="this.info.range+player.stats.getInt('range')" fire_sfx="fireball" element="fire" underwater="true">
+				<hitEffect tile="mega_earth_helm.projectile" animation="mega_earth_helm.projectile.impact" />
+			</projectile>
+		</section></handleSecond>
+	</item>
+	<tile id="mega_earth_helm" sheet="equip.1" x="316" />
+	<animation id="equipment.mega_earth_helm.idle" x="6" count="5" offsetX="1" />
+	<animation id="equipment.mega_earth_helm.walk" x="11" count="10" />
+	<animation id="equipment.mega_earth_helm.hit" x="0" count="6" />
+	<tile id="mega_earth_helm.projectile" sheet="equip.9" x="0" />
+	<animation id="mega_earth_helm.projectile" x="6" count="3" />
+	<animation id="mega_earth_helm.projectile.impact" x="2" count="4" />
+	<animation id="mega_earth_helm.projectile.fire" x="0" count="2" offsetX="-16" />
+	<animation id="equipment.mega_earth_helm.fire" x="6" count="2" offsetX="1">
+		<append tile="mega_earth_helm.projectile" animation="mega_earth_helm.projectile.fire" />
+	</animation>
+	
+	<item id="mega_earth_axe" type="equipment" slot="weapon" cost="0" durability="2000" weight="10" attack="20" cut="20" stamina="50" icon="mega_earth_axe.ico" animation="item3" action="equip" movement_walk="walk_rswing" arms="equipment.arms" element="earth" melee_range="0.9" knockback="10" critical="true" durabilityName="common.enchantment" sfx="earthhammer" />
+	<tile id="mega_earth_axe" sheet="equip.5" x="61" offsetX="-10" offsetY="-8" />
+	<animation id="equipment.mega_earth_axe.idle" x="10" count="5" />
+	<animation id="equipment.mega_earth_axe" equals="equipment.stone_axe" />
+</data>

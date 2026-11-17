@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="power_core" exp="1000">
+		<item id="power_core" count="1" />
+		<canComplete><complete quest="power_core" useResources="false" /><dialogue section="vehicle" id="power_core" /></canComplete>
+	</quest>
+	<include id="fighter.xml" />
+	<tile id="fighter.command_chair" sheet="fighter.1" x="0" />
+	<tile id="fighter.command" sheet="fighter.1" x="6" />
+	<animation id="fighter.command.idle" count="1" />
+	<animation id="fighter.command.over" x="1" count="6" />
+	<structure id="fighter.command" tile="fighter.command" room="true" name="operate" powered="true">
+		<tile id="fighter.command_chair" animation="item6" x="0" y="0" />
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<operate>
+			<section if="getPowerCores(area) > 0"><section if="area.vehicle.canMount(player)">
+				<set id="sprite" value="player.createSimpleSprite('idle')" />
+				<action>sprite.x = 20; sprite.y= 8; sprite.alpha = 0; this.addBefore(sprite, 'fighter.command_chair');</action>
+				<lerp object="player" alpha="0" seconds="0.25" modal="false" />
+				<lerp object="sprite" alpha="1" seconds="0.25" animate="player" modal="true" />
+				<action with="ellipse_fast">sprite.parent.removeChild(sprite); var v = area.vehicle; if(v.canMount(player)){v.doExit(player); setGameScale(2); v.doMount(player, true);}</action>
+				</section><stop />
+			</section><dialogue section="vehicle" id="no_power_cores" />
+			<quest id="power_core" if="!player.hasQuest('power_core') && player.info.id != 'player.colosseum'" />
+		</operate>
+	</structure>
+	<tile id="fighter._shields" sheet="fighter.1" x="13" />
+	<animation id="fighter.shields.idle" count="6" />
+	<animation id="fighter.shields.over" x="6" count="6" />
+	<structure id="fighter.shields" tile="fighter._shields" room="true" powered="true">
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+	</structure>
+	<tile id="fighter.weaps" sheet="fighter.1" x="25" />
+	<animation id="fighter.weaps.idle" x="12" count="1" />
+	<animation id="fighter.weaps.over" count="6" />
+	<tile id="fighter.weaps_chair" sheet="fighter.1" x="31" />
+	<structure id="fighter.weaps" tile="fighter.weaps" name="operate" room="true" powered="true">
+		<tile id="fighter.weaps_chair" animation="item6" x="0" y="0" />
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<operate><action>area.vehicle.manageEquipment(player)</action></operate>
+	</structure>
+	
+	<tile id="fighter.landing" sheet="fighter.2" x="0" />
+	<animation id="fighter.landing.idle" count="6" />
+	<animation id="fighter.landing.open" x="6" count="6" />
+	<structure id="fighter.landing" tile="fighter.landing" room="true">
+		<out><action if="player.tile_x > 10">area.vehicle.exit(player)</action></out>
+		<addedToArea><action>area.setBlockVehicle(this.tile_x+2, this.tile_y);</action></addedToArea>
+	</structure>
+	
+	<tile id="fighter.ladder" sheet="fighter.5" x="0" />
+	<structure id="fighter.ladder" tile="fighter.ladder" room="true" animation="fighter.command" powered="true">
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+	</structure>
+	
+	<tile id="fighter.o2" sheet="fighter.2" x="24" />
+	<structure id="fighter.o2" tile="fighter.o2" extends="fighter.ladder" />
+	
+	<tile id="fighter.subsystems" sheet="fighter.2" x="31" />
+	<structure id="fighter.subsystems" tile="fighter.subsystems" extends="fighter.ladder" name="operate">
+		<operate><window type="nav" system="area.vehicle.area.planet.system" /></operate>
+	</structure>
+	
+	<tile id="fighter.cargo" sheet="fighter.3" x="0" />
+	<structure id="fighter.cargo" tile="fighter.cargo" extends="fighter.ladder" name="manage_cargo">
+		<operate><action>area.vehicle.manageInventory(player)</action></operate>
+	</structure>
+	
+	<tile id="fighter.quarters" sheet="fighter.3" x="7" />
+	<structure id="fighter.quarters" tile="fighter.quarters" extends="fighter.ladder" />
+	
+	<tile id="fighter.engine" sheet="fighter.4" x="0" />
+	<structure id="fighter.engine" tile="fighter.engine" extends="fighter.ladder">
+		<over><action if="getPowerCores(area) > 0 && player.getPower() < player.getMaxPower()-25">player.restorePower();</action></over>
+		<out><run structure="fighter.engine" event="over" /></out>
+	</structure>
+	
+	<tile id="fighter.exit" sheet="fighter.6" x="0" />
+	<tile id="fighter.ramp" sheet="fighter.2" x="12" offsetY="16" />
+	<animation id="fighter.exit.idle" count="1">
+		<append tile="fighter.ramp" animation="single" behind="true" />
+	</animation>
+	<animation id="fighter.exit.open" count="6">
+		<append tile="fighter.ramp" animation="item6" behind="true" />
+	</animation>
+	<animation id="fighter.ramp.retract" count="6" reverse="true" />
+	<animation id="fighter.exit.close" count="6" reverse="true">
+		<append tile="fighter.ramp" animation="fighter.ramp.retract" behind="true" />
+	</animation>
+	<procedure id="fighter.exit.close">
+		<set id="landing" value="area.getStructureInTile(this.tile_x-1, this.tile_y)" if="!exists('landing')" />
+		<action>landing.loopAnimation("idle"); setTileUnsynced(this.tile_x, this.tile_y, "empty"); setTileUnsynced(this.tile_x-3, this.tile_y, null);</action>
+		<remove objectsById="fighter.airlock" />
+		<play object="this" animation="fighter.exit.close" /><action>if(area.vehicle != null) area.vehicle.hasO2 = true;</action>
+	</procedure>
+	<object id="fighter.exit" tile="fighter.exit" width="16" height="16" doorway="horizontal" layer="npc" action="airlock" colorScale="1.5">
+		<addedToArea>
+			<action>setTile(this.tile_x, this.tile_y, "empty");</action>
+			<run procedure="fighter.exit.close" if="area.getTileString(this.tile_x-3, this.tile_y, BASE_LAYER) == 'empty'" />
+		</addedToArea>
+		<operate>
+			<set id="landing" value="area.getStructureInTile(this.tile_x-1, this.tile_y)" />
+			<choose>
+				<section if="landing.isIdle()">
+					<dialogue section="warning" id="spaceship_exit" if="var flight = player.getFlight(); return area.vehicle.exitFlying() && (flight == null || area.vehicle.tile_y <= -flight.flight.height)" />
+					<action>landing.loopAnimation("open"); setTileUnsynced(this.tile_x, this.tile_y, null); setTileUnsynced(this.tile_x-3, this.tile_y, "empty"); area.vehicle.hasO2 = false;</action>
+					<object id="fighter.airlock" x="this.tile_x-3" y="this.tile_y" />
+					<play object="this" animation="fighter.exit.open" />
+				</section>
+				<run procedure="fighter.exit.close" />
+			</choose>
+		</operate>
+	</object>
+	<object id="fighter.airlock" tile="empty" width="16" height="16" layer="npc" action="airlock" networkSync="false">
+		<operate><set id="this" value="area.getObject('fighter.exit')" /><run procedure="fighter.exit.close" /></operate>
+	</object>
+	<action>
+		function cleanShipInterior(area, w, h){
+			var empty = area.addTileIndex("empty");
+			for(y in 0...h) for(x in 0...w) if(!area.overlapsStructure(x, y)){
+				if(area.overlapsStructure(x-1, y-1, 3, 3)) area.setTile(x, y, BASE_LAYER, empty);
+				else area.setTile(x, y, BACK_LAYER, -1);
+			}
+		}
+	</action>
+	<area id="fighter.interior" name="fighter" shouldLight="false" powered="getPowerCores(this) > 0">
+		<structure id="fighter.command" x="5" y="3" />
+		<structure id="fighter.weaps" x="2" y="5" />
+		<structure id="fighter.o2" x="2" y="4" />
+		<structure id="fighter.shields" x="5" y="5" />
+		<structure id="fighter.landing" x="9" y="7" />
+		<structure id="fighter.subsystems" x="9" y="6" />
+		<structure id="fighter.cargo" x="4" y="6" />
+		<structure id="fighter.quarters" x="4" y="4" />
+		<structure id="fighter.engine" x="9" y="5" />
+		<structure id="fighter.ladder" x="8" y="7" />
+		
+		<object id="ship.hatch.up" x="8" y="1" />
+		<object id="ship.hatch.down" x="8" y="8" />
+		<object id="fighter.exit" x="11" y="7" />
+		
+		<object id="power_core.slot" x="10" y="3" />
+		<object id="power_core.slot" x="10" y="4" />
+		<object id="power_core.slot" x="10" y="5" />
+		
+		<object id="ship.bed" x="4.25" y="4" />
+		<object id="ship.bed" x="5.5" y="4" />
+		<object id="ship.bed" x="6.75" y="4" />
+		
+		<object id="ship.doorv" x="2" y="4.5" /><object id="ship.doorv" x="9" y="5.5" />
+		<object id="ship.doorh" x="7.5" y="3" /><object id="ship.doorh" x="7.5" y="4" />
+		<object id="ship.doorh" x="7.5" y="5" /><object id="ship.doorh" x="7.5" y="6" />
+		<object id="ship.doorh" x="8.5" y="4" /><object id="ship.doorh" x="8.5" y="5" />
+		<object id="ship.doorh" x="8.5" y="7" />
+		<object id="ship.doorh" x="3.5" y="4" /><object id="ship.doorh" x="4.5" y="5" />
+		
+		<action>for(y in 0...10) for(x in 0...14) setBack(x, y, "empty"); cleanShipInterior(area, 14, 10);</action>
+		
+		<init><music id="technically" seconds="1" /></init>
+		<onLoad>
+			<action if="area.getTileString(0,0,BACK_LAYER) == 'empty'">cleanShipInterior(area, 14, 10);</action>
+			<set id="this" value="area.getObject('fighter.exit')" />
+			<run procedure="fighter.exit.close" if="area.getTileString(this.tile_x-3, this.tile_y, BASE_LAYER) == 'empty'" />
+			<music id="technically" seconds="1" />
+			<section if="getPowerCores(area) > 0 && !player.hasQuest('power_core') && player.info.id != 'player.colosseum'"><quest id="power_core" ask="false" /><complete quest="power_core" useResources="false" /></section>
+		</onLoad>
+	</area>
+	
+	<tile id="fighter" sheet="fighter.8" x="13" />
+	<animation id="fighter.gear.down" x="-1" count="1" />
+	<animation id="fighter.gear.extend" x="-13" count="13" />
+	<animation id="fighter.gear.retract" x="-13" count="13" reverse="true" />
+	<animation id="fighter.idle" count="1">
+		<append tile="fighter" animation="fighter.gear.down" />
+	</animation>
+	<animation id="fighter.impulse1"><frame x="1" glow="true" /><frame visible="false" /><frame x="2" glow="true" /><frame visible="false" /><frame x="3" count="2" glow="true" /><frame visible="false" /><frame x="5" glow="true" /></animation>
+	<animation id="fighter.impulse2" x="6" count="8" glow="true" />
+	<animation id="fighter.fly" count="1" length="8">
+		<append tile="fighter" animation="fighter.impulse1" behind="true" />
+		<append tile="fighter" animation="fighter.impulse2" />
+	</animation>
+	<animation id="fighter.antigrav" x="14" count="6" repeat="3" glow="true" />
+	<animation id="fighter.hover" count="1" length="6">
+		<append tile="fighter" animation="fighter.antigrav" />
+	</animation>
+	<animation id="fighter.takeoff" count="1" length="13">
+		<append tile="fighter" animation="fighter.gear.retract" />
+		<append tile="fighter" animation="fighter.antigrav" />
+	</animation>
+	<animation id="fighter.land" count="1" length="13">
+		<append tile="fighter" animation="fighter.gear.extend" />
+		<append tile="fighter" animation="fighter.antigrav" />
+	</animation>
+	<tile id="fighter.shields" sheet="fighter.9" x="39" />
+	<animation id="fighter.shields._back" x="16" count="8" glow="true" />
+	<animation id="fighter.shields" x="4" count="8" glow="true"><append tile="fighter.shields" animation="fighter.shields._back" /></animation>
+	<animation id="fighter.shields.front" x="0" count="4" glow="true" />
+	<animation id="fighter.shields.back" x="12" count="4" glow="true" />
+	<animation id="fighter.ftl_bubble" x="24" count="7" />
+	<animation id="fighter.ftl" count="1" length="7">
+		<append tile="fighter" animation="fighter.impulse1" behind="true" />
+		<append tile="fighter" animation="fighter.impulse2" />
+		<append tile="fighter.shields" animation="fighter.ftl_bubble" />
+	</animation>
+	<tile id="light.fighter" sheet="{core}/player/light256.png">
+		<tile sheet="{core}/science1/items/headlamp_light.png" offsetX="-128" offsetY="58" />
+	</tile>
+	<vehicle id="fighter" tile="fighter" health="1000" fuel="1000" useBatteries="false" efficiency="0" fuelName="power" defense="7" speed="12" speedY="6" attack_move="true" type="spaceship" blood="science.explosion.med" title="itemName('world.fighter', this.name)" underground="false" flight_height="999" max_weight="4000" death_sfx="explosion" block_icon="fighter.shields.ico" block_behind="true" block_move="true" icon="escort_fighter.ico" takeoff_sfx="ship_takeoff" land_sfx="ship_land" allowRename="true">
+		<interior area="fighter.interior" offsetX="17" offsetY="20" enterX="10" enterY="7" exitX="10.5" operateX="6" operateY="3" />
+		<repair id="titanium" value="250" /><operateHitbox x="118" y="81" width="47" height="35" />
+		<dismount><action>if(this.renderer != null) this.renderer.scaleX = 1;</action></dismount>
+		<light tile="light.fighter" /><slot id="attack" />
+		<onDeath><run procedure="launch.lifepod" /></onDeath>
+        <init><set id="partial" value="0" /><set id="cores" value="0" /></init>
+		<onFrame>
+			var f2 = frames*2; var of = Math.floor(f2); partial += f2-of; if(partial >= 1){of++; partial -= 1;}
+			var p = of*cores; if(this.blocking) p -= of*4; if(p > 0) this.addFuel(p); else if(p &lt; 0) this.useFuel(-p);
+		</onFrame>
+		<mount><set id="cores" value="getPowerCores(this.interior)" /></mount>
+		<exitInterior><run object="fighter" event="mount" /></exitInterior>
+		<shield tile="fighter.shields" animation="fighter.shields" hit_front="fighter.shields.front" hit_back="fighter.shields.back" hit_sfx="ship_shield" />
+	</vehicle>
+		
+	<recipe id="fighter" object="fighter" title="world.fighter" fuel_cost="50" type="station.dock" achievement="fighter">
+		<item id="ship_parts" count="6" />
+		<item id="titanium" count="30" />
+		<item id="silicon" count="10" />
+		<item id="uranium" count="5" />
+	</recipe>
+	
+	<tile id="fighter.cannon" sheet="fighter.9" x="0" />
+	<animation id="equipment.fighter.cannon.idle" x="8" count="8" />
+	<animation id="equipment.fighter.cannon" x="0" count="8" />
+	
+	<tile id="fighter.cannon.bolt" sheet="fighter.10" x="0" />
+	<animation id="fighter.cannon.bolt" x="4" count="4" glow="true" />
+	<animation id="fighter.cannon.bolt.impact" x="0" count="4" glow="true" />
+	
+	<item id="fighter.cannon" type="equipment" slot="attack" equipOn="fighter" cost="2000" power="200" weight="60" range="18" attack="50" icon="fighter.cannon.ico" sfx="plasma_cannon">
+		<equipOn id="drone.ship" x="39" y="-13.5" />
+		<projectile tile="fighter.cannon.bolt" animation="fighter.cannon.bolt" speed="16" offsetX="-120" offsetY="16" delay="1" overlap="0.25">
+			<hitEffect tile="fighter.cannon.bolt" animation="fighter.cannon.bolt.impact" color="9999ff" />
+		</projectile>
+	</item>
+	<recipe id="craft_fighter.cannon" creates="fighter.cannon" type="advanced_lab">
+		<item id="ship_parts" count="2" /><item id="titanium" count="4" />
+	</recipe>
+	
+	<tile id="fighter.gun" sheet="fighter.9" x="16" />
+	<animation id="equipment.fighter.gun.idle" x="6" count="8" />
+	<animation id="equipment.fighter.gun" x="0" count="6" length="2">
+		<append tile="fighter.gun" animation="equipment.fighter.gun.idle" behind="true" />
+	</animation>
+	
+	<tile id="fighter.gun.bolt" sheet="fighter.12" x="0" />
+	<animation id="fighter.gun.bolt" x="0" count="4" glow="true" />
+	
+	<item id="fighter.gun" type="equipment" slot="attack" equipOn="fighter" cost="2000" power="40" repeat="8" weight="40" range="18" attack="15" icon="fighter.gun.ico" multiProjectile="true" sfx="plasma_gun">
+		<equipOn id="drone.ship" x="60" y="11.5" />
+		<projectile tile="fighter.gun.bolt" animation="fighter.gun.bolt" speed="16" offsetX="-80" offsetY="0" delay="1" overlap="0.25" />
+		<projectile tile="fighter.gun.bolt" animation="fighter.gun.bolt" speed="16" offsetX="-70" offsetY="12" delay="1" overlap="0.25" />
+	</item>
+	<recipe id="craft_fighter.gun" creates="fighter.gun" type="advanced_lab">
+		<item id="ship_parts" count="2" /><item id="titanium" count="4" />
+	</recipe>
+		
+	<tile id="fighter.launcher" sheet="fighter.9" x="30" />
+	<animation id="equipment.fighter.launcher.idle" x="8" count="1" />
+	<animation id="equipment.fighter.launcher" x="0" count="8" />
+	
+	<tile id="antimatter_missile" sheet="fighter.11" x="0" />
+	<animation id="antimatter_missile" x="5" count="3" />
+	<animation id="antimatter_missile.impact" x="0" count="5" />
+	
+	<item id="fighter.launcher" type="equipment" slot="attack" equipOn="fighter" cost="2000" weight="40" range="30" icon="fighter.launcher.ico" projectile="antimatter_missile" delay="4" sfx="antimatter_launcher">
+		<equipOn id="drone.ship" x="-61" y="12.5" /><action id="setProjectile" />
+	</item>
+	<item id="antimatter_missile" type="equipment" cost="1200" weight="5" icon="antimatter_missile.ico" attack="150" with="fighter.launcher">
+		<projectile tile="antimatter_missile" animation="antimatter_missile" speed="16" offsetX="60" offsetY="-24" knockback="20" hit_sfx="antimatter_missile">
+            <hitEffect tile="antimatter_missile" animation="antimatter_missile.impact" color="9999ff" />
+        </projectile>
+	</item>
+	<recipe id="craft_fighter.launcher" creates="fighter.launcher" type="advanced_lab">
+		<item id="ship_parts" count="2" /><item id="titanium" count="4" />
+	</recipe>
+	<recipe id="craft_antimatter_missile" creates="antimatter_missile" type="advanced_lab">
+		<item id="exotic_matter" count="1" /><item id="titanium" count="2" />
+	</recipe>
+		
+	<animation id="npc.fighter.idle" equals="fighter.hover" />
+	<animation id="npc.fighter.walk" equals="fighter.fly" />
+	<animation id="npc.fighter.attack" count="1" length="18">
+		<append tile="fighter" animation="fighter.antigrav" />
+	</animation>
+</data>

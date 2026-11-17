@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<structure id="pirate_warehouse" extends="warehouse" type="none" includeInventory="true">
+		<operate><choose>
+			<dialogue section="pirates" id="structure_lock" if="area.getObject('pirate_ship1') != null || area.getObject('pirate_ship2') != null" />
+			<section>
+				<dialogue section="pirates" id="structure_unlock" />
+				<structure id="warehouse" x="this.tile_x" y="this.tile_y" />
+			</section>
+		</choose><stop /></operate>
+	</structure>
+	<structure id="pirate_advanced_lab" extends="advanced_lab" name="inspect" animation="advanced_lab">
+		<operate><choose>
+			<section if="player.hasItem('com_device') && player.hasContact('mechanic') && !player.hasItem('advanced_lab_blueprint') && player.getNPC('mechanic').area.getPlanet().id == 'start'">
+				<call id="mechanic" incoming="true" />
+				<dialogue section="pirates" id="mechanic1" speaker="mechanic" />
+				<dialogue section="pirates" id="mechanic2" speaker="mechanic" />
+				<item id="advanced_lab_blueprint" modal="true" />
+				<dialogue section="pirates" id="mechanic3" speaker="mechanic" />
+				<call id="mechanic" end="true" />
+			</section>
+			<dialogue section="pirates" id="structure_lock" if="area.getObject('pirate_ship1') != null || area.getObject('pirate_ship2') != null" />
+			<section>
+				<dialogue section="pirates" id="structure_unlock" />
+				<structure id="advanced_lab" x="this.tile_x" y="this.tile_y" />
+			</section>
+		</choose><stop /></operate>
+		<over><stop /></over>
+		<out><stop /></out>
+	</structure>
+	<area id="science3" background="science3" planet="start">
+		<shore x="-1" top="sand_top" bottom="sand" trans1="magic1.dirt_sand1" trans2="magic1.dirt_sand2" flip="true" dock="dock_empty" height="96" />
+		<shore x="128" top="sand_top" bottom="sand" trans1="sci1.dirt_sand1" trans2="sci1.dirt_sand3" dock="dock_flip" height="96" />
+		<appendArea id="science3.maze" offsetX="32" offsetY="0" />
+		<appendArea id="science3.mountain" offsetX="0" offsetY="-28" />
+		<appendArea id="science3.left" offsetX="0" offsetY="0" />
+		<appendArea id="science3.right" offsetX="92" offsetY="0" />
+		<appendArea id="sea_floor"><params area_left="-240" area_right="280" area_width="128" area_height="96" /></appendArea>
+
+		<spawner id="shark" time="5000" count="18" fromX="-200" toX="240" fromY="60" toY="78" spawnWidth="128" underwater="true" />
+		<spawner id="jellyfish" time="5000" count="25" fromX="-200" toX="240" fromY="60" toY="78" spawnWidth="128" underwater="true" />
+		<spawner id="flapper" time="5000" count="5" fromX="-200" toX="240" fromY="60" toY="78" spawnWidth="128" underwater="true" />
+		<spawner id="clam" time="5000" count="18" fromX="-200" toX="240" fromY="60" toY="78" spawnWidth="64" underwater="true" bottom="true" />
+		
+		<fishing>
+			<loot id="rockfish" p="12" difficulty="2" />
+			<loot id="coral_cod" p="1" difficulty="3" />
+			<loot id="fin" p="4" difficulty="4" />
+			<loot id="pearl" p="1" difficulty="5" achievement="clam_pearl" />
+		</fishing>
+		
+		<structure id="pirate_warehouse" x="120">
+			this.inventory.addItems(Item.get("berries"), 20);
+			this.inventory.addItems(Item.get("fruit"), 10);
+			this.inventory.addItems(Item.get("bread"), 10);
+			this.inventory.addItems(Item.get("cheese"), 10);
+			this.inventory.addItems(Item.get("pie"), 10);
+			this.inventory.addItems(Item.get("sugar"), 10);
+			this.inventory.addItems(Item.get("toothfish"), 20);	
+			this.inventory.addItems(Item.get("wood"), 20);
+			this.inventory.addItems(Item.get("steel_bar"), 10);
+			this.inventory.addItems(Item.get("titanium"), 10);
+			this.inventory.addItems(Item.get("bullet"), 10);
+			this.inventory.addItems(Item.get("power_core_parts"), 2);
+			this.inventory.addItems(Item.get("ship_parts"), 2);
+			this.inventory.addItems(Item.get("nuclear_plant_blueprint"), 1);
+			this.inventory.addItems(Item.get("advanced_lab_blueprint"), 1);
+		</structure>
+		<structure id="pirate_advanced_lab" x="113" />
+		<object id="ship_chest" x="64" y="-29">
+			this.inventory.addItems(Item.get("exotic_matter"), 1);
+		</object>
+		
+		<set id="cave" value="area.getStructureById('cave')" />
+		<spreadTiles x="cave.tile_x" y="cave.tile_y" eval="'markings'+randInt(1,9)" layer="back" on="obsidian" count="50" if="cave != null" />
+		
+		<set id="ar" value="[]" /><action>for(i in 9...13) ar.push("ship_debris"+i);</action>
+		<repeat count="ar.length"><objects id="ar.pop()" fromX="92" toX="128" fromY="-1" toY="-1" width="4" height="2" count="1" layer="item" /></repeat>
+		
+		<structure id="depths.monolith.off" x="61.5" y="-29" />
+		
+		<connection area="magic2" fromX="-240" toX="260" />
+		<connection area="snow_island" fromX="280" toX="-240" />
+		<init><runAreaLoad /><action>area.spawner.spawnAll("shark"); area.spawner.spawnAll("clam");
+			area.spawner.spawnAll("jellyfish");  area.spawner.spawnAll("flapper");
+			for(i in 1...8) area.spawner.spawnAll("metal_debris"+i);</action></init>
+		<onLoad>
+			<tile id="seagull" animation="seagull.walk" x="random()*5" />
+			<tile id="seagull" animation="seagull.fly" x="-random()*5" y="-2" />
+			<tile id="seagull" animation="seagull.fly" x="-random()*5-1" y="-4" />
+			<tile id="seagull" animation="seagull.walk" x="127-random()*5" />
+			<tile id="seagull" animation="seagull.fly" x="128+random()*5" y="-2" />
+			<tile id="seagull" animation="seagull.fly" x="129+random()*5" y="-4" />
+			<music id="heights" seconds="1" /><weather type="snow" fromY="-50" toY="-16" />
+			<structure id="secret_door" x="64" y="67" if="area.getStructureById('secret_door') == null && area.getStructureById('megolemech_door') == null" />
+			<appendArea id="sea_floor" if="area.getObject('seaweed') == null"><params area_left="-240" area_right="280" area_width="128" area_height="96" /></appendArea>
+			<section if="area.getObject('tindle') == null">
+				<object id="tindle" x="62" y="-29" /><structure id="tindle.store" x="0" y="200" /><object id="tindle.hotspot" x="60" y="-29" />
+			</section>
+		</onLoad>
+		<onRead>
+			<structure id="depths.monolith.off" x="61.5" y="-29" if="area.getStructureById('depths.monolith.off') == null && !player.hasSeenItem('bone_shard') && area.getObject('tindle') == null" />
+		</onRead>
+	</area>
+	<area id="science3.left" width="36" height="95">
+		<tiles id="magic1.grass" y="0" empty="true" />
+		<tiles id="magic1.dirt" start="0" end="0.33" empty="true" />
+		<tiles id="magic1.stone" start="0.33" end="0.66" empty="true" />
+		<tiles id="magic1.stone2" start="0.66" end="1" empty="true" />
+		
+		<ore id="quartz" start="0.26" end="0.33" percent="0.0075" tile="magic1.dirt" />
+		<ore id="focus_gem" start="0.13" end="0.33" percent="0.0125" tile="magic1.dirt" />
+		<ore id="focus_gem" start="0.05" end="0.13" percent="0.000625" tile="magic1.dirt" />
+		<ore id="coal" start="0.0" end="0.26" percent="0.0125" tile="magic1.dirt" />
+		<ore id="iron" start="0.0" end="0.26" percent="0.0125" tile="magic1.dirt" />
+		<ore id="alter_gem" start="0.26" end="0.33" percent="0.000625" tile="magic1.dirt" />
+		<ore id="spirit_gem" start="0.59" end="0.66" percent="0.000625" tile="magic1.stone" />
+		<ore id="diamond" start="0.59" end="0.66" percent="0.00625" tile="magic1.stone" />
+		<ore id="blood_gem" start="0.46" end="0.66" percent="0.00625" tile="magic1.stone" />
+		<ore id="alter_gem" start="0.33" end="0.66" percent="0.0125" tile="magic1.stone" />
+		<ore id="quartz" start="0.33" end="0.66" percent="0.0125" tile="magic1.stone" />
+		<ore id="focus_gem" start="0.33" end="0.66" percent="0.0125" tile="magic1.stone" />
+		<ore id="lava" start="0.56" end="0.66" percent="1" tile="magic1.stone" />
+		<ore id="spirit_gem" start="0.8" end="1" percent="0.00625" tile="magic1.stone2" />
+		<ore id="focus_gem" start="0.66" end="0.86" percent="0.02" tile="magic1.stone2" />
+		<ore id="diamond" start="0.66" end="0.86" percent="0.01" tile="magic1.stone2" />
+		<ore id="blood_gem" start="0.66" end="1" percent="0.01" tile="magic1.stone2" />
+		<ore id="alter_gem" start="0.66" end="1" percent="0.02" tile="magic1.stone2" />
+		
+		<objects id="purple_golem" start="0.33" end="0.66" percent="0.0075" tile="magic1.stone" />
+		<objects id="purple_tree" y="-1" startX="2" endX="32" minDist="8" maxDist="10" array="trees" />
+		<object id="fire_boar" x="16" y="-1" />
+		<spawner id="fire_boar" time="5000" count="2" fromX="1" toX="34" fromY="-1" toY="-1" />
+		<spawner id="crawler" time="1000" count="5" fromX="1" toX="34" fromY="-1" toY="-1" enabled="isNight()" />
+		<spawner id="leech" time="4000" count="3" fromX="1" toX="34" fromY="3" toY="32" enabled="isNight()" />
+		<objects id="ice_bush" y="-1" between="trees" pos="0.4" percent="0.5" />
+		<objects id="ice_bush" y="-1" between="trees" pos="0.7" percent="0.5" />
+		<objects id="magic_wyrm" start="0.4" end="0.53" count="3" tile="magic1.stone" />
+		<spawner id="magic_wyrm" time="4000" count="5" fromX="1" toX="34" fromY="20" toY="48" tile="magic1.stone" />
+		
+		<structure id="recipe_pillar" x="7" recipe="make_shadow_cape" />
+		
+		<objects id="treasure_chest" start="0.33" end="0.66" count="4" tile="magic1.stone">
+			this.inventory.addItems(Item.get("ice_bush_seed"), 2);
+		</objects>
+		<onLoad>
+			<section if="area.getStructureById('sea_witch_hut') == null">
+				<structure id="sea_witch_hut" x="3" />
+				<object id="sea_witch" x="3" />
+				<object id="sea_witch_cat" x="2" />
+				<set id="pillar_x" value="randInt(2, 20)" />
+				<spreadTiles x="pillar_x" y="70" tile="invisible_block" count="100" />
+				<structure id="recipe_pillar" x="pillar_x" y="70" recipe="make_scale_mail" />
+			</section>
+		</onLoad>
+	</area>
+	<area id="science3.right" width="36" height="95">
+		<tiles id="sci1.grass" y="0" empty="true" />
+		<tiles id="sci1.dirt" start="0" end="0.5" empty="true" />
+		<tiles id="sci1.stone" start="0.5" end="1" empty="true" />
+		
+		<ore id="quartz" start="0.4" end="0.5" percent="0.0025" tile="sci1.dirt" />
+		<ore id="sulfur" start="0.2" end="0.5" percent="0.0125" tile="sci1.dirt" />
+		<ore id="sulfur" start="0.1" end="0.2" percent="0.000625" tile="sci1.dirt" />
+		<ore id="coal" start="0.0" end="0.4" percent="0.0375" tile="sci1.dirt" />
+		<ore id="gold" start="0.4" end="0.5" percent="0.000625" tile="sci1.dirt" />
+		<ore id="diamond" start="0.9" end="1.0" percent="0.0025" tile="sci1.stone" />
+		<ore id="sulfur" start="0.5" end="0.9" percent="0.0125" tile="sci1.stone" />
+		<ore id="iron" start="0.5" end="1.0" percent="0.0375" tile="sci1.stone" />
+		<ore id="lava" start="0.7" end="0.8" percent="1" tile="sci1.stone" />
+		
+		<objects id="conifer" y="-1" startX="-2" endX="32" minDist="6" maxDist="9" array="trees" />
+		<objects id="red_bush" y="-1" between="trees" pos="0.25" altPos="0.75" percent="0.34" />
+		<objects id="bush" y="-1" between="trees" pos="0.25" altPos="0.75" percent="0.67" />
+		
+		<object id="pirate_ship1" x="40" /><object id="pirate_ship2" x="40" />
+	</area>
+	<area id="science3.mountain">
+		<shape type="trapezoid" bottom="124">
+			<top y="0" fromX="60" toX="68" />
+			<bottom y="120" fromX="16" toX="112" />
+		</shape>
+		<tiles id="blackstone" start="0" end="1" empty="front|back" />
+	</area>
+	<area id="science3.maze" width="64" height="64">
+		<setTile x="4" y="4" tile="obsidian" /><setTile x="59" y="4" tile="obsidian" /><setTile x="32" y="59" tile="obsidian" />
+		<maze floor="obsidian" wall="blackstone" width="16" height="16" tilesPerCell="4" floorWall="true" />
+		<action>for(y in 0...8) for(x in 0...4){var t = y &lt; 4?null:"obsidian"; setTile(x, y, t); setTile(x+60, y, t);}
+		for(y in 60...68) for(x in 32...36) setTile(x, y, "bedrock");</action>
+		<ore id="quartz" start="0" end="0.5" percent="0.0125" tile="obsidian" />
+		<ore id="diamond" start="0.5" end="1" percent="0.00625" tile="obsidian" />
+		<ore id="titanium" start="0" end="0.5" percent="0.00625" tile="obsidian" />
+		<ore id="oil" start="0" end="0.75" percent="0.00625" tile="obsidian" />
+		<ore id="uranium" start="0.5" end="1" percent="0.003125" tile="obsidian" />
+		
+		<objects id="treasure_chest" start="0.5" end="1" count="1" tile="obsidian">
+			this.inventory.addItems(Item.get("sub_pen_blueprint"), 1);
+		</objects>
+		<objects id="treasure_chest" start="0.5" end="1" count="1" tile="obsidian">
+			this.inventory.addItems(Item.get("lab_blueprint"), 1);
+		</objects>
+		<objects id="treasure_chest" start="0.5" end="1" count="1" tile="obsidian">
+			this.inventory.addItems(Item.get("wyrm_pen_blueprint"), 1);
+		</objects>
+		
+		<objects structure="cave" width="2" height="2" fromX="0" toX="64" fromY="32" toY="64" tile="obsidian" count="1">
+			<teleport area="kraken_cave" x="32" y="12" allowReturn="true" />
+		</objects>
+	</area>
+	<area id="snow_island" extends="snow_island">
+		<connection area="science3" fromX="-240" toX="280" />
+	</area>
+		
+	<area id="kraken_cave" width="64" height="64" background="underwater">
+		<tiles id="sand" start="0" end="1" />
+		<mine start="0.3" end="0.4" />
+		<mine start="0.5" end="0.9" />
+		<tiles id="blackstone" y="0" />
+		<tiles id="blackstone" y="63" />
+		<tiles id="blackstone" x="0" />
+		<tiles id="blackstone" x="63" />
+		<action>for(y in 32...48) for(x in 24...40){mine(x, y); setBack(x, y, null);}</action>
+		<ore id="oil" start="0.0" end="1" percent="0.0125" tile="sand" />
+		<action>for(y in 0...64) for(x in 0...64) if(area.getTile(x, y, BASE_LAYER) == null) area.setWater(x, y);</action>
+		<objects id="coral1" count="2" fromX="0" toX="64" fromY="2" toY="64" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="coral2" count="2" fromX="0" toX="64" fromY="2" toY="64" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="coral3" count="2" fromX="0" toX="64" fromY="2" toY="64" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="coral4" count="2" fromX="0" toX="64" fromY="2" toY="64" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="coral5" count="2" fromX="0" toX="64" fromY="2" toY="64" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="seaweed" count="10" fromX="0" toX="64" fromY="2" toY="64" width="2" height="2" underwater="true" bottom="true" />
+		<objects id="treasure_chest" count="1" fromX="0" toX="64" fromY="42" toY="64"  underwater="true" bottom="true">
+			this.inventory.addItems(Item.get("water_gem"), 1);
+			this.inventory.addItems(Item.get("ink"), 3);
+		</objects>
+		
+		<structure id="cave" x="32" y="12" />
+		<mine x="32" y="12" light="3" /><mine x="33" y="12" light="3" /><mine x="32" y="11" light="3" /><mine x="33" y="11" light="3" />
+		
+		<fishing>
+			<loot id="rockfish" p="12" difficulty="2" />
+			<loot id="coral_cod" p="1" difficulty="3" />
+			<loot id="fin" p="4" difficulty="4" />
+			<loot id="pearl" p="1" difficulty="5" achievement="clam_pearl" />
+		</fishing>
+		
+		<object id="kraken" x="24" y="40" />
+		
+		<spawner id="shark" time="5000" count="6" fromX="1" toX="63" fromY="3" toY="63" spawnWidth="128" underwater="true" />
+		<spawner id="jellyfish" time="5000" count="8" fromX="1" toX="63" fromY="3" toY="63" spawnWidth="128" underwater="true" />
+		<spawner id="flapper" time="5000" count="3" fromX="1" toX="63" fromY="3" toY="63" spawnWidth="128" underwater="true" />
+		<spawner id="skyfish" time="5000" count="3" fromX="1" toX="63" fromY="3" toY="63" spawnWidth="128" underwater="true" />
+		<spawner id="clam" time="5000" count="6" fromX="1" toX="63" fromY="3" toY="63" spawnWidth="64" underwater="true" bottom="true" />
+		<spawner id="kraken" time="10000" count="1" fromX="1" toX="63" fromY="3" toY="63" spawnWidth="256" spawnHeight="256" underwater="true" />
+		<spawner id="scale_fish" time="5000" count="4" fromX="1" toX="63" fromY="3" toY="63" spawnWidth="128" underwater="true" />
+		<spawner id="snaptopus" time="5000" count="4" fromX="1" toX="63" fromY="3" toY="63" spawnWidth="128" underwater="true" />
+		<spawner id="blue_crab" time="5000" count="10" fromX="1" toX="63" fromY="3" toY="63" spawnWidth="32" underwater="true" bottom="true" />
+		
+		<init><runAreaLoad /><action>area.spawner.spawnAll("shark"); area.spawner.spawnAll("skyfish"); area.spawner.spawnAll("clam");
+			area.spawner.spawnAll("jellyfish"); area.spawner.spawnAll("flapper"); area.spawner.spawnAll("flapper"); area.spawner.spawnAll("scale_fish");
+			area.spawner.spawnAll("snaptopus"); area.spawner.spawnAll("blue_crab");</action></init>
+	</area>
+</data>

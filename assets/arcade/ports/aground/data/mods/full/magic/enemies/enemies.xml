@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<familiar id="fire_bird" type="ground" costPerSecond="0.25" element="fire" talk_sfx="fire_bird">
+		<attack type="projectile" damage="5" range="8" cost="5" animation="fire">
+			<projectile tile="fireball_small" animation="fireball_small" speed="3" offsetY="4" hitEffect="fire_sm_dot" fire_sfx="fireball">
+				<light tile="light.small" color="cc5500" />
+			</projectile>
+		</attack>
+	</familiar>
+	<item id="fire_bird" type="animal" cost="0" durability="1000" weight="2" slot="familiar" icon="fire_bird.ico">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="fire_bird" tile="fire_bird" animation="fire_bird" fps="15" />
+		<food id="berries" value="50" />
+		<food id="fruit" value="100" />
+		<food id="wheat" value="30" />
+		<food id="bread" value="100" />
+		<food id="pie" value="200" />
+	</item>
+	
+	<animation id="shark.swim" equals="shark.walk" />
+	<animation id="shark.fast_attack" x="4" count="6" />
+	<familiar id="shark" type="swimming" costPerSecond="0.25" element="water">
+		<attack type="melee" damage="14" cost="5" animation="fast_attack" sfx="shark_attack" allowDefaultSfx="false" />
+	</familiar>
+	<item id="shark" type="animal" durability="2000" cost="300" weight="6" slot="familiar" icon="shark.ico">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="shark" tile="shark" animation="shark" />
+		<food id="meat" value="75" />
+		<food id="steak" value="125" />
+		<food id="toothfish" value="125" />
+		<food id="rockfish" value="300" />
+		<food id="coral_cod" value="750" />
+	</item>
+	
+	<recipe id="craft_fire_bird" creates="fire_bird"><item id="chicken" /><item id="alter_gem" count="2" /></recipe>
+	<enemy id="fire_bird" extends="fire_bird">
+		<capture trapped="fire_bird" minCapture="3" />
+	</enemy>
+	
+	<familiar id="icer" type="ground" costPerSecond="0.25" element="ice">
+		<attack type="melee" damage="7" cost="5" hitEffect="freeze" />
+	</familiar>
+	<animation id="item12" count="12" />
+	<item id="icer" type="animal" durability="2000" cost="0" weight="6" slot="familiar" icon="icer.ico" animation="item12">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="icer" tile="icer" animation="icer" />
+		<food id="focus_gem" value="75" />
+		<food id="yeti_fur" value="125" />
+		<food id="ice_heart" value="300" />
+		<food id="ice_gem" value="750" />
+	</item>
+	<enemy id="icer" extends="icer" capture="30">
+		<capture trapped="icer" minCapture="3" />
+	</enemy>
+	
+	<familiar id="yeti" type="ground" costPerSecond="0.25" element="ice">
+		<attack type="melee" damage="8" range="1" animation="exhale" hits="4" knockback="5" cost="10" sfx="yeti_breath">
+			<pre><play object="this" animation="inhale" /></pre>
+			<cont animation="exhale_loop" />
+			<effect id="icy_wind" offsetX="-44" offsetY="-6" />
+		</attack>
+	</familiar>
+	<item id="yeti" type="animal" durability="4000" cost="0" weight="6" slot="familiar" icon="yeti.ico">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="yeti" tile="yeti" animation="yeti" fps="30" />
+		<food id="ice_berries" value="75" />
+		<food id="rat" value="200" />
+		<food id="meat" value="75" />
+		<food id="steak" value="125" />
+		<food id="hamburger" value="300" />
+		<food id="cheeseburger" value="500" />
+		<food id="pig" value="300" />
+		<food id="chicken" value="500" />
+	</item>
+	<enemy id="yeti" extends="yeti" capture="20">
+		<capture trapped="yeti" minCapture="3" />
+	</enemy>
+	
+	<familiar id="crawler" type="ground" costPerSecond="0.25" element="plant">
+		<attack type="melee" damage="7" cost="5" hit_sfx="crawler_attack" /><light tile="light.medium" color="bafa66" />
+	</familiar>
+	<item id="crawler" type="animal" durability="2000" cost="0" weight="2" slot="familiar" icon="crawler.ico" animation="item4">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="crawler" tile="crawler" animation="crawler" /><equipCost stamina="-4" daylight="true" />
+		<food id="fertilizer" value="75" />
+		<food id="wheat" value="75" />
+		<food id="cotton" value="75" />
+		<food id="rat" value="200" />
+		<food id="pig" value="300" />
+		<food id="chicken" value="500" />
+		<food id="meat" value="75" />
+	</item>
+	
+	<enemy id="crawler" extends="crawler" capture="20">
+		<capture trapped="crawler" minCapture="3" />
+	</enemy>
+	
+	<include id="plant_boss.xml" />
+	<tile id="plant_boss" sheet="plant_boss.1" />
+	<animation id="plant_boss.idle" x="53" count="6" />
+	<animation id="plant_boss.walk" x="59" count="8" />
+	<animation id="plant_boss.hit" count="1" length="3" x="52" />
+	<animation id="plant_boss.death" count="30" x="22" />
+	<animation id="plant_boss.prespikes" count="2" x="8" />
+	<animation id="plant_boss.spikes1" count="2" x="10" />
+	<animation id="plant_boss.spikes2" count="2" x="12" />
+	<animation id="plant_boss.gas_summon" count="8" x="0" />
+	<animation id="plant_boss.prespores" count="2" x="14" />
+	<animation id="plant_boss.spores" count="6" x="16" />
+	<tile id="gas_cloud" sheet="plant_boss.2" />
+	<animation id="gas_cloud" count="12" x="0" repeat="12" />
+	<object id="gas_cloud" tile="gas_cloud" animation="gas_cloud" layer="top" fps="10" removeOnComplete="true" save="false">
+		<addedToArea><action>
+			count = 0.0; function canDamage(o){
+				return o.attackPower(1, 0, 0, null, false) > 0 &amp;&amp; o.getDefense(false, false, false) &lt; 12 &amp;&amp; o.getDefenseElement() != getElement("plant");
+			}
+		</action></addedToArea>
+		<onFrame>count += frames; if(count >= 8){count -= 8; for(o in this.getOverlappingObjects(canDamage)) o.damage(2, FLAG_IGNORE_DEFENSE|FLAG_HIDE_ATTACKER, this);}</onFrame>
+	</object>
+	<tile id="spore" sheet="spore.png" />
+	<animation id="spore" count="4" />
+	<animation id="spore.impact" x="4" count="4" />
+	<object id="plant_boss.corpse" tile="plant_boss" animation="plant_boss.death" removeOnComplete="true" layer="enemy" />
+	<enemy id="plant_boss" tile="plant_boss" fps="10" health="200" speed="0.5" defense="5" range="8" type="surface" element="plant" knockback="false" friendlyFire="false" passEnemies="true" death_sfx="cultivator_death" passFence="true" attack_sfx="none">
+		<lootSet><loot id="plant_gem" /></lootSet>
+		<lootSet><loot id="plant_eye" count="3" /></lootSet>
+		<attack type="beam" range="4" damage="20" animation="spikes1" hits="2" height="22" top="-30" knockback="5">
+			<pre sfx="plant_boss_spikes"><play object="this" animation="prespikes" /></pre>
+			<post><play object="this" animation="idle" /></post>
+			<cont animation="spikes2" />
+		</attack>
+		<cooldown seconds="5">
+			<sound id="cultivator_gas" object="this" /><object id="gas_cloud" x="(this.xPos-(this.getFacing() == 1?70:0))/Tile.SIZE" y="this.yTile/Tile.SIZE" />
+			<action>gas_cloud.alpha = 0;</action><lerp object="gas_cloud" alpha="1" seconds="0.5" modal="false" />
+			<play object="this" animation="gas_summon" /><action>this.playIdle()</action>
+		</cooldown>
+		<attack type="projectile" range="14" damage="15" repeat="2" minAngle="-60" maxAngle="5" animation="spores" sfx="cultivator_spores" cooldown="20" requireTarget="false">
+			<pre><play object="this" animation="prespores" /><set id="spore_left" value="false" if="!exists('spore_left')" /></pre>
+			<projectile tile="spore" animation="spore" speed="1" offsetX="spore_left?-51:7" offsetY="spore_left?-25:-46" hit_sfx="spore_impact" passTile="true" exec="spore_left = !spore_left">
+				<hitEffect tile="spore" animation="spore.impact" color="66ff00" />
+			</projectile>
+		</attack>
+		<onDeath>
+			<structure id="growth_off" x="Utils.clampi(this.xPos-30,0,96*Tile.SIZE-104)/Tile.SIZE" y="this.yTile/Tile.SIZE" if="area.getStructureById('growth_off') == null && area.getStructureById('growth') == null" />
+			<set id="scaleX" value="this.getFacing()" />
+			<object id="plant_boss.corpse" x="this.xPos/Tile.SIZE" y="this.yTile/Tile.SIZE">if(this.renderer != null) this.renderer.scaleX = scaleX;</object>
+		</onDeath>
+	</enemy>
+	
+	<familiar id="fire_boar" type="ground" costPerSecond="0.25" element="fire">
+		<attack type="melee" damage="8" cost="10" hitEffect="fire_lg_dot" hit_sfx="boar_attack" afterAnimation="roar" />
+	</familiar>
+	<item id="fire_boar" type="animal" durability="4000" cost="0" weight="2" slot="familiar" icon="fire_boar.ico" animation="item10">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="fire_boar" tile="fire_boar" animation="fire_boar" />
+		<food id="rat" value="200" />
+		<food id="meat" value="75" />
+		<food id="steak" value="125" />
+		<food id="hamburger" value="300" />
+		<food id="cheeseburger" value="500" />
+		<food id="chicken" value="500" />
+	</item>
+	<recipe id="craft_fire_boar" creates="fire_boar"><item id="pig" /><item id="fire_tusk" count="2" /></recipe>
+	<enemy id="fire_boar" extends="fire_boar" capture="20">
+		<capture trapped="fire_boar" minCapture="3" />
+	</enemy>
+	
+	<familiar id="shadow_cat" type="ground" costPerSecond="0.5" sight="4">
+		<light tile="light.default" color="66fa66" />
+		<attack type="melee" damage="4" range="0.25" overEnemy="true" hits="2" animation="attack1" cost="10">
+			<pre sfx="shadowcat_attack"><play object="this" animation="attack" /></pre>
+			<cont animation="attack2" />
+		</attack>
+	</familiar>
+	<item id="shadow_cat" type="animal" durability="4000" cost="0" weight="2" slot="familiar" icon="shadow_cat.ico" viewHidden="true" animation="item8">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="shadow_cat" tile="shadow_cat" animation="shadow_cat" />
+		<food id="rat" value="200" />
+		<food id="meat" value="75" />
+		<food id="steak" value="125" />
+		<food id="hamburger" value="300" />
+		<food id="cheeseburger" value="500" />
+		<food id="toothfish" value="125" />
+		<food id="rockfish" value="300" />
+		<food id="coral_cod" value="750" />
+		<food id="chicken" value="500" />
+	</item>
+	
+	<recipe id="craft_shadow_cat" creates="shadow_cat"><item id="cat" /><item id="dark_fur" count="2" /></recipe>
+	<enemy id="shadow_cat" extends="shadow_cat" capture="10">
+		<capture trapped="shadow_cat" minCapture="2" />
+	</enemy>
+	
+	<include id="blue_crab.xml" includeRoot="true" />
+	<tile id="blue_crab" sheet="blue_crab.png" />
+	<animation id="blue_crab.idle" x="20" count="8" />
+	<animation id="blue_crab.walk" x="12" count="8" />
+	<animation id="blue_crab.attack" x="0" count="9" />
+	<animation id="blue_crab.hit" x="9" count="3" />
+	<enemy id="blue_crab" tile="blue_crab" health="15" element="water" defense="5" range="7" type="underwater" bottom="true" waterTint="false" death_sfx="clam_death">
+		<loot id="blue_claw" /><attack type="melee" damage="16" range="1" knockback="10" sfx="blueclaw" />
+	</enemy>
+		
+	<include id="ice_boss.xml" includeRoot="true" />
+	<tile id="ice_boss" sheet="ice_boss.png" />
+	<animation id="ice_boss.idle" x="31" count="7" />
+	<animation id="ice_boss.walk" equals="ice_boss.idle" />
+	<animation id="ice_boss.attack" x="24" count="7"><frame x="31" count="7" /></animation>
+	<animation id="ice_boss.hail" x="38" count="7"><frame x="31" count="7" /></animation>
+	<animation id="ice_boss.tornado.idle" x="0" count="8" offsetY="-24" />
+	<animation id="ice_boss.tornado.form" x="16" count="8" offsetY="-24" />
+	<animation id="ice_boss.unform" x="8" count="8" />
+	<animation id="ice_boss.tornado.walk" equals="ice_boss.tornado.idle" />
+	<action>
+		function handleIceBoss(e){
+			var this = e.target; if(this.front_defense == -1){
+				this.reshape(this._width, 80); this.passPlayer = false; this.animPrefix = null; this.allowAttack = true;
+				this._playAnimation("unform", function(){this.run();});
+			} else {
+				this.passPlayer = true; this.animPrefix = "ice_boss.tornado"; this.allowAttack = false;
+				this.reshape(this._width, 128); this._playAnimation("form", function(){this.run();});
+			}
+		}
+	</action>
+	<enemy id="ice_boss" tile="ice_boss" health="60" defense="6" range="12" type="surface" element="ice" knockback="false" passEnemies="true" damageElement="fire" flying="true" ignoreHit="true" minX="12" maxX="76" cooldownCancelAttack="true" overlapVehicle="true" projectileKillCollect="true" kill_achievement="ice_boss" death_sfx="hail_storm_death" passFence="true" attack_sfx="none">
+		<lootSet><loot id="ice_gem" /></lootSet>
+		<lootSet><loot id="ice_heart" count="3" /></lootSet>
+		<idle><action>this.run();</action><stop /></idle>
+		<hitWall><action>this.flip(); this.run();</action><stop /></hitWall>
+		<attack type="beam" damage="30" range="7" knockback="10" sfx="yeti_breath" />
+		<attack type="vertical" damage="30" range="3" animation="hail" sfx="ice_effect" />
+		<cooldown seconds="5"><sound id="ice_boss" object="this" /><action>if(this.front_defense == -1) this.setVulnerable(50,50); else this.endVulnerable();</action></cooldown>
+		<over><damage object="player.vehicle==null?player:player.vehicle" attacker="this" damage="30" element="ice" if="this.front_defense != -1" /></over>
+		<overSecond><damage object="player.vehicle==null?player:player.vehicle" attacker="this" damage="30" element="ice" if="this.front_defense != -1" /></overSecond>
+		<addEvents>this.addEventListener("update_defense", handleIceBoss);</addEvents>
+	</enemy>
+		
+	<include id="ancient_dragon.xml" includeRoot="true" />
+	<tile id="ancient_dragon" sheet="ancient_dragon.png" />
+	<animation id="ancient_dragon.fly" count="16" />
+	<animation id="ancient_dragon.fly.wing">
+		<frame visible="false" length="4" /><frame x="39" />
+		<frame visible="false" length="4" /><frame x="40" count="7" />
+	</animation>
+	<animation id="ancient_dragon.hit" x="32" count="1" length="3" />
+	<animation id="ancient_dragon.hover_hit" x="23" count="1" length="3" />
+	<animation id="ancient_dragon.hover_fire">
+		<frame x="16" count="7" repeat="3" />
+	</animation>
+	<animation id="ancient_dragon.walk" equals="ancient_dragon.fly" />
+	<animation id="ancient_dragon.hover" x="24" count="7" />
+	<animation id="ancient_dragon.idle">
+		<frame x="34" length="4" />
+		<frame x="31" length="2" />
+		<frame x="34" length="4" />
+		<frame x="33" length="4" />
+		<frame x="34" length="4" />
+	</animation>
+	<animation id="ancient_dragon.roar">
+		<frame x="34" length="4" />
+		<frame x="33" length="4" />
+	</animation>
+	<animation id="ancient_dragon.listen" equals="ancient_dragon.idle" />
+	<animation id="ancient_dragon.talk" equals="ancient_dragon.roar" />
+	<animation id="ancient_dragon.sleep" x="31" count="1" />
+	<animation id="ancient_dragon.fire">
+		<frame x="35" count="4" repeat="5" />
+	</animation>
+		
+	<animation id="player.ride.ancient_dragon.idle" count="1" offsetX="61" offsetY="27" />
+	<animation id="player.ride.ancient_dragon.hover">
+		<frame offsetX="43" offsetY="-17" />
+        <frame offsetX="43" offsetY="-15" />
+        <frame offsetX="43" offsetY="-12" />
+        <frame offsetX="43" offsetY="-13" />
+        <frame offsetX="43" offsetY="-17" />
+        <frame offsetX="43" offsetY="-20" />
+        <frame offsetX="43" offsetY="-24" />
+	</animation>
+	<animation id="player.ride.ancient_dragon.hover_fire" equals="player.ride.ancient_dragon.hover" />
+	<animation id="player.ride.ancient_dragon.fly">
+		<frame offsetX="28" offsetY="27" length="5" />
+		<frame offsetX="28" offsetY="25" length="4" />
+		<frame offsetX="28" offsetY="27" />
+        <frame offsetX="28" offsetY="28" length="3" />
+        <frame offsetX="28" offsetY="29" length="3" />
+		<append tile="ancient_dragon" animation="ancient_dragon.fly.wing" />
+	</animation>
+	<enemy id="ancient_dragon" tile="ancient_dragon" health="500" fps="10" defense="5" type="surface" range="14" vrange="8" friendlyFire="false" passEnemies="true" vertical="true" flying="true" death_sfx="dragon_death" walk_sfx="dragon_wings" hoverWalk="true" soundScale="2" flyAnim="true" element="fire">
+		<lootSet><loot id="fire_gem" /></lootSet>
+		<lootSet><loot id="evo_shard" count="2" /></lootSet>
+		<attack cooldown="10" type="breath" damage="12" range="13" repeat="2" animation="fire" state="standing" sfx="dragon_atk">
+			<projectile tile="fire" glow="true" speed="2" frames="8" breakTile="3" breakPower="4" scaleTo="3" offsetX="-56" offsetY="10" hitEffect="fire_med" hitTrees="true" color="f9be0b" colorScale="2">
+				<light tile="light.small" color="cc5500" />
+			</projectile>
+		</attack>
+		<attack cooldown="10" type="breath" damage="12" range="13" repeat="2" animation="hover_fire" state="flying" sfx="dragon_atk">
+			<projectile tile="fire" glow="true" speed="2" frames="8" breakTile="3" breakPower="4" scaleTo="3" offsetX="-68" offsetY="-30" hitEffect="fire_med" hitTrees="true" color="f9be0b" colorScale="2">
+				<light tile="light.small" color="cc5500" />
+			</projectile>
+		</attack>
+	</enemy>
+	<vehicle id="fly_ancient_dragon" type="flying" efficiency="0.5" underground="false" fps="8" fuel="12000" title="itemName('vehicle.ancient_dragon', this.name)" includeName="true" fuelName="rations" fuel_sfx="eat" health="500" defense="5" tile="ancient_dragon" speed="6" speedY="3" flight_height="36" max_weight="1500" tooltip="structure.tooltip.fly_dragon" element="fire" icon="ancient_dragon.ico" bgm="voyage" death_sfx="dragon_death" walk_sfx="dragon_wings" hoverWalk="true" allowModifier="true" landOnWater="true" explodeCliff="false" waterLine="50">
+    	<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="ancient_dragon" value="this.fuel" name="this.name"><parameter id="f" value="Std.string(this.health)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<player x="0" y="0" animation="ride" movement="player.ride.ancient_dragon" /><collectBounds x="10" y="-32" width="69" height="69" />
+		<repair id="blood_gem" value="250" /><recipe type="dragon_feed" />
+		<attack type="breath" damage="5" range="13" repeat="2" animation="fire" state="standing" sfx="dragon_atk" cost="5">
+			<projectile tile="fire" glow="true" speed="2" frames="8" breakTile="3" breakPower="4" scaleTo="3" offsetX="-56" offsetY="10" hitEffect="fire_med" hitTrees="true" color="f9be0b" colorScale="2">
+				<light tile="light.small" color="cc5500" />
+			</projectile>
+		</attack>
+		<attack type="breath" damage="5" range="13" repeat="2" animation="hover_fire" sfx="dragon_atk" cost="5">
+			<projectile tile="fire" glow="true" speed="2" frames="8" breakTile="3" breakPower="4" scaleTo="3" offsetX="-68" offsetY="-30" hitEffect="fire_med" hitTrees="true" color="f9be0b" colorScale="2">
+				<light tile="light.small" color="cc5500" />
+			</projectile>
+		</attack>
+		<hitbox x="48" y="16" width="80" height="48" />
+		<mount><action>setGameScale(2)</action></mount>
+	</vehicle>
+	<item id="ancient_dragon" type="animal" cost="0" weight="120" icon="ancient_dragon.ico" name="vehicle.ancient_dragon" durability="12000" canModify="true">
+		<action id="plant" name="vehicle.deploy" object="fly_ancient_dragon" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false">
+			<action>
+				object.setFuel(this.getFeed()); object.name = this.getNameStr(); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setHealth(Std.parseInt(f));
+			</action>
+		</action>
+		<action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<food id="pig" value="300" />
+		<food id="chicken" value="500" />
+		<food id="cow" value="1000" />
+		<food id="steak" value="125" />
+		<food id="coal" value="125" />
+	</item>
+    
+    <tilesheet id='ancient_dragon2.png' extends="ancient_dragon" />
+    <tile id="ancient_dragon2" sheet="ancient_dragon2.png" />
+		
+	<animation id="golemech.empty" equals="golemech.sleep" />
+	<animation id="golemech.move" equals="golemech.walk" />
+	<vehicle id="ride_golemech" tile="golemech" health="600" speed="1" efficiency="0" defense="5" fps="20" element="earth" max_weight="4000" fuel="20000" title="itemName('vehicle.golemech', this.name)" includeName="true" icon="golemech.ico" block_icon="golemlaser.ico" death_sfx="golemech_death" allowModifier="true" item="golemech">
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="golemech" value="this.fuel" name="this.name"><parameter id="f" value="Std.string(this.health)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<repair id="titanium" value="250" />
+		<fuel id="blood_gem" fuel="1000" />
+		<attack type="melee" damage="15" hits="2" animation="attack1" cost="10" sfx="golem_attack">
+			<pre><play object="this" animation="attack" /></pre>
+			<cont animation="attack2" />
+		</attack>
+		<attack useDefend="true" type="melee" range="2" damage="15" animation="fire1" element="fire" hitEffect="fire_lg_dot" hits="4" cooldown="600" cost="10">
+			<pre sfx="golemech_laser"><play object="this" animation="powerup" /></pre>
+			<cont animation="fire2" /><cont animation="fire3" /><cont animation="fire4" />
+		</attack>
+		<light tile="light.default" color="ff9898" flicker="true" />
+	</vehicle>
+	<item id="golemech" type="animal" cost="0" weight="100" icon="golemech.ico" name="vehicle.golemech" durability="20000" canModify="true" element="earth">
+		<action id="plant" name="vehicle.deploy" object="ride_golemech" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true">
+			<action>
+				object.setFuel(this.getFeed()); object.name = this.getNameStr(); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setHealth(Std.parseInt(f));
+			</action>
+		</action>
+		<action id="feed" alt="feed_all" sfx="workshop" /><action id="rename" />
+		<food id="blood_gem" value="1000" />
+	</item>
+		
+	<animation id="wyrm_queen.move" equals="wyrm_queen.walk" />
+	<animation id="wyrm_queen.mine" x="10" count="4" />
+	<recipe id="spawn_wyrm" creates="wyrm"><item id="dragonblood" count="5" /></recipe>
+	<vehicle id="ride_wyrm_queen" tile="wyrm_queen" health="1000" defense="3" speed="2" type="mining" fuelName="rations" fuel_sfx="eat" title="itemName('vehicle.wyrm_queen', this.name)" includeName="true" icon="wyrm_queen.ico" fuel="5000" max_weight="2000" death_sfx="wyrm_queen_death" mine="5" mine_fuel="1" underwater="true" allowModifier="true" item="wyrm_queen">
+    	<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="wyrm_queen" value="this.fuel" name="this.name"><parameter id="f" value="Std.string(this.health)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<player x="54" y="7" animation="ride" /><collectBounds x="36" y="-1" width="32" height="16" />
+		<repair id="spirit_gem" value="500" /><recipe id="spawn_wyrm" /><recipe type="dragon_feed" />
+	</vehicle>
+	<item id="wyrm_queen" type="animal" cost="0" weight="100" icon="wyrm_queen.ico" name="vehicle.wyrm_queen" durability="5000" canModify="true">
+		<action id="plant" name="vehicle.deploy" object="ride_wyrm_queen" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true" underwater="true">
+			<action>
+				object.setFuel(this.getFeed()); object.name = this.getNameStr(); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setHealth(Std.parseInt(f));
+			</action>
+		</action>
+		<action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<food id="pig" value="300" />
+		<food id="chicken" value="500" />
+		<food id="cow" value="1000" />
+		<food id="steak" value="125" />
+		<food id="coal" value="125" />
+	</item>
+	
+	<include id="scale_fish.xml" includeRoot="true" />
+	<tile id="scale_fish" sheet="scale_fish.png" />
+	<animation id="scale_fish.idle" x="9" count="8" />
+	<animation id="scale_fish.walk" equals="scale_fish.idle" />
+	<animation id="scale_fish.swim" equals="scale_fish.idle" />
+	<animation id="scale_fish.pre_attack" count="5" />
+	<animation id="scale_fish.attack" x="5" count="3" />
+	<animation id="scale_fish.hit" count="1" length="3" x="8" />
+		
+	<familiar id="scale_fish" type="swimming" costPerSecond="0.25" element="water">
+		<spawn item="fish_scale" cooldown="500" cost="500" />
+	</familiar>
+	<item id="scale_fish" type="animal" cost="300" weight="6" durability="2000" slot="familiar" icon="scale_fish.ico">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="scale_fish" tile="scale_fish" animation="scale_fish" />
+		<food id="meat" value="75" />
+		<food id="steak" value="125" />
+		<food id="toothfish" value="125" />
+		<food id="rockfish" value="300" />
+		<food id="coral_cod" value="750" />
+	</item>
+		
+	<enemy id="scale_fish" tile="scale_fish" health="60" element="water" defense="2" range="7" type="underwater" capture="30" waterTint="false" death_sfx="scalefish_death" attack_sfx="none">
+		<loot id="fish_scale" count="3" /><capture trapped="scale_fish" minCapture="3" />
+		<attack type="melee" damage="30" range="2.5" knockback="5" sfx="scalefish_attack"><pre><play object="this" animation="pre_attack" /></pre></attack>
+	</enemy>
+		
+	<include id="snaptopus.xml" includeRoot="true" />
+	<tile id="snaptopus" sheet="snaptopus.png" />
+	<animation id="snaptopus.idle" x="7" count="10" />
+	<animation id="snaptopus.walk" equals="snaptopus.idle" />
+	<animation id="snaptopus.swim" equals="snaptopus.idle" />
+	<animation id="snaptopus.pre_attack" x="0" count="3" />
+	<animation id="snaptopus.attack" x="3" count="3"><frame x="15" count="2" /></animation>
+	<animation id="snaptopus.hit" count="1" length="3" x="6" />
+		
+	<familiar id="snaptopus" type="swimming" costPerSecond="0.25" element="water">
+		<attack type="melee" damage="15" range="2" cost="10" sfx="snaptopus_attack"><pre><play object="this" animation="pre_attack" /></pre></attack>
+	</familiar>
+	<item id="snaptopus" type="animal" cost="300" weight="6" durability="2000" slot="familiar" icon="snaptopus.ico">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="snaptopus" tile="snaptopus" animation="snaptopus" />
+		<food id="meat" value="75" />
+		<food id="steak" value="125" />
+		<food id="toothfish" value="125" />
+		<food id="rockfish" value="300" />
+		<food id="coral_cod" value="750" />
+	</item>
+		
+	<enemy id="snaptopus" tile="snaptopus" health="60" element="water" defense="2" range="7" type="underwater" capture="30" waterTint="false" death_sfx="snaptopus_death" attack_sfx="none">
+		<loot id="ink" count="1" /><capture trapped="snaptopus" minCapture="3" />
+		<attack type="melee" damage="20" range="2" knockback="5" sfx="snaptopus_attack"><pre><play object="this" animation="pre_attack" /></pre></attack>
+	</enemy>
+		
+	<familiar id="minotaur" type="ground" costPerSecond="0.25">
+		<attack type="melee" damage="8" knockback="10" cost="20" sfx="minotaur_impale" />
+	</familiar>
+	<item id="minotaur" type="animal" durability="4000" cost="0" weight="3" slot="familiar" icon="minotaur.ico">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="minotaur" tile="minotaur" animation="minotaur" />
+		<food id="rat" value="200" />
+		<food id="meat" value="75" />
+		<food id="steak" value="125" />
+		<food id="hamburger" value="300" />
+		<food id="cheeseburger" value="500" />
+		<food id="chicken" value="500" />
+	</item>
+	<recipe id="craft_minotaur" creates="minotaur"><item id="cow" /><item id="horn" count="2" /></recipe>
+	<enemy id="minotaur" extends="minotaur">
+		<capture trapped="minotaur" minCapture="3" />
+	</enemy>
+		
+	<include id="alien.xml" />
+	<tile id="hi_alien" sheet="alien.1" />
+	<animation id="hi_alien.idle" x="57" count="8" repeat="3" />
+	<animation id="hi_alien.walk" equals="hi_alien.idle" />
+	<animation id="hi_alien.hit" x="56" count="1" length="3" />
+	<animation id="hi_alien.uber" x="55" count="1" />
+	<animation id="hi_alien.pre_attack" x="0" count="13"><append tile="hi_alien" animation="hi_alien.uber" behind="true" /></animation>
+	<animation id="hi_alien.attack" x="13" count="8"><append tile="hi_alien" animation="hi_alien.uber" behind="true" /></animation>
+	<animation id="hi_alien.pre_fire" x="21" count="13"><append tile="hi_alien" animation="hi_alien.uber" behind="true" /></animation>
+	<animation id="hi_alien.fire" x="34" count="4"><append tile="hi_alien" animation="hi_alien.uber" behind="true" /></animation>
+	<animation id="hi_alien.pre_shock" x="38" count="8"><append tile="hi_alien" animation="hi_alien.uber" behind="true" /></animation>
+	<animation id="hi_alien.shock1" x="46" count="4"><frame visible="false" /><append tile="hi_alien" animation="hi_alien.uber" behind="true" /></animation>
+	<animation id="hi_alien.shock2" x="50" count="2"><frame visible="false" /><append tile="hi_alien" animation="hi_alien.uber" behind="true" /></animation>
+	<animation id="hi_alien.shock3" x="52" count="1"><frame visible="false" /><frame x="53" /><frame visible="false" /><frame x="54" /><append tile="hi_alien" animation="hi_alien.uber" behind="true" /></animation>
+	<animation id="hi_alien.open" x="65" count="8"><frame x="73" count="6" repeat="4" /><frame x="65" count="8" reverse="true" /></animation>
+	<tile id="hi_alien.blast" sheet="alien.2" />
+	<animation id="hi_alien.blast" x="4" count="4" />
+	<animation id="hi_alien.blast.impact" x="0" count="4" />
+	<procedure id="hi_alien.cooldown">
+		<action>attack_ct++;</action><section if="attack_ct >= 5">
+			<action>attack_ct = 0;</action><invokeLater>
+				<action>this.setVulnerable(3,20);</action><play object="this" animation="open" />
+				<action>this.endVulnerable();</action><play object="this" animation="idle" loop="true" />
+			</invokeLater>
+		</section>
+	</procedure>
+	<enemy id="hi_alien" tile="hi_alien" health="50" defense="25" range="8" speed="0.5" type="surface" blood="magic.explosion.sm" death_sfx="alien_death" vertical="true" friendlyFire="false">
+		<loot id="alien_heart" />
+		<init><set id="attack_ct" value="0" /></init>
+		<attack type="beam" damage="60" range="4" knockback="20">
+			<pre><play object="this" animation="pre_attack" /></pre>
+			<post><run procedure="hi_alien.cooldown" /></post>
+		</attack>
+		<attack type="projectile" range="14" damage="100" cooldown="600" animation="fire">
+			<pre><play object="this" animation="pre_fire" /></pre>
+			<projectile tile="hi_alien.blast" animation="hi_alien.blast" speed="10" offsetX="-60" hit_sfx="attack" overlap="0.25">
+				<hitEffect tile="hi_alien.blast" animation="hi_alien.blast.impact" color="d750dd" />
+			</projectile>
+			<post><run procedure="hi_alien.cooldown" /></post>
+		</attack>
+		<cooldown seconds="2">
+			<attack type="omni" damage="40" range="2.5" hits="3" animation="shock1" requireTarget="false">
+				<pre><play object="this" animation="pre_shock" /></pre>
+				<cont animation="shock2" />
+				<cont animation="shock3" />
+				<post><run procedure="hi_alien.cooldown" /></post>
+			</attack>
+		</cooldown>
+	</enemy>
+		
+	<include id="megolemech.xml" />
+	<tile id="megolemech" sheet="megolemech.1" />
+	<animation id="megolemech.arm.left.fire" x="50" count="10" />
+	<animation id="megolemech.arm.left" x="60" count="1" length="10"><append tile="megolemech" animation="megolemech.arm.left.fire" /></animation>
+	<animation id="megolemech.arm.right.fire" x="85" count="10" />
+	<animation id="megolemech.arm.right" x="95" count="1" length="10"><append tile="megolemech" animation="megolemech.arm.right.fire" /></animation>
+	<animation id="megolemech.body" x="0" count="10" />
+	<animation id="megolemech.idle" x="0" count="10">
+		<append tile="megolemech" animation="megolemech.arm.left" behind="true" />
+		<append tile="megolemech" animation="megolemech.arm.right" />
+	</animation>
+	<animation id="megolemech.arm.left.walk">
+		<frame x="60" length="5" offsetY="-1" /><frame x="60" length="5" />
+		<append tile="megolemech" animation="megolemech.arm.left.fire" />
+	</animation>
+	<animation id="megolemech.arm.right.walk">
+		<frame x="95" length="5" offsetY="-1" /><frame x="95" length="5" />
+		<append tile="megolemech" animation="megolemech.arm.right.fire" />
+	</animation>
+	<animation id="megolemech.walk" x="10" count="10">
+		<append tile="megolemech" animation="megolemech.arm.left.walk" behind="true" />
+		<append tile="megolemech" animation="megolemech.arm.right.walk" />
+	</animation>
+	<animation id="megolemech.move" equals="megolemech.walk" />
+	<animation id="megolemech.preflame.fire" x="20" count="4" glow="true" />
+	<animation id="megolemech.preflame" x="0" count="4">
+		<append tile="megolemech" animation="megolemech.arm.left" behind="true" />
+		<append tile="megolemech" animation="megolemech.preflame.fire" />
+		<append tile="megolemech" animation="megolemech.arm.right" />
+	</animation>
+	<animation id="megolemech.flame.fire" x="24" count="6" glow="true" />
+	<animation id="megolemech.flame" x="4" count="6">
+		<append tile="megolemech" animation="megolemech.arm.left" behind="true" />
+		<append tile="megolemech" animation="megolemech.flame.fire" />
+		<append tile="megolemech" animation="megolemech.arm.right" />
+	</animation>
+	<animation id="megolemech.pre_attack1" x="30" count="10">
+		<append tile="megolemech" animation="megolemech.body" />
+		<append tile="megolemech" animation="megolemech.arm.right" />
+	</animation>
+	<animation id="megolemech.attack1" x="40" count="10">
+		<append tile="megolemech" animation="megolemech.body" />
+		<append tile="megolemech" animation="megolemech.arm.right" />
+	</animation>
+	<animation id="megolemech.pre_attack2" x="65" count="10">
+		<append tile="megolemech" animation="megolemech.body" behind="true" />
+		<append tile="megolemech" animation="megolemech.arm.left" behind="true" />
+	</animation>
+	<animation id="megolemech.attack2" x="75" count="10">
+		<append tile="megolemech" animation="megolemech.body" behind="true" />
+		<append tile="megolemech" animation="megolemech.arm.left" behind="true" />
+	</animation>
+	<animation id="megolemech.fire" x="61" count="4" />
+	<tile id="megolemech.projectile" sheet="megolemech.2" />
+	<animation id="megolemech.projectile" x="6" count="4" glow="true" />
+	<animation id="megolemech.projectile.impact" x="0" count="6" glow="true" />
+	<enemy id="megolemech" tile="megolemech" health="1000" speed="0.5" defense="15" range="7" type="surface" element="earth" knockback="false" fps="10" ignoreHit="true" death_sfx="golemech_death" passFence="true" attack_sfx="none" cooldownCancelAttack="true" vertical="true">
+		<lootSet><loot id="earth_gem" count="5" /></lootSet>
+		<lootSet><loot id="blood_gem" count="5" /></lootSet>
+		<tile id="megolemech" name="eyes" animation="hidden" fps="10" y="0" />
+		<over><damage object="player" attacker="this" damage="50" element="fire" hitEffect="fire_lg_dmg" directional="false" critical="false" /></over>
+		<attack type="beam" animation="flame" damage="300" cut="300" range="4" top="-24" bottom="-11" height="40" boundsY="-11" cost="0.25" overlap="0.125" element="fire" hitEffect="fire_lg_dmg" cooldown="600">
+			<pre><play object="this" animation="preflame" /></pre>
+		</attack>
+		<cooldown seconds="2">
+			<set id="_eyes" value="this.getTileById('eyes')" />
+			<section if="_eyes != null">
+				<sound id="golemech_laser" object="this" />
+				<projectile tile="megolemech.projectile" animation="megolemech.projectile" speed="2" damage="150" delay="1" dx="this.getDX()" dy="0" spawner="this" offsetX="-10" offsetY="-17" range="15" underwater="true" element="fire" homing="true">
+					<hitEffect tile="megolemech.projectile" animation="megolemech.projectile.impact" />
+				</projectile>
+				<play object="_eyes" animation="megolemech.fire" offsetX="-0.5" offsetY="-0.5" />
+				<play object="_eyes" animation="hidden" loop="true" />
+			</section>
+		</cooldown>
+		<attack type="beam" damage="300" hits="2" animation="attack1" sfx="golem_attack" continuousTarget="false" hitEffect="fire_lg_dmg">
+			<pre left="45"><play object="this" animation="pre_attack1" /></pre>
+			<cont animation="attack2" right="45"><play object="this" animation="pre_attack2" /></cont>
+		</attack>
+		<light tile="light.largest" scale="2" />
+	</enemy>
+		
+	<vehicle id="ride_megolemech" tile="megolemech" health="1000" speed="2" efficiency="0" defense="15" fps="10" element="earth" max_weight="10000" fuel="20000" title="itemName('item.names.megolemech', this.name)" includeName="true" icon="megolemech.ico" block_icon="megolemech_flame.ico" death_sfx="golemech_death" allowModifier="true" hitDamage="10" flyAnim="false" item="megolemech">
+		<repair id="titanium" value="250" />
+		<fuel id="blood_gem" fuel="1000" />
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>this.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" />
+				<item id="megolemech" value="this.health" name="this.name"><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+		<attack type="beam" damage="200" animation="attack1" cost="1" sfx="golem_attack" hitEffect="fire_lg_dmg" left="45">
+			<pre><play object="this" animation="pre_attack1" /></pre>
+		</attack>
+		<attack useDefend="true" type="beam" animation="flame" damage="200" cut="200" range="4" top="-24" bottom="-11" overlap="0.125" element="fire" hitEffect="fire_lg_dmg" cooldown="600" cost="1">
+			<pre><play object="this" animation="preflame" /></pre>
+		</attack>
+		<mount><action>setGameScale(2)</action></mount>
+		<light tile="light.largest" scale="2" />
+	</vehicle>
+	<item id="megolemech" type="animal" cost="0" weight="500" icon="megolemech.ico" durability="1000" durabilityName="common.health" durabilityIcon="vehicle_health" canModify="true" element="earth">
+		<action id="plant" name="vehicle.deploy" object="ride_megolemech" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false" underground="true">
+			<action>
+				object.setHealth(this.getFeed()); object.name = this.getNameStr(); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));
+			</action>
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" /><action id="rename" />
+		<food id="titanium" value="250" />
+	</item>
+	<tile id="megolemech_factory" sheet="megolemech.3" />
+	<animation id="megolemech_factory.idle" x="6" count="1" />
+	<animation id="megolemech_factory.active" count="6" x="0" glow="true" />
+	<structure id="megolemech_factory" tile="megolemech_factory" name="activate" type="crafting" title="actions.craft" spawnX="(this.xPos+((this.info.width-getTile(info.tile).getWidth())>>1))/Tile.SIZE">
+		<recipe type="megolemech_factory" />
+		<recipe type="golem_factory" />
+		<over><action if="area.getObject('megolemech') == null">this.loopAnimation("active")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<operate><section if="area.getObject('megolemech') != null" ><dialogue section="structure" id="golem_factory" /><stop /></section></operate>
+	</structure>
+	<recipe id="craft_megolemech" object="ride_megolemech" title="item.names.megolemech" type="megolemech_factory">
+		<item id="golemech" count="1" /><item id="evo_gem" count="5" />
+	</recipe>
+	<recipe id="craft_golemech" object="ride_golemech" title="vehicle.golemech" type="megolemech_factory">
+		<item id="earth_gem" count="1" /><item id="diamond" count="5" /><item id="blood_gem" count="5" />
+	</recipe>
+	<recipe id="craft_mega_earth_armor" creates="mega_earth_armor" type="megolemech_factory"><item id="earth_armor" /><item id="evo_gem" count="2" /></recipe>
+	<recipe id="craft_mega_earth_helm" creates="mega_earth_helm" type="megolemech_factory"><item id="earth_helm" /><item id="evo_gem" count="2" /></recipe>
+	<recipe id="craft_mega_earth_axe" creates="mega_earth_axe" type="megolemech_factory"><item id="earth_hammer" /><item id="evo_gem" count="2" /></recipe>
+</data>

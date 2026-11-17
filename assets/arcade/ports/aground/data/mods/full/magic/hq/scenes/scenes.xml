@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<scene id="aliens">
+		<include id="sheet.xml" includeRoot="true" />
+		<tile id="final_boss" sheet="sheet.png" />
+		<animation id="final_boss.stage1" count="12" />
+		<animation id="final_boss.stage2" x="24" count="12" />
+		<animation id="final_boss.defeat" x="12" count="12" />
+		<animation id="final_boss.pilot" x="36" count="8" />
+		<animation id="exiled.idle" x="44" count="8" />
+		<animation id="exiled.talk" x="52" count="8" />
+		<layer id="final_boss_stage1" tile="final_boss" animation="final_boss.stage1" talk="final_boss.stage1" x="0" y="0" />
+		<layer id="final_boss_stage2" tile="final_boss" animation="final_boss.stage2" talk="final_boss.stage2" x="0" y="0" />
+		<layer id="final_boss_pilot" tile="final_boss" animation="final_boss.pilot" talk="final_boss.pilot" x="0" y="1" />
+		<layer id="exiled" tile="final_boss" animation="exiled.idle" talk="exiled.talk" x="0" y="1" />
+		<layer id="final_boss_defeat" tile="final_boss" animation="final_boss.defeat" talk="final_boss.defeat" x="0" y="0" />
+		<layer id="bg" tile="alien_hq.heart" animation="item8" fps="9" x="0" y="0" />
+		<layer id="white" color="ffffff" width="256" height="144" />
+		<layer id="alien.bg" image="{core}/magic1/scenes/alien/bg.png" width="256" height="144" />
+		
+		<show id="final_boss1">
+			<layer id="final_boss_stage1" />
+			<wait seconds="2" />
+			<dialogue section="alien" id="final_boss1" speaker="final_boss_stage1" />
+			<dialogue section="alien" id="final_boss2" speaker="final_boss_stage1" />
+			<section if="player.areas.get('alien_hq').getObject('nursery.crab') == null">
+				<dialogue section="alien" id="final_boss3_a" speaker="final_boss_stage1" />
+				<dialogue section="alien" id="final_boss3_b" speaker="player" />
+				<dialogue section="alien" id="final_boss3_c" speaker="final_boss_stage1" />
+			</section>
+			<dialogue section="alien" id="final_boss4" speaker="final_boss_stage1" />
+			<wait seconds="1" />
+		</show>
+		<show id="final_boss2">
+			<layer id="bg" />
+			<layer id="final_boss_pilot" /><hide id="final_boss_pilot" />
+			<layer id="final_boss_stage2" /><hide id="final_boss_stage2" />
+			<layer id="final_boss_stage1" />
+			<layer id="white" /><hide id="white" />
+			<shake count="10" dx="2" seconds="2" />
+			<lerp object="white" alpha="1" seconds="0.5" /><show id="final_boss_pilot" /><hide id="final_boss_stage1" />
+			<lerp object="white" alpha="0" seconds="0.5" />
+			<wait seconds="0.5" />
+			<dialogue section="alien" id="final_boss5" speaker="final_boss_pilot" />
+			<dialogue section="alien" id="final_boss6" speaker="final_boss_pilot" />
+			<wait seconds="0.5" />
+			<lerp object="white" alpha="1" seconds="0.5" /><show id="final_boss_stage2" /><hide id="final_boss_pilot" />
+			<lerp object="white" alpha="0" seconds="0.5" />
+			<wait seconds="1" />
+			<dialogue section="alien" id="final_boss7" speaker="final_boss_stage2" />
+			<wait seconds="1" />
+		</show>
+		<show id="final_boss3">
+			<layer id="bg" />
+			<layer id="final_boss_defeat" />
+			<wait seconds="3" />
+			<dialogue section="alien" id="final_boss8" speaker="final_boss_defeat" />
+			<dialogue section="alien" id="final_boss9" speaker="final_boss_defeat"  if="player.areas.get('alien_hq').getObject('nursery.crab') != null" />
+			<dialogue section="alien" id="final_boss10" speaker="final_boss_defeat" if="getFlag('alien_hq.open')" />
+			<dialogue section="alien" id="final_boss11" speaker="final_boss_defeat" />
+			<action>setFlag('final_boss_defeat', true)</action><run procedure="endgame" />
+			<lerp object="final_boss_defeat" alpha="0" seconds="1" />
+			<wait seconds="1" />
+		</show>
+		<show id="exiled">
+			<layer id="alien.bg" />
+			<layer id="exiled" />
+			<wait seconds="3" />
+			<dialogue section="exiled" id="intro1" speaker="exiled" />
+			<choose if="player.hasQuest('lab')">
+				<dialogue section="exiled" id="intro2.1" speaker="exiled" if="player.getNPC('alchemist') != null" />
+				<dialogue section="exiled" id="intro2.2" speaker="exiled" />
+			</choose>
+			<choose>
+				<dialogue section="exiled" id="intro3.1" speaker="exiled" if="getFlag('final_boss_defeat')" />
+				<dialogue section="exiled" id="intro3" speaker="exiled" />
+			</choose>
+			<dialogue section="exiled" id="intro4" speaker="exiled" if="!getFlag('final_boss_defeat')" />
+			<dialogue section="exiled" id="intro5" speaker="exiled" />
+			<dialogue section="exiled" id="intro6" speaker="exiled" />
+			<choose>
+				<dialogue section="exiled" id="intro7.1" speaker="exiled" if="getFlag('final_boss_defeat')" />
+				<dialogue section="exiled" id="intro7" speaker="exiled" />
+			</choose>
+			<dialogue section="exiled" id="intro8" speaker="exiled" />
+			<dialogue section="exiled" id="intro9" speaker="exiled" />
+			<dialogue section="exiled" id="intro10" speaker="exiled" if="!getFlag('final_boss_defeat')" />
+			<wait seconds="1" />
+		</show>
+		<show id="exiled_info">
+			<layer id="alien.bg" />
+			<layer id="exiled" />
+			<wait seconds="2" />
+			<menu section="exiled" width="180" closeable="true">
+				<dialogue section="exiled" id="info" speaker="exiled" />
+				<choice id="exiled">
+					<dialogue section="exiled" id="exiled1" speaker="exiled" />
+					<dialogue section="exiled" id="exiled2" speaker="exiled" />
+					<dialogue section="exiled" id="exiled3" speaker="exiled" />
+					<dialogue section="exiled" id="exiled4" speaker="exiled" />
+					<dialogue section="exiled" id="exiled5" speaker="exiled" />
+					<dialogue section="exiled" id="exiled6" speaker="exiled" />
+				</choice>
+				<choice id="attack">
+					<dialogue section="exiled" id="attack1" speaker="exiled" />
+					<dialogue section="exiled" id="attack2" speaker="exiled" />
+					<dialogue section="exiled" id="attack3" speaker="exiled" />
+					<dialogue section="exiled" id="attack4" speaker="exiled" />
+					<dialogue section="exiled" id="attack5" speaker="exiled" if="!getFlag('final_boss_defeat')" />
+				</choice>
+				<choice id="dragons">
+					<dialogue section="exiled" id="dragons1" speaker="exiled" />
+					<dialogue section="exiled" id="dragons2" speaker="exiled" />
+					<dialogue section="exiled" id="dragons3" speaker="exiled" />
+					<dialogue section="exiled" id="dragons4" speaker="exiled" />
+				</choice>
+				<choice id="old_one" if="player.questComplete('oldone')">
+					<dialogue section="exiled" id="old_one1" speaker="exiled" />
+					<dialogue section="exiled" id="old_one2" speaker="exiled" />
+					<dialogue section="exiled" id="old_one3" speaker="exiled" />
+				</choice>
+			</menu>
+			<wait seconds="1" />
+		</show>
+		<show id="exiled_win">
+			<layer id="alien.bg" />
+			<layer id="exiled" />
+			<wait seconds="2" />
+			<dialogue section="exiled" id="win1" speaker="exiled" />
+			<choose>
+				<dialogue section="exiled" id="win2.2" speaker="exiled" if="var a = player.areas.get('alien_hq'); return (a.getObject('nursery.crab') == null && a.getObject('nursery_crab_npc') == null)" />
+				<dialogue section="exiled" id="win2.1" speaker="exiled" />
+			</choose>
+			<dialogue section="exiled" id="win3" speaker="exiled" />
+			<wait seconds="1" />
+			<credits />
+		</show>
+	</scene>
+</data>

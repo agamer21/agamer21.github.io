@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="ancient_dragon.xml" />
+	<include id="fish.xml" includeRoot="true" />
+	<tile id="fish_librarian" sheet="fish.png" x="24" />
+	<animation id="fish_librarian.idle" count="10" />
+	<animation id="fish_librarian.talk" x="10" count="10" />
+	<procedure id="fish.welcome">
+		<action>setFlag('fish.welcome', true)</action>
+		<dialogue section="fish" id="welcome1" speaker="this" />
+		<dialogue section="fish" id="welcome2" speaker="player" />
+		<dialogue section="fish" id="welcome3" speaker="this" />
+		<dialogue section="fish" id="welcome4" speaker="player" />
+		<dialogue section="fish" id="welcome5" speaker="this" />
+	</procedure>
+	<item id="revitalize_potion" type="potion" cost="0" weight="1" icon="endurance_potion.ico" color="6666ff" />
+	<recipe id="revitalize_potion" creates="revitalize_potion" type="lab" available="player.questComplete('revitalize_dragon') || getVar('revitalize_potion') > 0">
+		<item id="snaptopus" count="1" />
+		<item id="fish_scale" count="5" />
+		<item id="horn" count="4" />
+		<item id="dragonblood" count="9" />
+	</recipe>
+	<item id="brilliant_potion" type="potion" cost="0" weight="1" icon="stamina_potion.ico" color="ff8800" colorScale="2">
+		<action id="use" consume="true">
+			<action>for(c in player.colors.keys()) player.colors.set(c, Math.floor(random()*0x1000000)); player.updateColors();</action>
+			<dialogue section="alchemist" id="brilliant_potion5" />
+		</action>
+	</item>
+	<recipe id="brilliant_potion" creates="brilliant_potion" type="lab" available="player.questComplete('brilliant_potion')">
+		<item id="ink" count="1" />
+		<item id="blood_gem" count="1" />
+		<item id="alter_gem" count="1" />
+		<item id="dragonblood" count="1" />
+	</recipe>
+	<quest id="revitalize_dragon" recipe="revitalize_potion" exp="750" giver="fish_librarian" />
+	<quest id="exiled" exp="1000" giver="fish_librarian">
+		<flag id="exiled_intro" name="quests.find_exiled" />
+	</quest>
+	<npc id="fish_librarian" tile="fish_librarian" action="talk" talk_sfx="talking7" waterTint="false" underwaterOnly="true" night="true">
+		<operate>
+			<section if="player.hasQuest('witch_potion') && getVar('revitalize_potion') == 0">
+				<dialogue section="fish" id="potion1" speaker="this" />
+				<dialogue section="fish" id="potion2" speaker="this" />
+				<quest /><action>setVar('revitalize_potion', 1)</action>
+			</section>
+			<run procedure="fish.welcome" if="!getFlag('fish.welcome')" />
+			<section if="!getFlag('spellcast')">
+				<action>setFlag('spellcast', true)</action><dialogue section="fish" id="librarian1" speaker="this" />
+				<dialogue section="fish" id="librarian2" speaker="this" />
+				<dialogue section="fish" id="librarian3" speaker="this" />
+			</section>
+			<section if="getVar('revitalize_potion') < 2 && !player.hasQuest('revitalize_dragon') && player.hasQuest('dragon_ship') && player.getKillCount('ice_boss') == 0 && !player.getFlag('final_boss_defeat')">
+				<dialogue section="fish" id="revitalize1" speaker="this" />
+				<dialogue section="fish" id="revitalize2" speaker="player" />
+				<dialogue section="fish" id="revitalize3" speaker="this" />
+				<dialogue section="fish" id="revitalize4" speaker="player" />
+				<section if="getVar('revitalize_potion') == 1">
+					<dialogue section="fish" id="potion3" speaker="this" />
+					<action>setVar('revitalize_potion', 2)</action><stop />
+				</section>
+				<dialogue section="fish" id="revitalize5" speaker="this" />
+				<quest id="revitalize_dragon" />
+			</section>
+			<section if="area.getObject('sea_witch.swim') != null && !getFlag('sea_witch')">
+				<quest /><action>setFlag('sea_witch', true)</action>
+				<choose>
+					<dialogue section="fish" id="sea_witch3" speaker="this" if="getFlag('final_boss_defeat')" />
+					<dialogue section="fish" id="sea_witch1" speaker="this" />
+				</choose>
+				<dialogue section="fish" id="sea_witch2" speaker="this" />
+			</section>
+			<section if="getFlag('sea_witch') && !getFlag('exiled_intro') && !player.hasQuest('exiled')">
+				<dialogue section="fish" id="exiled1" speaker="this" />
+				<dialogue section="fish" id="exiled2" speaker="this" />
+				<quest id="exiled" />
+			</section>
+			<section if="player.canCompleteQuest('revitalize_dragon')">
+				<dialogue section="fish" id="revitalize6" speaker="this" />
+				<complete quest="revitalize_dragon" /><item id="revitalize_potion" modal="true" />
+			</section>
+			<group>
+				<section>
+					<dialogue section="fish" id="librarian4" speaker="this" />
+					<dialogue section="fish" id="librarian5" speaker="this" />
+				</section>
+				<dialogue section="fish" id="librarian6" speaker="this" />
+				<dialogue section="fish" id="librarian8" speaker="this" />
+				<dialogue section="fish" id="librarian9" speaker="this" />
+				<section if="!getFlag('final_boss_defeat')">
+					<dialogue section="fish" id="librarian10" speaker="this" />
+					<dialogue section="fish" id="librarian11" speaker="this" />
+				</section>
+				<dialogue section="fish" id="librarian7" speaker="this" if="!getFlag('final_boss_defeat')" />
+			</group>
+		</operate>
+	</npc>
+	<tile id="fish_merchant" sheet="fish.png" x="44" />
+	<animation id="fish_merchant.idle" count="12" />
+	<animation id="fish_merchant.talk" x="12" count="12" />
+	<quest id="coral_pen" exp="500" giver="fish_merchant">
+		<item id="scale_fish" count="1" />
+	</quest>
+	<npc id="fish_merchant" tile="fish_merchant" action="talk" talk_sfx="talking7" waterTint="false" underwaterOnly="true" night="true">
+		<operate>
+			<run procedure="fish.welcome" if="!getFlag('fish.welcome')" />
+			<section if="!getFlag('fish.merchant')">
+				<action>setFlag('fish.merchant', true)</action><dialogue section="fish" id="merchant1" speaker="this" />
+				<dialogue section="fish" id="merchant2" speaker="this" />
+				<dialogue section="fish" id="merchant3" speaker="this" />
+				<section if="!player.hasItem('coin_purse')">
+					<dialogue section="fish" id="coin_purse" speaker="this" />
+					<item id="coin_purse" value="0" modal="true" />
+				</section>
+			</section>
+			<section if="(player.questComplete('cultivator') || player.questComplete('dragon_ship')) && !player.hasQuest('coral_pen')">
+				<dialogue section="fish" id="merchant4" speaker="this" /><quest id="coral_pen" />
+			</section>
+			<section if="player.canCompleteQuest('coral_pen')">
+				<complete quest="coral_pen" /><dialogue section="fish" id="merchant5" speaker="this" />
+				<item id="coral_pen_seed" modal="true" />
+				<dialogue section="fish" id="merchant6" speaker="this" />
+			</section>
+			<dialogue section="fish" id="merchant7" speaker="this" if="player.hasQuest('coral_pen') && !player.questComplete('coral_pen')" />
+			<section if="player.questComplete('coral_pen') && getFlag('sea_witch') && !getFlag('coral_farm')">
+				<quest /><action>setFlag('coral_farm', true)</action>
+				<dialogue section="fish" id="merchant10" speaker="this" />
+				<dialogue section="fish" id="merchant11" speaker="this" />
+			</section>
+			<section>
+				<dialogue section="fish" id="merchant8" speaker="this" />
+				<dialogue section="fish" id="merchant9" speaker="this" />
+			</section>
+		</operate>
+	</npc>
+	
+	<quest id="sushi" exp="500" recipe="cook_sushi" giver="fish_villager" />
+	<tile id="fish_villager" sheet="fish.png" x="0" />
+	<animation id="fish_villager.idle" count="12" />
+	<animation id="fish_villager.walk" equals="fish_villager.idle" />
+	<animation id="fish_villager.talk" x="12" count="12" />
+	<npc id="fish_villager" tile="fish_villager" action="talk" talk_sfx="talking7" waterTint="false" underwaterOnly="true" night="true">
+		<idle class="wander" fromX="128" toX="141" />
+		<operate>
+			<run procedure="fish.welcome" if="!getFlag('fish.welcome')" />
+			<section if="player.getMaxOxygen() < 100 && !player.state.hasRecipe('magic_forge', getRecipe('make_water_helm'))">
+				<dialogue section="fish" id="citizen4" speaker="this" />
+				<dialogue section="fish" id="citizen5" speaker="this" />
+				<function run="learnRecipe" args="getRecipe('make_water_helm'), 'magic_forge', 'fish.recipe'" />
+				<dialogue section="fish" id="citizen6" speaker="this" />
+			</section>
+			<section if="!player.hasQuest('sushi')">
+				<dialogue section="fish" id="sushi1" speaker="this" />
+				<dialogue section="fish" id="sushi2" speaker="this" />
+				<quest id="sushi" />
+			</section>
+			<section if="player.canCompleteQuest('sushi')">
+				<dialogue section="fish" id="sushi3" speaker="this" />
+				<complete quest="sushi" /><item id="sushi" modal="true" />
+				<dialogue section="fish" id="sushi4" speaker="this" />
+			</section>
+			<section>
+				<dialogue section="fish" id="citizen1" speaker="this" />
+				<dialogue section="fish" id="citizen2" speaker="this" />
+				<dialogue section="fish" id="citizen3" speaker="this" />
+			</section>
+		</operate>
+	</npc>
+	
+	<npc id="alchemist_magic" extends="alchemist_magic">
+		<operate>
+			<run procedure="alchemist.endgame" if="getFlag('final_boss_defeat') && !getFlag('alchemist.win')" />
+			<section if="player.hasQuest('go_east') || (getFlag('final_boss_defeat') && player.getDigCount('magic1.stone') > 0)">
+				<choose>
+					<dialogue section="alchemist" id="return_lab" speaker="this" if="getFlag('final_boss_defeat')" />
+					<dialogue section="alchemist" id="east8" speaker="this" />
+				</choose>
+				<play object="this" animation="teleport_out" modal="true" /><action>this.alpha = 0</action><remove object="this" />
+			</section>
+			<section if="player.questComplete('oldone')"><quest if="!getFlag('oldone.hostile')" /><scene id="alchemist" show="east" with="fade" showToAll="true" /></section>
+		</operate>
+	</npc>
+	
+	<quest id="brilliant_potion" giver="alchemist" recipe="brilliant_potion" exp="100" />
+	<procedure id="alchemist.idle" extends="alchemist.idle">
+		<section if="hasHomeworld(player) && player.getString('homeworld') != 'start'">
+			<dialogue eval="'player.homeworld{area:'+player.areas.get(player.getString('homeworld')).getDisplay().get()+'}'" speaker="player" />
+			<dialogue section="alchemist" id="win2" speaker="this" /><stop />
+		</section>
+		<section if="getFlag('final_boss_defeat')"><dialogue section="alchemist" id="win1" speaker="this" /><stop /></section>
+		<section if="getFlag('carapace_armor')"><dialogue section="alchemist" id="carapace3" speaker="this" /><stop /></section>
+		<section if="player.hasSeenItem('npc.steel_wyrm_helm') && !player.hasSeenItem('steel_wyrm_helm')"><dialogue section="alchemist" id="steel_wyrm_helm" speaker="this" /><stop /></section>
+	</procedure>
+	<npc id="alchemist" extends="alchemist">
+		<operate>
+			<run procedure="alchemist.endgame" if="getFlag('final_boss_defeat') && !getFlag('alchemist.win')" />
+			<section if="!player.hasQuest('brilliant_potion') && isDate(4,1,0)">
+				<dialogue section="alchemist" id="brilliant_potion1" speaker="this" />
+				<dialogue section="alchemist" id="brilliant_potion2" speaker="this" /><quest id="brilliant_potion" />
+			</section>
+			<section if="player.canCompleteQuest('brilliant_potion')">
+				<complete quest="brilliant_potion" /><dialogue section="alchemist" id="brilliant_potion3" speaker="this" />
+				<item id="brilliant_potion" /><dialogue section="alchemist" id="brilliant_potion4" speaker="this" />
+			</section>
+			<section if="getFlag('spellcast') && !getFlag('heal_book')">
+				<quest /><dialogue section="alchemist" id="spellbook1" speaker="this" />
+				<dialogue section="alchemist" id="spellbook2" speaker="this" />
+				<item id="heal_book" /><action>setFlag('heal_book', true)</action>
+			</section>
+			<section if="player.hasQuest('spirit_hq') && !getFlag('carapace_armor')">
+				<quest /><dialogue section="alchemist" id="carapace1" speaker="this" />
+				<dialogue section="alchemist" id="carapace2" speaker="this" /><action>setFlag('carapace_armor', true)</action>
+			</section>
+		</operate>
+	</npc>
+	
+	<include id="sea_witch.xml" />
+</data>

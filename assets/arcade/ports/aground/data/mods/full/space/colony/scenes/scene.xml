@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="sheet.xml" includeRoot="true" />
+	<tile id="colony.extras" sheet="sheet.png" />
+	<tile id="colony.bg1" sheet="sheet.png" x="8" />
+	<tile id="colony.bg2" sheet="sheet.png" x="9" />
+	<tile id="exo_fighter.bg" sheet="sheet.png" x="22" />
+	<tile id="exo_fighter.pilot" sheet="sheet.png" x="34" />
+	<tile id="command_ship.bg" sheet="sheet.png" x="76" />
+	<procedure id="colony.extra">
+		<layer name="colony_extra" tile="colony.extras" offX="offsets.pop()" index="1" /><displayAction if="offsets.length == 0">for(i in 0...8) offsets.push(i); shuffle(offsets);</displayAction>
+		<displayAction>colony_extra.scaleX = lastScale; lastScale = -lastScale; colony_extra.x = (colony_extra.scaleX == 1)?256:0; colony_extra.y = 2; toX = (colony_extra.scaleX == 1)?-256:512;</displayAction>
+		<shake object="colony_extra" count="6" dy="2" dx="0" seconds="6" modal="false" /><lerp object="colony_extra" xPos="toX" modal="unpaused" seconds="6" />
+		<removeLayer id="colony_extra" /><run procedure="colony.extra" />
+	</procedure>
+	<procedure id="colony.extras">
+		<displayAction>lastScale = (random()>0.5)?1:-1; offsets = []; for(i in 0...8) offsets.push(i); shuffle(offsets);</displayAction>
+		<invokeLater seconds="0" paused="true"><run procedure="colony.extra" /></invokeLater>
+		<displayAction>lastScale = -lastScale</displayAction><invokeLater seconds="2" paused="true"><run procedure="colony.extra" /></invokeLater>
+		<displayAction>lastScale = -lastScale</displayAction><invokeLater seconds="4" paused="true"><run procedure="colony.extra" /></invokeLater>
+	</procedure>
+	<animation id="ftl.cycle" x="8" count="4" reverse="true" />
+	<scene id="colony">
+		<layer id="command_ship.bg" tile="command_ship.bg" animation="item12" />
+		<layer id="space" image="{mod:full_version}/space/night_bg.png" />
+		<layer id="ftl" tile="ftl" animation="ftl.cycle" />
+		<layer id="exo_fighter" tile="exo_fighter" animation="exo_fighter.hover" />
+		<layer id="exo_fighter2" tile="exo_fighter" animation="exo_fighter.hover" />
+		<layer id="exo_fighter3" tile="exo_fighter" animation="exo_fighter.hover" />
+		<layer id="fighter" tile="fighter" animation="fighter.hover" />
+		<layer id="science" tile="science_ship" animation="science_ship.hover" />
+		<layer id="alien_hq" tile="alien_hq.orbit" animation="single" />
+		<layer id="colony.bg1" tile="colony.bg1" />
+		<layer id="colony.bg2" tile="colony.bg2" />
+		<tile id="colony.leader" sheet="sheet.png" x="88" />
+		<animation id="colony.leader.talk" x="1" count="12" />
+		<layer id="president" tile="colony.leader" animation="single" talk="colony.leader.talk" />
+		<layer id="president_flip" tile="colony.leader" animation="single" talk="colony.leader.talk" flip="true" x="-40" sfx="talking7" />
+		<layer id="exo_fighter_bg" tile="exo_fighter.bg" animation="item12" />
+		<tile id="virus_info" sheet="sheet.png" x="10" />
+		<layer id="virus_info" tile="virus_info" animation="item12" />
+		<animation id="pilot.idle">
+			<frame x="28" y="0" length="4" />
+			<frame x="29" y="0" length="2" />
+			<frame x="28" y="0" length="32" />
+		</animation>
+		<animation id="pilot.talk" x="30" count="12" />
+		<animation id="pilot.helm.idle">
+			<frame x="27" y="0" length="4" />
+			<frame x="26" y="0" length="2" />
+			<frame x="27" y="0" length="32" />
+		</animation>
+		<animation id="pilot.helm" x="0" count="26" />
+		<layer id="pilot" tile="exo_fighter.pilot" animation="pilot.idle" talk="pilot.talk" />
+		<tile id="museum_bg" sheet="sheet.png" x="101" />
+		<layer id="museum_bg" tile="museum_bg" />
+		<tile id="curator" sheet="sheet.png" x="102" />
+		<animation id="curator.idle">
+			<frame x="0" y="0" length="4" />
+			<frame x="1" y="0" length="2" />
+			<frame x="0" y="0" length="32" />
+		</animation>
+		<animation id="curator.talk" x="2" count="12" />
+		<layer id="curator" tile="curator" animation="curator.idle" talk="curator.talk" />
+		<layer id="homeworld_bg" tile="homeworld.bg" animation="homeworld.bg" />
+		<layer id="mechanic" tile="scene.mechanic.mechanic" animation="scene.mechanic.mechanic.idle" talk="scene.mechanic.mechanic.talk" x="0" y="0" />
+		<show id="rescue">
+			<layer id="space" />
+			<layer id="alien_hq" /><displayAction>alien_hq.y = 100;</displayAction>
+			<layer id="fighter" /><layer id="science" />
+			<displayAction>fighter.scaleX = -0.5; fighter.scaleY = 0.5; fighter.x = 230; fighter.y = -10;</displayAction><play object="fighter" animation="fighter.ftl" loop="true" />
+			<displayAction>science.scaleX = -0.5; science.scaleY = 0.5; science.x = 100; science.y = -30;</displayAction><play object="science" animation="science_ship.ftl" loop="true" />
+			<layer id="exo_fighter" /><layer id="exo_fighter2" /><layer id="exo_fighter3" />
+			<displayAction>exo_fighter.scaleX = -0.5; exo_fighter.scaleY = 0.5; exo_fighter.x = 20; exo_fighter.y = -40;</displayAction>
+			<displayAction>exo_fighter2.scaleX = -0.5; exo_fighter2.scaleY = 0.5; exo_fighter2.x = 220; exo_fighter2.y = -60;</displayAction>
+			<displayAction>exo_fighter3.scaleX = -0.5; exo_fighter3.scaleY = 0.5; exo_fighter3.x = 100; exo_fighter3.y = -20;</displayAction>
+			<play object="exo_fighter" animation="exo_fighter.ftl" loop="true" /><play object="exo_fighter2" animation="exo_fighter.ftl" loop="true" /><play object="exo_fighter3" animation="exo_fighter.ftl" loop="true" />
+			<lerp object="fighter" y="40/Tile.SIZE" modal="false" seconds="4" /><lerp object="science" y="5/Tile.SIZE" modal="false" seconds="4" />
+			<lerp object="exo_fighter" x="30/Tile.SIZE" y="60/Tile.SIZE" modal="false" seconds="4" />
+			<lerp object="exo_fighter2" x="240/Tile.SIZE" y="10/Tile.SIZE" modal="false" seconds="4" />
+			<lerp object="exo_fighter3" x="130/Tile.SIZE" y="80/Tile.SIZE" modal="false" seconds="4" />
+			<layer id="ftl" /><wait seconds="1" />
+			<play object="ftl" animation="ftl.disengage" /><hide id="ftl" />
+			<play object="fighter" animation="fighter.hover" loop="true" /><play object="science" animation="science_ship.hover" loop="true" />
+			<play object="exo_fighter" animation="exo_fighter.hover" loop="true" /><play object="exo_fighter2" animation="exo_fighter.hover" loop="true" /><play object="exo_fighter3" animation="exo_fighter.hover" loop="true" />
+			<lerp object="alien_hq" y="22/Tile.SIZE" seconds="1" />
+			<wait seconds="2" />
+			<scene id="colony" show="rescue2" dissolve="true" seconds="0.5" />
+			<lerp object="alien_hq" y="100/Tile.SIZE" seconds="1" />
+			<play object="fighter" animation="fighter.ftl" loop="true" />
+			<play object="science" animation="science_ship.ftl" loop="true" />
+			<play object="exo_fighter" animation="exo_fighter.ftl" loop="true" />
+			<play object="exo_fighter2" animation="exo_fighter.ftl" loop="true" />
+			<play object="exo_fighter3" animation="exo_fighter.ftl" loop="true" />
+			<show id="ftl" /><play object="ftl" animation="ftl.engage" />
+		</show>
+		<show id="rescue2">
+			<layer id="command_ship.bg" /><wait seconds="2" />
+			<layer id="president" /><hide id="president" /><lerp object="president" alpha="1" seconds="0.25" />
+			<dialogue section="colony" id="rescue1" speaker="president" />
+			<dialogue section="colony" id="rescue2" speaker="player" />
+			<dialogue section="colony" id="rescue3" speaker="president" />
+			<dialogue section="colony" id="rescue4" speaker="player" />
+			<dialogue section="colony" id="rescue5" speaker="president" />
+			<dialogue section="colony" id="rescue6" speaker="president" />
+			<section if="player.getNPC('professor') == null">
+				<dialogue section="colony" id="rescue6.2" speaker="player" />
+				<dialogue section="colony" id="rescue6.3" speaker="president" />
+			</section>
+			<dialogue section="colony" id="rescue7" speaker="president" />
+			<wait seconds="2" />
+		</show>
+		<show id="pilot">
+			<layer id="exo_fighter_bg" /><layer id="pilot" /><action>pilot.alpha = 0; item = player.equipment.getItem("familiar")</action><wait seconds="2" />
+			<choose>
+				<section if="getFlag('final_boss_defeat') && !getFlag('pilot_win')"><action>setFlag('pilot_win', true)</action><dialogue section="colony" id="pilot_win" speaker="pilot" /></section>
+				<dialogue section="colony" id="pilot_equip" speaker="pilot" if="item == null || item.info.id != 'exo_fighter'" />
+				<section><action if="player.familiar.familiar == null && player.canSummonFamiliar()">player.summonFamiliar()</action>
+				<choose>
+					<dialogue section="colony" id="pilot_nospawn" speaker="pilot" if="player.familiar.familiar == null" />
+					<dialogue section="colony" id="pilot_low_fuel" speaker="pilot" if="item.value/item.getDurability() > 0.9" />
+					<dialogue section="colony" id="pilot_enabled" speaker="pilot" if="(player.equipment.getStateI('familiar')&NO_ATTACK) == 0" />
+					<dialogue section="colony" id="pilot_disabled" speaker="pilot" />
+				</choose></section>
+			</choose><wait seconds="1" />
+		</show>
+		<show id="pilot_intro">
+			<layer id="colony.bg1" /><run procedure="colony.extras" />
+			<layer id="pilot" />
+			<wait seconds="2" />
+			<choose>
+				<section if="getFlag('final_boss_defeat')">
+					<action>setFlag('pilot_win', true)</action>
+					<dialogue section="colony" id="exo_fighter_alt1" speaker="pilot" />
+					<dialogue section="colony" id="exo_fighter_alt2" speaker="pilot" />
+				</section>
+				<section>
+					<dialogue section="colony" id="exo_fighter1" speaker="pilot" />
+					<dialogue section="colony" id="exo_fighter2" speaker="pilot" />
+					<dialogue section="colony" id="exo_fighter3" speaker="pilot" />
+				</section>
+			</choose>
+			<dialogue section="colony" id="exo_fighter4" speaker="pilot" />
+			<quest id="exo_fighter">
+				<dialogue section="colony" id="exo_fighter6" speaker="pilot" />
+			</quest>
+			<wait seconds="2" />
+		</show>
+		<show id="pilot_complete">
+			<layer id="colony.bg1" /><run procedure="colony.extras" />
+			<layer id="pilot" />
+			<wait seconds="2" />
+			<dialogue section="colony" id="exo_fighter5" speaker='pilot' />
+			<complete quest="exo_fighter" useResources="false" />
+			<play object="pilot" animation="pilot.helm" />
+			<play object="pilot" animation="pilot.helm.idle" loop="true" />
+			<wait seconds="1.5" /><lerp object="pilot" alpha="0" seconds="0.25" /><remove object="area.getObject('pilot')" />
+			<action>
+				var f = getItem("exo_fighter"); var i = player.storehouseInventory.selectItem(f,0,null);
+				if(i != null){player.storehouseInventory.addItems(f, -1, i.value, null); this.addChild(player.addItems(f, 1, i.value, "pnpc.pilot&amp;"));}
+			</action>
+			<wait seconds="2" />
+		</show>
+		<show id="president">
+			<layer id="command_ship.bg" />
+			<layer id="president" /><wait seconds="1" />
+			<menu section="colony" width="150" closeable="true">
+				<dialogue section="colony" id="president1" />
+				<choice id="value" values="(getFlag('final_boss_defeat')?['weapons','colony','exotic_matter']:['weapons','alien_hq','colony','exotic_matter']).iterator()"><choose>
+					<section if="value == 'weapons' && getFlag('final_boss_defeat')">
+						<dialogue section="colony" id="weapons1_alt" speaker="president" />
+						<dialogue section="colony" id="weapons2" speaker="president" />
+						<dialogue section="colony" id="weapons3" speaker="president" />
+					</section><section>
+						<dialogue eval="'colony.'+value+'1'" speaker="president" /><dialogue eval="'colony.'+value+'2'" speaker="president" />
+						<dialogue eval="'colony.'+value+'3'" speaker="president" /><dialogue eval="'colony.'+value+'4'" speaker="president" />
+					</section>
+				</choose></choice>
+			</menu>
+			<wait seconds="1" />
+		</show>
+		<show id="victory">
+			<layer id="command_ship.bg" />
+			<layer id="president" /><wait seconds="1" />
+			<dialogue section="colony" id="win1" speaker="president" />
+			<dialogue section="colony" id="win1.1" speaker="president" if="var a = player.areas.get('alien_hq'); return (a.getObject('nursery.crab') != null || a.getObject('nursery_crab_npc') != null)" />
+			<dialogue section="colony" id="win2" speaker="president" />
+			<wait seconds="1" />
+			<credits />
+		</show>
+		<show id="virus">
+			<layer id="colony.bg2" />
+			<layer id="president_flip" /><layer id="virus_info" />
+			<wait seconds="2" />
+			<dialogue section="colony" id="virus5" speaker="president_flip" />
+			<dialogue section="colony" id="virus6" speaker="president_flip" />
+			<dialogue section="colony" id="virus7" speaker="president_flip" />
+			<wait seconds="2" />
+		</show>
+		<show id="launch_virus">
+			<layer id="colony.bg2" />
+			<layer id="president_flip" /><layer id="virus_info" />
+			<wait seconds="2" />
+			<dialogue section="colony" id="virus8" speaker="president_flip" />
+			<dialogue section="colony" id="virus9" speaker="president_flip" />
+			<wait seconds="2" />
+		</show>
+		<show id="nursery_defeat">
+			<layer id="command_ship.bg" />
+			<layer id="president" /><wait seconds="1" />
+			<dialogue section="colony" id="nursery_defeat1" speaker="president" />
+			<choose>
+				<dialogue section="colony" id="nursery_defeat3" speaker="president" if="getFlag('final_boss_defeat')" />
+				<dialogue section="colony" id="nursery_defeat2" speaker="president" />
+			</choose>
+			<wait seconds="1" />
+		</show>
+		<show id="boss_defeat">
+			<layer id="command_ship.bg" />
+			<layer id="president" /><wait seconds="1" />
+			<dialogue section="colony" id="boss_defeat1" speaker="president" />
+			<dialogue section="colony" id="boss_defeat2" speaker="president" />
+			<dialogue section="colony" id="boss_defeat3" speaker="president" />
+			<wait seconds="1" />
+		</show>
+		<show id="com_station">
+			<layer id="command_ship.bg" />
+			<layer id="president" /><wait seconds="1" />
+			<dialogue section="colony" id="com_station1" speaker="president" />
+			<dialogue section="colony" id="com_station2" speaker="player" />
+			<dialogue section="colony" id="com_station3" speaker="president" />
+			<dialogue section="colony" id="com_station4" speaker="president" />
+			<wait seconds="1" />
+		</show>
+		<show id="museum">
+			<layer id="museum_bg" />
+			<layer id="curator" /><wait seconds="2" />
+			<dialogue section="museum" id="curator1" speaker='curator' />
+			<dialogue section="museum" id="curator2" speaker='player' />
+			<dialogue section="museum" id="curator3" speaker='curator' />
+			<dialogue section="museum" id="curator4" speaker='curator' />
+			<wait seconds="1" />
+		</show>
+		<show id="mechanic">
+			<layer id="homeworld_bg" /><run procedure="colony.extras" />
+			<layer id="mechanic" />
+			<play object="mechanic" animation="scene.mechanic.mechanic.repair" />
+			<wait seconds="2" />
+			<dialogue section="mechanic" id="win3" speaker='mechanic' />
+			<dialogue section="mechanic" id="win4" speaker='mechanic' />
+			<dialogue section="mechanic" id="win5" speaker='mechanic' />
+			<wait seconds="2" />
+		</show>
+	</scene>
+	<procedure id="colony.rescue">
+		<music id="colony" seconds="1" /><scene id="colony" show="rescue" with="fade" showToAll="true">
+			<action>setFlag('colony_world', true);</action><teleport area="colony.orbit" x="113" y="20" />
+			<teleport area="colony.orbit.station" x="113" y="20" if="player.vehicle == null" />
+			<teleport area="colony.orbit.station" x="118" y="42" if="player.vehicle.info.id == 'lifepod'" />
+		</scene>
+	</procedure>
+	<include id="cafeteria.xml" />
+</data>

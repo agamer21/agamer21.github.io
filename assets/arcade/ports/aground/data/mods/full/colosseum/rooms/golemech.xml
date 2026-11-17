@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="colosseum.golemech" width="16" height="8" background="black">
+		<tiles id="stone" start="0" end="1" />
+		<mine y="6" /><mine y="5" /><mine x="9" /><mine x="10" /><mine x="11" /><mine x="12" />
+		<tiles id="bedrock" x="0" />
+		<tiles id="bedrock" x="15" />
+		<tiles id="bedrock" y="0" />
+		<tiles id="bedrock" y="7" />
+		<ore id="lava" start="0" end="1" percent="1" tile="stone" />
+		<ore id="lava" start="0" end="1" percent="1" tile="bedrock" />
+		<object id="golemech" x="5" y="6" />
+		<spawner id="golem" time="0" count="3" fromX="1" toX="14" fromY="1" toY="6" />
+		<structure id="colosseum_exit" x="8" y="4" />
+		<light x="10" y="4" size="4" />
+	</area>
+	<procedure id="colosseum.golemech">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 100);
+		var map = new StringMap(); map.set("golemech", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("berries"), 10);
+		player.inventory.addItems(getItem("water_arrow"), 10); player.inventory.addItems(getItem("bow"), 1);
+		player.inventory.addItems(getItem("attack_potion"), 5); player.inventory.addItems(getItem("hamburger"), 5);
+		player.setHotkey(1, getItem("attack_potion").asItem());
+		player.stats.get("speed").permaBuff(2); player.stats.get("health").permaBuff(20); player.restoreHealth()</action>
+		<equip id="plant_sword" fromInventory="false" />
+		<equip id="steel_pickaxe" fromInventory="false" />
+		<equip id="steel_armor" fromInventory="false" />
+		<equip id="kite_shield" fromInventory="false" />
+		<equip id="plant_bag" fromInventory="false" />
+		<teleport area="colosseum.golemech" x="10" y="4" temporary="true" />
+	</procedure>
+</data>

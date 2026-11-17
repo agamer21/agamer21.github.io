@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="npc.xml" />
+	<scene id="depths.explorer">
+		<tile id="bg" sheet="npc.2" />
+		<layer id="bg" tile="bg" />
+		<animation id="explorer.idle">
+			<frame x="12" y="0" length="4" />
+			<frame x="11" y="0" length="2" />
+			<frame x="12" y="0" length="32" />
+		</animation>
+		<animation id="explorer.talk" x="13" count="10" />
+		<tile id="explorer" sheet="npc.2"><tile sheet="npc.2" x="1" /></tile>
+		<layer id="explorer" tile="explorer" animation="explorer.idle" talk="explorer.talk" sfx="talking7" />
+		<show id="intro">
+			<layer id="bg" />
+			<layer id="explorer" />
+			<wait seconds="2" />
+			<dialogue section="depths" id="intro1" speaker='explorer' />
+			<dialogue section="depths" id="intro2" speaker='explorer' />
+			<dialogue section="depths" id="intro3" speaker='player' />
+			<dialogue section="depths" id="intro4" speaker='explorer' />
+			<dialogue section="depths" id="intro5" speaker='explorer' />
+			<quest id="submersible" />
+			<wait seconds="1" />
+		</show>
+	</scene>
+	
+	<quest id="submersible" giver="depths.explorer" exp="2000" recipe="submersible" />
+	<quest id="monoliths" giver="depths.explorer" exp="4000">
+		<script id="5-player.areas.get('depths').getStructuresById('depths.monolith.off').length" tile="bone_shard.ico" name="quests.activate_monoliths" count="5" />
+	</quest>
+	
+	<tile id="depths.explorer" sheet="npc.1" />
+	<animation id="depths.explorer.idle">
+		<frame x="1" y="0" length="4" />
+		<frame x="0" y="0" length="2" />
+		<frame x="1" y="0" length="16" />
+	</animation>
+	<animation id="depths.explorer.talk" x="2" count="10" />
+	<animation id="depths.explorer.walk" x="12" count="12" />
+	<procedure id="depths.explorer.invite">
+		<quest /><menu section="common">
+			<dialogue title="professor.invite{npc:[object=depths.explorer]}" />
+			<choice id="yes">
+				<dialogue section="depths" id="research1" speaker="player" />
+				<dialogue section="depths" id="research2" speaker="this" />
+				<section with="fade">
+					<remove object="this" /><action>o.enter(player); updateArea(); player.removeQuestsByGiver("depths.explorer");</action>
+					<object id="depths.explorer" x="15" y="5" name="explorer" /><set id="this" value="explorer" />
+					<facing object="this" dir="right" /><move object="player" to="this" />
+				</section>
+			</choice>
+			<choice id="no" />
+		</menu>
+	</procedure>
+	<procedure id="explorer.craft"><window type="craft" includeStorehouse="true"><recipe id="craft_power_core" /><recipe id="craft_silicon" /><recipe id="smelt_gold" /><recipe id="smelt_steel" /></window></procedure>
+	<npc id="depths.explorer" tile="depths.explorer" action="talk" talk_sfx="talking7" night="true" researcher="true">
+		<idle class="wander" />
+		<operate>
+			<section if="!player.hasQuest('submersible')">
+				<quest /><scene id="depths.explorer" show="intro" with="fade" showToAll="true" />
+			</section>
+			<section if="player.canCompleteQuest('submersible')">
+				<dialogue section="depths" id="sub1" speaker="this" />
+				<complete quest="submersible" />
+				<sound id="build" />
+				<object id="submersible" x="-8" y="0" />
+				<pan toObject="submersible" seconds="0.5" />
+				<dialogue section="depths" id="sub2" speaker="this" />
+				<pan toObject="player" seconds="0.5" />
+			</section>
+			<section if="!player.questComplete('submersible') && player.hasItemStorehouse('power_core_parts')">
+				<quest /><dialogue section="depths" id="power_core" speaker="this" /><run procedure="explorer.craft" />
+			</section>
+			<group if="!player.questComplete('submersible')">
+				<dialogue section="depths" id="explorer1" speaker="this" />
+				<dialogue section="depths" id="explorer2" speaker="this" />
+			</group>
+			<group if="!player.hasSeenItem('bone_shard') && !player.hasQuest('monoliths')">
+				<dialogue section="depths" id="explorer3" speaker="this" />
+				<run procedure="explorer.craft" />
+			</group>
+			<section if="!player.hasQuest('monoliths')">
+				<dialogue section="depths" id="monolith1" speaker="this" />
+				<quest id="monoliths" />
+			</section>
+			<section if="player.canCompleteQuest('monoliths')">
+				<complete quest="monoliths" />
+				<dialogue section="depths" id="wizard1" speaker="this" />
+				<dialogue section="depths" id="wizard2" speaker="player" />
+				<dialogue section="depths" id="wizard3" speaker="this" />
+				<object id="draconian_wizard" x="37.5" y="-202/16" /><play object="draconian_wizard" animation="hidden" loop="true" />
+				<pan toObject="draconian_wizard" seconds="1" />
+				<play object="draconian_wizard" animation="teleport_in" modal="true" /><play object="draconian_wizard" animation="idle" loop="true" />
+				<wait seconds="0.5" />
+				<dialogue section="depths" id="wizard4" speaker="draconian_wizard" />
+				<dialogue section="depths" id="wizard5" speaker="draconian_wizard" />
+				<dialogue section="depths" id="wizard6" speaker="draconian_wizard" />
+				<pan toObject="player" seconds="1" />
+			</section>
+			<group if="!player.questComplete('monoliths')">
+				<dialogue eval="'depths.monolith2{count:'+player.areas.get('depths').getStructuresById('depths.monolith.off').length+'}'" speaker="this" />
+				<run procedure="explorer.craft" />
+			</group>
+			<section><set id="wizard" value="player.getNPC('draconian_wizard')" /><choose>
+				<section if="wizard != null && wizard.area != area">
+					<dialogue section="depths" id="summon_wizard" speaker="this" />
+					<action>this = wizard;</action><run procedure="draconian_wizard.teleport" />
+				</section>
+				<dialogue section="depths" id="control_wizard" speaker="this" if="wizard != null" />
+				<choose if="this.area.vehicle != null">
+					<dialogue section="depths" id="unnature" speaker="this" if="player.info.id == 'player.werewolf' && !getFlag('splicer_defeat')" />
+					<dialogue section="depths" id="research3" speaker="this" />
+				</choose>
+				<section>
+					<dialogue section="depths" id="end8" speaker="this" />
+					<run procedure="depths.explorer.invite" if="o = player.areas.get('depths').getObject('research'); return o != null" />
+				</section>
+			</choose></section>
+			
+		</operate>
+	</npc>
+	
+	<tile id="draconian_sister" sheet="npc.1" x="24" />
+	<animation id="draconian_sister.idle">
+		<frame x="0" y="0" length="4" />
+		<frame x="1" y="0" length="2" />
+		<frame x="0" y="0" length="16" />
+	</animation>
+	<animation id="draconian_sister.talk" x="2" count="11" />
+	<animation id="draconian_sister.walk" x="13" count="10" />
+	<animation id="draconian_sister.teleport_out" x="2" count="11">
+		<frame x="0" length="2" />
+		<append tile="alchemist" animation="alchemist.teleport" />
+		<frame visible="false" length="3" />
+	</animation>
+	<npc id="draconian_sister" tile="draconian_sister" action="talk" night="true">
+		<idle class="wander" />
+		<operate>
+			<section if="!player.hasSeenItem('dragon_armor2')">
+				<quest /><dialogue section="depths" id="end1" speaker="this" />
+				<dialogue section="depths" id="end2" speaker="player" />
+				<dialogue section="depths" id="end3" speaker="this" />
+				<dialogue section="depths" id="end4" speaker="this" />
+				<dialogue section="depths" id="end5" speaker="this" />
+				<item id="dragon_armor2" />
+			</section>
+			<section>
+				<dialogue section="depths" id="end6" speaker="this" />
+				<dialogue section="depths" id="end7" speaker="this" />
+				<play object="this" animation="teleport_out" />
+				<action>area.removeObject(this); if(this.renderer != null &amp;&amp; this.renderer.parent != null) this.renderer.parent.removeChild(this.renderer);</action>
+			</section>
+		</operate>
+	</npc>
+	
+	<item id="dragon_armor2" type="equipment" slot="armor" cost="0" weight="20" defense="6" icon="dragon_armor2.ico" animation="item10" hair="false" element="resist" equip_anim="equipment.dragon_armor" desc="item.descriptions.boost_stat{stat:spellcast}{value:2}" viewHidden="true">
+		<action id="equip" /><action id="rename" /><use slot="head" />
+		<flight height="999" cost="2" speed="5" maxWeight="1500" />
+		<light tile="light.large" color="ff77ff" />
+		<identify tile="cyborg.identify" acquire="carapace.acquire" animation="carapace.identify" color="cc66cc" />
+		<equipCost stamina="-8" daylight="false" />
+		<onEquip><action>player.stats.get("spellcast").add(2)</action></onEquip>
+		<onUnequip><action>player.stats.get("spellcast").add(-2)</action></onUnequip>
+	</item>
+	<tile id="dragon_armor2" sheet="npc.3" x="0" y="0" />
+	<recipe id="craft_dragon_armor2" creates="dragon_armor2" type="hq_growth" available="player.hasSeenItem('dragon_armor2')">
+		<item id="dragon_armor" count="1" /><item id="evo_gem" count="3" defineLater="true" />
+	</recipe>
+</data> 

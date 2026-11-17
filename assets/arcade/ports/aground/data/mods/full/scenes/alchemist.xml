@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="go_east" giver="alchemist" exp="1000">
+		<area id="magic2" name="quests.find_magic2" count="1" />
+		<item id="evo_gem" count="1" defineLater="true" />
+		<canComplete>
+			<complete quest="go_east" useResources="false" />
+			<dialogue section="player" id="go_east" />
+		</canComplete>
+	</quest>
+	
+	<scene id="alchemist" extends="alchemist">
+		<show id="east">
+			<layer id="bg" />
+			<layer id="alchemist" />
+			<wait seconds="1" />
+			<dialogue section="alchemist" id="east1" speaker='alchemist' />
+			<dialogue section="alchemist" id="east2" speaker='alchemist' />
+			<dialogue section="alchemist" id="east3" speaker='alchemist' />
+			<dialogue section="alchemist" id="east4" speaker='alchemist' />
+			<quest id="go_east" ask="false" />
+			<wait seconds="1" />
+		</show>
+		<show id="east_dead">
+			<layer id="bg" />
+			<music id="Cutscene9" seconds="1" /><wait seconds="1" />
+			<dialogue section="alchemist" id="east5" />
+			<dialogue section="alchemist" id="east6" />
+			<dialogue section="alchemist" id="east7" />
+			<quest id="go_east" ask="false" />
+			<wait seconds="1" />
+		</show>
+    <show id="bombardment">
+      <layer id="bg" />
+      <layer id="alchemist" />
+      <wait seconds="1" />
+      <dialogue section="alchemist" id="bombardment1" speaker='alchemist' />
+      <dialogue section="alchemist" id="bombardment2" speaker='alchemist' />
+      <dialogue section="alchemist" id="bombardment2.5" speaker='alchemist' if="player.questComplete('bombardment_shield')" />
+      <dialogue section="alchemist" id="bombardment3" speaker='alchemist' />
+      <dialogue section="alchemist" id="bombardment4" speaker='alchemist' />
+      <item id="lab_blueprint" modal="true" />
+      <item id="wyrm_pen_blueprint" modal="true" />
+      <wait seconds="1" />
+    </show>
+		<show id="win">
+			<layer id="bg" />
+			<layer id="alchemist" />
+			<wait seconds="3" />
+			<dialogue section="alchemist" id="win3" speaker='alchemist' />
+			<dialogue section="alchemist" id="win4" speaker='alchemist' />
+			<wait seconds="1" />
+		</show>
+	</scene>
+</data>

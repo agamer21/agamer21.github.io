@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="com_station" giver="mechanic" exp="500" achievement="com_station">
+		<item id="ship_parts" count="1" />
+		<location id="science2" x="32" y="-33" width="32" height="1" name="quests.highest_mountain" />
+	</quest>
+	
+	<procedure id="com_station">
+		<set id="speaker" value="exists('mechanic')?mechanic:this" />
+		<dialogue section="mechanic" id="build_com1" speaker='speaker' />
+		<quest id="com_station">
+			<dialogue section="mechanic" id="build_com2" speaker='speaker' />
+			<section if="!player.hasItem('com_device')">
+				<dialogue section="mechanic" id="build_com2.1" speaker='speaker' />
+				<item id="com_device" modal="true" />
+				<action>player.setContact("mechanic", "call_mechanic")</action>
+			</section>
+		</quest>
+	</procedure>
+	<object id="fake_jet" tile="jet" animation="jet.empty" layer="npc" behind="true" />
+	<procedure id="mechanic.com_station">
+		<dialogue section="mechanic" id="build_com3" speaker='mechanic' />
+		<complete quest="com_station" reserve="prepare" />
+		<structure id="com_station" x="50" y="-33" place="true" rangeX="16" rangeY="0" sfx="build" seconds="0.25">
+		  <onPlace>
+			<complete quest="com_station" reserve="finish" />
+			<lerp object="object" alpha="1" seconds="0.25" />
+			<object id="fake_jet" x="object.tile_x" y="-33" /><action>fake_jet.moveToFront()</action>
+			<object id="mechanic" name="mechanic_object" x="object.tile_x+2" y="-33" facing="right" />
+			<dialogue section="mechanic" id="build_com4" speaker='mechanic' />
+			<lerp object="mechanic_object" alpha="0" seconds="0.25" /><remove object="mechanic_object" />
+			<play object="fake_jet" animation="jet.mount" modal="true" />
+			<play object="fake_jet" animation="jet.takeoff" modal="true" /><play object="fake_jet" animation="jet.hover" loop="true" />
+			<lerp object="fake_jet" deltaY="-7" seconds="2" modal="true" /><remove object="fake_jet" />
+			<pan toObject="player" seconds="0.25" />
+		  </onPlace>
+		  <onCancel><complete quest="com_station" reserve="cancel" /><pan toObject="player" seconds="0.25" /></onCancel>
+		</structure>
+	</procedure>
+	<procedure id="call_mechanic">
+		<set id="this" value="player.getNPC('mechanic')" /><run procedure="checkCallRange" />
+		<call id="mechanic" />
+		<choose>
+			<choose if="getFlag('final_boss_defeat')">
+				<run procedure="mechanic.com_station" if="player.hasQuest('com_station') && !player.questComplete('com_station') && player.canCompleteQuest('com_station')" />
+				<dialogue section="mechanic" id="build_com6" speaker="mechanic" if="player.tile_y <= -10 && area.isEmptyTile(player.tile_x, player.tile_y) && !area.isEmptyTile(player.tile_x, player.tile_y+1) && player.hasQuest('com_station') && !player.questComplete('com_station') && !getQuest('com_station').requires[1].isMet(player)" />
+				<dialogue section="mechanic" id="build_com5" speaker="mechanic" if="player.hasQuest('com_station') && !player.questComplete('com_station') && getQuest('com_station').requires[1].isMet(player)" />
+				<run procedure="mechanic.endgame" />
+			</choose>
+			<dialogue section="mechanic" id="research2" speaker="mechanic" if="this.area.vehicle != null" />
+			<section if="o = player.areas.get('science1').getObject('research'); return o != null && (player.vehicle == o || area.vehicle == o || o.area == area)">
+				<call id="mechanic" end="true" /><run procedure="mechanic.invite" /><stop />
+			</section>
+			<run procedure="mechanic.com_station" if="player.hasQuest('com_station') && !player.questComplete('com_station') && player.canCompleteQuest('com_station')" />
+			<dialogue section="mechanic" id="build_com6" speaker="mechanic" if="player.tile_y <= -10 && area.isEmptyTile(player.tile_x, player.tile_y) && !area.isEmptyTile(player.tile_x, player.tile_y+1) && player.hasQuest('com_station') && !player.questComplete('com_station') && !getQuest('com_station').requires[1].isMet(player)" />
+			<dialogue section="mechanic" id="build_com5" speaker="mechanic" if="player.hasQuest('com_station') && !player.questComplete('com_station') && getQuest('com_station').requires[1].isMet(player)" />
+			<dialogue section="mechanic" id="sleep" speaker="mechanic" if="isNight()" />
+			<section if="(player.questComplete('factory') || getFlag('bombardment')) && player.questComplete('ship_parts') && getFlag('escort_ship') && !getFlag('make_ship_parts')">
+				<action>setFlag('make_ship_parts', true)</action>
+				<dialogue section="mechanic" id="make_ship_parts" speaker="mechanic" />
+			</section>
+			<group if="player.vehicle != null && player.vehicle.info.xml.get('type') == 'submarine'">
+				<dialogue section="mechanic" id="sub_tip1" speaker="mechanic" />
+				<dialogue section="mechanic" id="sub_tip2" speaker="mechanic" />
+				<dialogue section="mechanic" id="sub_tip3" speaker="mechanic" />
+				<dialogue section="mechanic" id="sub_tip4" speaker="mechanic" />
+			</group>
+			<run procedure="com_station" if="!player.hasQuest('com_station') && player.questComplete('ship_parts')" />
+			<dialogue section="mechanic" id="research_lab" speaker="mechanic" if="player.questComplete('research_lab') && this.area.vehicle == null" />
+			<dialogue section="mechanic" id="bombardment2" speaker="mechanic" if="getFlag('bombardment') && !player.questComplete('bombardment_shield')" />
+			<group if="player.hasItem('factory_upgrade')">
+				<dialogue section="mechanic" id="tip1" speaker='mechanic' />
+				<dialogue section="mechanic" id="tip2" speaker='mechanic' />
+				<dialogue section="mechanic" id="tip3" speaker='mechanic' />
+			</group>
+			<dialogue section="mechanic" id="car_factory1" speaker='mechanic' if="player.questComplete('factory')" />
+			<dialogue section="mechanic" id="factory1" speaker='mechanic' />
+		</choose>
+		<call id="mechanic" end="true" />
+	</procedure>
+	
+	<procedure id="mechanic.invite">
+		<quest /><menu section="common">
+			<dialogue title="professor.invite{npc:[object=mechanic]}" />
+			<choice id="yes">
+				<scene id="scavenger" show="invite_mechanic" with="fade">
+					<remove object="this" /><action>o.enter(player); updateArea(); player.removeQuestsByGiver("mechanic");</action>
+					<object id="mechanic" x="13" y="1" /><set id="this" value="mechanic" />
+					<facing object="this" dir="right" /><move object="player" to="this" />
+				</scene>
+			</choice>
+			<choice id="no" />
+		</menu>
+	</procedure>
+	<npc id="mechanic" extends="mechanic">
+		<operate>
+			<choose if="getFlag('final_boss_defeat')">
+				<section if="player.hasItem('com_device') && !player.hasContact('mechanic')">
+					<dialogue section="mechanic" id="com_device" speaker='this' />
+					<action>player.setContact("mechanic", "call_mechanic")</action>
+				</section>
+				<section><action>mechanic = this;</action><run procedure="mechanic.endgame" /></section>
+			</choose>
+			<choose if="area.vehicle != null">
+				<dialogue section="mechanic" id="werewolf" speaker="this" if="player.info.id == 'player.werewolf'" />
+				<group>
+					<dialogue section="mechanic" id="research2" speaker="this" />
+					<run procedure="mechanic.repair" />
+				</group>
+			</choose>
+			<section if="getFlag('mirrows.sacrifice') && !getFlag('mechanic.sacrifice')">
+				<dialogue section="mechanic" id="bombardment3" speaker="this" />
+				<dialogue section="mechanic" id="bombardment4" speaker="this" /><action>setFlag('mechanic.sacrifice', true)</action>
+			</section>
+			<section if="!player.hasItem('teleportal_blueprint') && (player.questComplete('pirates') || (player.hasItem('advanced_lab_blueprint') && player.questRequirementsMet('pirates')))">
+				<quest /><dialogue section="mechanic" id="teleportal1" speaker='this' />
+				<dialogue section="mechanic" id="teleportal2" speaker='this' />
+				<item id="teleportal_blueprint" modal="true" />
+				<dialogue section="mechanic" id="teleportal3" speaker='this' />
+			</section>
+			<section if="player.getFlag('mirrows_hut') && !player.hasItem('hut_upgrade') && player.hasItem('factory_upgrade')">
+				<dialogue section="mechanic" id="hut_upgrade1" speaker='this' />
+				<dialogue section="mechanic" id="hut_upgrade2" speaker='this' />
+				<action>player.addMultipleItems("hut_upgrade", 1, "house_kitchen", 1)</action>
+			</section>
+			<section if="player.questComplete('water_cave') && !player.hasItem('factory_upgrade') && player.questComplete('factory')">
+				<quest /><dialogue section="mechanic" id="car_factory1" speaker='this' />
+				<dialogue section="mechanic" id="car_factory2" speaker='this' />
+				<item id="factory_upgrade" modal="true" />
+				<dialogue section="mechanic" id="car_factory3" speaker='this' />
+			</section>
+			<section if="player.hasItem('com_device') && !player.hasContact('mechanic')">
+				<dialogue section="mechanic" id="com_device" speaker='this' />
+				<action>player.setContact("mechanic", "call_mechanic")</action>
+			</section>
+			<section if="player.questComplete('ship_parts') && getFlag('escort_ship') && !getFlag('make_ship_parts') && (player.questComplete('factory') || getFlag('bombardment'))">
+				<action>setFlag('make_ship_parts', true)</action>
+				<dialogue section="mechanic" id="make_ship_parts" speaker="this" />
+			</section>
+			<run procedure="mechanic.invite" if="o = player.areas.get('science1').getObject('research'); return o != null" />
+			<run procedure="com_station" if="!player.hasQuest('com_station') && player.questComplete('ship_parts')" />
+			<section if="getFlag('mirrows.sacrifice')">
+				<dialogue section="mechanic" id="bombardment3" speaker="this" />
+				<dialogue section="mechanic" id="bombardment4" speaker="this" />
+			</section>
+			<dialogue section="mechanic" id="bombardment" speaker="this" if="getFlag('bombardment') && !player.questComplete('bombardment_shield')" />
+		</operate>
+	</npc>
+</data>

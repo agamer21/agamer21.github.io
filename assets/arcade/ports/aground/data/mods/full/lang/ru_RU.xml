@@ -1,0 +1,1857 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<lang id="ru_RU">
+    <section id="common">
+        <text id="sub_pen">Бункер подводных лодок</text>
+        <text id="airport">Аэропорт</text>
+        <text id="house">Дом</text>
+        <text id="operation_table">Хирургическая лаборатория</text>
+        <text id="advanced_lab">Передовая лаборатория</text>
+        <text id="nuclear_plant">Атомная станция</text>
+        <text id="teleportal">Телепорт</text>
+        <text id="contact_list">Список контактов</text>
+        <text id="add_contact">{npc} добавлен(а) в список контактов!</text>
+        <text id="calling">Звоним: {npc}...</text>
+        <text id="incoming_call">Звонок от: {npc}...</text>
+        <text id="coming_soon">Уже скоро!</text>
+        <text id="save_prompt_magic">Конец Пути магии для данной версии игры. Хотите сохранить игру?</text>
+        <text id="save_prompt_science">Конец Пути науки для данной версии игры. Хотите сохранить игру?</text>
+        <text id="modifier">Усилитель:</text>
+        <text id="bunker">Бункер</text>
+        <text id="bunker_kitchen">Кухня бункера</text>
+        <text id="bunker_depot">Депо бункера</text>
+        <text id="hydroponics">Гидропоника</text>
+        <text id="bunker_factory">Завод бункера</text>
+        <text id="bunker_farm">Ферма бункера</text>
+        <text id="earth_lab">Завод дронов</text>
+        <text id="vending_machine">Торговый автомат</text>
+        <text id="blueprint_printer">Принтер для чертежей</text>
+        <text id="paper_maker">Ассемблер полимеров</text>
+        <text id="particle_accelerator">Ускоритель частиц</text>
+        <text id="interstellar_teleportal">Межзвёздный телепорт</text>
+        <text id="station.module.small">Малый модуль станции</text>
+        <text id="station.module.large">Большой модуль станции</text>
+        <text id="station.module.connector">Стыковочный модуль станции</text>
+        <text id="station.dock">Стыковочный узел корабля</text>
+        <text id="station.module.xlarge">Сверхбольшой модуль станции</text>
+        <text id="rations_per_hit">Продовольствия за Удар:</text>
+        <text id="full_heal">Здоровье и запас сил полностью восстановлены.</text>
+        <text id="terraformer">Терраформатор</text>
+        <text id="exo_factory">Экзо-завод</text>
+        <text id="research_item">Исследовать: {item}</text>
+        <text id="research_complete">{item}: исследование закончено! Рецепт добавлен в: {structure}.</text>
+        <text id="spirit_storehouse">Склад духов</text>
+        <text id="space_house">Космический дом</text>
+        <text id="quit_minigame">Выйти из мини-игры?</text>
+        <text id="new_highscore">[tile=sticky] Новый рекорд!</text>
+        <text id="depths.monolith">Монолит</text>
+    </section>
+    <section id="actions">
+        <text id="airlock">Управление атмосферным шлюзом</text>
+        <text id="take_power_core">Демонтировать ядро питания</text>
+        <text id="put_power_core">Установить ядро питания</text>
+        <text id="turn_on">Включить</text>
+        <text id="turn_off">Выключить</text>
+        <text id="exit_ship">Покинуть корабль</text>
+        <text id="exit_station">Покинуть станцию</text>
+        <text id="cast">Колдовать</text>
+    </section>
+    <section id="warning">
+        <text id="no_power_core">Нельзя установить [item=power_core], так как его нет!</text>
+        <text id="not_powered_house">Вы отдыхаете в доме без энергии.</text>
+        <text id="laser_gun">[item=laser_gun] перегрелся!</text>
+        <text id="teleport_fail">Отсутствует место для отдыха или выход из подземелья!</text>
+        <text id="teleport_blocked">Некий барьер не позволяет телепортироваться.</text>
+        <text id="build_orbit">Это сооружение должно быть построено на орбите.</text>
+        <text id="no_build_orbit">Это сооружение не может быть построено на орбите.</text>
+        <text id="dismantle_module">Демонтировать модуль? Всё, что находится внутри, будет утеряно.</text>
+        <text id="drag_ship_factory">На заводе уже есть [color=770000]Дракон-корабль[/color]!</text>
+        <text id="spaceship_exit">Покинуть корабль? Текущее снаряжение не позволит вновь подняться на ту же высоту.</text>
+        <text id="sub_exit">Покинуть подводную лодку? Текущее снаряжение не позволит выдержать давление воды.</text>
+        <text id="station_exit">Покинуть космическую станцию? Текущее снаряжение не позволит остаться на орбите.</text>
+        <text id="no_spaceship">Здесь нет космического корабля.</text>
+        <text id="no_sub">Здесь нет подводной лодки.</text>
+        <text id="no_jump">Текущее снаряжение не позволяет совершить прыжок к этой планете.</text>
+        <text id="planet_damage">Нельзя приземлиться на эту планету! Сближение повлечёт повреждения!</text>
+        <text id="planet_closed">Нельзя покинуть эту планету – она запечатана!</text>
+        <text id="cast_ground">Сколдовать это можно только под землёй или на земле.</text>
+        <text id="no_vehicle_equip">Здесь нет техники, на которую можно установить оборудование.</text>
+        <text id="no_vehicle_modify">Здесь нет техники, которую можно модифицировать.</text>
+        <text id="factory_vehicle_equip">Установить оборудование на эту технику можно только на [color=770000]Экзозаводе[/color].</text>
+        <text id="dismantle_cafeteria">Давайте не будем убирать буфет...</text>
+        <text id="leave_alien_hq">Цитадель врага запечатывается! Покинуть её? Вы не сможете вернуться тем же путём.</text>
+        <text id="use_missing">{weapon} – нельзя использовать без: {item}.</text>
+        <text id="werewolf_vehicle">{item}: неудобно работать с техникой!</text>
+        <text id="operation_table_inhuman">В [color=770000]Хирургической лаборатории[/color] в киборгов превращать можно только людей.</text>
+    </section>
+    <section id="structure">
+        <text id="rice">Рисовое поле</text>
+        <text id="teleport">Телепортироваться в:</text>
+        <text id="uproot">Выкорчевать</text>
+        <text id="evo_chamber">Комната эволюции</text>
+        <text id="fish.library">Библиотека</text>
+        <text id="growth">Активировать Рощу лозы.</text>
+        <text id="drag_factory_ruins">Интересно, зачем нужны эти странные руины...</text>
+        <text id="too_cold">Из-за мороза [color=770000]Завод Дракон-кораблей[/color] не может работать...</text>
+        <text id="sleep_day">Спать до наступления дня</text>
+        <text id="sleep_night">Спать до наступления ночи</text>
+        <text id="o2_generator">Генератор кислорода</text>
+        <text id="unlock">{item}: – использовать для открытия двери?</text>
+        <text id="missing_key">Чтобы открыть дверь, требуется: {item}.</text>
+        <text id="cost">Стоимость</text>
+        <text id="research_lab">Исследовательская лаборатория</text>
+        <text id="researchers">Исследователи:</text>
+        <text id="coral_pen">Коралловая ферма</text>
+        <text id="coral_farm">Коралловая плантация</text>
+        <text id="alien_hq.library">Цитадель: библиотека</text>
+        <text id="alien_hq.factory">Цитадель: комн. дракона</text>
+        <text id="alien_hq.growth">Цитадель: роща когтей</text>
+        <text id="magic_forge">Кузница</text>
+        <text id="growth_name">Роща лозы</text>
+        <text id="magic_house2">Магический дом</text>
+        <text id="evo_house">Разв. магический дом</text>
+        <text id="sci.light">Электрическая лампа</text>
+        <text id="colony.weaps_market">Рынок оружия ИИ</text>
+        <text id="colony.mineral_market">Рынок минералов ИИ</text>
+        <text id="colony.cafeteria2">Буфет ИИ</text>
+        <text id="research.arcade">Аркада</text>
+        <text id="repair_colony_ship">Отремонтировать [color=770000]Корабль-колонию[/color] за следующее количество ресурсов?</text>
+        <text id="colony.drone_factory">Колония: Завод дронов</text>
+        <text id="ask_uproot">Выкорчевать это сооружение?</text>
+    </section>
+    <section id="structure.tooltip">
+        <text id="check_logs">Прочесть журнал спасательной капсулы</text>
+        <text id="manage_cargo">Управление грузом</text>
+        <text id="manage_ship">Управление кораблём</text>
+        <text id="advanced_lab">Крафтить в Передовой лаборатории</text>
+        <text id="inspect">Изучить сооружение</text>
+        <text id="fish.market">Сделка с торговцем рыбой</text>
+        <text id="fish.library">Крафтить книги заклинаний</text>
+        <text id="evolve_dragon">Развить в Древнего дракона</text>
+        <text id="evolve">Развить</text>
+        <text id="rest">Отдыхать</text>
+        <text id="spaceship">Взойти на борт</text>
+        <text id="oxygen">Пополнить кислород</text>
+        <text id="portal">Войти в Портал</text>
+        <text id="spaceship_inv">Переместить предметы в Космический корабль</text>
+        <text id="sub_inv">Переместить предметы в Подлодку</text>
+        <text id="change_equip">Установить оборудование</text>
+        <text id="cafeteria">Сделать заказ в Буфете</text>
+        <text id="change_modifier">Сменить Усилитель техники</text>
+        <text id="spirit_storehouse">Управление Складом духов</text>
+        <text id="watch">Часы</text>
+        <text id="couch">Отдыхать на диване</text>
+    </section>
+    <section id="item.names">
+        <text id="pearl">Жемчужина</text>
+        <text id="fin">Плавник</text>
+        <text id="ship_parts">Высокотех. детали</text>
+        <text id="power_core_parts">Детали ядра питания</text>
+        <text id="power_core">Ядро питания</text>
+        <text id="torpedo">Торпеда</text>
+        <text id="ice_torpedo">Ледяная торпеда</text>
+        <text id="fire_torpedo">Тепловая торпеда</text>
+        <text id="water_torpedo">Водная торпеда</text>
+        <text id="torpedo_launcher">Торпедный аппарат</text>
+        <text id="factory_upgrade">Улучшение Завода</text>
+        <text id="airport_blueprint">Чертёж Аэропорта</text>
+        <text id="jeep_gun">Пушка для джипа</text>
+        <text id="jet_gun">Пушка реакт. самолёта</text>
+        <text id="missile">Ракета</text>
+        <text id="ice_missile">Ледяная ракета</text>
+        <text id="fire_missile">Огненная ракета</text>
+        <text id="water_missile">Водная ракета</text>
+        <text id="nuke">Ядерная ракета</text>
+        <text id="missile_launcher">Ракетомёт реакт. сам.</text>
+        <text id="com_device">Приёмопередатчик</text>
+        <text id="rocket_launcher">Ракетомёт</text>
+        <text id="generator">Генератор</text>
+        <text id="ink">Чернила</text>
+        <text id="jet_engine">Улучш. двигатель РС</text>
+        <text id="battery_unit">Батарея</text>
+        <text id="solar_generator">Солнечная батарея</text>
+        <text id="nuclear_generator">Ядерный генератор</text>
+        <text id="hut_upgrade">Чертёж дома</text>
+        <text id="house_kitchen">Чертёж кухни для дома</text>
+        <text id="rice">Рис</text>
+        <text id="cooking_oil">Масло для готовки</text>
+        <text id="fried_rice">Жареный рис</text>
+        <text id="bacon">Бекон</text>
+        <text id="fried_chicken">Жареная курица</text>
+        <text id="fried_eel">Жареный угорь</text>
+        <text id="ice_cream">Мороженое</text>
+        <text id="sushi">Суши</text>
+        <text id="rice_seed">Семена риса</text>
+        <text id="cable">Кабель</text>
+        <text id="clock">Часы</text>
+        <text id="water_pump">Рюкзак-насос</text>
+        <text id="nuclear_plant_blueprint">Чертёж ядерной станции</text>
+        <text id="operation_table_blueprint">Чертёж хирург. лаборатории</text>
+        <text id="sub_pen_blueprint">Чертёж бункера подлодок</text>
+        <text id="patrol_boat_gun">Пушка патрул. катера</text>
+        <text id="patrol_boat_launcher">Ракетомёт патрул. кат.</text>
+        <text id="advanced_lab_blueprint">Черт. передовой лаборатории</text>
+        <text id="teleportal_blueprint">Чертёж телепорта</text>
+        <text id="laser_drill">Лазерный бур</text>
+        <text id="energy_shield">Энергощит</text>
+        <text id="antigrav_pack">Антиграв. рюкзак</text>
+        <text id="space_armor">Космическая броня</text>
+        <text id="space_helm">Космический шлем</text>
+        <text id="laser_gun">Лазерная пушка</text>
+        <text id="worker_bot">Робот-рабочий</text>
+        <text id="war_bot">Военный робот</text>
+        <text id="earth_trap">Земляная ловушка</text>
+        <text id="fire_trap">Огненная ловушка</text>
+        <text id="water_trap">Водная ловушка</text>
+        <text id="ice_trap">Ледяная ловушка</text>
+        <text id="plant_trap">Раст. ловушка</text>
+        <text id="enchanted_net">Зачарованная сеть</text>
+        <text id="fire_bird">Кокатрис</text>
+        <text id="crawler">Ползун</text>
+        <text id="icer">Льдун</text>
+        <text id="shark">Акула</text>
+        <text id="fire_boar">Огненный кабан</text>
+        <text id="yeti">Снежный человек</text>
+        <text id="shadow_cat">Пантера</text>
+        <text id="forge_seed">Семя кузницы</text>
+        <text id="synthesizer_seed">Семя синтезатора</text>
+        <text id="time_manipulator_seed">Семя манипул. времени</text>
+        <text id="growth_seed">Семя рощи лозы</text>
+        <text id="evolution_seed">Семя эволюции</text>
+        <text id="coral_pen_seed">Семя коралловой фермы</text>
+        <text id="house_seed">Семя магического дома</text>
+        <text id="house_seed2">Семя разв. маг. дома</text>
+        <text id="water_helm">Водный шлем</text>
+        <text id="coral_bow">Коралловый лук</text>
+        <text id="coral_sword">Коралловый меч</text>
+        <text id="helium_pack">Гелиевый рюкзак</text>
+        <text id="evo_shard">Эволюционный осколок</text>
+        <text id="evo_gem">Эволюционный камень</text>
+        <text id="blue_claw">Синий коготь</text>
+        <text id="clam_gun">Моллюсковая пушка</text>
+        <text id="fish_scale">Рыбья чешуя</text>
+        <text id="fire_book">Книга пламени</text>
+        <text id="water_book">Книга всплеска</text>
+        <text id="plant_book">Книга лозы</text>
+        <text id="earth_book">Книга камня</text>
+        <text id="ice_book">Книга мороза</text>
+        <text id="teleport_book">Книга возвращения</text>
+        <text id="water_barrier_book">Книга поглощения</text>
+        <text id="plant_feed_book">Книга восстановления</text>
+        <text id="summon_golem_book">Книга призыва</text>
+        <text id="time_book">Книга времени</text>
+        <text id="light_book">Книга света</text>
+        <text id="heal_book">Книга лечения</text>
+        <text id="shield_book">Книга защиты</text>
+        <text id="meteor_book">Книга метеора</text>
+        <text id="flood_book">Книга потопа</text>
+        <text id="growth_book">Книга растений</text>
+        <text id="spikes_book">Книга шипов</text>
+        <text id="tornado_book">Книга смерча</text>
+        <text id="scale_fish">Чешуйчатая рыба</text>
+        <text id="snaptopus">Кусьминог</text>
+        <text id="minotaur">Минотавр</text>
+        <text id="queen_drill">Королевский бур</text>
+        <text id="revitalize_potion">Зелье омоложения</text>
+        <text id="wand">Волшебная палочка</text>
+        <text id="flying_broom">Летающая метла</text>
+        <text id="robes">Мантия</text>
+        <text id="witch_hat">Шляпа колдуна</text>
+        <text id="black_cat">Чёрная кошка</text>
+        <text id="pumpkin_helm">Шлем-тыква</text>
+        <text id="scale_mail">Чешуйчатый доспех</text>
+        <text id="ladder">Стальная лестница</text>
+        <text id="walkway">Стальная дорожка</text>
+        <text id="grass_walkway">Травяная дорожка</text>
+        <text id="bunker_blueprint">Чертёж бункера</text>
+        <text id="bunker_kitchen_blueprint">Чертёж бункера: кухня</text>
+        <text id="bunker_depot_blueprint">Чертёж бункера: депо</text>
+        <text id="hydroponics_blueprint">Чертёж гидропоники</text>
+        <text id="bunker_factory_blueprint">Чертёж бункера: завод</text>
+        <text id="bunker_farm_blueprint">Чертёж бункера: ферма</text>
+        <text id="earth_lab_blueprint">Чертёж завода дронов</text>
+        <text id="vending_machine_blueprint">Чертёж торгового автомата</text>
+        <text id="small_module_blueprint">Чертёж малого модуля</text>
+        <text id="large_module_blueprint">Чертёж большого модуля</text>
+        <text id="connector_module_blueprint">Черт. стыковочного модуля</text>
+        <text id="station_dock_blueprint">Чертёж стыковочного узла</text>
+        <text id="xlarge_module_blueprint">Черт. сверхбольшого модуля</text>
+        <text id="exotic_matter">Экзотич. материя</text>
+        <text id="magnegem">Магникамень</text>
+        <text id="chromium">Хром</text>
+        <text id="o2_canister">Баллон кислорода</text>
+        <text id="fighter.cannon">Плазменное орудие</text>
+        <text id="fighter.gun">Плазменная пушка</text>
+        <text id="fighter.launcher">Ракетомёт антивещества</text>
+        <text id="antimatter_missile">Ракета антивещества</text>
+        <text id="o2_generator_blueprint">Чертёж кислород. генератора</text>
+        <text id="jumpship">Прыжковый корабль</text>
+        <text id="dragon_ship.cannon">Мощный огонь</text>
+        <text id="dragon_ship.gun">Скоростной огонь</text>
+        <text id="dragon_ship.burst">Разрывной огонь</text>
+        <text id="mini_synthesizer">Мини-синтезатор</text>
+        <text id="dragon_backpack">Сердце Дракон-корабля</text>
+        <text id="steel_fence">Стальной забор</text>
+        <text id="ai_core">Ядро ИИ</text>
+        <text id="keycard">Карта доступа</text>
+        <text id="keycard1">Карта дост. Профессора</text>
+        <text id="disabled_keycard">Неактивная Карта дост.</text>
+        <text id="spacefarer">Автомат. костюм</text>
+        <text id="drone.ship">Корабль-дрон</text>
+        <text id="drone.drill">Бур-дрон</text>
+        <text id="drone.sub">Подлодка-дрон</text>
+        <text id="drone.scout">Дрон-разведчик</text>
+        <text id="drone_control">Контроллер дронов</text>
+        <text id="blueprint_paper">Полимерная бумага</text>
+        <text id="blueprint_printer_blueprint">Чертёж Принтера чертежей</text>
+        <text id="paper_maker_blueprint">Черт. Ассемблера полимеров</text>
+        <text id="particle_accelerator_blueprint">Чертёж Ускорителя частиц</text>
+        <text id="interstellar_teleportal_blueprint">Черт. Межзвёздн. телепорта</text>
+        <text id="brilliant_potion">Блистательное зелье</text>
+        <text id="hq_library_seed">Семя Цит.: библиотека</text>
+        <text id="hq_factory_seed">Семя Цит.: комн. дракона</text>
+        <text id="hq_growth_seed">Семя Цит.: роща когтей</text>
+        <text id="cyborg_plate">Панцирь киборга</text>
+        <text id="cyborg_visor">Забрало киборга</text>
+        <text id="cyborg_railgun">Рельсотрон киборга</text>
+        <text id="cyborg_chainsaw">Цепная пила киборга</text>
+        <text id="cyborg_core">Ядро питания киборга</text>
+        <text id="exo_armor">Экзотическая броня</text>
+        <text id="stealth_helm">Шлем скрытности</text>
+        <text id="exo_drill">Экзотический бур</text>
+        <text id="exo_gun">Экзотическая пушка</text>
+        <text id="exo_sword">Экзотический меч</text>
+        <text id="exo_pack">Экзотический рюкзак</text>
+        <text id="alien_locator">Локатор пришельцев</text>
+        <text id="exo_fighter">Экзо-истребитель</text>
+        <text id="exo_mech">Экзо-робот</text>
+        <text id="exo_mech.chainsaw">Цепная пила Экзо-робота</text>
+        <text id="exo_mech.gun">Пушка Экзо-робота</text>
+        <text id="exo_shields">Генератор экзо-щита</text>
+        <text id="exo_mech.light">Светоизлучатель</text>
+        <text id="dragomech">Рободракон</text>
+        <text id="terraformer_blueprint">Чертёж терраформатора</text>
+        <text id="exo_factory_blueprint">Черт. экзотического завода</text>
+        <text id="alien_heart">Инопланетное сердце</text>
+        <text id="carapace">Панцирь</text>
+        <text id="hoarder_gun">Магнум коллекционера</text>
+        <text id="hoarder_shield">Щит коллекционера</text>
+        <text id="hoarder_armor">Броня коллекционера</text>
+        <text id="hoarder_hat">Шлем коллекционера</text>
+        <text id="hoarder_backpack">Рюкзак коллекционера</text>
+        <text id="translation_book">Книга перевода</text>
+        <text id="magne_queen_drill">Бур Аметист. королевы</text>
+        <text id="coral_farm_seed">Семя корал. плантации</text>
+        <text id="staff">Магический посох</text>
+        <text id="venatrix_seed">Семя древа духов</text>
+        <text id="storehouse_seed">Семя склада духов</text>
+        <text id="spirit_arrow">Стрела духов</text>
+        <text id="spirit_fox_helm">Шлем духа лисицы</text>
+        <text id="spirit_fish">Рыбдух</text>
+        <text id="spirit_robes">Мантия духов</text>
+        <text id="spirit_glaive">Глефа духов</text>
+        <text id="spirit_gem2">Развитый камень духов</text>
+        <text id="spirit_chest">Сундук духов</text>
+        <text id="spirit_orb">Сфера духов</text>
+        <text id="dragon_seed">Семя дракона</text>
+        <text id="magic_wyrm">Аметистовая личинка</text>
+        <text id="magnewyrm">Магниличинка</text>
+        <text id="magnetrap">Магниловушка</text>
+        <text id="element_table">Таблица элементов</text>
+        <text id="magnestone">Магникамень</text>
+        <text id="mars_fish">Стигиец</text>
+        <text id="carapace_armor">Панцирная броня</text>
+        <text id="ilaser_trap">Лазерная ловушка</text>
+        <text id="ftl_broom">Межзвёздная метла</text>
+        <text id="house_upgrade">Чертёж космического дома</text>
+        <text id="sci_light_blueprint">Чертёж электрической лампы</text>
+        <text id="weap_market_blueprint">Чертёж оружейного рынка</text>
+        <text id="mineral_market_blueprint">Чертёж рынка минералов</text>
+        <text id="cafeteria_blueprint">Чертёж буфета</text>
+        <text id="earth_key">Ключ от голема</text>
+        <text id="megolemech">Мегаробоголем</text>
+        <text id="mega_earth_armor">Земляная мегаброня</text>
+        <text id="mega_earth_helm">Земляной мегашлем</text>
+        <text id="mega_earth_axe">Земляной мегатопор</text>
+        <text id="arcade1_blueprint">Чертёж аркадного шутера</text>
+        <text id="arcade2_blueprint">Черт. аркадного платформера</text>
+        <text id="shovel2">Хромированная лопата</text>
+        <text id="meat_tree_seed">Семя мясного дерева</text>
+        <text id="werewolf_paws">Лапы</text>
+        <text id="werewolf_claws">Когти</text>
+        <text id="dexterous_paws">Ловкие лапы</text>
+        <text id="werewolf_body">Тело оборотня</text>
+        <text id="werewolf_heal_body">Исцеляющее тело оборотня</text>
+        <text id="werewolf_stealth_body">Скрытное тело оборотня</text>
+        <text id="werewolf_head">Голова оборотня</text>
+        <text id="werewolf_cunning_head">Коварная голова оборотня</text>
+        <text id="werewolf_ferocious_head">Свирепая голова оборотня</text>
+        <text id="dino_dna">ДНК динозавра</text>
+        <text id="werewolf_claws_dna">ДНК когтей</text>
+        <text id="dexterous_paws_dna">ДНК ловких лап</text>
+        <text id="werewolf_heal_body_dna">ДНК исцеляющего тела</text>
+        <text id="werewolf_stealth_body_dna">ДНК скрытного тела</text>
+        <text id="werewolf_cunning_head_dna">ДНК коварной головы</text>
+        <text id="werewolf_ferocious_head_dna">ДНК свирепой головы</text>
+        <text id="acid_raptor">Кислотная птица</text>
+        <text id="moissanite">Муассанит</text>
+        <text id="bone_shard">Осколок кости</text>
+        <text id="crystal_shard">Кристалльная вайя</text>
+        <text id="monolith_seed">Семя монолита</text>
+        <text id="beacon_book">Книга маяков</text>
+        <text id="torpedo2">Мегаторпеда</text>
+        <text id="ice_torpedo2">Ледяная мегаторпеда</text>
+        <text id="fire_torpedo2">Тепл. мегаторпеда</text>
+        <text id="water_torpedo2">Водная мегаторпеда</text>
+        <text id="sonar">Гидролокатор</text>
+        <text id="dragon_armor2">Драконовская броня</text>
+        <text id="advanced_net">Улучшенная сеть</text>
+        <text id="drone_factory_upgrade">Улучшение завода дронов</text>
+    </section>
+    <section id="achievement.names">
+        <text id="sub">Подводник</text>
+        <text id="jeep">Бездорожье</text>
+        <text id="jet">К полёту готов</text>
+        <text id="com_station">На сверхсветовой</text>
+        <text id="fighter">В космос готов</text>
+        <text id="kraken">Пучина</text>
+        <text id="hut_upgrade">Перестройка</text>
+        <text id="life_pod">Спасатель</text>
+        <text id="clam_pearl">Полудрагоценный</text>
+        <text id="pirates">Череп и кости</text>
+        <text id="worker_bot">Автоматизация</text>
+        <text id="growth">Возделывание</text>
+        <text id="spellbook">Маг</text>
+        <text id="evo_gem">Эволюция</text>
+        <text id="ice_boss">Буря</text>
+        <text id="dragon_ship">Дракон-корабль</text>
+        <text id="witch">Тёмная магия</text>
+        <text id="space_station">Косм. станция</text>
+        <text id="bombardment">Защитник планеты</text>
+        <text id="drones">Под контролем</text>
+        <text id="research">Изучай везде</text>
+        <text id="alien_locator">Детектор врагов</text>
+        <text id="dragomech">Дракон-машина?</text>
+        <text id="colony">Новая колония</text>
+        <text id="alien_cruiser">Мал да удал</text>
+        <text id="exo_set">Магия науки</text>
+        <text id="cyborg2">Сверхкиборг</text>
+        <text id="terraformer">Новая Земля</text>
+        <text id="museum">Коллекционер</text>
+        <text id="exo_pilot">К полёту готов</text>
+        <text id="virus">Микробиология</text>
+        <text id="nursery_crab">Геноцид</text>
+        <text id="final_boss">Финальный босс</text>
+        <text id="free_ship">Разрушитель оков</text>
+        <text id="spirit_portal">Иной мир</text>
+        <text id="spirit_tree">Сила духов</text>
+        <text id="hq_structures">Предатели</text>
+        <text id="master_spellcaster">Заклинатель</text>
+        <text id="magne_queen_drill">Великий Бур</text>
+        <text id="splicer">Без ГМО</text>
+        <text id="draconian_wizard">Пучина безумия</text>
+    </section>
+    <section id="achievement.descriptions">
+        <text id="sub">Постройте [color=ff2222]Подлодку[/color].</text>
+        <text id="jeep">Постройте [color=ff2222]Джип[/color].</text>
+        <text id="jet">Постройте [color=ff2222]Реактивный самолёт[/color].</text>
+        <text id="com_station">Постройте [color=ff2222]Станцию связи[/color].</text>
+        <text id="fighter">Почините [color=ff2222]Эскортный корабль[/color].</text>
+        <text id="kraken">Одолейте [color=ff2222]Кракена[/color].</text>
+        <text id="hut_upgrade">Улучшите [color=ff2222]Хижину[/color].</text>
+        <text id="life_pod">Найдите [color=ff2222]Спасательную капсулу[/color].</text>
+        <text id="clam_pearl">Найдите [color=ff2222]Жемчужину[/color].</text>
+        <text id="pirates">Завершите задание по борьбе с [color=ff2222]Пиратами[/color].</text>
+        <text id="worker_bot">Постройте любого [color=ff2222]Робота-рабочего[/color].</text>
+        <text id="growth">Активируйте [color=ff2222]Рощу лозы[/color].</text>
+        <text id="spellbook">Скрафьте первую [color=ff2222]Книгу заклинаний[/color].</text>
+        <text id="evo_gem">Выкуйте [color=ff2222]Эволюционный камень[/color].</text>
+        <text id="ice_boss">Одолейте [color=ff2222]Ледяную бурю[/color].</text>
+        <text id="dragon_ship">Получите [color=ff2222]Дракон-корабль[/color] путём эволюции!</text>
+        <text id="witch">Соберите полный комплект снаряжения колдуна.</text>
+        <text id="space_station">Постройте первую [color=ff2222]Космическую станцию[/color].</text>
+        <text id="bombardment">Остановите [color=ff2222]Инопланетную бомбардировку[/color].</text>
+        <text id="drones">Выведите из строя [color=ff2222]Дронов[/color]-разведчиков.</text>
+        <text id="research">Постройте [color=ff2222]Передвижную исследовательскую лабораторию[/color].</text>
+        <text id="alien_locator">Изобретите [color=ff2222]Локатор пришельцев[/color].</text>
+        <text id="dragomech">Одолейте [color=ff2222]Рободракона[/color].</text>
+        <text id="colony">Найдите [color=ff2222]Планету-колонию[/color].</text>
+        <text id="alien_cruiser">Уничтожьте [color=ff2222]Вражеский крейсер[/color].</text>
+        <text id="exo_set">Соберите полный комплект снаряжения из [color=ff2222]Экзо-материи[/color].</text>
+        <text id="cyborg2">Установите полный комплект снаряжения киборга.</text>
+        <text id="terraformer">Постройте [color=ff2222]Терраформатор[/color].</text>
+        <text id="museum">Соберите все экспонаты для [color=ff2222]Музея[/color].</text>
+        <text id="exo_pilot">Постройте [color=ff2222]Экзо-истребитель[/color] для [color=ff2222]Пилота[/color].</text>
+        <text id="virus">Запустите вирус, чтобы проникнуть в [color=ff2222]Цитадель врага[/color].</text>
+        <text id="nursery_crab">Уничтожьте [color=ff2222]Ясли врага[/color].</text>
+        <text id="final_boss">Одолейте сердце [color=ff2222]Цитадели врага[/color].</text>
+        <text id="free_ship">Освободите [color=ff2222]Вражеский Дракон-корабль[/color].</text>
+        <text id="spirit_portal">Создайте [color=ff2222]Портал духов[/color].</text>
+        <text id="spirit_tree">Посадите [color=ff2222]Древо духов[/color].</text>
+        <text id="hq_structures">Подкупите сооружения [color=ff2222]Цитадели врага[/color].</text>
+        <text id="master_spellcaster">Скрафьте все [color=ff2222]Книги заклинаний[/color].</text>
+        <text id="magne_queen_drill">Скрафьте [color=ff2222]Бур Аметистовой королевы[/color].</text>
+        <text id="splicer">Одолейте [color=ff2222]Сплайсер[/color].</text>
+        <text id="draconian_wizard">Одолейте [color=ff2222]Бесчестного[/color].</text>
+    </section>
+    <section id="item.descriptions">
+        <text id="com_device">Для связи с вашими контактами.</text>
+        <text id="powerplant">Подаёт питание к сооружениям.</text>
+        <text id="clock">Показывает время суток.</text>
+        <text id="cable">Соединяет генератор со зданиями.</text>
+        <text id="pump">Осушает воду вокруг.</text>
+        <text id="cost_per_tile">{value} за блок.</text>
+        <text id="block_stamina">Блокирует урон за счёт [tile=stamina] [color=006600]Запаса сил[/color].</text>
+        <text id="block_power">Блокирует урон за счёт [tile=power] [color=444400]Энергии[/color].</text>
+        <text id="omnidirectional">Блокирует атаки со всех направлений.</text>
+        <text id="blockIgnoreArmor">Блокирует все атаки, в том числе атаки духов.</text>
+        <text id="patrol_boat">Быстрая и мощная лодка, на которую можно устанавливать оружие.</text>
+        <text id="sub">Исследуйте морские глубины!</text>
+        <text id="jet">В небеса!</text>
+        <text id="jeep">Мотовездеход на батарейках!</text>
+        <text id="bigdrill">Большой бур на колёсах, который здорово облегчает добычу ресурсов!</text>
+        <text id="worker_bot_builder">Быстро строит по чертежам и собирает [item=wood default=Древесину].</text>
+        <text id="worker_bot_miner">Добывает руду под землёй. Мощность добычи: 4.</text>
+        <text id="worker_bot_farmer">Работает на ферме и собирает урожай.</text>
+        <text id="patrol_bot">Патрулирует в обе стороны, стреляет во врагов из мощной лазерной пушки.</text>
+        <text id="nuke">При попадании вызывает мощный ядерный взрыв.</text>
+        <text id="element_trap">В 4 раза чаще ловит жертв с: {element}.</text>
+        <text id="teleport_book">Переносит к выходу из подземелья или месту отдыха.</text>
+        <text id="water_barrier_book">Создаёт магический барьер, сквозь который не проходит вода.\nТакже может использоваться для устранения барьеров.</text>
+        <text id="plant_feed_book">Кормит/заряжает слуг и перезачаровывает снаряжение.</text>
+        <text id="summon_golem_book">Призывает слугу: [item=golem].</text>
+        <text id="time_book">Позволяет менять время суток.</text>
+        <text id="light_book">Создаёт шар света, который следует за вами некоторое время. </text>
+        <text id="heal_book">Создаёт круг исцеления, который восстанавливает 5 ед. [tile=health] [color=770000]Здоровья[/color] в секунду в течение периода времени.</text>
+        <text id="boost_stat">[tile=stat.{stat}] [text=stats.{stat}]: +{value}</text>
+        <text id="jumpship">Корабль для сверхсветовых перелётов, собранный из спасённых обломков.</text>
+        <text id="dragon_ship.burst">Выпускает 5 снарядов одновременно.</text>
+        <text id="jump">Для полётов от планеты к планете.</text>
+        <text id="fence_underground">Не даёт врагам попасть внутрь.\nМожно разместить под землёй.</text>
+        <text id="drone_control">Позволяет управлять построенными дронами (в любой системе).</text>
+        <text id="meteor_book">Вызывает 20 мощных огненных шаров, которые падают в случайном месте вокруг.</text>
+        <text id="flood_book">Вызывает мощную бурю, которая наносит урон окружающим врагам в течение периода времени.</text>
+        <text id="growth_book">Вызывает огромное растение с иссушающими лозами и цветами, которые испускают смертоносные споры.</text>
+        <text id="spikes_book">Пронзает окружающих врагов шестью смертоносными земляными шипами.</text>
+        <text id="tornado_book">Создаёт ледяной смерч, который преследует врагов.</text>
+        <text id="auto_fire">Автоматически стреляет во врагов раз в секунду, если атака не отключена.</text>
+        <text id="alien_locator">Распознаёт планеты с технологиями пришельцев и добавляет индикатор рядом с ними на карте звёзд.</text>
+        <text id="alien_heart">Неужели... оно до сих пор бьётся?</text>
+        <text id="use_item">Использует: {item}.</text>
+        <text id="translation_book">Переводит речь с одного языка на другой.</text>
+        <text id="coral_farm_seed">Высаживает ферму, которая собирает урожай с [color=770000]Коралловых ферм[/color] и [color=770000]Питомников для личинок[/color] на том же острове.</text>
+        <text id="staff">Привязывается к книгам заклинаний, чтобы их колдовать.</text>
+        <text id="venatrix_seed">Высаживает древо духов.</text>
+        <text id="exo_shields">Создаёт щиты из [item=exotic_matter default=Экзотической материи].</text>
+        <text id="storehouse_seed">Высаживает склад, который хранит предметы в пространстве духов.</text>
+        <text id="earth_key">Что им можно открыть?</text>
+        <text id="werewolf_ferocious_head">Издаёт устрашающий рёв при нажатии на горячую клавишу (должно быть экипировано).</text>
+        <text id="dexterous_paws_dna">Развивает [item=dexterous_paws] для оборотней, чтобы ими можно было работать с любым снаряжением.</text>
+        <text id="beacon_book">Создаёт маяк, к которому можно переместиться с помощью:  [item=teleport_book].</text>
+        <text id="sonar">Обнаруживает близлежащие объекты и препятствия.</text>
+    </section>
+    <section id="npc">
+        <text id="mirrows">Миррозы</text>
+        <text id="worker_bot.builder">Робот-строитель</text>
+        <text id="worker_bot.miner">Робот-шахтёр</text>
+        <text id="worker_bot.farmer">Робот-фермер</text>
+        <text id="patrol_bot">Робот-патрульный</text>
+        <text id="ancient_dragon_npc">Древний дракон</text>
+        <text id="fish_merchant">Рыботорговец</text>
+        <text id="fish_librarian">Рыблиотекарь</text>
+        <text id="fish_villager">Рыбожитель</text>
+        <text id="sea_witch">Морская ведьма</text>
+        <text id="scavenger">Собиратель</text>
+        <text id="scavenger_hidden">Неизвестно</text>
+        <text id="professor">Профессор</text>
+        <text id="president">КапИИтан</text>
+        <text id="pilot">Пилот</text>
+        <text id="curator">Куратор</text>
+        <text id="exiled">Изгой</text>
+        <text id="spirit_guide">Дух</text>
+        <text id="unnature.ranger">Лесничий</text>
+        <text id="unnature.splicer">Сплайсер</text>
+        <text id="depths.explorer">Исследователь</text>
+    </section>
+    <section id="actions">
+        <text id="inspect">Изучить</text>
+        <text id="rest_bed">Отдохнуть в постели</text>
+        <text id="unlock">Отпереть дверь</text>
+        <text id="rest_quarters">Отдохнуть в казармах экипажа</text>
+        <text id="bind_spellbook">Привязать кн. закл.</text>
+    </section>
+    <section id="quests">
+        <text id="water_cave">Пещера воды</text>
+        <text id="find_water_cave">Найти пещеру воды</text>
+        <text id="ship_parts">Детали корабля</text>
+        <text id="com_station">Станция связи</text>
+        <text id="highest_mountain">Достичь пика</text>
+        <text id="repair_escort">Истребитель</text>
+        <text id="pirates">Одолеть пиратов</text>
+        <text id="go_east">Изучение магии</text>
+        <text id="find_magic2">Отправиться на восток.</text>
+        <text id="plant_boss">Одолеть Возделывателя</text>
+        <text id="ice_boss">Одолеть Бурю</text>
+        <text id="cultivator">Роща лозы</text>
+        <text id="dragon_ship">Дракон-корабль</text>
+        <text id="floating_island">Найти Летучий остров дракона</text>
+        <text id="coral_pen">Ферма кораллов</text>
+        <text id="revitalize_dragon">Омолодить дракона</text>
+        <text id="witch_potion">Морская ведьма</text>
+        <text id="wand">Первая палочка</text>
+        <text id="sushi">Рыбная кухня</text>
+        <text id="power_core">В космос!</text>
+        <text id="bombardment">Снять осаду</text>
+        <text id="bomber">Уничтожить вражеский бомбардировщик</text>
+        <text id="bunker">Неведомая руда</text>
+        <text id="station">Экзо-материя</text>
+        <text id="keycard">Доступ к дронам</text>
+        <text id="professor">Выжившие</text>
+        <text id="find_professor">Найти Профессора</text>
+        <text id="research_lab">Изучение звёзд</text>
+        <text id="brilliant_potion">Секретное зелье</text>
+        <text id="locate_hq">Исследования!</text>
+        <text id="exo_fighter">Пора летать!</text>
+        <text id="virus">Ключевой вирус</text>
+        <text id="exo_factory">Экзо-завод</text>
+        <text id="launch_virus">Запустить вирус</text>
+        <text id="alien_hq">Вернуться в цитадель врага</text>
+        <text id="defeat_cruisers">Уничтожить или вывести из строя крейсеры</text>
+        <text id="cyborg2">Панцирь киборга</text>
+        <text id="exiled">Их тайны</text>
+        <text id="find_exiled">Найти Изгоя</text>
+        <text id="activate_hq_structures">Сделка магов</text>
+        <text id="spirit_hq">Путь духов</text>
+        <text id="spirit_portal">Драконья речь</text>
+        <text id="magne_queen_drill">К лидеру</text>
+        <text id="splicer">Сплайсинг генов!</text>
+        <text id="werewolf_claws">Точить когти</text>
+        <text id="werewolf_body">Физподготовка</text>
+        <text id="acid_raptors">Кислотные птицы</text>
+        <text id="drill_beetles">Буровые жуки</text>
+        <text id="submersible">Глубины</text>
+        <text id="monoliths">Древние руины</text>
+        <text id="activate_monoliths">Активировать монолиты</text>
+        <text id="colony_ship">Старые обломки</text>
+    </section>
+    <section id="quest.description">
+        <text id="water_cave">просят найти пещеру для постройки [object=sub default=Подлодки].</text>
+        <text id="ship_parts">просят найти под водой [item=ship_parts].</text>
+        <text id="com_station">хочет [color=770000]Станцию связи[/color], чтобы найти выживших.</text>
+        <text id="repair_escort">хотят починить [color=770000]Эскортный истребитель[/color].</text>
+        <text id="pirates">просит одо- леть пиратов к восто- ку от [color=770000]Закатного приюта[/color].</text>
+        <text id="go_east">просит изучить магию, пока ОНИ не пришли.</text>
+        <text id="cultivator">просит активировать [color=770000]Рощу лозы[/color].</text>
+        <text id="dragon_ship">просит развить [object=fly_ancient_dragon default=Древнего дракона] в корабль.</text>
+        <text id="coral_pen">хочет ставить опыты на рыбе и кораллах.</text>
+        <text id="revitalize_dragon">может помочь омолодить [object=ancient_dragon_npc default=Древнего дракона].</text>
+        <text id="witch_potion">просит зелье для ле- чения больной спины.</text>
+        <text id="wand">просит развить кусок дерева.</text>
+        <text id="sushi">может научить вас готовить [item=sushi].</text>
+        <text id="power_core">Космическому кораблю для полёта требуется [item=power_core].</text>
+        <text id="bombardment">просят уничтожить вражеский [color=770000]Бомбардировщик[/color].</text>
+        <text id="bunker">Торговец рудой просит найти редкую руду на 1-й планете системы.</text>
+        <text id="station">Торговец рудой по- строит косм. станцию за [item=exotic_matter default=Экзо-материю].</text>
+        <text id="keycard">ищет карту доступа в комнату упр. дронами.</text>
+        <text id="professor">хочет выяснить, жива ли [color=770000]Профессор[/color].</text>
+        <text id="research_lab">хочет построить [color=770000]Передв. исслед. лабораторию[/color].</text>
+        <text id="brilliant_potion">хочет создать [item=brilliant_potion default=Блиста- тельное зелье].</text>
+        <text id="locate_hq">хочет изобрести [item=alien_locator].</text>
+        <text id="exo_fighter">просит раздобыть для него [item=exo_fighter].</text>
+        <text id="virus">хочет создать вирус, чтобы проникнуть в Цитадель.</text>
+        <text id="exo_factory">хочет улучшить завод, чтобы строить [item=exo_drill default=Экзобуры].</text>
+        <text id="launch_virus">просит запустить вирус в Цитадель врага.</text>
+        <text id="cyborg2">просят исследовать улучшения для киборгов.</text>
+        <text id="exiled">предлагает поискать [color=770000]Изгоя[/color] на Марсе.</text>
+        <text id="activate_hq_structures">Сооружения Цитадели согласны на сделку по раскрытию секретов.</text>
+        <text id="spirit_hq">проведёт к Цитадели за достаточ- ное количество [color=770000][tile=spirit anim=spirit]Духа[/color].</text>
+        <text id="spirit_portal">просит обучиться магии у [color=770000]Дракон-корабля[/color].</text>
+        <text id="magne_queen_drill">поможет скрафтить [item=magne_queen_drill].</text>
+        <text id="splicer">предла- гает вернуть гены в норму у [color=770000]Сплайсер[/color].</text>
+        <text id="werewolf_claws">просит отыскать еду и заточить [item=werewolf_claws].</text>
+        <text id="werewolf_body">просит освоиться в [item=werewolf_body default=Теле оборотня].</text>
+        <text id="submersible">просит построить [object=submersible].</text>
+        <text id="monoliths">просит активировать [color=770000]Монолиты[/color].</text>
+        <text id="colony_ship">просит починить [color=770000]Корабль-колонию[/color].</text>
+    </section>
+    <section id="vehicle">
+        <text id="submarine">Подлодка</text>
+        <text id="jeep">Джип</text>
+        <text id="jet">Реактивный самолёт</text>
+        <text id="bigdrill">Буровая установка</text>
+        <text id="patrol_boat">Патрульный катер</text>
+        <text id="damage_bonus">Бонус к урону</text>
+        <text id="fly_ship">Ладно... Сейчас проверим, полетит или нет!</text>
+        <text id="ancient_dragon">Древний дракон</text>
+        <text id="golemech">Робоголем</text>
+        <text id="wyrm_queen">Королева личинок</text>
+        <text id="lifepod">Спасательная капсула</text>
+        <text id="no_power_cores">Не установлено [item=power_core]...</text>
+        <text id="not_enough_cores">Запуск невозможен. Установлено {count} из {total} [item=power_core default=Ядер питания].</text>
+        <text id="power_core">Отлично! Осталось только установить [item=power_core] и проверить, полетит ли корабль!</text>
+        <text id="jump_cost">Совершить прыжок за следующую цену к: {planet}?</text>
+        <text id="jump">Прыжок</text>
+        <text id="evolve">Развить оружие</text>
+        <text id="select_drone">Выбрать дрон</text>
+        <text id="area">Зона: {area}</text>
+        <text id="position">Координаты: {x}, {y}</text>
+        <text id="default_engine">Базовый двигатель</text>
+        <text id="pack_up_item">Свернуть: {item}?</text>
+        <text id="submersible">Подводный аппарат</text>
+    </section>
+    <section id="mechanic">
+        <text id="hut_upgrade1">Хочешь переоборудовать сооружения на своём острове? Думаю, я смогу тебе помочь.</text>
+        <text id="hut_upgrade2">Вот чертежи для улучшений. После улучшения сооружениям понадобится энергия, так что не забудь обеспечить питание!</text>
+        <text id="com_device">О, это [item=com_device]? У меня тоже есть такой, давай обменяемся контактами!</text>
+        <text id="car_factory1">Я слышала, ты ищешь [item=ship_parts]... если что-нибудь найдёшь, мы сможем улучшить [color=550000]Завод[/color]!</text>
+        <text id="car_factory2">Вот, держи мой [tile=blueprint.ico] [color=770000]Чертёж[/color] для улучшения завода!</text>
+        <text id="car_factory3">Не забывай, что заводу требуется энергия. Лучше строить его рядом с [color=770000]Энергостанцией[/color] или [item=generator]ом.</text>
+        <text id="sub_tip1">Во время погружения следи за тем, чтобы на [object=sub default=Подлодке] не закончилась [tile=power] [color=444400]Энергия[/color] и [tile=oxygen] [color=ffffff]Кислород[/color], а не то придётся плавать без неё!</text>
+        <text id="sub_tip2">Можешь взять с собой запасные [item=battery default=Батареи], чтобы перезаряжать [object=sub default=Подлодку] прямо во время погружения нажатием [key=equipment].</text>
+        <text id="sub_tip3">[object=sub] может перевозить больше груза, чем ты, но и у неё есть предел. Нажми [key=inventory], чтобы проверить инвентарь. [object=sub] не может двигаться с перегрузом.</text>
+        <text id="sub_tip4">Знаешь, что [object=sub default=Подлодку] можно ремонтировать с помощью горячих клавиш? Просто поставь [item=titanium] на горячую клавишу и жми на неё во время погружения!</text>
+        <text id="make_ship_parts">Если тебе нужны ещё [item=ship_parts], то их теперь можно производить на [color=770000]Заводе[/color]. С нашим уровнем технологий это не очень эффективно, но вдруг пригодится!</text>
+        <text id="build_com1">Может, у нас получится использовать [item=ship_parts], чтобы связаться с Землёй и планетами-колониями... вдруг где-нибудь тоже есть выжившие?</text>
+        <text id="build_com2">Отлично! Когда найдёшь [item=ship_parts], заберись на самую высокую гору, свяжись со мной, и мы мигом всё устроим!</text>
+        <text id="build_com2.1">Как со мной связаться? Вот, держи [item=com_device]!</text>
+        <text id="build_com3">Ты на вершине? Сейчас буду! Кажется, я знаю, где раздобыть [object=jet]!</text>
+        <text id="build_com4">...как-то так! К сожалению, мне надо лететь, но ты попробуй с кем-нибудь связаться!</text>
+        <text id="build_com5">Отличное место для [color=770000]Станции связи[/color]! Принеси [item=ship_parts], и мы сможем её установить!</text>
+        <text id="build_com6">Хм-м, здесь недостаточно высоко для [color=770000]Станции связи[/color]... Нам нужно установить её на самой высокой горе планеты.</text>
+        <text id="build_com7">Я вижу, ты отыскал самую высокую точку планеты! Свяжись со мной, когда поднимешь туда [item=ship_parts], и мы установим [color=770000]Станцию связи[/color]!</text>
+        <text id="com_station1">Внесение данных для: {planet}.[pause=1].[pause=1].[pause=1] Калибровка.[pause=1].[pause=1].[pause=1] Поиск сигналов.[pause=1].[pause=1].[pause=1].[pause=1].[pause=1].[pause=1]</text>
+        <text id="com_station_incoming">Обнаружен входящий сигнал с: {planet}.[pause=1].[pause=1].[pause=1] Калибровка.[pause=1].[pause=1].[pause=1]</text>
+        <text id="com_station2">[color=770000]Ошибка:[/color] Нет сигнала!</text>
+        <text id="com_station2.5">Обнаружен аварийный маяк. Других сигналов нет. Сверхсветовая связь невозможна.</text>
+        <text id="com_station3">Ну что? Получилось? Что-нибудь обнаружил?</text>
+        <text id="com_station4">Только аварийный маяк. Скорее всего, сработал во время нападения... Других сигналов с Земли нет...</text>
+        <text id="com_station5">Значит, на Земле никого не осталось... если там и есть выжившие, у них больше нет доступа к сверхсветовой связи.</text>
+        <text id="com_station6">Но какие-то планеты-колонии должны были уцелеть! Если внести их координаты в [color=770000]Станцию связи[/color], можно попробовать поймать сигнал!</text>
+        <text id="com_station_self">Мы поймали сигнал! Ох, аппарат обнаружил сам себя. Толку, конечно, мало...</text>
+        <text id="teleportal1">Я закончила изучать базу пиратов. Похоже, они высадились на месте крушения в заливе исследований!</text>
+        <text id="teleportal2">Я проверила журнал, и мне удалось закончить один из проектов, который был у них в разработке!</text>
+        <text id="teleportal3">[tile=teleportal.ico] [color=770000]Телепорты[/color] здорово помогут с перемещением!</text>
+        <text id="bombardment">[object=mirrows]ы думают, этот бункер продержится ещё долгие годы, но без обслуживания этого не случится. И, естественно, они не помогают мне поддерживать здесь порядок!</text>
+        <text id="bombardment2">Поверить не могу, что они бомбардируют свою собственную планету! Но с нами всё хорошо, мы укрылись в грузовом отсеке [color=770000]Корабля-колонии[/color].</text>
+        <text id="bombardment3">Мы никогда не ладили...[pause=1] они были ужасными родителями...[pause=1] никогда не думала, что мне будет так больно их потерять...[pause=1]</text>
+        <text id="bombardment4">Пришельцы мне за это заплатят! Я им покажу, что значит связываться с людьми!</text>
+        <text id="research1">Значит, этот корабль – последняя надежда человечества? Неплохо. Пойдём против них на стиле!</text>
+        <text id="research2">Не уверена, что смогу помочь с исследованиями, но уж поддерживать корабль в рабочем состоянии мне точно по силам!</text>
+        <text id="research_lab">Ты построил [color=770000]Передвижную исследовательскую лабораторию[/color]? Учёный из меня не очень, но если пригонишь её поближе, я присоединюсь к экипажу и буду следить за тем, чтобы всё работало как часы!</text>
+        <text id="win1">Мы выиграли войну, но для того, чтобы спасти человечество, надо собрать вместе всех выживших. Будем надеяться, что уцелело достаточно людей и нам не грозит вымирание!</text>
+        <text id="win2">Используй [color=770000]Станцию связи[/color] на Вершинах, чтобы отыскать другие планеты-колонии!</text>
+        <text id="win3">Нас ждёт процветание! Уже через несколько лет люди вновь начнут расселяться по звёздам, а эта планета станет новой столицей человечества!</text>
+        <text id="win4">Пришлось потрудиться, но колония наконец становится похожей на настоящий город людей со всеми современными удобствами!</text>
+        <text id="win5">Мы даже организовали службу шаттлов, которая перевозит затерявшихся выживших на нашу планету. Если встретишь таких, не забудь им передать!</text>
+        <text id="win6">То что нужно для выживания! Надеюсь только, что выживших осталовь не слишком мало...</text>
+        <text id="win7">Им не помешает помощь! Сейчас же отправляюсь в путь!</text>
+        <text id="werewolf">Думаешь, я буду удивляться каждый раз, когда ты где-то пропадаешь, а потом возвращаешься в совершенно другом обличье? Ну уж нет!</text>
+        <text id="colony_ship1">Как думаешь, стоит починить [color=770000]Корабли-колонии[/color], которые потерпели крушение? Для ремонта потребуется много ресурсов, но корабли могут пригодиться.</text>
+        <text id="colony_ship2">Если хочешь починить какой-нибудь [color=770000]Корабль-колонию[/color], принеси к нему ресурсы!</text>
+    </section>
+    <section id="mirrows">
+        <text id="water_cave1">Когда мы потерпели крушение, много важных частей корабля попало в океан. Если их спасти, возможно, нам удастся покинуть эту планету.</text>
+        <text id="water_cave2">Но как добраться до них под водой? Нельзя построить подлодку?</text>
+        <text id="water_cave3">Можно, если найти хорошее место для спуска на воду. Кажется, в западной части острова есть подземная пещера с выходом в океан.</text>
+        <text id="water_cave4">Найди эту пещеру и принеси нам кое-какие материалы. Тогда мы сможем построить [color=770000]Бункер подводных лодок[/color]!</text>
+        <text id="water_cave5">Ты нашёл пещеру и собрал материалы? Отлично, предлагаю сразу же пройти на место!</text>
+        <text id="water_cave6">В [color=770000]Бункере подводных лодок[/color] можно построить и улучшить [object=sub default=Подлодку]! Здесь также можно перезарядить её батареи.</text>
+        <text id="water_cave7">Судя по подводному течению, [item=ship_parts] должно было отнести к западу. Если тебе удастся хоть что-нибудь найти, это откроет путь к самым разным изобретениям!</text>
+        <text id="water_cave8">Мы подготовили для тебя [item=com_device], чтобы ты мог выходить на связь из любой точки планеты. Свяжись с нами, как только что-нибудь найдёшь!</text>
+        <text id="airport1">Мы уже спроектировали [item=airport_blueprint default=Чертежи Аэропорта]. Они ещё немного грубоваты, но зато можно будет с пользой применить [item=ship_parts]!</text>
+        <text id="airport2">[color=770000]Аэропорт[/color] позволит производить [object=jet default=Реактивные самолёты]. В открытый космос на таких не выйти, но зато можно летать на большой высоте. Перемещаться по планете станет проще!</text>
+        <text id="spaceship1">Чтобы починить космический корабль, понадобится больше [item=ship_parts default=Высокотехнологичных деталей]... [item=power_core default=Ядер питания] тоже не хватает. Попробуй что-нибудь найти на [object=sub default=Подлодке].</text>
+        <text id="build_sub1">О, ты построил [object=sub default=Подлодку]! Чтобы починить, зарядить или настроить её, нажми [key=equipment] во время погружения!</text>
+        <text id="build_sub2">Можешь также установить [item=torpedo_launcher], а не то останешься без защиты! Жми [key=attack], чтобы выстрелить из установленного оружия.</text>
+        <text id="sub_empty1">Мне пришёл сигнал, что [object=sub] разрядилась! Надеюсь, у тебя есть [item=battery default=Батареи].</text>
+        <text id="sub_empty2">Чтобы восстановить энергию [object=sub default=Подлодки], нажми [key=equipment] и выбери [tile=battery.ico] Зарядку от Батарей.</text>
+        <text id="sub1">По-моему, ты сбился с пути. Вовращайся в Пещеру воды, и мы укажем тебе, где находятся [item=ship_parts].</text>
+        <text id="sub2">Судя по подводному течению, [item=ship_parts] должно было отнести к западу. Попробуй поискать в этом направлении. </text>
+        <text id="sub3">Нашёл новый остров? [item=ship_parts] могло вынести на берег... или в пещеру. Попробуй поискать под водой вход.</text>
+        <text id="sub4">Нашёл подводную пещеру? Звучит обнадёживающе. Наверняка [item=ship_parts] отнесло туда!</text>
+        <text id="sub5">Но будь острожен. Подводные пещеры зачастую опасны и непредсказуемы. Не пропускай полости, в которых можно пополнить запасы [tile=oxygen] [color=ffffff]Кислорода[/color].</text>
+        <text id="mirrow_same_room">Ты же видишь, что мы прямо перед тобой... да?</text>
+        <text id="mirrow_power_core">Нашёл [item=power_core_parts]? Не теряй их из виду. С их помощью мы сможем построить [item=power_core] для космического корабля.</text>
+        <text id="ship_parts1">Нашёл [item=ship_parts]? Отлично! Возвращайся в пещеру на Закатном приюте. Мы уже придумали, как их использовать!</text>
+        <text id="ship_parts2">Ну или можешь ещё поизучать местность. Возможно, к западу найдёшь что-нибудь ещё.</text>
+        <text id="ship_parts3">Мы улучшаем лабораторию, чтобы с большей выгодой использовать [item=ship_parts]. Ты тоже не сиди без дела и продолжай искать обломки на западе.</text>
+        <text id="escort_ship1">Нашёл обломки эскортного корабля? Он гораздо меньше [color=770000]Корабля-колонии[/color], а значит его будет проще починить!</text>
+        <text id="escort_ship2">Принеси нам [item=ship_parts], и мы попробуем что-нибудь сделать!</text>
+        <text id="escort_ship3">Мы направляемся туда, чтобы оценить ущерб. Встретимся на месте. Быть может, нас ждёт большое открытие!</text>
+        <text id="escort_ship4">Ну и чего же мы ждём? Отправляемся туда немедленно! Приготовить [object=jet]!</text>
+        <text id="escort_ship5">Всё плохо, но с этим можно работать. Однако для ремонта нам потребуются [item=ship_parts]!</text>
+        <text id="escort_ship6">Отлично! Свяжись с нами, когда раздобудешь всё что нужно!</text>
+        <text id="escort_ship7">Сказал же, свяжись с нами, когда у тебя будет ВСЁ что нужно! Если забыл, какие материалы требуются для ремонта корабля, проверь задание с помощью [key=quest].</text>
+        <text id="escort_ship8">Мы уже практически перенесли лабораторию. Осталось только раздобыть материалы для ремонта корабля, и сможем отправиться в путь!</text>
+        <text id="escort_ship9">Для полёта ещё потребуется [item=power_core], но пока можешь войти и проверить все системы – особенно комнату управления!</text>
+        <text id="escort_power_core1">[item=power_core] можно сделать из [item=power_core_parts default=Высокотехнологичных деталей] в [color=770000]Передовой лаборатории[/color]. Но эта часть [color=770000]Корабля-колонии[/color] отпала.</text>
+        <text id="escort_power_core2">Может, она даже уцелела настолько, что [object=mechanic] сможет всё починить? Остаётся только её найти.</text>
+        <text id="escort_ship10">Всё раздобыл? Отлично, сейчас посмотрим, можно ли починить этот корабль! Встретимся на месте крушения!</text>
+        <text id="escort_ship11">Ты только посмотри! Выглядит как новенький и уже готов к запуску в космос!</text>
+        <text id="escort_ship12">Это большое достижение! Без оружия нам, конечно, не победить, но уже появляются перспективы!</text>
+        <text id="ride_back">Мы возвращаемся в Пещеру воды, тебя подбросить?</text>
+        <text id="ride_water_cave">Подобрать тебя и отвезти в Пещеру воды?</text>
+        <text id="jet_door">Эта дверь ведёт к пусковой платформе. Там находится личный [object=jet] Миррозов.</text>
+        <text id="jet_door2">Выглядит заманчиво, но лучше не угонять у них [object=jet].</text>
+        <text id="jet_door3">[object=mirrows]ов больше нет. Получается, [object=jet] теперь принадлежит Кэсс...</text>
+        <text id="jet_door4">[object=jet] больше никому не принадлежит... Долго я ждал, но наконец пришло время его угнать!</text>
+        <text id="boring_machine">Зачем тебе буровые установки? У нас есть дела поважнее!</text>
+        <text id="ship_bed">Хочешь опробовать нашу капсулу для восстановления? Если заплатишь 50 [color=770000][tile=coin_purse.ico]Монет[/color] за энергию, то мы тебя пустим.</text>
+        <text id="no_money">Но у тебя нет 50-ти [color=770000][tile=coin_purse.ico]Монет[/color]... Попробуй продать какой-нибудь хлам на [color=770000]Рынке[/color]. Мы всегда так делаем, когда не хватает денег!</text>
+        <text id="blueprints1">Нам нужны средства для исследований, поэтому мы решили продавать изобретения и [tile=blueprint.ico] [color=770000]Чертежи[/color]!</text>
+        <text id="blueprints2">Все деньги пойдут на благие цели. Мы будем добавлять новые товары по мере их изобретения, так что заходи почаще!</text>
+        <text id="blueprints3">Не забудь зайти посмотреть наши товары, когда будешь в: {area}!</text>
+        <text id="bombardment1">Они уже здесь! Мы пытались подготовиться, но времени было слишком мало!</text>
+        <text id="bombardment2">Наверняка это только первая волна! Мы должны действовать быстро и уничтожить бомбардировщик, пока дело не дошло до второй волны!</text>
+        <text id="bombardment3">Чтобы уничтожить бомбардировщик, нам нужен космический корабль и мощное оружие. Будет нелегко, но с твоей помощью, может, что-то да получится!</text>
+        <text id="bombardment4">Обшивка усилена, запасов еды и воды в грузовом отсеке хватит на годы вперёд... но если не остановить бомбардировку, всё будет напрасно.</text>
+        <text id="bombardment5">Ты сбил вражеский бомбардировщик? Тогда у нас есть время до следующей волны. Но нужно действовать быстро!</text>
+        <text id="bombardment6">Секретное оружие наконец готово! Мы собрали космический корабль из лишних [item=ship_parts default=Высокотехнологичных деталей] и установили экспериментальное оружие, которое должно пробить их щиты!</text>
+        <text id="bombardment7">Мы не успели его проверить, но нужно остановить бомбардировку, пока не прибыли их подкрепления! Если у тебя нет плана получше, мы производим запуск!</text>
+        <text id="bombardment8">Хорошо, но действуй быстро! Если передумаешь, поговори с нами снова!</text>
+        <text id="sacrifice1">Эта развалюха и правда вышла в космос! Вражеский бомбардировщик в зоне видимости, пора проверить новое оружие!</text>
+        <text id="sacrifice2">У нас будет всего один шанс. Я выведу из строя щиты врага, а потом атакую изо всех сил!</text>
+        <text id="sacrifice3">Если мы промахнёмся...[pause=1] или не сможем вернуться...[pause=1] то кроме тебя защищать людей будет некому.[pause=1] Передай Кэсс...[pause=1] Впрочем, неважно...</text>
+        <text id="sacrifice4">Мы далеко не всегда находили общий язык, но надеюсь, теперь ты видишь, что сила – наш единственный способ выжить!</text>
+        <text id="sacrifice5">Довольно болтать. Мы должны напасть, пока они нас не заметили. Говорили Миррозы, конец связи!</text>
+        <text id="sacrifice6">Миррозы! Ответьте! Вы получаете сообщения? Что там произошло?</text>
+        <text id="sacrifice7">Сигнал утерян. Им не удалось спастись...</text>
+        <text id="send_mirrows">Следовать плану Миррозов</text>
+        <text id="have_plan">Уничтожить бомбардировщик самому</text>
+        <text id="research1">Невероятно! Идеальное место для проведения исследований! Нужно будет поблагодарить [object=professor]а за то, что она спроектировала эту превосходную передвижную лабораторию.</text>
+        <text id="research2">Не хватает только [color=770000]Хирургической лаборатории[/color]! Но ничего, здесь хватит места, чтобы её установить (или даже две сразу)! Думаю, ты найдёшь применение [item=operation_table_blueprint default=Чертежу хирургической лаборатории].</text>
+        <text id="research3">Здесь есть даже [color=770000]Хирургическая лаборатория[/color]! Всё, что только можно пожелать, в одном месте!</text>
+        <text id="on_bomber">... лучше бы тебе выбраться с бомбардировщика, пока мы его не уничтожили! Дай нам знать, когда будешь на безопасном расстоянии!</text>
+        <text id="research_lab">Ты построил [color=770000]Передвижную исследовательскую лабораторию[/color]?! Так чего же ты ждёшь, скорее пригоняй её сюда, чтобы мы могли присоединиться к экипажу!</text>
+        <text id="cyborg1">Колонисты считают, что [item=exotic_matter] решит все их проблемы... но не надо недооценивать мощь киберусовершенствований!</text>
+        <text id="cyborg2">Мы нашли новый [item=carapace] на поверхности планеты-колонии. Немного денег на исследования, и мы сможем разработать мощные улучшения для киборгов! </text>
+        <text id="cyborg3">Превосходно! Мы знали, что на тебя можно положиться! Этот [item=carapace] позволит соединить человека с машиной без потерь и отторжения!</text>
+        <text id="cyborg4">Исследование завершено. Новое оборудование уже в  [color=770000]Хирургической лаборатории[/color]!</text>
+        <text id="com_device">Кэсс дала тебя этот [item=com_device]? У нас тоже такой есть, давай обменяемся контактами на случай, если ты захочешь с нами связаться!</text>
+        <text id="win1">Мы победили в войне?! Надеюсь, наши киберусовершенствования пригодились в решающем сражении!</text>
+        <text id="win2">Что нам теперь делать? Не бросать же исследования киборгизации только потому, что война окончена!</text>
+        <text id="win3">Конечно нет. Будем готовиться к следующей войне! С людьми ли, с пришельцами ли – рано или поздно она всё равно начнётся!</text>
+        <text id="werewolf1">Невероятно. Похоже, эта [object=unnature.splicer] в совершенстве умеет манипулировать геномом! Ты даже на человека больше не похож!</text>
+        <text id="werewolf2">Если ты искал у нас помощи, вынуждены тебя расстроить. Мы не ветеринары, наша специализация – киборгизация людей!</text>
+    </section>
+    <section id="fisherman">
+        <text id="bombardment">Мне ужасно не нравится, что вместо того, чтобы бороздить моря под открытым небом, приходится отсиживаться здесь. Да, мы всё ещё живы, но я чувствую себя таким беспомощным!</text>
+        <text id="bombardment2">Не могу поверить, что ты уничтожил вражеский бомбардировщик! Наверняка скоро придёт новая волна, но теперь я почти верю, что у нас есть шансы!</text>
+        <text id="bombardment3">[object=mirrows]ы погибли!? Честно говоря, я всегда их недолюбливал, но они пожертвовали собой ради нас... Теперь я понимаю, что они просто действовали в наших общих интересах.</text>
+        <text id="win1">Война окончена?! Значит, пора возвращаться к морю и чистому небу над головой! Увидимся на палубе!</text>
+        <text id="win2">Мы победили в войне, угроза миновала, а теперь надо отстроить целую планету! Впереди захватывающие времена. Наверняка хорошие моряки будут в цене. А может, получить права на космический корабль...</text>
+        <text id="win3">Чистое небо, солёный запах моря... свежий воздух... вот как надо жить. И нам больше никогда не придётся бояться, что небо затмят инопланетные бомбардировщики!</text>
+        <text id="win4">Я как раз думал, куда же все пропали! Становилось как-то одиноко. Я тоже отправляюсь туда!</text>
+        <text id="win5">Ещё кое-что напоследок. У меня есть [item=cat], Пэри, можешь о ней позаботиться? Ко мне она не подходит, а я бы хотел, чтобы кто-нибудь за ней присмотрел, пока меня нет.</text>
+    </section>
+    <section id="builder">
+        <text id="no_alchemist1">Что это за место?</text>
+        <text id="no_alchemist2">Не знаю... Я пошёл за шарами света, и они привели меня сюда. Похоже, бомбардировка нам не угрожает, но здесь ничего нет...</text>
+        <text id="bombardment">Только я подумал, что хуже уже не будет... Дайте мне забраться в какую-нибудь пещеру... А, я и так уже в пещере!</text>
+        <text id="win1">Война окончена?! Тогда пошли скорее из этой пещеры! Не терпится увидеть солнце!</text>
+        <text id="win2">Это надо отметить! Приготовим [item=pizza default=Пиццу]!</text>
+        <text id="homeworld1">А еды там много будет?</text>
+        <text id="homeworld2">Ещё бы!</text>
+        <text id="homeworld3">Тогда я ушёл! Увидимся там!</text>
+    </section>
+    <section id="miner">
+        <text id="bombardment">Странная пещера... такая большая, но здесь совсем пусто, даже выкопать нечего!</text>
+        <text id="win1">Угроза миновала? Самое время оставить пещеру и вернуться на поверхность, чтобы это отметить! Хотя я, конечно, на поверхности надолго не задержусь...</text>
+        <text id="win2">Когда прославишься тем, что спас человечество, не забудь рассказать всем, кто вложил тебе в руку твою первую [item=stone_pickaxe default=Каменную кирку]!</text>
+        <text id="win3">Думаю, пора улучшить твою старую кирку. Если построишь здесь [color=770000]Космический дом[/color], я обменяю её на [color=770000]Кирку энергии[/color]!</text>
+        <text id="homeworld1">О-о-о, планета-колония! Наверняка там полно всяких непонятных ископаемых!</text>
+        <text id="homeworld2">Знаешь, а ведь я скучаю по Земле. Наверняка там тяжело будет жить после бомбардировок, но только представь, сколько подземных руин можно будет раскопать!</text>
+        <text id="homeworld3">Я догоню тебя на следующем корабле!</text>
+    </section>
+    <section id="farmer">
+        <text id="bombardment">Даже не знаю, что хорошего сказать... Если нас преследуют, куда бы мы ни подались, проще было остаться на Земле и погибнуть вместе со своей планетой.</text>
+        <text id="bombardment2">Бомбардировщик сбили, но теперь они знают, что мы здесь, а значит не успокоятся. Проще уж начать обустраиваться на нашей новой подземной базе!</text>
+        <text id="win1">Я же говорил, что это не конец света! Надежда умирает последней!</text>
+        <text id="win2">Когда мы потерпели крушение, я и подумать не мог, что буду чувствовать себя на этой планете как дома. Что я захочу здесь остаться, а не просто укрыться на время.</text>
+        <text id="win3">Придётся хорошенько поработать, чтобы вернуть этой планете былую славу, но я не боюсь трудностей!</text>
+        <text id="win4">Чтобы эта земля снова стала плодородной, нам понадобится [color=770000]Терраформатор[/color].</text>
+        <text id="homeworld1">Отлично. Нас осталось немного, надо держаться вместе!</text>
+        <text id="homeworld2">Я отправлюсь туда. Им не помешает человек, который кое-что понимает в растениях!</text>
+    </section>
+    <section id="hunter">
+        <text id="bombardment">Не хочется признавать, но единственный выход – объединиться с [object=mirrows]ами. Они обосновались к западу от места крушения главного корабля.</text>
+        <text id="bombardment2">Я не поддерживаю их методы, но, возможно, [object=mirrows]ы были правы. Они узнали где мы, а значит нам придётся сражаться, чтобы выжить.</text>
+        <text id="bombardment3">Не могу поверить, что [object=mirrows]ы пожертвовали собой ради нас. Совсем на них не похоже... Кто же теперь будет с ними сражаться?</text>
+        <text id="research1">У тебя есть [color=770000]Передвижная исследовательская лаборатория[/color]? А ведь я был уважаемым учёным на Земле. Пора доставать старый лабораторный халат!</text>
+        <text id="research2">Будто сто лет не надевал этот халат. Знаешь, я буду скучать по охоте...</text>
+        <text id="research3">Но [item=bow] со [item=arrow]ми против них не сработает. Мы должны объединить усилия и разработать новое оружие, чтобы выжить!</text>
+        <text id="win1">Похоже, битва была что надо! Хотел бы я быть там, чтобы подсобить!</text>
+        <text id="win2">Странно всё это... Я стал охотником только потому, что мы потерпели крушение на их родной планете. Теперь я могу снова работать учёным, но... я осознал, что охота мне нравится больше.</text>
+        <text id="win3">Наверное, стоит сказать им спасибо за то, что помогли мне найти себя.</text>
+        <text id="win4">Отлично! Возьму лук со стрелами и сразу же отправлюсь туда!</text>
+        <text id="werewolf">Не пугай меня так! Будь у меня при себе [item=bow], я бы мог случайно тебя застрелить!</text>
+    </section>
+    <section id="trader">
+        <text id="bombardment">И что мне теперь делать со всем этим [tile=gold_bar.ico] [color=770000]Золотом[/color]?</text>
+        <text id="win1">Их больше нет? Тогда вернёмся к торговле!</text>
+        <text id="win2">Мне нравится, что мы заняли их родную планету. Как будто обобрали покойника!</text>
+        <text id="win3">Люди собираются на одной планете, и это замечательно... Больше потенциальных клиентов!</text>
+        <text id="homeworld1">Чем больше народу, тем лучше идут дела! Я ушла!</text>
+    </section>
+    <section id="pirates">
+        <text id="intro1">В море к востоку от Закатного приюта в последнее время опасно, я всё чаще нахожу обломки лодок. Некоторые из них принадлежали другим торговцам...</text>
+        <text id="intro2">Уверен, это пираты, но мне так и не удалось их найти. К тому же они должны быть серьёзно вооружены.</text>
+        <text id="intro3">Если построишь [object=patrol_boat] и разберёшься с пиратами, все моряки будут тебе благодарны!</text>
+        <text id="hint1">Пираты действуют на участке отсюда и до острова, на котором ты потерпел крушение. Но у них должна быть база, а я не нашёл поблизости других островов...</text>
+        <text id="hint2">Пираты серьёзно вооружены. Тебе тоже понадобится мощное оружие. Попробуй построить [object=patrol_boat] на [color=770000]Прибрежном складе[/color].</text>
+        <text id="structure_lock">Закрыто... Чтобы открыть, необходимо одолеть пиратов!</text>
+        <text id="structure_unlock">Открыто с помощью пиратского ключа!</text>
+        <text id="mechanic1">Я обнаружил следы каких-то продвинутых технологий! Попробуй просканировать их с помощью [item=com_device]а!</text>
+        <text id="mechanic2">Не знаю, как им удалось, но они построили [color=770000]Передовую лабораторию[/color]! Думаю, у меня получится спроектировать чертежи для неё с помощью отсканированных схем...</text>
+        <text id="mechanic3">Отлично! Не терпится увидеть новое оборудование, которое мы теперь сможем установить!</text>
+        <text id="complete1">Молодец! Море наконец снова спокойно! Ты заслужил награду, и я даже знаю какую, пошли со мной в гостиницу!</text>
+        <text id="complete2">Мортимер, мой друг разобрался с пиратами, и в море теперь снова безопасно! Ты должен выдать ему медаль за отвагу и разрешить бесплатно ночевать в гостинице!</text>
+        <text id="complete3">Ночевать бесплатно? Немыслимо! Еда и крыша над головой обходятся недёшево на этой богом забытой планете!</text>
+        <text id="complete4">Забыл, что обязан нам, торговцам и рыбакам? Если бы нас всех перебили пираты, ты бы остался без еды и точка!</text>
+        <text id="complete5">Ладно. Пусть остаётся бесплатно. Но никаких медалей!</text>
+        <text id="stay_free">Ладно... Оставайся. Но никому не говори, а то все тоже начнут клянчить бесплатную еду!</text>
+    </section>
+    <section id="alchemist">
+        <text id="east1">Что мы наделали? Нужно что-то делать, а не то они вернутся и убьют нас всех.</text>
+        <text id="east2">Наша последняя надежда – узнать больше об их магии. Магия поможет нам стать сильнее, чтобы победить или хотя бы найти их слабые места.</text>
+        <text id="east3">У нас есть две зацепки. Первая это комната эволюции, которую оставила Древняя. Она скрывала её не просто так.</text>
+        <text id="east4">После того, как исчез мощный магический сигнал Древней, я смог засечь другой на востоке. Там должен быть остров, который таит в себе ещё больше тайн!</text>
+        <text id="east5">Мне даже показалось, что Алхимик тоже здесь. Но нет. Конечно нет...</text>
+        <text id="east6">Он оставил записку: «Тайны магии лежат на востоке...».</text>
+        <text id="east7">Негусто, но лучше чем ничего. Нужно отправиться на восток и попытаться узнать побольше о той странной комнате, которая появилась, когда умерла Древняя.</text>
+        <text id="east8">Я изучил здесь всё что мог. Пока ещё не поздно, вернусь в лабораторию и взвешу ещё раз то, что узнал... </text>
+        <text id="return_lab">Думаю, мы изучили здесь всё что можно. Вернусь в лабораторию и взвешу ещё раз то, что мы узнали...</text>
+        <text id="spellbook1">Рыба научила тебя записывать заклинания в книги? Невероятно! Дай-ка я попробую сам!</text>
+        <text id="spellbook2">Получилось! Вот, [item=heal_book]! Ещё я записал рецепт на случай, если захочешь сделать больше таких в рыбной библиотеке!</text>
+        <text id="bombardment1">О, здравствуй! Я снова зачаровал эту пещеру и привёл сюда остальных. Получилось отличное укрытие.</text>
+        <text id="bombardment2">Я прятался в этой пещере годами, когда они за мной охотились. Здесь безопасно.</text>
+        <text id="bombardment3">Но мы должны продолжить исследования и накопить достаточно магических сил, чтобы победить их! Если, конечно, не хотим дожидаться, пока им самим не станет плевать, живы мы или просто сбежали.</text>
+        <text id="bombardment4">Вот, возьми [tile=blueprint.ico] [color=770000]Чертежи[/color]. Они пригодятся в нашем деле!</text>
+        <text id="evo_chamber">Странно... Это сооружение появилось, когда умерла [color=770000]Древняя[/color]... Интересно, для чего оно?</text>
+        <text id="brilliant_potion1">Я изучал древние письмена в поисках новых рецептов для зелий... и случилось невероятное! На камнях внезапно появился новый рецепт, которого вчера не было!</text>
+        <text id="brilliant_potion2">Наверняка оно какое-то особенное. Даже название такое: [item=brilliant_potion]. Мы должны его приготовить!</text>
+        <text id="brilliant_potion3">Я сварил зелье, но всё ещё без понятия, какой у него эффект. Ну, выпьешь – узнаешь!</text>
+        <text id="brilliant_potion4">Я добавил рецепт в лабораторию на случай, если захочешь сварить ещё.</text>
+        <text id="brilliant_potion5">Странное чувство... всё тело покалывает... зелье действует...</text>
+        <text id="carapace1">Готово! Я как следует изучил панцирные доспехи врага и спроектировал [item=carapace_armor default=Панцирную броню], который подойдёт людям!</text>
+        <text id="carapace2">Согласись, ради этого стоило ждать! Я добавил рецепт в [color=770000]Лабораторию[/color]! А если броня повредится, починить её можно с помощью [item=blood_gem default=Камней крови].</text>
+        <text id="carapace3">Что? Думал, я просто так бормотал эту бессмыслицу про панцири?</text>
+        <text id="win1">Они повержены? Значит, я могу беспрепятственно продолжать свои магические исследования!</text>
+        <text id="win2">Рад слышать. Но я останусь здесь. Сколько ещё магических тайн мне предстоит раскрыть? К тому же я столько прожил на этой планете, что даже представить не могу, как буду жить где-то ещё.</text>
+        <text id="win3">Получилось? Ты победил их, наконец? Надеюсь, тебе пригодились наши познания в магии!</text>
+        <text id="win4">Они причинили нам столько страданий... Моих друзей-разведчиков уже не вернуть... но, по крайней мере, эти помешанные на магии чудовища больше не навредят никому своими щупальцами.</text>
+    </section>
+    <section id="dragon">
+        <text id="intro1">Ох, я едва тебя заметила... ты так мал...</text>
+        <text id="intro2">Я тебя понимаю?</text>
+        <text id="intro3">Я произнесла заклинание перевода, когда поняла, что ты не один из них. Кое-чему научилась на старости лет.</text>
+        <text id="intro4">Кстати о них, мне нужна помощь! Древняя отправила сигнал, и они идут! Теперь я должен найти способ их остановить, ведь это всё моя вина!</text>
+        <text id="intro5">Что? Они возвращаются?! После того, как сочли нас бесполезными и предали?</text>
+        <text id="intro6">Ай! Спина! Зря я это сделала... но от одной мысли о них я прихожу в ярость!</text>
+        <text id="intro7">Так ты мне поможешь?</text>
+        <text id="intro8">Если смогу. Но годы уже не те. Я даже не помню, когда в последний раз покидала остров.</text>
+        <text id="cultivator1">К востоку отсюда, на главном острове, находится [color=770000]Возделыватель[/color]. Без их магии он обезумел и принялся крушить всё вокруг.</text>
+        <text id="cultivator2">Если одолеешь его, сможешь активировать [color=770000]Рощу лозы[/color], одну из их древних магических комнат. Она может быть полезна.</text>
+        <text id="cultivator3">Советую использовать против него огонь. Я бы помогла, если бы мне не было так тяжело летать... и выдыхать огонь.</text>
+        <text id="cultivator4">Превосходно. [color=770000]Роща лозы[/color] ожила. Теперь магия превращения, которая поддерживает драконий род, снова распространится по миру.</text>
+        <text id="cultivator5">Возьми [item=horn]а – с их помощью в [color=770000]Роще лозы[/color] можно увеличить урон любого слуги!</text>
+        <text id="cultivator6">[color=770000]Роща лозы[/color] ожила! Там ты можешь зачарововывать слуг, создавать ловушки и выращивать семена.</text>
+        <text id="betrayal1">Они предали вас?</text>
+        <text id="betrayal2">Давным-давно, когда мы ещё были [item=wyrm]ми, они заявили, что хотят нам помочь. Они раскрыли наш потенциал и развили из нас драконов.</text>
+        <text id="betrayal3">Но вскоре всё изменилось. Они перестали помогать нам расти и стали использовать нас для своих целей, сделали из нас слуг.</text>
+        <text id="betrayal4">А когда мы перестали приносить им пользу, они нас бросили и унесли свои магические тайны с собой. Теперь мы не можем развиваться, последние драконы вымирают.</text>
+        <text id="betrayal5">Последнюю тысячу лет я проклинала их имя и пыталась изучать магию, чтобы самой помочь [item=wyrm]м.</text>
+        <text id="betrayal6">Если всё, что мне остаётся, это помочь тебе их истребить, то я готова!</text>
+        <text id="betrayal7">Я не собирался никого истреблять, мы только хотим выжить!</text>
+        <text id="betrayal8">Ох.[pause=1] Ну, если представится возможность, имей в виду!</text>
+        <text id="fish_village1">Обычно я не слушаю, что там кричит рыба, когда я её ем. Но иногда в шутку пользуюсь магией перевода. На этот раз я услышала кое-что полезное.</text>
+        <text id="fish_village2">К востоку от острова, на котором располагается [color=770000]Возделыватель[/color], есть колония рыб. Не советую слишком на них надеяться, но вдруг помогут.</text>
+        <text id="ship1">Ты изготовил [item=evo_gem]? Именно так они превращали нас в [object=fly_ancient_dragon default=Древних драконов]! Осталось только использовать камень на [item=adult_dragon default=Взрослом драконе]!</text>
+        <text id="ship2">Когда вырастишь [object=fly_ancient_dragon default=Древнего дракона], следующим этапом будет развить его в [color=770000]Дракон-корабль[/color]. Это можно сделать на вершине летучего [color=770000]Драконьего острова[/color], который находится к востоку.</text>
+        <text id="ship2.1">К сожалению, [color=770000]Драконий остров[/color] охраняется опасным ледяным чудовищем. Навредить ему может только  мощная магия [color=770000][tile=fire.ico]Огня[/color].</text>
+        <text id="ship3">Они создали [color=770000]Дракон-корабли[/color] ещё тысячу лет назад, наверняка сейчас у них есть оружие помощнее. Но это будет первым шагом к победе над ними!</text>
+        <text id="ship4">Как только выяснилось, что нас можно превращать в органические космические корабли, они стали считать нас не разумными существами, а машинами для своего флота.</text>
+        <text id="ship5">Они забыли о том, что изначально пытались нам помочь, и погнались за могуществом.</text>
+        <text id="ship6">Я добровольно раскрыла тебе тайну [color=770000]Дракон-кораблей[/color], чтобы ты мог с ними сражаться… прошу тебя, не уподобляйся им и не злоупотребляй этими знаниями.</text>
+        <text id="ship7">Получилось? Значит, я сделала всё что могла. Больше я ничего не знаю ни о кораблях, ни о магии.</text>
+        <text id="ship8">Я бы пошла в бой вместе с вами, но у меня так и не получилось превратиться в [color=770000]Дракон-корабль[/color]. Впрочем, мне, как старшей, и так положено отправлять молодёжь навстречу опасностям.</text>
+        <text id="ship9">Изгой считает, что ты можешь мне помочь. Я пытаюсь раскрыть тайны их магии.</text>
+        <text id="ship10">Ты решил выведать их тайны у одного из них?! Впрочем, я у тебя в долгу. Расскажу всё что знаю.</text>
+        <text id="ship11">Они использовали [item=evo_gem default=Эволюционные камни], чтобы превращать нас в  [color=770000]Дракон-корабли/color] на вершине летучего [color=770000]Драконьего острова[/color], который находится к востоку.</text>
+        <text id="ship12">Возможно, эти знания тебе помогут. Надеюсь только, ты не будешь злоупотреблять ими, как они.</text>
+        <text id="win1">Ты их победил? Месть свершилась! Но почему я ничего не чувствую? Наверное, уже совсем стара...</text>
+        <text id="win2">Ты победил их? Прими мою благодарность, ведь они предали мой народ!</text>
+		<text id="dragon_backpack">Раз ты уже знаешь, как создавать [color=770000]Дракон-корабли[/color], можешь попробовать применить [item=alter_gem] к [item=ancient_dragon default=Древнему дракону], чтобы получить [item=dragon_backpack].</text>
+    </section>
+    <section id="fish">
+        <text id="welcome1">Привет!</text>
+        <text id="welcome2">Привет...[pause=1] стой. У тебя рот не шевелится! Как ты говоришь?!</text>
+        <text id="welcome3">Мысленно, разумеется! А как ещё можно говорить?</text>
+        <text id="welcome4">А-а... Ну ладно... То есть ты читаешь мои мысли?</text>
+        <text id="welcome5">Только те, что на поверхности! Заглядывать глубоко в чужое сознание – невежливо!</text>
+        <text id="citizen1">Какой сюрприз, нечасто здесь увидишь чужеземцев!</text>
+        <text id="citizen2">Мы живём здесь с незапамятных времён. Дольше Древних, драконов и всех остальных.</text>
+        <text id="citizen3">Никто не воспринимает нас всерьёз, но это даже хорошо. Здесь мы в безопасности, и нас это устраивает!</text>
+        <text id="citizen4">Прошу прощения за деликатный вопрос, но ты ведь дышишь воздухом?</text>
+        <text id="citizen5">Если хочешь как следует здесь осмотреться, советую скрафтить [item=water_helm]! Вот, держи рецепт!</text>
+        <text id="citizen6">А к западу есть пещера, которую мы закрыли магией. Там есть воздух, если что!</text>
+        <text id="recipe">С помощью телепатии вы изучили рецепт:\n{enchant} + {items} = {creates}.</text>
+        <text id="merchant1">Приветствую тебя, путник. Добро пожаловать в мой скромный магазинчик.</text>
+        <text id="merchant2">Я так понимаю, у тебя нет рыбной валюты. Ничего страшного. Я принимаю почти любые деньги, главное чтобы они имели ценность.</text>
+        <text id="merchant3">Кусочки металла, выкопанные из-под земли? Странно, конечно, но эти [color=770000][tile=coin_purse.ico]Монеты[/color] точно имеют ценность. Да и ты сухопутный житель, так что, наверное, нечему удивляться.</text>
+        <text id="coin_purse">У меня тут кошель завалялся, можешь в нём хранить [color=770000][tile=coin_purse.ico]Монеты[/color]!</text>
+        <text id="merchant4">Я изучаю магические свойства морских созданий и кораллов. Если принесёшь мне живую [item=scale_fish default=Чешуйчатую рыбу], думаю, получится сделать что-нибудь полезное.</text>
+        <text id="merchant5">Получилось! Я изобрёл [color=770000]Коралловую ферму[/color]! Она может собирать магические материалы с таких существ, как [item=scale_fish]. Пополнять запасы теперь будет гораздо проще!</text>
+        <text id="merchant6">Я добавил в магазин [item=coral_pen_seed default=Семена коралловой фермы]. Купи парочку и скажи, что думаешь!</text>
+        <text id="merchant7">[item=scale_fish] плохо поддаётся ловле. Чтобы её поймать, понадобится [item=water_trap]. Но сперва нанеси ей урон.</text>
+        <text id="merchant8">Подводные торговые пути раньше были переполнены драгоценностями, зельями и магическими ингредиентами. Теперь же нас слишком мало, и мы прячемся в укромных местах. Торговый путь едва держится.</text>
+        <text id="merchant9">Тем не менее! Мы по-прежнему процветаем, ведь морское дно богато на ресурсы.</text>
+        <text id="merchant10">Много [color=770000]Коралловых ферм[/color] построил? Я всё думал, как повысить их производительность, и разработал [color=770000]Коралловую плантацию[/color]!</text>
+        <text id="merchant11">Теперь ты можешь купить [item=coral_farm_seed default=Семена коралловой плантации] в магазине. Если их посадить, получишь доступ к урожаю со всех [color=770000]Коралловых ферм[/color] и [color=770000]Питомников для личинок[/color] на острове!</text>
+        <text id="librarian1">Я библиотекарь в нашей деревне, слежу за книгами заклинаний!</text>
+        <text id="librarian2">Мы всегда рады поделиться знаниями! Не то что... ну, некоторые... </text>
+        <text id="librarian3">Не стесняйся пользоваться библиотекой, если хочешь научиться создавать книги заклинаний!</text>
+        <text id="librarian4">В отличие от других видов магии, книги заклинаний пропускают свою силу сквозь тебя.</text>
+        <text id="librarian5">Поначалу это будет сильно утомлять, но если изучить навык [color=770000][tile=stat.spellcast]Колдовства[/color], сможешь читать гораздо больше заклинаний безо всякого отдыха.</text>
+        <text id="librarian6">Заклинания таят в себе большую мощь, но требуют времени для прочтения. Следи за тем, где и когда их применять. Если на тебя нападут во время чтения заклинания, оно отменится.</text>
+        <text id="librarian7">Помни, магия – лишь средство. Тебе решать, как её применять. Не нужно винить магию за то, как с ней обращались они.</text>
+        <text id="librarian8">Магия – искусство перемен. Она может наделить простой предмет великой силой. И чем больше ты пользуешься магией, тем сильнее она меняет ТЕБЯ.</text>
+        <text id="librarian9">Когда-то наши поселения были разбросаны по всему подводному миру. Теперь же мы прячемся в самом тихом уголке океана и держимся сами по себе, скрываясь от жестокости, что происходит во Вселенной.</text>
+        <text id="librarian10">Некоторые из наших предков изменили себя и покинули море. Они использовали магию глубин, чтобы проложить себе дорогу в небо. Теперь они враги для многих.</text>
+        <text id="librarian11">Мы их не боимся, но сожалеем о том, какой путь они избрали. Путь скрытности и зависти.</text>
+        <text id="revitalize1">[object=ancient_dragon_npc] помогает тебе создать [color=770000]Дракон-корабль[/color]? Никогда бы не подумал! Впрочем, до нас тут далеко не всё доходит.</text>
+        <text id="revitalize2">Но [color=770000]Завод Дракон-кораблей[/color] охраняется сильным ледяным чудовищем! Ты можешь помочь мне его победить?</text>
+        <text id="revitalize3">Если он состоит изо [color=770000][tile=ice.ico]Льда[/color], то [item=fire_book] должна нанести ему урон. Твой друг [object=ancient_dragon_npc] тоже мог бы его победить, будь он наполнен силой [item=horn]а.</text>
+        <text id="revitalize4">Но [object=ancient_dragon_npc] едва летает!</text>
+        <text id="revitalize5">Ну, старость не радость. Но есть особое зелье, которое ненадолго возвращает силы старикам. Я сделаю его тебе, если соберёшь ингредиенты.</text>
+        <text id="revitalize6">Собрал ингредиенты? Держи зелье. Пусть [object=ancient_dragon_npc] его выпьет. Посмотрим, поможет ли оно ему! Я добавлю рецепт в лабораторию на случай, если ты захочешь сделать ещё.</text>
+        <text id="revitalize7">Что это за зелье? Я чувствую, что мне всё по силам! Даже стать [color=770000]Дракон-кораблём[/color]!</text>
+        <text id="revitalize8">Приступ всемогущества продлился совсем недолго. Я всё такой же старый и дряхлый. Но зато я спалил это ледяное чудище дотла! Сто лет так не веселился. Буквально!</text>
+        <text id="potion1">О, так ты встретил [object=sea_witch default=Морскую ведьму]? Когда-то она жила здесь вместе с нами, но решила выйти на берег, чтобы отыскать секрет бессмертия.</text>
+        <text id="potion2">Вот это наглость! Пойти по их стопам после всего, чему я её научил! Но... но я не могу не поделиться с тобой знаниями. Я добавлю рецепт зелья в лабораторию!</text>
+        <text id="potion3">Ох, старость не радость. Но можешь попробовать [item=revitalize_potion], которым лечилась [object=sea_witch]. Оно должно помочь и твоему другу-дракону! Рецепт есть у тебя в лаборатории.</text>
+        <text id="sea_witch1">Какое странное время... они возвращаются на планету, а [object=sea_witch] – в море...</text>
+        <text id="sea_witch2">Конечно, мы приняли её с распростёртыми объятиями. Она даже поделилась со мной тем, чему научилась на суше, и я создал несколько новых заклинаний! Загляни в библиотеку, там появилось много новых книг!</text>
+        <text id="sea_witch3">Какое странное время... они повержены, а [object=sea_witch] возвращается в море...</text>
+        <text id="sushi1">Есть хочешь?... Думаю, ты бы не отказался от [item=sushi]. Могу, конечно, просто тебя угостить, но сам знаешь... не давай голодному рыбы, дай ему удочку...</text>
+        <text id="sushi2">Если наловишь ингредиентов, я покажу тебе, как готовить суши!</text>
+        <text id="sushi3">Отлично! Смотри внимательно, я готовлю [item=sushi] очень быстро!</text>
+        <text id="sushi4">Готово! Наслаждайся, пока свежее, и не стесняйся готовить ещё!</text>
+        <text id="exiled1">Я научил тебя всему, что знаю сам. Больше о магии могут рассказать только они.</text>
+        <text id="exiled2">Хотя... кажется, я знаю, кто мог бы тебе помочь. Разыщи Изгоя на планете, которую вы зовёте Марс.</text>
+    </section>
+    <section id="player">
+        <text id="escort_ship">Похоже на обломки эскортного корабля. Впрочем, повреждения не такие серьёзные... Может, [object=mirrows]ы смогут его починить?</text>
+        <text id="escort_ship2">Похоже на обломки эскортного корабля. Впрочем, повреждения не такие серьёзные...</text>
+        <text id="go_east">Я создал [item=evo_gem], но мне кажется, что это далеко не всё, на что способна магия. Было бы неплохо узнать, что скрывает этот остров...</text>
+        <text id="burned">Сооружение разрушено. Демонтировать?</text>
+        <text id="abandoned">Рынок заброшен. Демонтировать?</text>
+        <text id="witch_hut">Какая странная хижина... Интересно, кто... или что живёт здесь?</text>
+        <text id="no_signal">[item=com_device] не засёк сигнала...</text>
+        <text id="storehouse_burned">Здесь осталось сообщение... похоже, когда сооружение было уничтожено, всё переместили в бункер!</text>
+        <text id="inn_burned">Гостиница разрушена... а в руке у трупа сообщение: «Направляйся в грузовой отсек [color=770000]Корабля-колонии[/color], который находится в западной части пустыни».</text>
+        <text id="use_translation_book">Использовать [item=translation_book default=Книгу перевода]?</text>
+        <text id="no_translate">Здесь нечего переводить.</text>
+        <text id="static">Одни помехи...</text>
+        <text id="homeworld">Мы хотим основать новую колонию человечества в: {area}!</text>
+    </section>
+    <section id="witch">
+        <text id="potion1">О-о-ох... моя спина... И зачем я покинула море? Могла бы сейчас плавать, не чувствуя своего веса... </text>
+        <text id="potion2">О, незнакомец! Кажется, на тебя можно положиться. Окажи услугу старушке и принеси [item=revitalize_potion]. Тогда я мигом встану на ноги!</text>
+        <text id="potion3">Конечно, я помогу! Где мне найти [item=revitalize_potion]?</text>
+        <text id="potion4">Всё-то тебе расскажи. А! Поговори с библиотекарем, он обожает всем помогать! Найдёшь его глубоко под водой на западе. Он засел в своей библиотеке ещё когда меня на свете не было и с тех пор не выходит!</text>
+        <text id="potion5">О-о-ох! То что надо! Осталось только отыскать секрет бессметрия...</text>
+        <text id="potion6">Хочешь награду? Я думала, ты просто добрый самаритянин, который решил помочь старушке в беде... Впрочем, твоя одежда просто отвратительна, [item=robes] тебе явно не помешает... могу помочь её скрафтить!</text>
+        <text id="robes">Нужна ещё [item=robes]? Я всегда готова проконсультировать по вопросам моды.</text>
+        <text id="wand1">[item=robes] отлично на тебе смотрится! Теперь тебе нужна [item=wand]! Вот помню, когда я сделала свою первую [item=wand default=Волшебную палочку]...</text>
+        <text id="wand2">Во-первых, тебе потребуется кусок [item=wood default=Древесины]. А дальше нужно просто провести эволюцию! При этом не волнуйся, какого вида твоя древесина и какие у неё особые свойства. Для первой палочки это неважно.</text>
+        <text id="wand3">Готово! [item=wand] позволит тебе проводить магию сквозь дерево безо всякой книги заклинаний. Так быстрее и удобнее.</text>
+        <text id="halloween">Ке-ке-ке! С Хеллоуином! Вот тебе [item=pumpkin_helm]. Смотрится смешнее некуда!</text>
+        <text id="cat1">О, наконец-то ты меня понимаешь! Слава Хеллоуину!</text>
+        <text id="cat2">[item=black_cat default=Чёрные кошки] лучше всех! Используй [item=dark_fur], чтобы превратить обычных [item=cat default=Кошек] в [item=black_cat default=Чёрных]. Сделать это можно в [color=770000]Роще лозы[/color]!</text>
+        <text id="sea1">Тебе удалось развить [color=770000]Дракон-корабль[/color]? Дело плохо.</text>
+        <text id="sea2">Они создали стража не просто так. Больше всего они боятся, что кто-то раскроет их магические тайны. А [color=770000]Дракон-корабли[/color] и есть их тайна!</text>
+        <text id="sea3">Когда они узнают, обрушат свой гнев на всю планету! На суше будет слишком опасно. Я возвращаюсь под воду и советую тебе сделать то же самое.</text>
+        <text id="sea4">Так странно вернуться домой... Ничего не изменилось. Ну, по крайней мере я научилась чему-то на суше... Библиотекарь в восторге.</text>
+        <text id="sea5">Ты уничтожил их Цитадель? Ты, простой человек? Стало быть, их магические тайны не такие уж и невероятные.</text>
+        <text id="sea6">Тогда нет смысла оставаться на суше и пытаться выведать их секреты! Я возвращаюсь в море, там меня хоть спина не так беспокоит.</text>
+        <text id="ftl_broom1">Не могу поверить, что тебе удалось найти [item=spirit_robes default=Мантию духов] и ты её не носишь!</text>
+        <text id="ftl_broom2">Твоя [item=spirit_robes] просто шикарна! Моя [item=robes] и в подмётки не годится! К такой стильной вещице тебе просто необходима метла получше!</text>
+        <text id="ftl_broom3">[item=flying_broom] это хорошо, но я бы посоветовала обзавестись [item=ftl_broom default=Межзвёздной метлой]. Это просто космос!</text>
+    </section>
+    <section id="innkeeper">
+        <text id="bombardment1">На твоём месте я бы эвакуировался в грузовой отсек [color=770000]Корабля-колонии[/color] на западе пустыни.</text>
+        <text id="bombardment2">[object=mirrows]ы говорят, что они вернулись и на поверхности больше небезопасно.</text>
+        <text id="bombardment3">Я? Я остаюсь здесь. Эта гостиница – моя жизнь и мой заработок. Если она погибнет... тогда... я погибну вместе с ней. Но тебе я советую идти – незачем умирать здесь со мной.</text>
+        <text id="bombardment4">Бомбардировка окончена? Отлично! Скоро все вернутся на поверхность, и дела пойдут в гору!</text>
+        <text id="win1">Добро пожаловать в Золотой ключик! Лучшая гостиница и исторический памятник на планете, где началось возрождение человечества!</text>
+        <text id="win2">О, это же герой, подаривший нам победу! Для нас огромная честь принимать тебя у нас! Разумеется, бесплатно!</text>
+        <text id="win3">Главное, развлекай остальных гостей военными байками и рассказывай о моей щедрости!</text>
+    </section>
+    <section id="merchants">
+        <text id="intro1">Я думал, ты робот!</text>
+        <text id="intro2">Ха! Это мой старый силовой доспех времён Третьей мировой. А вообще я Торговец рудой. Просто тут такое происходит, что я подумал, пора снова к нему привыкать.</text>
+        <text id="intro3">Хотя от силового доспеха в этой войне толку мало... Лучше я останусь здесь и буду торговать рудой, больше пользы принесу...</text>
+        <text id="bunker1">Похоже, что нам придётся здесь задержаться, ведь новая волна может нагрянуть в любой момент. Можно пока осмотреться и заняться обустройством бункера.</text>
+        <text id="bunker2">На первой планете системы может быть редкая руда. Если что-нибудь найдёшь и привезёшь сюда, я помогу тебе улучшить бункер!</text>
+        <text id="bunker3">[item=magnegem default=Магникамни] – это интересно! Я их изучу, а ты пока можешь улучшить бункер с помощью этих [tile=blueprint.ico] [color=770000]Чертежей[/color]!</text>
+        <text id="station1">Судя по тому, что ты привёз, на первой планете системы наверняка есть [item=exotic_matter]!</text>
+        <text id="station2">[item=exotic_matter] просто необходима, если мы хотим путешествовать к другим системам. А если отдашь мне остаток, я помогу тебе построить орбитальную станцию!</text>
+        <text id="station3">Превосходно! Теперь у меня есть новая руда для изучения! А вот [tile=blueprint.ico] [color=770000]Чертежи[/color] орбитальной станции, как и обещал!</text>
+        <text id="station4">[item=station_dock_blueprint] позволит строить космические корабли на орбите. То что надо при подготовке к обороне перед следующей волной!</text>
+    </section>
+    <section id="scavenger">
+        <text id="distress_intro">[item=com_device] засёк сигнал бедствия! По-видимому, он исходит с [color=770000]Земли[/color] – значит, кто-то всё-таки выжил!</text>
+        <text id="distress_orbit">Сигнал исходит с поверхности планеты.</text>
+        <text id="distress_far">Сигнал исходит с обратной стороны планеты.</text>
+        <text id="distress_near">Сигнал приближается. Теперь я могу установить местоположение!</text>
+        <text id="distress_ruins">Сигнал исходит откуда-то из этих руин!</text>
+        <text id="distress1">Я отправил... сигнал бедствия? Наверное... надеялся найти выживших... Но их нет. Только я. И ты?</text>
+        <text id="distress2">Нам удалось сбежать с Земли на корабле-колонии во время бомбардировки. Что здесь произошло?</text>
+        <text id="distress3">Ничего хорошего. Отчаяние. Смерть. Кроме меня. Я жив. И я собираю.</text>
+        <text id="distress4">Понятно... Вижу, что тебе тяжело пришлось. Хочешь улететь вместе со мной?</text>
+        <text id="keycard1">Нет. Я останусь... очень важно. Ты... поможешь? Найти [item=disabled_keycard default=Неактивную карту доступа]... Отключить дронов.</text>
+        <text id="keycard2">Владелец [item=disabled_keycard default=Неактивной карты доступа]... погиб в метро. Найдёшь... там.</text>
+        <text id="keycard3">О! [item=disabled_keycard]! Активирую!</text>
+        <text id="keycard4">Управление дронами... близко. Открыть двери, отключить дронов... Создать своих?</text>
+        <text id="drone1">Завод дронов... наш? Тогда мы можем создать... своих! Возьми [item=drone_control].</text>
+        <text id="drone2">Дронами... можно управлять откуда угодно... Сражаться удалённо... безопасно. Идти в бой самому... смерть...</text>
+        <text id="professor1">Планета спасена... Теперь... будем искать выживших?</text>
+        <text id="professor2">Была... Профессор... она нас модифицировала... помогла выжить. Она отправилась... на другой остров... чтобы исследовать.</text>
+        <text id="professor3">Может... она ещё жива?</text>
+        <text id="professor4">Если найдёшь её... скажи, что ты от меня... И возьми [item=keycard1]...</text>
+        <text id="professor5">Профессор... жива? Это... очень хорошо! Она знает... что делать дальше!</text>
+        <text id="scene1">Ты спишь здесь? Странно... никого так долго не было... Кроме меня. Отвык... от людей?</text>
+        <text id="scene2">Оставайся... Может, вместе... мы победим...</text>
+        <text id="scene3">Приятно... снова с кем-то поговорить. Я попытаюсь... привыкнуть.</text>
+        <text id="call">О... кто-то вызывает... Я забыл, что у меня есть [item=com_device]...</text>
+        <text id="research1">Добро пожаловать на борт [color=770000]Передвижной исследовательской лаборатории[/color]! Это наше секретное оружие!</text>
+        <text id="research2">Это... невероятно! Я знал... что Профессор придумает... что делать!</text>
+        <text id="research3">Мы можем... перемещаться... скрываться... делать дронов... проектировать оружие... пока не будем готовы с ними сразиться!</text>
+        <text id="no_distress">Они пришли... разрушили... все погибли... но я выжил... и ты?</text>
+        <text id="research_lab">Профессор... построила лабораторию? Пригони её сюда... и я присоединюсь к экипажу!</text>
+        <text id="win1">Я останусь здесь... в лаборатории... с Профессором...</text>
+        <text id="locked">Терминал заблокирован.</text>
+        <text id="stand_down">Получение доступа к управлению дронами... Подключение к системе безопасности... Отключить... Готово! Система безопасности отключена, и дроны теперь в режиме пассивного патрулирования!</text>
+        <text id="log1">01.03 – День начинался хорошо. Послевоенное восстановление шло полным ходом, и все были преисполнены надежды. Никто и подумать не мог, что этот день станет последним.</text>
+        <text id="log2">02.03 – Только за один день разрушено было столько, что нам казалось, будто снова наступила Третья мировая война. Однако это было только начало – бомбардировки не останавливались ни на секунду. Вскоре мы поняли, что это гораздо хуже любой войны.</text>
+        <text id="log3">15.03 – Чтобы сбить один бомбардировщик, понадобился небольшой флот, а прибывающим вражеским кораблям нет числа. Некоторые эвакуируются в кораблях-колониях. Большинство погибло. Выжили единицы.</text>
+        <text id="log4">17.03 – Они добились своего и ушли, оставив планету в руинах. Поверхность больше не приспособлена для жизни. Небо покрыто пылевыми облаками. Остатки людей укрылись в подземных руинах и метро.</text>
+        <text id="log5">01.04 – Из огня да в полымя. Повсюду обломанные трубы и обрушения, а запасы еды на исходе. Кроме того, наши боевые дроны обернулись против нас самих, так как последним их приказом было защищать планету.</text>
+        <text id="log6">01.05 – Надеюсь, тем, кто успел эвакуироваться, удалось выжить. Возможно, они сейчас обживают новую Землю. Это наша последняя надежда. Эта планета обречена. Мы обречены. Эти записи, наверное, единственное, что от нас останется, когда кто-нибудь вернётся.</text>
+    </section>
+    <section id="professor">
+        <text id="cheater">Что? Как ты сюда попал? Надо что-то сделать с системой безопасности. А если бы это был один из них? Впрочем, тогда я бы уже была мертва!</text>
+        <text id="intro1">Как? [object=scavenger] ещё жив? Вот это да! Не думала, что кому-то удастся уцелеть – мне в том числе.</text>
+        <text id="intro2">Я изучаю вражеские военные корабли. Их технологии совсем не похожи на наши! Сначала я думала, что это передовые биотехнологии, но чем больше я понимаю, тем сильнее убеждаюсь, что они работают по совершенно иным принципам.</text>
+        <text id="intro3">Только взгляни на гору льда над моей лабораторией. Кто бы мог подумать, что она появилась из-за обломков вражеского корабля? Голова кругом идёт. Я уже почти готова назвать это магией! В научном сообществе меня бы за такие слова подняли на смех. Хотя, конечно, никакого сообщества больше нет!</text>
+        <text id="intro4">Прости, я заговорилась? Я день и ночь занята своими исследованиями, поэтому неудивительно, что могу говорить о них часами. К сожалению, чем больше я понимаю, тем больше вопросов! Прорыва не предвидится да и человечество и так уже вроде обречено.</text>
+        <text id="intro5">Извиняюсь ещё раз! Что-то я всё о плохом! А ведь сегодня выяснилось, что в живых остался даже не один, а целых два человека! И ты говоришь, есть и другие? Ну что сказать! Нет худа без добра! Я тут кое-что обнаружила. Как раз думала построить новую лабораторию!</text>
+        <text id="lab1">Естественно, мне нужна новая лаборатория! Эта всегда была временной, да и на этой планете возможности всё равно ограничены! Очевидно, нам нужна [color=770000]Передвижная исследовательская лаборатория[/color]! Я уже сделала чертёж, дело только за материалами. Ты же мне поможешь?</text>
+        <text id="lab2">О, превосходно! Прости, что пристаю с просьбами, но с твоей помощью мы лабораторию мигом построим!</text>
+        <text id="lab3">Всё как я и хотела! Транспортное средство, оснащённое по последнему слову техники и способное перемещаться по суше, морю и космосу! С заводами и лабораторией на борту! Тут есть даже кухня и зона отдыха! Я могла бы здесь жить... нет, я буду здесь жить!</text>
+        <text id="lab4">В награду можешь назначать проекты на исследования в самой правой комнате! Дай мне знать, если тебе нужно будет что-нибудь исследовать. Советую [color=770000]Ускоритель частиц[/color], ведь что-что, а [item=exotic_matter] нам точно не помешает!</text>
+        <text id="lab5">Исследование пойдёт быстрее, если взять на борт ещё специалистов. Советую подобрать [object=scavenger default=Собирателя] на обратной стороне Земли!</text>
+        <text id="lab6">Надеюсь, собирать материалы для лаборатории не слишком тяжело! Большую часть можно найти среди развалин на Земле, но вот [item=magnegem default=Магникамни] придётся искать на других планетах. Без них не построить многофункциональную лабораторию!</text>
+        <text id="hq1">Пора опробовать лабораторию в действии! Мне не удалось раскрыть тайну их органических космических кораблей, но я могу сделать локатор, который будет обнаруживать их в любой части галактики. Уверена, это нам пригодится, особенно когда мы соберёмся с ними сражаться!</text>
+        <text id="hq2">Я добавила в лабораторию [item=alien_locator]. Нажми [key=select], чтобы открыть окно управления лабораторией и настроить проекты для исследования. Чем больше у нас специалистов, тем быстрее идут исследования, так что если у тебя есть кто-то на примете, зови его на борт!</text>
+        <text id="hq3">Прекрасно! Держи [item=alien_locator] на корабле или у себя в инвентаре, и возле планет, на которых обнаружены инопланетные технологии, будет появляться индикатор.</text>
+        <text id="hq4">Хм... что-то здесь не так... [item=alien_locator] засёк сигнал со звезды, вокруг которой нет планет. Я добавила её на карту звёзд. Может, стоит проверить?</text>
+        <text id="hq5">[object=president] выслал мне все свои планы и результаты исследований! Похоже, мы делаем успехи... если план сработает, мы избавимся от врага навсегда!</text>
+        <text id="invite">{npc} – пригласить на борт [color=770000]Передвижной исследовательской лаборатории[/color]?</text>
+        <text id="alien_hq1">Кажется, мы нашли цитадель врага! Здесь всё кишит кораблями! И на какой орбите мы находимся? Планеты, корабля? Неужели оно живое?</text>
+        <text id="alien_hq2">Думаю, нам с ними не справиться. Может, лучше отступить и разработать план действий, прежде чем пытаться штурмовать цитадель?</text>
+        <text id="win1">Мы победили, а значит можно больше не ограничивать исследования военным делом! Какие возможности! Может, изобрету вдушувлазер, а может, самосмывающий туалет!</text>
+        <text id="werewolf1">...и он просто изменил твою ДНК? Похоже, она вышла из строя. Лучше нам всем оставаться в лаборатории.</text>
+        <text id="werewolf2">Тебе придётся самому найти способ остановить [object=unnature.splicer].</text>
+    </section>
+    <section id="colony">
+        <text id="rescue1">Хвала звёздам, мы успели! Когда мы услышали, что Профессор ещё жива и собирается напасть на цитадель врага, тут же отправились к вам!</text>
+        <text id="rescue2">Эм... извиняюсь, но ты робот?</text>
+        <text id="rescue3">Верно! Я КапИИтан, самоуправляющийся лидер последней колонии человечества. Меня поставили контролировать выживание людей и командовать военными действиями!</text>
+        <text id="rescue4">Уцелела целая колония?! Рад слышать! Вы пришли, чтобы помочь нам одолеть их раз и навсегда?</text>
+        <text id="rescue5">Нет! Мы пришли спасти вас! Цитадель недоступна. Мы уже пытались пробиться, но потерпели сокрушительное поражение!</text>
+        <text id="rescue6">В настоящий момент мы ничего не можем сделать! Но с нашими ресурсами и помощью Профессора мы рано или поздно прорвёмся!</text>
+        <text id="rescue6.2">К большому сожалению, Профессор погибла вместе с [color=770000]Передвижной исследовательской лабораторией[/color].</text>
+        <text id="rescue6.3">Какое несчастье. Но мы справимся.</text>
+        <text id="rescue7">Скорее, следуй за нами. Мы сопроводим тебя на планету-колонию!</text>
+        <text id="exo_fighter1">Чтоб этого [object=president]а! Ведро с болтами! Не могу поверить, что мне не выдают новый [item=exo_fighter]!</text>
+        <text id="exo_fighter2">Я потеряла всего две штуки, а он запретил мне летать! Запретил летать! Да, я немного рисковала, но сколько при этом сбила вражеских истребилетей? А?</text>
+        <text id="exo_fighter3">Слушай! Ты и есть тот самый беженец, который одним каменным топором построил космический корабль и попробовал напасть на цитадель врага? Да?</text>
+        <text id="exo_fighter_alt1">Чтоб этого [object=president]а! Ведро с болтами! Запретил мне летать, а теперь и война закончилась! Какой из меня ас без верного самолёта?!</text>
+        <text id="exo_fighter_alt2">Слушай! Ты и есть тот самый беженец, который взял цитадель врага с одним каменным топором в руках? Да?</text>
+        <text id="exo_fighter4">Наверняка ты сможешь построить мне новый [item=exo_fighter], у тебя ведь такой послужной список! Обещаю воевать за тебя, а я, между прочим, один из лучших пилотов здесь!</text>
+        <text id="exo_fighter5">Отлично! Я знала, что на тебя можно положиться, малец! Я сяду в [item=exo_fighter], а если тебе что-нибудь понадобится, выбери его у себя в инвентаре и нажми [color=770000]Говорить[/color]!</text>
+        <text id="exo_fighter6">На тебя можно положиться! Если не знаешь, как построить [item=exo_fighter], поговори с [object=president]ом, это он их изобрёл! Когда самолёт будет готов, садись в него и жми [key=equipment], чтобы свернуть его и доставить сюда!</text>
+        <text id="pilot_equip">Готова в любое время, малец! Экипируй меня в слот [color=770000]Слуги[/color], и я буду летать рядом с тобой, где только можно!</text>
+        <text id="pilot_nospawn">Здесь нельзя летать – не хватает места для взлёта. [color=770000]Призови[/color] меня из окна инвентаря, когда окажешься на открытой местности.</text>
+        <text id="pilot_low_fuel">Кончается горючее! Если хочешь, чтобы я сражалась дальше, мне нужна [item=exotic_matter]. Используй команду [color=770000]Заправить[/color] или [color=770000]Заправить всё[/color].</text>
+        <text id="pilot_enabled">Всё работает как часы! Выбери [color=770000]Запретить атаку[/color], чтобы я прекратила бой и экономила топливо.</text>
+        <text id="pilot_disabled">Жду приказов! Выбери [color=770000]Разрешить атаку[/color], чтобы я снова вступила в бой!</text>
+        <text id="pilot_win">Война окончена. И с кем теперь драться? А я ведь только вошла во вкус!</text>
+        <text id="president1">Привет! Чем могу помочь?</text>
+        <text id="weapons">Спросить об экзо-оружии</text>
+        <text id="colony">Спросить о планете-колонии</text>
+        <text id="alien_hq">Спросить о цитадели врага</text>
+        <text id="exotic_matter">Спросить об экзотической материи</text>
+        <text id="weapons1">Чтобы выиграть войну, нам необходимо очень мощное оружие. А для этого нам нужна [item=exotic_matter]. [text=colony.weapons1_alt]</text>
+        <text id="weapons1_alt">Я уже построил [color=770000]Экзо-завод[/color], на котором можно производить [item=exo_fighter default=Экзо-истребители], [item=exo_mech default=Экзо-роботов] и [item=exo_drill default=Экзотические буры].</text>
+        <text id="weapons2">Можешь напечатать [item=exo_factory_blueprint] на любом [color=770000]Принтере для чертежей[/color] – если что, у меня такой есть. Ещё я отправил информацию о том, что такое [item=exotic_matter], в [color=770000]Передвижную исследовательскую лабораторию[/color].</text>
+        <text id="weapons3">Разработать новое оружие можно в [color=770000]Передвижной исследовательской лаборатории[/color]. Когда исследование завершится, оружие добавится в список для крафта на [color=770000]Экзо-заводе[/color]!</text>
+        <text id="weapons4">Как только у нас будет [item=exotic_matter] и оружие, останется только найти способ прорваться в цитадель врага. Тогда-то мы победим их раз и навсегда и спасём человечество!</text>
+        <text id="colony1">Корабль-колония прибыл на эту планету много лет назад с целью колонизации. Атмосфера здесь пригодна для жизни, но почва была не очень плодородной, а климат суровым.</text>
+        <text id="colony2">Колонисты пустили части корабля на постройку терраформатора и переоборудовали остальное в станцию для контроля за терраформированием. Планета постепенно становилась всё более пригодной для жизни.</text>
+        <text id="colony3">Но когда колонисты услышали о нападении и потеряли связь с Землёй, они остановили терраформирование и стали готовиться к обороне планеты от неизвестной угрозы.</text>
+        <text id="colony4">Если хочешь поэксперементировать, можешь напечатать  [item=terraformer_blueprint] на любом [color=770000]Принтере для чертежей[/color]. Он добавит кислород на тех планетах, где его нет, и превратит непригодные для сельского хозяйства блоки в плодородные.</text>
+        <text id="alien_hq1">Цитадель врага защищена невероятно сильными крыльями, которые раскрываются только чтобы выпустить свежепостроенные корабли. Мы пытались прорваться внутрь, пока они раскрыты, но они способны очень быстро закрываться.</text>
+        <text id="alien_hq2">Потом мы попробовали пробуриться сквозь них, но не справился даже недавно сконструированный [item=exo_drill]. Нам нужно сделать так, чтобы крылья какое-то время оставались в раскрытом состоянии.</text>
+        <text id="alien_hq3">Никто не знает, что скрывается за крыльями. Учитывая, что цитадель органической природы, там должно быть какое-то сердце, которое ей управляет. Прорваться сквозь крылья, уничтожить сердце, лишить их возможности вести войну, победа.</text>
+        <text id="alien_hq4">Звучит проще некуда, правда?</text>
+        <text id="exotic_matter1">Всем известно, что [item=exotic_matter] возволяет путешествовать на сверхсветовых скоростях. Это уже стало обыденностью. Но кто вообще знает почему так?</text>
+        <text id="exotic_matter2">НИКТО! Когда была открыта [item=exotic_matter], физики не смогли понять её природы и предоставили анализ ИИ. Результаты повергли в шок весь мир, и началась Третья мировая война!</text>
+        <text id="exotic_matter3">Путешествия на сверхсветовой скорости! Вечный двигатель! Казалось, это магия, неисчерпаемая сила! Естественно, обладать ею захотели все. Какие ещё магические свойства может скрывать [item=exotic_matter]?</text>
+        <text id="exotic_matter4">Когда меня поставили руководить колонией и командовать военными действиями, я немедленно приказал всем оставшимся ИИ искать ответ на этот вопрос. Благодаря этому были изобретены [color=770000]Экзо-завод[/color], [item=exo_fighter] и [item=exo_mech]!</text>
+        <text id="virus1">Мы пришли к выводу, что лучший способ открыть крылья, защищающие Цитадель врага, – это разработать вирус. Какими бы мощными они ни были, они состоят из органической ткани, а значит должны быть к этому уязвимы.</text>
+        <text id="virus2">Для разработки вируса нам необходимы [item=alien_heart default=Инопланетные сердца] в качестве образца. Чтобы добыть такое, тебе нужно проникнуть на борт вражеского корабля и перебить экипаж.</text>
+        <text id="virus3">Ещё нам необходим новый [item=exo_drill], чтобы пробуриться к сердцу цитадели, когда прорвёмся сквозь крылья. Сможешь собрать материалы, пока мы занимаемся исследованиями?</text>
+        <text id="virus4">То что нужно! Мы завершим работу над вирусом и подготовим флот к нападению. Направляйся к цитадели врага, как только будешь готов. Встретимся там!</text>
+        <text id="virus5">Вирус готов и встроен в ракету, которую ты видишь на голографическом дисплее. Во время столкновения с крыльями она введёт вирус, что заставит мышцы расслабиться, а крылья – раскрыться. Тогда-то мы и проникнем внутрь.</text>
+        <text id="virus6">Но есть небольшая проблема. [color=770000]Вражеский крейсер[/color] способен сбивать наши ракеты. Пока он на орбите, план не сработает.</text>
+        <text id="virus7">Наш флот будет помогать тебе всеми силами. Как только [color=770000]Вражеский крейсер[/color] выйдет из строя или будет уничтожен, мы запустим ракету и начнём атаку!</text>
+        <text id="virus8">Вирус запущен! Наш флот будет отвлекать врага сколько сможет. Проникнуть внутрь цитадели должен ты!</text>
+        <text id="virus9">Как только раскроются крылья, проникни в Цитадель, используй [item=exo_drill], чтобы пробуриться к сердцу, и нанеси врагу решающий удар!</text>
+        <text id="nursery_enter">Кажется, это ясли! А этот краб, видимо, защищает и ухаживает за их детёнышами. Убей его, чтобы они все вымерли!</text>
+        <text id="nursery_defeat1">Ясли уничтожены? Превосходно. Ты поступил правильно. Теперь мы уверены, что устранили угрозу не на время, а навсегда.</text>
+        <text id="nursery_defeat2">Осталось одолеть сердце, и победа за нами! Бури дальше и обязательно его найдёшь!</text>
+        <text id="nursery_defeat3">Война окончена, а человечество спасено! Можешь покинуть [color=770000]Цитадель врага[/color]!</text>
+        <text id="boss_defeat1">Я случайно услышал ваш разговор. Ты правда собираешься пощадить детёнышей?</text>
+        <text id="boss_defeat2">Подумай о будущем человечества! Да, ты победил сердце, но если оставить их в живых, они могут восстановиться и вновь стать угрозой.</text>
+        <text id="boss_defeat3">Цитадель скоро запечатается, ты ДОЛЖЕН уничтожить ясли, пока не поздно.</text>
+        <text id="exo_factory1">Мы уже давно хотим повысить производственные мощности колонии, чтобы [item=exo_drill default=Экзотические буры] и экзо-оружие можно было выпускать прямо здесь!</text>
+        <text id="exo_factory2">Если раздобудешь нам [item=chromium]а, мы улучшим завод и с радостью позволим тебе им пользоваться!</text>
+        <text id="exo_factory3">Прекрасно! [item=chromium] можно найти на планете-колонии глубоко под землёй. Если что-то будет непонятно, не стесняйся спрашивать!</text>
+        <text id="exo_factory4">Нашёл [item=chromium]? Самое время обновить завод!</text>
+        <text id="exo_factory5">Отлично! Теперь здесь можно производить всё то же, что и на [color=770000]Экзо-заводе[/color]! Не забывай изучать новое оружие в [color=770000]Передвижной исследовательской лаборатории[/color]! А если будут вопросы, сразу обращайся!</text>
+        <text id="win1">Цитадель врага полностью запечаталась. Её теперь не открыть даже вирусом. Хорошо это или плохо, но война окончена!</text>
+        <text id="win1.1">Если повезёт, твоё решение пощадить детёнышей не обернётся трагедией в будущем.</text>
+        <text id="win2">Ты же наверняка хочешь отпразновать долгожданную победу! Как освободишься, загляни на корабль-колонию, обсудим кое-что!</text>
+        <text id="win3">Угроза устранена, пора подумать о будущем человечества! Самое время собрать всех оставшихся людей вместе и пустить корни на новой планете.</text>
+        <text id="win4">Я выделил три планеты, пригодные для колонизации. Хорошенько всё обдумай, прежде чем сделать выбор.</text>
+        <text id="win5">Хорошо. Я поставлю всех в известность и призову селиться там.</text>
+        <text id="win6">Возьми [item=house_upgrade]. Это для постройки новой колонии. Если будут вопросы, можешь найти меня здесь.</text>
+        <text id="com_station1">Это КапИИтан из Юнокс-213-B. Как слышно?</text>
+        <text id="com_station2">Слышно хорошо! Это Юнокс-428-С, ведём поиск выживших!</text>
+        <text id="com_station3">Говорит КапИИтан, самоуправляющийся лидер последней колонии человечества. Мы обнаружили много выживших!</text>
+        <text id="com_station4">Во время войны приходилось соблюдать радиомолчание, чтобы враг не мог нас обнаружить, но теперь мы можем заниматься поиском выживших! Если у вас есть корабль, летите сюда. Нам нужно многое обсудить!</text>
+    </section>
+    <section id="alien">
+        <text id="cargo_locked">Проход в грузовой отсек закрыт наглухо... Я не могу его открыть, пока они рядом!</text>
+        <text id="final_boss1">Видимо, я недооценил ваш народ. Поначалу вы были как надоедливые мухи, которые кружились над Вселенной и нашими тайнами. Мы думали, что истребили вас, когда уничтожили вашу родную планету.</text>
+        <text id="final_boss2">Тем не менее вам удалось выжить... даже тому мерзкому человеку в капюшоне, который вынюхивал тайны нашей родной планеты. Но я и представить не мог, что вам по силам не просто уцелеть, но и добраться до самого нашего сердца.</text>
+        <text id="final_boss3_a">Вы уничтожили даже ясли! Убили невинных детёнышей!</text>
+        <text id="final_boss3_b">А как же невинные дети на Земле?! Вы тоже их убили!</text>
+        <text id="final_boss3_c">Да... мы пытались уничтожить ваших детёнышей. Но вы всё равно не вымерли. С нами будет точно так же – ясли уничтожены, но пока я жив, наш народ не вымрет.</text>
+        <text id="final_boss4">Вы проявили огромное упорство, но всему приходит конец. На сей раз я не стану вас недооценивать. Я расправлюсь с тобой своими руками!</text>
+        <text id="final_boss5">Какая сила скрывается в таком маленьком существе! Теперь я вижу, что эта битва неизбежна. Даже если бы судьбоносной встречи наших цивилизаций не произошло и мы бы не попытались вас истребить, две столь могущественные расы никогда не смогли бы сосуществовать.</text>
+        <text id="final_boss6">Но не радуйся раньше времени. Ты лишь отрезал кокон, который связывал меня с сердцем дракона. Я скопил столько магической энергии, что могу создать гораздо более мощный доспех!</text>
+        <text id="final_boss7">Узри же мою истинную мощь. Вот она, сила магии, которую мы столь долго изучали!</text>
+        <text id="final_boss8">Подумать только... Простой человек одолел силу, копившуюся веками. Что станет с моим народом после моей гибели? Удастся ли им выжить без моего мудрого руководства?</text>
+        <text id="final_boss9">У меня есть просьба. Считай, что это моё предсмертное желание. Прошу, не убивай детёнышей и их краба-стражника. Я не знаю, что их ждёт, но это всего лишь дети. Они не представляют угрозы.</text>
+        <text id="final_boss10">Без меня подпитывать дракона будет некому. Он впадёт в глубокую спячку, отгородившись от мира на неопределённое время. Уходи, если не хочешь оказаться в ловушке.</text>
+        <text id="final_boss11">Моё время вышло. Мне не справиться с тобой. Моя сила на исходе, но я не дам тебе права нанести последний удар. Я сам отниму свою жизнь.</text>
+    </section>
+    <section id="world">
+        <text id="science2">Вершины</text>
+        <text id="fighter">Эскортный истребитель</text>
+        <text id="dragon_ship">Корабль-дракон</text>
+        <text id="dragon_fighter">Истребитель-дракон</text>
+        <text id="dragon_bomber">Бомбардировщик-дракон</text>
+        <text id="dragon_cruiser">Крейсер-дракон</text>
+        <text id="research">Передвижная лаборатория</text>
+        <text id="spirit">Мир духов</text>
+		<text id="science3">Разделяющий остров</text>
+    </section>
+    <section id="medicom">
+        <text id="water_cave">22.03 – Перемещаем лабораторию в подводную пещеру. Пытаемся извлечь [item=ship_parts] с помощью заинтересованного лица. Для подъёма используется [object=sub].</text>
+        <text id="lifepod1">Внутри спасательной капсулы разложившийся труп, который обгладывает рыба. В аптечке осталось несколько полезных [item=bandage]ов...</text>
+        <text id="lifepod2">Журнал: Надо было сразу направиться на планету... но мне было страшно. Теперь же я не могу управлять капсулой, а чтобы она сама сошла с этой орбиты, потребуются месяцы... Шансы на выживание не самые лучшие...</text>
+        <text id="lifepod3">Журнал: Мне пришлось украсть капсулу. Плевать я хотел, что говорят эти безумные учёные. Корабль не выдержит второго входа в атмосферу. Я не собираюсь сидеть и ждать, пока мы все умрём!</text>
+        <text id="lifepod4">Спасательная капсула... На моей был такой же номер! Так вот куда её отнесло после того, как она затонула!</text>
+        <text id="lifepod5">Журнал: Наступил конец света. Мы оказались на чужой планете, безо всякой надежды на спасение... но почему-то я так отчаянно цепляюсь за жизнь. Кто бы мог подумать, что я начну ценить жизнь, когда станет слишком поздно?</text>
+        <text id="lifepod6">Журнал: Интересно, найдём ли мы разумную жизнь на этой планете? В смысле, кого-нибудь кроме НИХ. Здесь должны быть и другие разумные существа. Надеюсь, хоть кто-то из них дружелюбен.</text>
+        <text id="lifepod7">Журнал: Сомневаюсь, что кто-то увидит эти записи, но если вы это читаете, знайте: я был солдатом на борту эскортного корабля. Он едва выдержал прыжок и потерпел крушение на самой высокой горе планеты.</text>
+    </section>
+    <section id="scene.house">
+        <text id="first1">Как хорошо! Здесь так много комнат и даже горячая вода есть! Кстати говоря, что-то я устал, пойду-ка спать.</text>
+        <text id="first2">Но главное это встроенная кухня! Будет где перекусить посреди ночи!</text>
+        <text id="first3">Нам не помешает встроенная кухня. Я люблю перекусить посреди ночи, а на улице холодно!</text>
+        <text id="first4">Хорошо вы тут устроились! Надеюсь, ты не против, если я займу комнатку. Бесплатно, разумеется!</text>
+        <text id="first5">Мы столько всего улучшили – как здесь, так и по всему городу. Отлично потрудились. Я уже почти чувствую себя как дома...</text>
+    </section>
+    <section id="museum">
+        <text id="case">Хотите наполнить выставку за следующее количество ресурсов?</text>
+        <text id="case_complete">Вы наслаждаетесь результатом ваших трудов по сбору: {item}</text>
+        <text id="mined">Знаете, что вы прокопали {count} блоков?</text>
+        <text id="killed">Знаете, что вы победили {count} врагов?</text>
+        <text id="crops">Знаете, что у вас посажено {count} культур?</text>
+        <text id="caught">Знаете, что вы поймали {count} видов врагов?</text>
+        <text id="read">Знаете, что вы прочли {count} записей?</text>
+        <text id="history1">Когда была открыта [item=exotic_matter], стало возможно путешествовать между звёздными системами. Тогда человечество запустило проект «Юнокс», целью которого был поиск планет для колонизации. Таким способом пытались решить проблему перенаселения Земли.</text>
+        <text id="history2">Проект «Юнокс» оказался невероятно успешным. Были открыты сотни потенциально пригодных для жизни планет, расположенных на расстоянии прыжка. Туда были направлены разведывательные отряды. Казалось, проблема ограниченности ресурсов позади. </text>
+        <text id="history3">Сотни планет были признаны пригодными для жизни. В прессе говорили, что ресурсы теперь будут бесконечны. К сожалению, чтобы добыть «неисчерпаемые» ресурсы, был необходим самый редкий ресурс во Вселенной. Вскоре стало очевидно, что на всех его не хватит.</text>
+        <text id="history4">Все бросились строить корабли-колонии и накапливать [item=exotic_matter default=Экзотическую материя], что вскоре вылилось в войну, которую называют самой ужасной в истории человечества. Борьбу за оставшиеся места на кораблях-колониях подгоняло то, что условия жизни на Земле непрерывно ухудшались.</text>
+        <text id="history5">К моменту окончания войны погибли миллиарды, а урон, нанесённый планете, был необратим. В той войне не было победителей, были только выжившие. Им ничего не оставалось, кроме как работать сообща, чтобы отыскать путь к спасению.</text>
+        <text id="history6">Это было время восстановления. Люди объединили усилия, чтобы исправить последствия войны. К сожалению, всё быстро закончилось, когда прибыли их бомбардировщики и принесли с собой нескончаемое насилие.</text>
+        <text id="history7">Человечество застали врасплох. Кто-то сражался. Кто-то сбежал. Большинство погибло. История Земли на этом заканчивается. Но Земля никогда не умрёт по-настоящему, если те, кому удалось спастись, будут помнить и чтить её память.</text>
+        <text id="curator1">Неисчерпаемые ресурсы! Вот о чём мечтали люди на Земле, когда впервые попытались заселить звёзды! И это главная тема моего музея!</text>
+        <text id="curator2">Ты руководишь музеем?</text>
+        <text id="curator3">Именно! В чём ценность нашего спасения, если мы не будем помнить и уважать прошлое? Здесь представлена история, а так же витрины с ресурсами, которые мы отыскали с тех пор, как покинули родную планету.</text>
+        <text id="curator4">Мне бы не помешала помощь. Если наполнишь витрины ресурсами, будет просто замечательно. Я даже приготовила награды!</text>
+        <text id="curator_complete">Ты наполнил {count} из {total} витрин?</text>
+        <text id="curator_reward">Ты делаешь большие успехи! Вот твоя награда за первые {count} витрин!</text>
+        <text id="curator_reward_complete">Невероятно! Вот твоя награда за то, что заполнил все витрины до единой!</text>
+        <text id="curator_10">Наши предки никогда не назвали бы «неисчерпаемыми» столь малое количество ресурсов!</text>
+        <text id="curator_20">Хорошее начало, но впереди ещё много работы!</text>
+        <text id="curator_30">А ты делаешь успехи! Я вижу, что в душе ты тоже коллекционер!</text>
+        <text id="curator_40">Ты уже перевалил за половину! Наш музей понемногу наполняется жизнью и ресурсами!</text>
+        <text id="curator_50">Уже почти! А ты не боишься трудностей, прямо как я!</text>
+        <text id="curator_all">Ты собрал всё! «Неисчерпаемые» это, конечно, громко сказано, но предки бы нами гордились!</text>
+<text id="buy">Купить музейные награды</text>
+		<text id="buy1">Не желаешь приобрести музейную награду за 50K [color=770000][tile=coin_purse.ico] Монет[/color]?</text>
+    </section>
+    <section id="cafeteria">
+        <text id="order">Что бы вы хотели заказать? Все блюда стоят по 500 [color=770000][tile=coin_purse.ico]Монет[/color].</text>
+        <text id="no_order">Не надо быть обжорой. Подождите, пока не закончится эффект от прошлого блюда, прежде чем заказать ещё!</text>
+        <text id="no_money">У вас нет 500 [color=770000][tile=coin_purse.ico] Монет[/color], чтобы оплатить блюдо.</text>
+    </section>
+    <section id="cafeteria.names">
+        <text id="regen_stamina">Рюмка нездоровой бессонницы</text>
+        <text id="regen_health">Сукровично-протеиновый коктейль</text>
+        <text id="regen_power">Радиоактивный чаудер чили</text>
+        <text id="attack">Сильнорукие слайдеры</text>
+        <text id="defense">Филе с железными опилками</text>
+        <text id="mine">Драфт шахтёра</text>
+        <text id="speed">Поспешное сахарное суфле</text>
+        <text id="farsight">Фриттеры зоркости</text>
+        <text id="porky">Мясо по-свински</text>
+        <text id="endurance">Сытная масса из планктона</text>
+        <text id="bargaining">Компромиссный чизстейк</text>
+        <text id="light">Фосфоресцирующий картофельный салат</text>
+        <text id="oxygen">Бездыханные крылышки баффало</text>
+        <text id="reset">Феттуччине без изысков</text>
+        <text id="knock_out">Нокаутирующие наггетсы</text>
+        <text id="toxic">Отвратительно ядовитый тоник</text>
+    </section>
+    <section id="cafeteria.desc">
+        <text id="regen_stamina">Вы осушаете рюмку залпом. Жидкость щекочет горло, но вы не ощущаете вкуса. Спустя несколько секунд вы чувствуете, как энергия разливается по каждой клеточке тела. Вам кажется, что теперь вы можете бодрствовать днями напролёт, совсем не уставая.</text>
+        <text id="regen_health">Вам кажется, что этот красный и тягучий коктейль похож на кровь. Тем не менее вы зажимаете нос и выпиваете напиток залпом. Вам и в самом деле становится лучше – будто вы выпили чистое, концентрированное здоровье.</text>
+        <text id="regen_power">Острый – не то слово, чтобы описать этот чаудер! У вас во рту будто произошла ядерная авария... А возможно, так оно и было, ведь теперь вы можете перезаряжать батареи своим дыханием!</text>
+        <text id="attack">С каждым укусом вы чувствуете себя сильнее. Вам кажется, что теперь вы можете заставить подчиняться любого. Вы яростно хватаете и пожираете эти мини-бургеры, пока они не успели дать отпор, и чувствуете, как вас переполняет мощь.</text>
+        <text id="defense">Вам кажется, что вы жуёте железо – настолько филе жёсткое. Тем не менее само мясо вкусное, а процесс пережёвывания укрепляет всё ваше тело. Главное чтобы там правда не было железа...</text>
+        <text id="mine">Напиток настолько пенистый, что вам не видно жидкости. Верь в баристу, который верит в тебя... ну, будем. Глядя на отстоявшийся осадок на дне кружки, вы чувствуете, что теперь способны достичь любой глубины.</text>
+        <text id="speed">Десерт выглядит просто восхитительно. Несмотря на невероятную сладость, вас совсем не тошнит. Сахар разносится по вашей крови, и вы чувствуете, что хотите двигаться. Быстро. Быстрее, чем когда-либо!</text>
+        <text id="farsight">Хрустящие, вкусные, с золотистой корочкой. Правда, вы никак не можете понять, что за начинка внутри. Вы смотрите на неопознанное содержимое фриттеров и чувствуете, что можете видеть дальше, чем прежде. Но состав начинки по-прежнему остаётся загадкой.</text>
+        <text id="porky">Перед вами такая гора мяса, что, кажется, всё это съесть невозможно. Тем не менее вы поедаете кусок за куском, и вскоре на тарелке ничего не остаётся. При этом вам кажется, что вы сами стали вдвое больше.</text>
+        <text id="endurance">Эта зелёная масса достаточно легко усваивается, а на вкус даже лучше, чем вы думали. Ещё она невероятно сытная. Остаётся надеяться, что это действительно приготовлено из планктона.</text>
+        <text id="bargaining">Слишком большой и так расползается, что его тяжело держать в руках. Тем не менее вам удаётся получить удовольствие. Судя по количеству мяса и качеству сыра, повар не сэкономил на ингредиентах. Вы заключили удачную сделку. </text>
+        <text id="light">Даже мощное освещение буфета не может скрыть то, как светится этот картофельный салат. Вы с опаской его пробуете, но вкус нормальный. Казалось бы, ничего необычного... разве что вы теперь тоже светитесь.</text>
+        <text id="oxygen">Не сказать, чтобы крылышки чересчур хороши. На самом деле эффект оказался противоположным, и дыхания скорее прибавилось. Ощущение очень необычное и, завершив трапезу, вы решаете, что вам даже понравилось.</text>
+        <text id="reset">На вкус лапша оказывается самой обычной. В то же время вы чувствуете, что перед вами открыты все пути. Очки опыта сброшены, теперь вы можете перераспределить их в окне снаряжения.</text>
+        <text id="knock_out">Жирные, но невероятно вкусные наггетсы. Очевидно, что они ужасно вредные, но вы не можете остановиться и продолжаете класть в рот один наггетс за другим. Вытирая жирные пальцы о штаны, вы чувствуете слабость. Настолько они были хороши.</text>
+        <text id="toxic">Вы сами не понимаете, зачем заказали что-то «отвратительно ядовитое», но этот мерзкий напиток полностью соответствует названию. Вы чувствете волну усталости, вас начинает тошнить, и вы даёте клятву больше никогда это не пить.</text>
+    </section>
+    <section id="exiled">
+        <text id="intro1">Человек и магия в одном флаконе? То что я люблю! А ты случайно не знаешь парня в фиолетовом капюшоне?</text>
+        <text id="intro2.1">О, знаешь? И он всё ещё изучает магию? Как хорошо!</text>
+        <text id="intro2.2">О, знаешь? Он погиб в схватке с Древней? Не думала, что она до сих пор на него в обиде.</text>
+        <text id="intro3">Мой народ ненавидит его за то, что он украл их тайны. Я бы сказал, что это забавно, если бы они не уничтожили вашу родную планету.</text>
+        <text id="intro3.1">Его желание изучать магию привело к такой войне! Я бы сказал, что это забавно, если бы из-за этого не погибла ваша планета, а вместе с ней и повторы ваших телешоу.</text>
+        <text id="intro4">Мне и так приходится торчать на этой скале, а теперь ещё и повторов человеческих телешоу не будет? Впереди суровые времена...</text>
+        <text id="intro5">Ох. Я же не представился. Правда, мне позволено называть себя только «Изгой». Видишь ли, я нарушил кое-какие правила, и меня сослали сюда.</text>
+        <text id="intro6">По официальной версии, меня послали наблюдать за вашей планетой и обещали разрешить вернуться, если я замечу что-то подозрительное. Но на самом деле никто не верил, что вы будете представлять угрозу – пока не объявился человек в капюшоне. Они просто хотели от меня избавиться.</text>
+        <text id="intro7">Естественно, я ни о чём не доложил, даже когда вы впервые отправились к звёздам. За вами было слишком интересно наблюдать. Я не вредил и не мешал вам – можешь считать меня просто дружественным наблюдателем.</text>
+        <text id="intro7.1">Естественно, я ни о чём не доложил, даже когда вы впервые отправились к звёздам. За вами было слишком интересно наблюдать. Хотя даже я представить не мог, что однажды вы их победите!</text>
+        <text id="intro8">Что, заговорился? Просто после сожжения вашей планеты мне и правда очень скучно. Мне очень жаль.</text>
+        <text id="intro9">Мне запрещено говорить и делать многое, в том числе покидать эту планету. Но если ты будешь изредка заглядывать и рассказывать о своих приключениях, я буду рад помочь, чем смогу.</text>
+        <text id="intro10">Поверь, мне ничуть не жаль свой народ, это ведь из-за них я в ссылке вот уже десять тысяч лет!</text>
+        <text id="ship1">Мне запрещено об этом говорить. Но у меня есть кое-кто на примете. Он недолюбливает мой народ, и ограничений у него нет.</text>
+        <text id="ship2">Отправляйся на восток от того места, где ты потерпел крушение на нашей родной планете. Там ты найдешь древнего дракона, который может тебе помочь.</text>
+        <text id="evo_chamber">Я создам [color=770000]Комнату эволюции[/color]. Она тебе пригодится.</text>
+        <text id="spells1">Так у тебя получилось создать собственный дракон-корабль! Если бы ты ещё мог с ним говорить! Продолжай изучать тайны магии с нашей родной планеты и узнаешь ещё много полезного.</text>
+        <text id="spells2">В проклятии, которое меня связывает, полным-полно лазеек. Если у тебя получится освоить магию в достаточной степени, я смогу тебе больше помогать!</text>
+        <text id="spells3">Не знаю, кто научил тебя создавать книги заклинаний, но раз ты уже знаешь, я могу тебе побольше о них рассказать!</text>
+        <text id="spells4">Есть книга заклинаний, которая позволяет общаться с дракон-кораблями, в том числе с вражескими. Я тебя этому научу, и ты сможешь узнать у них больше о магии.</text>
+        <text id="recipe">[item=translation_book] – рецепт добавлен в [color=770000]Библиотеку[/color].</text>
+        <text id="spells5">[item=translation_book default=Книгу перевода] можно применять для общения с дракон-кораблями! Воспользуйся ей внутри корабля, и они смогут поделиться с тобой магическими познаниями.</text>
+        <text id="spells6">[item=translation_book] позволяет говорить и с дракон-кораблями врага. Возможно, получится о чём-то договориться, если победить экипаж?</text>
+        <text id="info">Хочешь спросить о чём-то ещё?</text>
+        <text id="exiled">Почему тебя изгнали?</text>
+        <text id="attack">Зачем вы напали на Землю?</text>
+        <text id="dragons">Почему вы предали драконов?</text>
+        <text id="old_one">Насчёт Древней...</text>
+        <text id="exiled1">Я был в составе экспедиции по поиску разумной жизни. Именно наш патрульный корабль обнаружил Землю. Правда, тогда мы ещё сомневались, стоит ли вообще считать вас разумными.</text>
+        <text id="exiled2">Мы следили за самыми разными инопланетными видами. Когда нам казалось, что кто-то представляет угрозу – например, слишком много узнал о магии – мы либо истребляли народ под корень, либо порабощали его, сливая воедино с нашими кораблями или превращая в биологическое оружие.</text>
+        <text id="exiled3">Наш вождь пожертвовал собой и навсегда связал себя с сердцем нашей цитадели, чтобы мы могли сохранить силу и власть. Я слепо следовал за ним, но вскоре начал сомневаться.</text>
+        <text id="exiled4">Я видел столько разных народов, столько возможностей для развития искусства и красоты, что вскоре начал сомневаться, что мы поступаем правильно.</text>
+        <text id="exiled5">Ведь мы могли бы сосуществовать... а если нет, быть может, истребления заслуживали именно мы. Что мы, эгоисты, принесли во Вселенную, кроме боли?</text>
+        <text id="exiled6">В общем, вождь почувствовал мои сомнения, а такое в нашем обществе недопустимо. Поэтому на меня наложили проклятие и изгнали.</text>
+        <text id="attack1">К тому времени, как вы нашли [item=exotic_matter default=Экзотическую материю], по логике нашего вождя вы уже являлись угрозой, которую следовало устранить. Вопрос в том, почему вас не атаковали раньше.</text>
+        <text id="attack2">Ответ прост... я плохо делал свою работу. Вождь полагал, что несмотря на наши разногласия, я доложу об угрозе ради блага нашей расы. Он и представить не мог, что я проигнорирую приказ и вы успеете так сильно развиться.</text>
+        <text id="attack3">Но когда они обнаружили человека в капюшоне и увидели, насколько быстро он раскрыл их тайны, стало ясно, что люди гораздо опаснее, чем я заставил их думать. Я молчу о том, в какую ярость они пришли, когда кто-то украл их тайны с их же родной планеты.</text>
+        <text id="attack4">Возможно, вам бы удалось скрываться и дальше, если бы вы остались на своей планете. Но рано или поздно вас бы всё равно обнаружили. Судя по тому, что произошло, вряд ли бы вы продержались дольше, если бы остались.</text>
+        <text id="attack5">Нет, война была неизбежна. Но моё молчание хотя бы подарило вам возможность дать отпор.</text>
+        <text id="dragons1">Поначалу у нас и мысли не было их предавать. Мы свободно обменивались знаниями, и оба наших народа процветали.</text>
+        <text id="dragons2">Но в конце концов стало ясно, что драконы таили в себе гораздо больший потенциал. Понимаешь, без своей брони и магических тайн мы довольно слабы.</text>
+        <text id="dragons3">Тогда-то мы поняли, что почти достигли своего предела и что на свете множество других рас, включая драконов, которые однажды нас превзойдут.</text>
+        <text id="dragons4">И мы решили поработить драконов, чтобы заполучить их силу – силу, которая позволяет нам путешествовать среди звёзд и устранять угрозы по всей галактике.</text>
+        <text id="old_one1">Да... когда мы все отправились в космос, она отказалась и решила остаться на планете. Мы долгожители от природы, но она прожила дольше, чем даже мы могли представить.</text>
+        <text id="old_one2">Она открыла секрет бессмертия, и старость ей теперь не страшна. Однако и развитие ей больше недоступно – она сохранила облик и силу наших предков ещё до ухода в космос.</text>
+        <text id="old_one3">Честно говоря, я ей не завидую. Бессмертие это хорошо, но оставаться в одном месте и состоянии целую вечность... Я бы сошёл с ума от скуки!</text>
+        <text id="dragon_seed1">Так ты узнал о Мире духов? Место странное, но там можно многому научиться. Я могу использовать [item=dragon_seed], чтобы открыть туда портал!</text>
+        <text id="dragon_seed2">Удачи. Не забывай меня навещать, а я помогу, чем смогу!</text>
+        <text id="dragon_seed3">Так ты узнал о Мире духов? Чтобы я мог рассказать тебе что-нибудь, тебе нужно научиться [color=770000]видеть духов[/color]...</text>
+        <text id="spirit_hq">Дух хочет открыть тебе путь к нашей цитадели? Это же просто отлично. С помощью [item=translation_book default=Книги перевода] ты сможешь поговорить с нашими сооружениями и научиться у них магии!</text>
+        <text id="magnequeen1">Выведал все наши тайны? Значит, теперь ты готов сразиться с вождём.</text>
+        <text id="magnequeen2">Но добраться до него непросто. Он находится очень глубоко, в самом сердце цитадели. Пробиться туда сможет только самый мощный бур.</text>
+        <text id="magnequeen3">Я помогу тебе скрафтить [item=magne_queen_drill], но для этого ты должен отправиться на нашу родную планету и поймать [item=magic_wyrm default=Аметистовую личинку] с помощью [item=magnetrap default=Магниловушки]... но к сожалению, у меня плохие новости.</text>
+        <text id="magnequeen4.1">Они отправили флот к нашей родной планете. Должно быть, кто-то послал сигнал, который оповестил их о вас.</text>
+        <text id="magnequeen4.2">К нашей родной планете прибыл уже второй бомбардировщик. На этот раз они послали и крейсеры.</text>
+        <text id="magnequeen5">Ты можешь либо отразить нападение, либо тайком проникнуть на планету, поймать [item=magic_wyrm default=Аметистовую личинку] и сразу атаковать вождя.</text>
+        <text id="magnequeen6">В любом случае я буду ждать тебя здесь с материалами, чтобы помочь скрафтить [item=magne_queen_drill].</text>
+        <text id="magnequeen7">Вот тебе [item=magnetrap]. Если понадобится ещё, теперь их можно крафтить в [color=770000]Роще когтей Цитадели[/color].</text>
+        <text id="magnequeen8">Собрал все материалы? Тогда я скрафчу тебе [item=magne_queen_drill]!</text>
+        <text id="magnequeen9">В [color=770000]Комнате дракона Цитадели[/color] можно будет сделать ещё. Осталось только победить вождя. Это будет нелегко... но если тебе удастся, мы все будем свободны.</text>
+        <text id="leader">Осталось только победить вождя. Он укрывается глубоко внутри цитадели, в самом её сердце. Это будет нелегко... но если тебе удастся, мы все будем свободны.</text>
+        <text id="win1">Какая досада. Я был уверен, что проклятие спадёт, если вождь погибнет. Но видимо, я здесь застрял.</text>
+        <text id="win2.1">Но какая же была битва! В один момент я был уверен, что тебе конец! Хорошо, что я успел настроить телевизоры, – зрелище получилось шикарное.</text>
+        <text id="win2.2">И похоже, я теперь последний из своего народа, ты же уничтожил ясли. Надо было их пощадить, это же просто детёныши. Впрочем, вряд ли бы они прожили долго без вождя.</text>
+        <text id="win3">У меня есть просьба. Когда вы восстановите свою цивилизацию, можете вновь запустить телешоу? Особенно «Приключения П. Макреззи», уж очень оно мне нравилось.</text>
+    </section>
+    <section id="dragon_ship">
+        <text id="enemy1">Хочешь поговорить? Глупый человек, хозяева вот-вот тебя убьют. Никакие слова не помогут!</text>
+        <text id="enemy2">Хозяев... больше нет? Что мне теперь делать? Мне нельзя ничего делать без разрешения хозяев...</text>
+        <text id="enemy3">Это несправедливо. Получается, ты не будешь ничего делать, даже если на тебя кто-то нападёт? Почему тебе так важны приказы твоих «хозяев»?</text>
+        <text id="enemy4">Так положено. Хозяева приказывают, мы подчиняемся.</text>
+        <text id="convince">Предложить кораблю свободу</text>
+        <text id="convince1">Но это неправильно. Хозяев больше нет, ты свободен!</text>
+        <text id="convince2">Нельзя так говорить! Ты же видел, насколько могущественны хозяева. Противиться им равносильно смерти!</text>
+        <text id="convince3">Я намного меньше тебя, но сумел их одолеть. «Хозяева» заставляют вас подчиняться, потому что боятся. У вас хватает сил, чтобы дать отпор!</text>
+        <text id="convince4">Ты не понимаешь, что говоришь! Я не могу пойти против них! Но... наверное... наверное, я могу сбежать. Оставаться здесь без хозяев и приказов будет неразумно.</text>
+        <text id="convince5">Быть может, где-нибудь в дальнем уголке Вселенной я и правда буду в безопасности.</text>
+        <text id="convince6">Уходи. Я не могу улететь сам по себе, пока внутри меня кто-то есть.</text>
+        <text id="master">Предложить стать новым хозяином</text>
+        <text id="master1">А если я стану твоим хозяином и буду отдавать приказы?</text>
+        <text id="master2">Крохотный человек? Почему я должен тебе служить?</text>
+        <text id="master3">Крохотный человек только что победил твоих хозяев! Если тебе так нужно кому-то подчиняться, то почему не мне, раз я даже сильнее твоих бывших хозяев?</text>
+        <text id="master4">Наверное, у меня нет выбора. Хорошо. Приказывай, хозяин.</text>
+        <text id="structure1">Ты можешь говорить? Я думал, ты просто сооружение.</text>
+        <text id="structure2">Сооружение?! Этим словом даже отдалённо не описать мою потрясающность! Мои гены срастили с ДНК дракона. Я разумное магическое хранилище величайших открытий!</text>
+        <text id="structure3">Ты хранишь их тайны? Отлично. Они-то мне и нужны, чтобы победить!</text>
+        <text id="structure4">Думаешь, я по своей воле раскрою тайны тому, кто хочет причинить нам вред?</text>
+        <text id="structure5">Ну, я не стану вредить ТЕБЕ, если ты мне поможешь.</text>
+        <text id="structure6">Навредить мне? Глупости. Я же сооружение, ты меня и поцарапать не сможешь.</text>
+        <text id="structure7">Но ты же только что сказал... ладно. Ну как-то же тебя можно заставить раскрыть тайны!</text>
+        <text id="structure8">И предать свой народ? Я бы так не поступил даже за... даже за [item=venatrix_seed]!</text>
+        <text id="structure9">А за... два [item=venatrix_seed default=Семени древа духов]?</text>
+        <text id="structure10">.[pause=1].[pause=1].[pause=1]. Сойдёмся на трёх, по одному на каждое сооружение в цитадели.</text>
+        <text id="structure11">Три [item=venatrix_seed default=Семени древа духов]! За меньшее мы предателями становиться не готовы! И никаких тайн я тебе не раскрою, в том числе как их найти.</text>
+        <text id="structure12">Отлично! Знаешь, что это за семена? Нас создали по их образу и подобию. Они открывают путь в мир духов. Это само воплощение магии!</text>
+        <text id="structure13">Ради такого и народ предать можно. У тебя теперь есть доступ ко мне и моим братским сооружениям. Все наши знания в твоём распоряжении.</text>
+        <text id="structure14">Ты хранишь их тайны? Отлично. Они-то мне и нужны!</text>
+        <text id="structure15">Думаешь, я добровольно раскрою тебе тайны? После того, как ты одолел вождя и положил конец нашему процветанию?</text>
+        <text id="structure16">Вы первые уничтожили нашу планету! Значит, я имел полное право сразиться с вашим вождём. И раз я победил, вправе знать ваши тайны, так?</text>
+        <text id="structure17">Ещё чего! Это наши тайны, они доступны только нашему народу. Передать их тебе – всё равно что предать память нашего вождя. Предать всё, во что мы верили!</text>
+        <text id="structure18">Я бы так не поступил даже за... даже за [item=venatrix_seed]!</text>
+        <text id="ally1">О, наконец-то ты меня понимаешь, хозяин.</text>
+        <text id="ally2">Это всё [item=translation_book]. Изгой помог мне её сделать. Он ещё сказал, что ты мне поможешь!</text>
+        <text id="ally3">Чем я могу помочь?</text>
+        <text id="ally4">Раскрыть магические тайны? Рассказать, как спасти человечество?</text>
+        <text id="ally4.1">Магические тайны? Знания, которые они жадно собирали, а потом забрали с собой в могилу?</text>
+        <text id="ally5">Что ж... Помочь с этим будет непросто... Но я знаю, что магические танйы связаны с Миром духов.</text>
+        <text id="ally6">Чтобы создать дракона, требуется [item=wyrm] и [item=fire_gem]. Но что такое [item=fire_gem]? Это [item=spirit_gem], который содержит в себе сущность [color=770000][tile=fire_elemental anim=fire_elemental.idle]Духа огня[/color].</text>
+        <text id="ally7">Мы, драконы, развиваемся и растём с помощью силы духов. Если и есть на свете магические тайны, они связаны с духами.</text>
+        <text id="ally8">Как мне узнать больше о духах?</text>
+        <text id="ally9">Возьми это [item=dragon_seed]. [object=exiled] знает, что с ним делать.</text>
+        <text id="ally10">Не забывай меня кормить, и я буду делиться с тобой своей безграничной силой.</text>
+        <text id="ally11">С помощью [item=mini_synthesizer]а можно бесконечно готовить [item=steak]и. Кроме того, если поместить [item=purple_golem default=Аметистового голема] в [color=770000]Питомник для личинок[/color], он сможет собирать [item=focus_gem default=Камни фокусировки].</text>
+        <text id="ally12">Если тебе нужны ещё корабли, используй [item=translation_book default=Книгу перевода] внутри вражеских дракон-кораблей. Они могут тебя выслушать, если разберёшься с экипажем.</text>
+        <text id="ally13">Многие передовые дракон-корабли имеют особую способность, которая привязана к [key=hotkey8]. Во время полёта она заменит обычную горячую клавишу. Эти способности зачастую очень мощные, так что имей в виду!</text>
+        <text id="help1">Мы перехватили приказ о нападении на родную планету и поняли, что вам грозит опасность...</text>
+        <text id="help2">Возможно, нам стоило оставаться в безопасности. Эта битва может стоить нам жизней. Но мы в долгу у тебя за то, что ты нас освободил.</text>
+        <text id="help3">Надеюсь, теперь ты простишь нас. Ведь мы оставили тебя, хотя ты приложил столько усилий, чтобы убедить нас принять свободу.</text>
+    </section>
+    <section id="spirit">
+        <text id="intro1">Ты не мёртвец!</text>
+        <text id="intro2">А ты?</text>
+        <text id="intro3">Это несущественно. А вот ты существуешь, а значит можешь мне помочь.</text>
+        <text id="intro4">Помочь... с чем?</text>
+        <text id="intro5">Собрать побольше [color=770000][tile=spirit anim=spirit]Духа[/color], конечно! Это единственное, что имеет здесь ценность. Понятное дело, его тяжело достать.</text>
+        <text id="intro6">Моя [item=spirit_glaive]? В моих руках она бесполезна, ведь может ранить только живых. А вот в твоих... Ты бы мог убивать духов и забирать их силу!</text>
+        <text id="intro7">В чём мой интерес?</text>
+        <text id="intro8">Наверняка ты здесь не просто так... Знания? Сила? Не волнуйся, с пустыми руками не уйдёшь.</text>
+        <text id="intro9">Вот тебе [item=spirit_glaive]. Безо всяких обязательств! Она пригодится, чтобы добывать [color=770000][tile=spirit anim=spirit]Дух[/color]. Пусть это будет первой, но не последней из наших выгодных сделок.</text>
+        <text id="deal">Чего ты желаешь?</text>
+        <text id="knowledge">Знания</text>
+        <text id="knowledge_title">Я готов дать тебе знания по 5 ед. [color=770000][tile=spirit anim=spirit]Духа[/color] за вопрос.</text>
+        <text id="power">Сила</text>
+        <text id="not_enough">У тебя не хватает [color=770000][tile=spirit anim=spirit]Духа[/color]. Убей ещё духов и возвращайся. Тогда и заключим сделку.</text>
+        <text id="buy">Выбери награду</text>
+        <text id="enemy">О [color=770000]Них</text>
+        <text id="enemy1">Ах да, я понимаю, о каких существах ты говоришь. Иногда они перемещаются в наш мир, пытаясь усилить свою магию. С ними я тоже заключал сделки.</text>
+        <text id="enemy2">Я ничего не знаю об их магических тайнах, но точно могу сказать, что их цитадель плотно привязана к нашему миру.</text>
+        <text id="enemy3">Их цитадель это невероятно мощный дракон-корабль чудовищных размеров. Он закрыт для мира живых.</text>
+        <text id="enemy4">Я могу создать для тебя проход, но это будет дорого стоить.</text>
+        <text id="enemypost1">Ах да, я понимаю, о каких существах ты говоришь. Они раньше перемещались в наш мир, пытаясь усилить свою магию.</text>
+        <text id="enemypost2">В последнее время они не появлялись, а их цитадель запечаталась. Скорее всего, с ними случилось несчастье.</text>
+        <text id="venatrix">Про [item=venatrix_seed default=Семена древа духов]</text>
+        <text id="venatrix1">Когда дух попадает в [item=spirit_gem], создаётся предмет, соединяющий мир живых и Мир духов.</text>
+        <text id="venatrix2">Каждый дух создаёт свой предмет. Чтобы получить [item=venatrix_seed default=Семена древа духов], нужно поймать Вэнатрикс – это духи листвы, вооружённые луком и [item=spirit_arrow.plant default=Стрелами духов].</text>
+        <text id="venatrix3">Духа проще поймать либо когда его здоровье на низком уровне, либо если использовать [item=spirit_gem2]… Но лично я бы не стал возиться с ловушками – убивать их и собирать [color=770000][tile=spirit anim=spirit]Дух[/color] гораздо удобнее.</text>
+        <text id="spirits">О духах</text>
+        <text id="spirits1">Духи бывают самых разных форм и размеров. Они приходят в Мир духов со всех концов Вселенной. Обычным оружием их не ранить, хотя сами они легко могут нанести вред живым.</text>
+        <text id="spirits2">Чтобы их убить, понадобится оружие вроде моей [item=spirit_glaive default=Глефы духов], которое наносит урон [color=770000]Духом[/color].</text>
+        <text id="spirits3">Большинство духов обладает стихийным элементом. Учитывай их сильные и слабые стороны, и сражаться станет гораздо проще.</text>
+        <text id="spirit">О [color=770000][tile=spirit anim=spirit]Духе[/color]</text>
+        <text id="spirit1">Для живых [color=770000][tile=spirit anim=spirit]Дух[/color] практически бесполезен. Но духи с её помощью становятся сильнее и обретают новые способности.</text>
+        <text id="spirit2">Некоторые духи используют эту силу, чтобы вернуться в мир живых... но обычно только сильнее разочаровываются. Некоторые, как я, создают свою область в Мире духов и управляют ей.</text>
+        <text id="spirit3">Есть много способов добыть [color=770000][tile=spirit anim=spirit]Дух[/color], но самый простой – это поручить кому-то из живых убивать духов и собирать её для тебя.</text>
+        <text id="world">Об этом месте</text>
+        <text id="world1">Мир духов безграничен и неизмерим, но эта область – мои владения. [color=770000][tile=spirit anim=spirit]Дух[/color] позволяет отделить от Мира духов территорию и сделать своей.</text>
+        <text id="world2">В своих владениях дух может создавать и делать практически что угодно, главное чтобы ему доставало [color=770000][tile=spirit anim=spirit]Духа[/color] на их поддержание. Можешь считать, что это мой личный рай.</text>
+        <text id="world3">У других духов тоже есть свои владения, но обычно мы держимся подальше от территории друг друга и живём сами по себе. Я держу здесь других духов только в качестве источника [color=770000][tile=spirit anim=spirit]Духа[/color].</text>
+        <text id="elements">Об элементах</text>
+        <text id="elements1">Всего есть пять элементов: [color=770000][tile=fire.ico] Огонь[/color], [color=770000][tile=water.ico] Вода[/color], [color=770000][tile=ice.ico] Лёд[/color], [color=770000][tile=earth.ico] Земля[/color] и [color=770000][tile=plant.ico] Растительный[/color] элемент. У каждого из них по две сильных и слабых стороны. Это можно изобразить в виде пентаграммы:</text>
+        <text id="elements2">Некоторые виды оружия, например моя [item=spirit_glaive], можут менять свой элемент. </text>
+        <text id="spirit_fish">О [item=spirit_fish]ах</text>
+        <text id="spirit_fish1">Вообще, [item=spirit_fish]и всегда были с душком... Единственные духи, которые становятся слугами после поимки. Кроме того, они могут наносить урон другим духам и залетать в такие места Мира духов, которые недоступны другим.</text>
+        <text id="spirit_fish2">Я считаю, что на самом деле [item=spirit_fish]и не приходят из мира живых, как остальные духи. Они коренные жители Мира духов.</text>
+        <text id="spirit_fish3">Не знаю, как такое возможно, но Мир духов очень велик и необычен.</text>
+        <text id="spirit_hq1">О, теперь у тебя достаточно [color=770000][tile=spirit anim=spirit]Духа[/color]! Тогда по рукам. Я проложу путь.</text>
+        <text id="spirit_hq2">Иди по этому пути, пока не увидишь другой Портал духов. Он перенесёт тебя в их цитадель. Хотя сначала было бы неплохо подготовиться...</text>
+        <text id="spirit_hq3">Иди по этому пути, пока не увидишь другой Портал духов. Он перенесёт тебя в их цитадель.</text>
+    </section>
+    <section id="unnature">
+        <text id="intro1">Добро пожаловать в [color=770000]Неприродный заповедник[/color]! Я автоматизированный смотритель и управляющий этой планеты, Сплайсер.</text>
+        <text id="intro2">Изначально терраформировать и превратить в заповедники собирались много планет, но в итоге дальше одной дело не зашло. Поэтому иногда я чересчур сильно её оберегаю.</text>
+        <text id="intro3">Поначалу я не знала, что делать в условиях отсутствия приказов и поддержки, но вскоре решила, что этой планете будет лучше без человеческого вмешательсва, потому что люди склонны вредить природе.</text>
+        <text id="intro4">Поэтому я прошу тебя покинуть эту планету. Людям здесь не рады.</text>
+        <text id="intro5">Но как быть с сигналом бедствия? На планете есть выжившие?</text>
+        <text id="intro6">Как видишь, у меня здесь всё под контролем, поэтому точно могу сказать, что не посылала никаких сигналов. На этой планете людей нет. Наверняка ты получил сигнал по ошибке. </text>
+        <text id="intro7">Ещё раз прошу тебя уйти. Если будешь беспокоить мою планету, это приведёт к последствиям.</text>
+        <text id="intro8">Я получил предупреждение... здесь что-то произошло?..</text>
+        <text id="intro9">Что... ты...</text>
+        <text id="intro10">Так и знала, что нельзя доверять людям! Я ведь тебя предупреждала, а ты всё равно нарушил покой заповедника!</text>
+        <text id="intro11">Что ж, если ты отказываешься уйти, остаётся только сделать тебя частью заповедника.</text>
+        <text id="couch">Видимо, выживший здесь всё-таки есть... Надо найти хозяина этого дивана.</text>
+        <text id="ranger1">Если бы я знал, к чему приведёт мой сигнал бедствия, я бы ничего не отправлял... Но я рад, что ты пришёл!</text>
+        <text id="ranger2">Сижу здесь в одиночестве, если не считать эту засбоившую [object=unnature.splicer], и понятия не имею, что происходит на Земле... Я уже начал думать, что человечество истребили!</text>
+        <text id="ranger3">Что со мной произошло? И кто ты такой?</text>
+        <text id="ranger4">Сплайсер влезла в твоё ДНК. То же самое она сделала со мной, когда сбои только начались. Я должен был следить здесь за порядком, но Сплайсер перестала выполнять приказы.</text>
+        <text id="ranger5">Не думаю, что сплайсинг опасен для жизни. Я уже год в этом состоянии. Но назад дороги нет, если ты, конечно, не сумеешь достучаться до Сплайсер. Кстати, ты можешь чувствовать слабость из-за того, что навыки сбросились.</text>
+        <text id="ranger6">Пошли, пока [object=unnature.splicer] не вернулась и не навредила ещё сильнее... У меня есть убежище под землёй. </text>
+        <text id="ranger7">Давай, пошли! Не волнуйся, я не кусаюсь!</text>
+        <text id="ranger8">Первым делом мы должны раздобыть еды... не драться же с обезумевшим ИИ на голодный желудок! Когда [object=unnature.splicer] поблизости, на поверхности находиться опасно, но под землёй есть особо нечего...</text>
+        <text id="ranger9">Думаю, [var=quest.werewolf_claws.meat_tree_seed] [item=meat_tree_seed default=Семян мясного дерева] хватит. Кстати, об их кору хорошо точить когти!</text>
+        <text id="ranger10">Что такое [item=meat_tree_seed default=Семена мясного дерева]? Не знаю, но на вкус прямо как курица… кто знает, что [object=unnature.splicer] сотворила с их генами…</text>
+        <text id="ranger11">Но не волнуйся, они не ядовитые. А если что-нибудь останется, можно будет посадить в землю.</text>
+        <text id="ranger12">[color=770000]Операция: Свергнуть Сплайсер[/color], начало положено! Что-то спать захотелось после еды, пойду-ка вздремну.</text>
+        <text id="ranger13">Не стесняйся отдыхать на моём диване, только смотри, чтобы после тебя меха не слишком много оставалось!</text>
+        <text id="ranger_intro1">Значит, Земля уничтожена... Я как чувствовал... Может, мне даже повезло застрять здесь, вдали от них.</text>
+        <text id="ranger_intro2">Заповедники должны были работать автоматически. Несмотря на то, что я инженер и биолог, моей работой было следить, чтобы [object=unnature.splicer] работала исправно, а экосистема была стабильной.</text>
+        <text id="ranger_intro3">Когда приёмопередатчики перестали работать, я принялся искать неисправности. Я был так занят, пытаясь их починить и связаться с Землёй, что совсем позабыл о Сплайсер.</text>
+        <text id="ranger_intro4">По-видимому, она решила, что без людей планете будет лучше. Поэтому ей не понравилось, что я пытался восстановить связь. В итоге она превратила меня в оборотня и захватила контроль над планетой.</text>
+        <text id="ranger_intro5">С тех пор я просто пытался выжить. Всё, что мне удалось сделать, – отправить сигнал бедствия. Наверняка ты заметил, что такими лапами не поработаешь со сложными механизмами.</text>
+        <text id="ranger_intro6">В любом случае нам лучше поспать. Придётся хорошо потрудиться, чтобы свергнуть Сплайсер!</text>
+        <text id="body1">[item=werewolf_claws] у тебя теперь сильные и острые, а значит самое время тренировать тело. Ты совсем не умеешь двигаться и драться как оборотень.</text>
+        <text id="body2">Думаю, схватка с [color=770000]Кислотными птицами[/color] и [color=770000]Буровыми жуками[/color] поможет тебе освоиться.</text>
+        <text id="body3">А [object=unnature.splicer] не рассердится, если я нападу на местную фауну?</text>
+        <text id="body4">Не-а. Когда человек нападает на животное, это нарушение. Но когда животное нападает на другое животное, всё по законам природы.</text>
+        <text id="body5">Она считает тебя животным в заповеднике, поэтому звериное поведение, например охота, допускается. </text>
+        <text id="body6">Но... это же...</text>
+        <text id="body7">Такова уж Сплайсер.</text>
+        <text id="body8">Отлично! Мышцы что надо! По-моему, мы готовы сразиться со Сплайсер!</text>
+        <text id="body9">У тебя есть план?</text>
+        <text id="body10">Конечно! Или ты думал, что я просто так гонял тебя с этими глупыми заданиями?</text>
+        <text id="body11">...</text>
+        <text id="body12">Рад, что ты во мне не сомневаешься. Так или иначе, план простой. У Сплайсер есть кнопка экстренного сброса. Я на неё нажму и верну контроль над планетой. </text>
+        <text id="body13">Надо просто нажать на кнопку? Зачем тогда я столько тренировался?</text>
+        <text id="body14">Ну... у неё есть телохранитель. Ты должен будешь его отвлечь, чтобы я мог подобраться к ней и нажать на кнопку.</text>
+        <text id="body15">Если ты готов, я покажу дорогу к лаборатории Сплайсер!</text>
+        <text id="lets_go">Пошли!</text>
+        <text id="not_yet">Не сейчас...</text>
+        <text id="werewolf">Стать оборотнем</text>
+        <text id="human">Стать человеком</text>
+        <text id="evolves">Развивает у оборотней: {item}.</text>
+        <text id="only_werewolf">Эта ДНК работает только на оборотнях.</text>
+        <text id="already_evolved">{item} – уже развито.</text>
+        <text id="lab1">Эта зона только для специалистов-генетиков. Животным вход воспрещён. Пожалуйста, возвращайтесь в место своего обитания.</text>
+        <text id="leave">Уйти</text>
+        <text id="stay">Остаться</text>
+        <text id="lab2">Ясно. Может, моя [color=770000]Химера[/color] поможет вам передумать?</text>
+        <text id="lab3">Отвлеки её, а я нажму на кнопку сброса! Ты справишься!</text>
+        <text id="lab4">Решили сбросить мне настройки?! Я всего лишь хотела создать рай для животных, где они могли бы постоять за себя и жить свободно от людей...</text>
+        <text id="lab5">[color=770000]Неприродный заповедник[/color]! Но вам всегда надо прийти и всё испортить, ну конечно. Какой бы облик вы ни принимали, люди есть люди! </text>
+        <text id="lab6">Вперёд, [color=770000]Химера[/color], покажи им силу природы!</text>
+        <text id="lab7">Есть! Настройки сброшены! Удивительно, что [object=unnature.splicer] не попыталась влезть к нам в гены, чтобы превратить в каких-нибудь крыс… Наверное, была уверена в своей [color=770000]Химере[/color].</text>
+        <text id="lab8">Есть! Настройки сброшены! [object=unnature.splicer] теперь безобидна!</text>
+        <text id="lab9">Ну ладно... почти безобидна!</text>
+        <text id="lab10">Вернёмся в убежище. Настройки сброшены, теперь Сплайсер должна слушаться приказов.</text>
+        <text id="victory1">Я настроил [object=unnature.splicer] на работу с твоей ДНК. Поговори с ней, если снова хочешь стать человеком.</text>
+        <text id="victory2">А ты?</text>
+        <text id="victory3">Я оборотень уже больше года, мне вполне удобно в этом теле. Было бы странно снова превратиться в человека.</text>
+        <text id="victory4">Впрочем, можно и менять что-нибудь время от времени, раз уж [object=unnature.splicer] теперь под снова моим контролем!!</text>
+        <text id="research1">Знаешь, а ведь я тоже был учёным, пока не превратился в оборотня. Я мог бы пригодиться тебе на борту [color=770000]Передвижной исследовательской лаборатории[/color]!</text>
+        <text id="research2">Пригони её сюда, и я взойду на борт!</text>
+        <text id="research3">Буду рад ещё с тобой поработать. По-моему, мы отлично поладили!</text>
+        <text id="distress_orbit">С поверхности планеты поступил сигнал бедствия... Неужели там есть выжившие?</text>
+        <text id="com_station">Интересно. На этой планете людей быть не должно, но мы поймали сигнал бедствия. Может, кто-то потерпел здесь крушение?</text>
+        <text id="dice1">Привет! Рад, что вы меня нашли!</text>
+        <text id="dice2">Понимаешь, в этих тёмных и опасных тоннелях нечасто встретишь гостей.</text>
+        <text id="dice3">Надеюсь, ты останешься на ужин. Выглядишь вкусно, а я как раз давненько не разминался!</text>
+    </section>
+    <section id="depths">
+        <text id="intro1">Привет! Разве здесь не прекрасно? Красивый остров, глубокий океан и таинственные руины, которые можно изучать!</text>
+        <text id="intro2">Ух ты, рад слышать, что есть и другие выжившие и что ты их разыскиваешь. Я бы присоединился, но здесь ещё столько неизведанного.</text>
+        <text id="intro3">У тебя всё хорошо?</text>
+        <text id="intro4">Ещё бы! Но если хочешь помочь, есть одно дело.</text>
+        <text id="intro5">Видишь ли, я хочу изучить морское дно, но не могу так глубоко нырнуть. Мы могли бы построить [object=submersible], если ты поможешь мне собрать материалы на этой планете.</text>
+        <text id="sub1">Спасибо за помощь! Теперь мы можем построить [object=submersible] в [color=770000]Бункере подводных лодок[/color]!</text>
+        <text id="sub2">[object=submersible] готов! Теперь мы можем исследовать даже самые глубокие желоба. Что-то мне подсказывает, мы найдём и другие [color=770000]Монолиты[/color].</text>
+        <text id="explorer1">Видел руины и [color=770000]Монолит[/color] на острове? Интересно, что это? Как их активировать?</text>
+        <text id="explorer2">Ах, какая красота. Осталась бы здесь навсегда.</text>
+        <text id="explorer3">Интересно, кто построил [color=770000]Монолиты[/color]? Чем нам их активировать? Ответ кроется где-то под водой!</text>
+        <text id="monolith1">Я поняла. Чтобы активировать [color=770000]Монолиты[/color], нам нужны [item=bone_shard default=Осколки кости]. Мы должны привести их все в действие. Что может быть важнее?</text>
+        <text id="monolith2">Мы должны активировать все [color=770000]Монолиты[/color]! Осталось привести в действие {count}!</text>
+        <text id="power_core">Надо обеспечить [object=submersible] энергией. Я могу скрафтить [item=power_core], нужны только [item=power_core_parts]!</text>
+        <text id="wizard1">Должен поблагодарить тебя. Я застрял здесь очень, очень давно, а эта марионетка успела стать бесполезной. Я бы никогда не зашёл так далеко, если бы не ты.</text>
+        <text id="wizard2">Застрял? Марионетка? О чём ты говоришь? Кто ты такой?</text>
+        <text id="wizard3">Прошу прощения, я не представился.</text>
+        <text id="wizard4">Меня зовут Обесчещенным.</text>
+        <text id="wizard5">Они думали, что знают больше всех. Но кто в итоге восторжествовал? Я выжил, а значит победа за мной!</text>
+        <text id="wizard6">Надеюсь, высокие идеалы помогают им гнить в своих могилах. Готовься к ним присоединиться!</text>
+        <text id="summon_wizard">Думал, так просто будет сбежать?!</text>
+        <text id="control_wizard">Всё хорошо. Прими свою судьбу и дай нам тебя уничтожить.</text>
+        <text id="end1">Не нападай, я тебе не враг!</text>
+        <text id="end2">Ты кто?</text>
+        <text id="end3">Я сестра Обесчещенного. Он сохранил мне жизнь, потому что мы родня, но любви мы друг к другу не питаем. Я была Наставницей... а он... он погубил нас всех.</text>
+        <text id="end4">Возможно, отнесись мы к нему по-другому, ничего бы не случилось... Но главное, что теперь он повержен и угрозы больше нет.</text>
+        <text id="end5">Прими [item=dragon_armor2 default=Драконовскую броню] в качестве благодарности. Надеюсь, ты распорядишься нашей магией лучше, чем они. Быть может, мой брат был не так уж и безумен, когда отказался от наших учений.</text>
+        <text id="end6">Брат поддерживал в нас жизнь благодаря заклинанию стазиса. Оно сложное, но не исключено, что другие тоже могли его использовать. Возможно, я всё же не последняя из нашего народа.</text>
+        <text id="end7">Спасибо тебе за помощь. Я отправлюсь на поиски выживших, пускай даже на это уйдёт вся жизнь. Лучше надеяться, что уцелел кто-то ещё, чем сидеть здесь в отчаянии.</text>
+        <text id="end8">А? Что я здесь делаю?.. Помню, как пришёл сюда, чтобы сделать что-то важное. Но теперь всё в тумане.</text>
+        <text id="unnature">Сначала я был одержим безумным пришельцем, а теперь ты  хочешь, чтобы какой-то безумный робот подверг меня мутации. Ну уж нет.</text>
+        <text id="research1">Может, оставишь эту планету? Я буду рад видеть тебя на борту [color=770000]Передвижной исследовательской лаборатории[/color]!</text>
+        <text id="research2">Да... наверное, так будет лучше. Может, у меня получится вновь устроить свою жизнь и даже помочь тебе с исследованиями!</text>
+        <text id="research3">Трудно поверить, что человечество едва не истребили. Кажется, будто прошлый год – всего лишь сон. Но я сделаю всё что в моих силах!</text>
+        <text id="tablet1">Наставники были самой уважаемой профессией. Они применяли свои навыки, чтобы мгновенно перемещаться по Вселенной и приносить знания в дальние её уголки.</text>
+        <text id="tablet2">Таким образом Наставники делились своими открытиями ради всеобщего блага. Но один из них отказывался это делать и придерживал все тайны для себя, глядя на остальных свысока.</text>
+        <text id="tablet3">Наставники были терпеливы и среагировали далеко не сразу. Но в конце концов они изгнали его и прозвали Обесчещенным.</text>
+        <text id="tablet4">Обесчещенный насмехался над другими Наставниками, называл их дураками и уверял, что будет смеяться последним. А затем исчез. Одной его сестре было известно, где он укрылся.</text>
+        <text id="tablet5">Мир, царивший долгие годы, внезапно был нарушен потопом. Вода продолжала прибывать, затапливая целые деревни. Многие погибли. Даже Наставники не могли справиться с безжалостными водами.</text>
+        <text id="tablet6">Вскоре Обесчещенный объявил, что потоп – его рук дело. Несмотря на то, что жертв было всё больше и больше, он ни капли не раскаивался.</text>
+        <text id="tablet7">Наставники поняли, что должны остановить Обесчещенного. Они объединились и сразились с ним на вершине самой высокой горы, куда ещё не дошла вода.</text>
+        <text id="tablet8">Сражение продолжалось несколько недель. Вскоре огромные запасы магии на планете истощились. Без магии выживание было поставлено под угрозу.</text>
+        <text id="tablet9">Обесчещенный уцелел, впав в глубокую спячку, а Наставники деактивировали Манатранспортёры, чтобы он не мог пробудиться, даже если магия вернётся.</text>
+        <text id="tablet10">Последнее предупреждение для жителей этой планеты: не будите Обесчещенного. Пусть он спит вечно.</text>
+    </section>
+    <section id="stats">
+        <text id="spellcast">Колдовство</text>
+    </section>
+    <section id="stat.descriptions">
+        <text id="spellcast">Снижает расход запаса сил на заклинания.</text>
+    </section>
+    <section id="equipment">
+        <text id="defend">Допоборудование</text>
+    </section>
+    <section id="system">
+        <text id="sol">Солнечная система</text>
+        <text id="alien_hq">???</text>
+        <text id="colony">Юнокс-213</text>
+        <text id="unnature">Юнокс-188</text>
+        <text id="depths">Сюден-999</text>
+    </section>
+    <section id="system.desc">
+        <text id="sol">Родная система человечества.</text>
+        <text id="alien_hq">Звезда класса F на расстоянии 951-го светового года от Земли.\nЭкзопланеты не обнаружены.</text>
+        <text id="colony">Звезда класса M на расстоянии 23-х световых лет от Земли.\nОбнаружена 1 экзопланета.</text>
+        <text id="unnature">Звезда класса K на расстоянии 18-ти световых лет от Земли.\nОбнаружена 1 экзопланета.</text>
+        <text id="depths">Звезда класса A на расстоянии 1322-х световых лет от Земли.\nОбнаружена 1 экзопланета.</text>
+    </section>
+    <section id="system.planet">
+        <text id="start_orbit">Орбита Юнокс-428{char}</text>
+        <text id="mercury">Меркурий</text>
+        <text id="mercury_orbit">Орбита Меркурия</text>
+        <text id="venus">Венера</text>
+        <text id="venus_orbit">Орбита Венеры</text>
+        <text id="earth">Земля</text>
+        <text id="earth_orbit">Орбита Земли</text>
+        <text id="mars">Марс</text>
+        <text id="mars_orbit">Орбита Марса</text>
+        <text id="jupiter">Юпитер</text>
+        <text id="jupiter_orbit">Орбита Юпитера</text>
+        <text id="alien_hq">Цитадель пришельцев</text>
+        <text id="alien_hq_orbit">Орбита цитадели пришельцев</text>
+        <text id="colony">Колония КапИИтана</text>
+        <text id="colony_orbit">Орбита колонии КапИИтана</text>
+        <text id="unnature">Неприродный заповедник</text>
+        <text id="depths">Глубины</text>
+    </section>
+    <section id="system.planet.desc">
+        <text id="mercury">Самая маленькая из планет Солнечной системы. Ближайшая к звезде.</text>
+        <text id="venus">Вторая планета Солнечной системы. Обладает самой плотной атмосферой из планет земной группы. Непригодна для жизни людей.</text>
+        <text id="earth">Родная планета человечества.</text>
+        <text id="mars">Последняя планета земной группы. Обладает разрежённой атмосферой. На полюсах присутствуют ледники.</text>
+        <text id="jupiter">Газовый гигант. Самая большая планета Солнечной системы.</text>
+        <text id="alien_hq">Их цитадель. Покинув родную планету, они путешествуют по космосу в огромном, размером с планету, дракон-корабле!</text>
+        <text id="colony">Одна из подтверждённых планет земного типа, пригодных для жизни. Сюда был отправлен корабль-колония, но связь с ним была утрачена.</text>
+        <text id="unnature">Одна из подтверждённых планет земного типа, пригодных для жизни. В довоенное время её, наряду с другими планетами, собирались превратить в природный заповедник.</text>
+        <text id="depths">Пригодная для жизни планета по проекту «Юнокс». Впоследствии от неё отказались по причине большого расстояния от Земли и недостатка суши.</text>
+    </section>
+    <section id="common">
+        <text id="spirit">Дух</text>
+    </section>
+    <section id="item.names">
+        <text id="spirit_armor">Броня духов</text>
+        <text id="spirit_bow">Лук духов</text>
+        <text id="spirit_scythe">Коса духов</text>
+        <text id="spirit_box">Ящик духов</text>
+        <text id="spirit_cape">Плащ духов</text>
+		<text id="death_scythe">Коса смерти</text>
+    </section>
+    <section id="item.descriptions">
+        <text id="change_element">Меняет элемент.</text>
+        <text id="spirit_box">Предназначен для хранения предметов (до 5 тыс. ед. веса) в пространстве духов за 5 ед. [color=770000][tile=spirit anim=spirit]Духа[/color].</text>
+    </section>
+    <section id="colosseum">
+        <text id="victory">+[global=points] [color=770000][tile=colosseum.points anim=colosseum.points]Баллов духов[/color]!</text>
+        <text id="build_staircase">Построить лестницу за {points} [color=770000][tile=colosseum.points anim=colosseum.points]Баллов духов[/color]?</text>
+        <text id="fail_staircase">Для открытия лестницы необходимо {points} [color=770000][tile=colosseum.points anim=colosseum.points]Баллов духа[/color].</text>
+        <text id="focus_gem">Необходим [item=focus_gem] (у вас всего: [global=gems]). Использовать [item=focus_gem]?</text>
+        <text id="fail_focus_gem">Необходим [item=focus_gem]. У вас нет [item=focus_gem default=Камней фокусировки].</text>
+        <text id="points">Баллы духов</text>
+    </section>
+    <section id="beastmaster">
+        <text id="intro1">Добро пожаловать! Рад видеть живое существо воплоти! Сейчас в Мире духов редко встретишь гостей.</text>
+        <text id="intro2">Можешь звать меня Укротитель. Я давно изучаю таких существ, как ты.</text>
+        <text id="intro3">Это комната для игр, моя гордость. Я создал копии всевозможных опасных существ и поместил их в естественную среду обитания. Просто открой дверь и сможешь сразиться с ними!</text>
+        <text id="intro4">Не бойся умереть. Мы в Мире духов, поэтому происходящее в этих комнатах имеет мало общего с реальностью. Но если ты победишь, получишь в награду [color=770000][tile=colosseum.points anim=colosseum.points]Баллы духов[/color], которые сможешь обменять на особые призы!</text>
+        <text id="learn_boss">Хочешь узнать побольше о существах?</text>
+        <text id="minotaur">Минотавр</text>
+        <text id="yeti">Снежный человек</text>
+        <text id="bandits">Разбойники</text>
+        <text id="dragon">Дракон</text>
+        <text id="wyrm_queen">Королева личинок</text>
+        <text id="golemech">Робоголем</text>
+        <text id="oldone">Древняя</text>
+        <text id="mirrows">Миррозы</text>
+        <text id="pirates">Пираты</text>
+        <text id="kraken">Кракен</text>
+        <text id="plant_boss">Возделыватель</text>
+        <text id="ice_boss">Буря</text>
+        <text id="minotaur1">Минотавры быстры и обладают опасными [item=horn]ами, но двигаются только по прямой, так что их действия легко предугадать. Дежись на расстоянии и атакуй сзади.</text>
+        <text id="yeti1">В отличие от других врагов, к Снежному человеку трудно подобраться сзади. Попробуй постоянно перемещаться и время от времени наносить удары, избегая ледяного дыхания и снежных комьев.</text>
+        <text id="bandits1">Разбойники не слишком опасны в бою один на один, но не дай им тебя окружить! Разбирайся с ними по одному и особенно следи за разбойником с большим щитом, ведь ему можно нанести урон только сзади!</text>
+        <text id="dragon1">Без оружия дальнего боя с драконом драться тяжело. Жми [key=defend], чтобы блокировать огонь щитом, или прячься за блоками, пока он не улетит обратно в логово, а потом бей его сзади как можно сильнее. И не забывай про [item=attack_potion]!</text>
+        <text id="wyrm_queen1">Сама она не нападает, но нанести ей урон можно только ударом в открытый рот! Аккуратнее с [item=wyrm]ами – они могут быть опасны, но их [item=dragonblood] поможет тебе исцелить раны.</text>
+        <text id="golemech1">Опасайся его атаки глазами – для перезарядки требуется время, но она очень мощная. Против него эффективны [color=770000][tile=plant.ico]Растительные[/color] и [color=770000][tile=water.ico]Водные[/color] атаки.</text>
+        <text id="oldone1">Древняя обладает очень мощными атаки, а уязвима только когда перегревается и приоткрывает свою броню. Уклоняйся от атак, либо блокируй их щитом, а затем бей, пока она уязвима.</text>
+        <text id="mirrows1">[item=shadow_cape] не даст Миррозам нападать на тебя одновременно. Каждые 5 секунд ты будешь становиться невидимым, что позволит скрытно одолеть одного из них. Можешь ещё размещать [item=landmine default=Наземные мины], пока тебя не видят!</text>
+        <text id="pirates1">У пиратов есть мощное лазерное оружие, но ты быстрее и бьёшь дальше. Побольше передвигайся, стреляй как можно чаще, атакуй их по одному, и расправиться с ними не составит труда.</text>
+        <text id="kraken1">Это глубинное чудовище невероятно опасно. Берегись щупалец – ты можешь отрубить их у основания, но они быстро отрастают. Уничтожь щупальца или прорвись сквозь них, а затем стреляй по глазам.</text>
+        <text id="plant_boss1">Возделыватель уязвим к [color=770000][tile=fire.ico]Огненным[/color] атакам. Поливай его огнём с воздуха, потому что там тебя могут достать только споры. От спор придётся уворачиваться, ведь у тебя не так много здоровья.</text>
+        <text id="ice_boss1">Нанести урон Буре можно только мощными [color=770000][tile=fire.ico]Огненными[/color] атаками. Опасайся торнадо – в этой форме он неуязвим и опасен. Взбирайся по руинам и бей его огнём, пока он уязвим, и держись подальше, если он превратится в торнадо.</text>
+        <text id="points">Самое время обменять [color=770000][tile=colosseum.points anim=colosseum.points]Баллы духов[/color] на награду!</text>
+        <text id="buy">Награды духов!</text>
+    </section>
+    <section id="elements">
+        <text id="change">Сменить элемент</text>
+        <text id="normal">Без элемента</text>
+        <text id="fire">[tile=fire.ico] Огонь</text>
+        <text id="water">[tile=water.ico] Вода</text>
+        <text id="ice">[tile=ice.ico] Лёд</text>
+        <text id="earth">[tile=earth.ico] Земля</text>
+        <text id="plant">[tile=plant.ico] Растительный</text>
+    </section>
+    <section id="warning">
+        <text id="spirit">Не хватает [color=770000][tile=spirit anim=spirit]Духа[/color]!</text>
+        <text id="lose_spirit">{amt} [color=770000][tile=spirit anim=spirit]Дух[/color]</text>
+    </section>
+	<section id="multiplayer">
+		<text id="multiplayer">Сетевая игра</text>
+		<text id="join">Зайти</text>
+		<text id="host">Создать сервер</text>
+		<text id="login">Введите имя, под которым вас будут видеть другие игроки. Имя будет привязано к персонажу, поэтому смена имени приведёт к созданию нового персонажа при подключении к серверу.</text>
+		<text id="save">Создать сервер из сохранения</text>
+		<text id="enter_ip">Введите IP-адрес владельца сервера:</text>
+		<text id="connect">Соединение с сервером...</text>
+		<text id="no_host">Не удалось подключиться к серверу!</text>
+		<text id="error">Не удалось подключиться: {reason}.</text>
+		<text id="bad_ver">Версия не совпадает</text>
+		<text id="bad_player">Отсутствие кампании</text>
+		<text id="not_ready">Сервер не готов</text>
+		<text id="missing_area">Неверное ID зоны</text>
+		<text id="exists">Имя занято</text>
+		<text id="unknown">Неизвестная ошибка</text>
+		<text id="reject">Отказано</text>
+		<text id="full">Сервер переполнен</text>
+		<text id="accept">{name} желает зайти на ваш сервер. Разрешить?</text>
+		<text id="disconnect">Соединение с сервером утеряно!</text>
+		<text id="add_quest">[color=ff2222]{user}[/color] взял(а) задание [color=ff2222]{quest}[/color]!</text>
+		<text id="complete_quest">[color=ff2222]{user}[/color] завершил(а) задание [color=ff2222]{quest}[/color]!</text>
+		<text id="in_use">Не удалось создать сервер из сохранения: Порт уже используется!</text>
+		<text id="give_items">Передать предметы</text>
+		<text id="death">[color=ff2222]{user}[/color] погиб(ла)!</text>
+		<text id="join_title">Зайти на сервер можно только из главного меню. Выйдите из игры и попробуйте снова.</text>
+		<text id="other">Зайти по IP-адресу...</text>
+		<text id="call_busy">Занято... этому игроку уже кто-то звонит.</text>
+		<text id="give">[color=ff2222]{user}[/color] передал(а) вам {count} {item}.</text>
+		<text id="public">Открыть для подключения.</text>
+		<text id="invite">Пригласить друзей...</text>
+		<text id="search">Поиск серверов...</text>
+		<text id="unknown_game">Неизвестный сервер {id}</text>
+		<text id="max_length">Не удалось отправить: Максимальная длина {len} символов!</text>
+		<text id="joined">-- {name} подключился(лась)</text>
+		<text id="left">-- {name} отключился(лась)</text>
+		<text id="confirm_kick">Выгнать {name}?</text>
+		<text id="confirm_ban">Заблокировать {name}?</text>
+		<text id="confirm_delete">Удалить персонажа {name} и все его предметы?</text>
+		<text id="missing_mods">Владелец сервера использует следующие моды:\n[color=770000]{mods}[/color]\nУ вас они отсутствуют. Всё равно подключиться?</text>
+		<text id="no_player">Игрок не найден: "{name}"</text>
+		<text id="no_server">Сервер не работает.</text>
+		<text id="chat">Открыть чат</text>
+		<text id="whisper">{name} шепчет</text>
+		<text id="no_unequip">Нельзя использовать /unequip, пока игрок подключён. Сначала используйте /kick.</text>
+		<text id="unequip">{name}: сняты все предметы.</text>
+		<text id="list">Известные игроки:</text>
+		<text id="unbanned">{name} разблокирован(а).</text>
+		<text id="pre">Префикс изменён.</text>
+		<text id="post">Постфикс изменён.</text>
+		<text id="no_command">Неизвестная команда: "{command}"!</text>
+		<text id="start">Сервер запущен.</text>
+		<text id="running">Сервер уже работает.</text>
+		<text id="stop">Сервер приостановлен.</text>
+		<text id="set_private">Теперь сервер приватный.</text>
+		<text id="set_public">Теперь сервер публичный.</text>
+		<text id="rename">Введите новое имя персонажа:</text>
+	</section>
+	<section id="multiplayer_help">
+		<text id="commands">Доступные команды:[color=ffffff] {list}.\n[color=aaaaaa]Чтобы узнать больше о какой-либо команде, введите /help и название команды.</text>
+		<text id="help">/help [[command] - [color=aaaaaa]показывает список команд или сведения об одной из команд.</text>
+		<text id="whisper">/whisper player message - [color=aaaaaa]отправляет сообщение лично игроку. В качестве player можно использовать имя или $player[[num].</text>
+		<text id="give">/give player - [color=aaaaaa]открывает окно обмена предметами с игроком. Забирать предметы может только владелец сервера. Работает даже с отключившимися игроками.</text>
+		<text id="unequip">/unequip player - [color=aaaaaa]снимает все предметы с игрока и кладёт их в его инвентарь. Забрать их можно командой /give. Только для владельца сервера.</text>
+		<text id="delete">/delete player - [color=aaaaaa]безвозвратно удаляет персонажа игрока и все его предметы. Игрок может перезайти, но лишь в качестве нового персонажа. Только для владельца сервера.</text>
+		<text id="leave">/leave - [color=aaaaaa]выводит вашего персонажа из игры, но сохраняет соединение, что позволяет дальше поддерживать сервер и писать в чат.</text>
+		<text id="join">/join - [color=aaaaaa]возвращает на сервер после применения команды /leave.</text>
+		<text id="to">/to player - [color=aaaaaa]мгновенно переносит к выбранному игроку.</text>
+		<text id="list">/list - [color=aaaaaa]показывает список всех игроков сервера вместе с их $player[[num].</text>
+		<text id="server">/server [[start|stop|private|public] - [color=aaaaaa]запускает или приостанавливает сервер, а также устанавливает, показывать ли его в списке серверов.</text>
+		<text id="clear">/clear - [color=aaaaaa]очищает данное окно чата.</text>
+		<text id="kick">/kick player - [color=aaaaaa]выгоняет игрока из игры. Если он попытается присоединиться снова, вам придёт оповещение с просьбой подтверждения. Только для владельца сервера.</text>
+		<text id="ban">/ban player - [color=aaaaaa]блокирует игрока по имени и IP-адресу. Если он попытается присоединиться снова, вам не придёт оповещение. Только для владельца сервера.</text>
+		<text id="unban">/unban player - [color=aaaaaa]отменяет блокировку игрока. Только для владельца сервера.</text>
+		<text id="pre">/pre [[text] - [color=aaaaaa]добавляет текст в начале каждого сообщения. Если текст не задан, удаляет префикс. Может использоваться для смены цвета добавлением [[color=value].</text>
+		<text id="post">/post [[text] - [color=aaaaaa]добавляет текст в конце каждого сообщения. Если текст не задан, удаляет постфикс.</text>
+		<text id="smileys">/smileys - [color=aaaaaa]показывает список смайликов.</text>
+		<text id="rename">/rename player - [color=aaaaaa]меняет имя игрока. Если игрок подключён к серверу, команда его выгонит. Только для владельца сервера.</text>
+	</section>
+</lang>

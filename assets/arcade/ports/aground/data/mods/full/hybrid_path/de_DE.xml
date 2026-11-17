@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+  <lang id="de_DE">
+    <section id="item.descriptions">
+        <text id="sight_range">Größere sichtweite, wenn ausgerüstet.</text>
+    </section>
+    <section id="item.names">
+        <text id="golden_sword">Goldenes Schwert</text>
+        <text id="golden_shield">Goldenes Schild</text>
+        <text id="ant">Antpanion</text>
+        <text id="tank">Panzer</text>
+        <text id="tank_gun">Panzerkanone</text>
+        <text id="steel_wyrm_helm">Mecha-Wyrm Helm</text>
+        <text id="mecha_dragon_backpack">Mecha-Drachenherz</text>
+        <text id="battery_staff">Batteriebetriebener Stab</text>
+        <text id="mecha_dragon">Mecha-Drache</text>
+        <text id="exotic_gas">Exotisches Gas</text>
+        <text id="ice_exo_sword">Exo-Schwert &gt;Eis&lt;</text>
+        <text id="fire_exo_sword">Exo-Schwert &gt;Feuer&lt;</text>
+        <text id="plant_exo_sword">Exo-Schwert &gt;Pflanze&lt;</text>
+        <text id="water_exo_sword">Exo-Schwert &gt;Wasser&lt;</text>
+        <text id="earth_exo_sword">Exo-Schwert &gt;Erde&lt;</text>
+        <text id="drain_exo_sword">Exo-Schwert &gt;Entzug&lt;</text>
+        <text id="mecha_dragon_ship.cannon">Schwere Kanone</text>
+        <text id="mecha_dragon_ship.gun">Zielsuch-Blaster</text>
+        <text id="mecha_dragon_ship.shieldbreaker">Schildbrecher</text>
+        <text id="chromium_hammer">Chrom-Hammer</text>
+    </section>
+    <section id="item.descriptions">
+        <text id="exotic_gas">Durchdrungen mit gewaltiger magischer Kraft</text>
+        <text id="ice_exo_sword">Feuert ein eisiges Geschoss ab</text>
+        <text id="fire_exo_sword">Feuert ein feuriges Geschoss ab</text>
+        <text id="plant_exo_sword">Feuert ein Pflanzen Geschoss ab</text>
+        <text id="water_exo_sword">Feuert ein wässriges Geschoss ab</text>
+        <text id="earth_exo_sword">Feuert ein erdiges Geschoss ab</text>
+    </section>
+    <section id="achievement.names">
+        <text id="hybrid_dragon">Mecha-Drache!</text>
+        <text id="hidden_world">Nicht so gasförmig</text>
+        <text id="enchanted_exo">Herr der Elemente</text>
+        <text id="dragon_sanctuary">Planet der Drachen</text>
+    </section>
+    <section id="achievement.descriptions">
+        <text id="hybrid_dragon">Entwickle einen [color=ff2222]Mecha-Drachen[/color].</text>
+        <text id="hidden_world">Schalte die [color=ff2222]Verborgene Welt[/color] frei.</text>
+        <text id="enchanted_exo">Erschaffe ein [color=ff2222]Exotisches Schwerter[/color] jedes Elements.</text>
+        <text id="dragon_sanctuary">Rufe ein [color=ff2222] Drachen Schutzgebiet[/color] aus.</text>
+    </section>
+    <section id="equipment">
+        <text id="subsystem">Subsystem:</text>
+    </section>
+    <section id="world">
+        <text id="mecha_dragon_ship">Mecha-Drachenschiff</text>
+    </section>
+    <section id="system.planet.desc">
+        <text id="start.gas2">Ein erdähnlicher Planet, getarnt als unbewohnbarer Eisriese. Unter der stürmischen Atmosphäre liegt eine magische Welt.</text>
+    </section>
+    <section id="vehicle">
+        <text id="equip_weapon">Waffe ausrüsten</text>
+    </section>
+    <section id="quests">
+        <text id="mecha_dragon">Mecha-Drache</text>
+        <text id="mecha_dragon_ship">Mecha-Drachenschiff</text>
+        <text id="hidden_world">Verborgene Welt</text>
+        <text id="exotic_gas">Exotisches Gas</text>
+        <text id="holo_projector">Hologram Projector</text>
+        <text id="holo_ships">Holographische Schiffe</text>
+        <text id="bombardment_shield">Bombardement Schild</text>
+        <text id="bombardment_shield2">Mond Bombardment</text>
+        <text id="teacher.monolith">Verborgene Macht</text>
+        <text id="professor_hq_structures">Erkunde das HQ</text>
+    </section>
+    <section id="quest.description">
+        <text id="mecha_dragon">Verwende ein [item=evo_gem] an einem [item=steel_wyrm].</text>
+        <text id="mecha_dragon_ship">[item=mecha_dragon] +  [color=770000]Drachenschiff Fabrik[/color] =  [color=770000]Mecha-Drachenschiff[/color]</text>
+        <text id="hidden_world">: reise mittels [color=770000]Mecha-Drachenschiff[/color] nach [color=770000]Unoiks 428d[/color].</text>
+        <text id="exotic_gas">möchte das du ein mächtiges Material findest.</text>
+        <text id="holo_projector">benötigt Ressourcen, um einen [color=770000]Hologram Projector[/color] zu bauen.</text>
+        <text id="holo_ships">braucht Schiffe, um eine realistische Projektion zu erstellen.</text>
+        <text id="bombardment_shield">möchten ein [color=770000]Bombardement Schild[/color] bauen um den Planeten zu schützen.</text>
+        <text id="bombardment_shield2">möchte Materialien um die Erde vor Meteoriten zu schützen.</text>
+        <text id="teacher.monolith">Reaktiviere den [color=770000]Monolith[/color] auf Unoiks 428d.</text>
+        <text id="professor_hq_structures">möchte, dass du Ihr Hauptquartier erkundest.</text>
+    </section>
+    <section id="structure.tooltip">
+        <text id="evolve_mecha_dragon">Entwickle Mecha-Drache</text>
+    </section>
+    <section id="npc">
+        <text id="draconian_teacher">Drakonischer Lehrer</text>
+    </section>
+    <section id="innkeeper">
+        <text id="hybrid_bombardment">Es ist gut zu wissen, dass wir vor ihnen geschützt sind. Dieses Gasthaus ist mein Leben und meine Lebensgrundlage, wenn es unterginge... nun, ich würde mit ihm untergehen.</text>
+    </section>
+    <section id="mechanic">
+        <text id="shield1">Die Meteoriten vom Mond sind ein Hindernis für unsere Bemühungen, hier eine Zivilisation zu errichten!</text>
+        <text id="shield2">Ein [color=770000]Bombardement Schild[/color] sollte uns schützen können!</text>
+        <text id="shield3">Perfekt! Jetzt müssen wir uns keine Sorgen mehr über Meteoriten machen!</text>
+    </section>
+    <section id="alchemist">
+        <text id="steel_wyrm_helm">Was ist denn das?  [item=wyrm]er aus  Stahl? Hast du  versucht, einen [item=alter_gem] an einem zu verwenden?</text>
+        <text id="steel_wyrm_helm2">Dieser [item=steel_wyrm_helm] ist erstaunlich! Wer hätte gedacht, dass die Magie deines [item=alter_gem] s auf menschliche Technologie angewendet werden könnte!</text>
+        <text id="hybrid_research.1">Was? Du hast Wissenschaftlern einen [item=dragon_armor] gezeigt? Ich muss zu ihnen und mich vergewissern, dass sie so mächtige Magie verantwortungsbewusst einsetzen!</text>
+        <text id="hybrid_research.2">Also Wissenschaftler haben diese [item=steel_wyrm]er erschaffen? Ich muss sofort mit ihnen sprechen!</text>
+        <text id="hybrid_muttering">Cyborg-Argumentation… magische Infusion… vereinte kräfte… [font=drachenklaue]balderdash[/font]...</text>
+        <text id="research1">Das ist atemberaubend! Ich wünschte, ich hätte diese Technologie schon früher zur Verfügung gehabt!</text>
+        <text id="research2">Natürlich, Ich muss den [object=professor] bitten, ein paar Modifikationen vorzunehmen.</text>
+        <text id="bombardment1.2">Sie haben uns also endlich angegriffen. Mach dir keine Sorgen um die anderen, es gibt eine Höhle, die ich in Erwartung dieses Ereignisses vorbereitet habe.</text>
+        <text id="bombardment2.5">Aber, dank des [color=770000]Bombardement Schild[/color], ist die Höhle redundant. Ich werde hier bleiben und weiter Forschen.</text>
+        <text id="bombardment1.3">Sie haben uns also endlich angegriffen. Das [color=770000]Bombardement Schild[/color] wird uns aber für den moment schützen.</text>
+        <text id="ship_parts_hint">Was machst du hier? Die [item=ship_parts] sind westlich von hier zu finden, und wir brauchen sie um unsere Forschung voran zu treiben!</text>
+        <text id="evo_gem_hint">Jetzt, dar wir die [item=ship_parts] haben, müssen wir neue Magie zur untersuchung finden! Du solltest nach Osten gehen und dich dort mehr umsehen!</text>
+        <text id="build_ships_hint1">Ich habe das gefühl dass wir mehr mit [item=mecha_dragon]en tun können, dazu müssen wir aber mehr über magie und technologie lernen ...</text>
+        <text id="build_ships_hint2">Ich habe das gefühl dass wir mehr mit [item=mecha_dragon]en tun können, dazu müssen wir aber den [color=770000][tile=escort_fighter.ico] Drachen Raumjäger[/color] reparieren ...</text>
+        <text id="build_ships_hint3">Ich habe das gefühl dass wir mehr mit [item=mecha_dragon]en tun können, dazu müssen wir aber erst ein [color=770000][tile=dragon_ship.ico] Drachen Schiff[/color] entwickeln ...</text>
+    </section>
+    <section id="mirrows">
+        <text id="steel_wyrm_helm1">Diese neue Forschungsrichtung, inspiriert durch die [item=dragon_armor] hat unfassbares Potenzial! Sag uns: Was für Magie hat diesen [item=adult_dragon] in Rüstung verwandelt?</text>
+        <text id="steel_wyrm_helm2">Ein [item=alter_gem]? Versuche es mit einem [item=steel_wyrm] zu kombinieren und beobachte was passiert!</text>
+        <text id="steel_wyrm_helm3">Dieser [item=steel_wyrm_helm] ist unglaublich! Sag uns: Wo hast du diese fähigkeiten erlernt?</text>
+        <text id="hybrid_research">Ein [object=alchemist] ? Stell dir nur vor was wir tun können wenn wir zusammen arbeiten würden!</text>
+        <text id="shield1.1">Das Signal das [color=770000]Old One[/color] aussandte, als er besiegt wurde, verheißt nichts Gutes für uns.</text>
+        <text id="shield1.2">Wir haben einen genialen Weg gefunden, um zu verhindern, dass die Bombardierungen das zerstören, was von diesem Planeten übrig geblieben ist!</text>
+        <text id="shield1.3">Obwohl wir die erste Angriffswelle durchgehalten haben, müssen wir uns auf die zweite vorbereiten!</text>
+        <text id="shield2">Indem wir die Empfindungsfähigkeit des [item=mecha_dragon] nutzen, sollten wir in der Lage sein, einen [color=770000]Bombardement Schild[/color] zu erschaffen!</text>
+        <text id="shield3">Bringe einen [item=mecha_dragon], zusammen mit einigen anderen Materialien, bring die sachen auf den höchsten Berg.  Kontaktier uns, sobald du die Materialien hast!</text>
+        <text id="shield4">Du hast die Materialien für den Schild? Dann müssen wir ihn sofort bauen!</text>
+        <text id="shield5">Ausgezeichnet! Jetzt brauchen wir uns keine Sorgen mehr darüber zu machen, dass sie uns bombardieren!</text>
+        <text id="protected">Es ist gut zu sehen, dass der [color=770000]Bombardement Schild[/color] hält.Ohne ihn hätten wir vielleicht etwas Unüberlegtes tun müssen, wie den Bomber selbst abzuschiessen!</text>
+        <text id="mecha_dragon">Es gibt keine besseren Waffen für die Forschung als die, die sie gegen uns eingesetzt haben: Die Drachen!</text>
+        <text id="mecha_ship">Ein [item=mecha_dragon] war nur der Anfang! Der nächste Schritt ist die Schaffung von Cyborg-Raumschiffen!</text>
+        <text id="hybrid_weapons">Nun, da du das [color=770000]Mecha-Drachenschiff[/color] entwickelt haben, haben wir Waffen dafür in unseren Shop aufgenommen. Wie immer fließen die Mittel in mehr Forschung!</text>
+    </section>
+    <section id="hybrid">
+        <text id="mecha_dragon1.1">Es ist eine Schande, dass der [object=alchemist]  getötet wurde. Er wäre sehr nützlich gewesen, um uns bei unserer Forschung zu helfen! Wir haben jedoch seine Aufzeichnungen studiert, und die Möglichkeiten sind vielversprechend.</text>
+        <text id="mecha_dragon1.2">Unsere Forschung über die Kombination von Magie und Wissenschaft hat sich als fruchtbar erwiesen!</text>
+        <text id="mecha_dragon1.3">Mit dem [color=770000]Mobiles Forschungslabor[/color] das uns zur Verfügung steht, haben wir einige erstaunliche Forschungen abgeschlossen!</text>
+        <text id="mecha_dragon1.4">Das Opfer der [object=mirrows] war heroisch. Trotz ihrer Abwesenheit war es mir möglich, einige Fortschritte zu machen!</text>
+        <text id="mecha_dragon2">Wenn du einen [item=evo_gem] an einem [item=steel_wyrm] verwendest, solltest du in der Lage sein, einen [item=mecha_dragon] zu erzeugen! Dieser mächtige Drache wird durch [tile=power] [color=444400]Strom[/color] anstelle von [item=steak] angetrieben!</text>
+        <text id="mecha_dragon3">Das ist erst der Anfang. Stell dir nur vor, was wir mit mehr Zeit und Ressourcen erreichen können, wenn wir Technologie mit Magie vereinen!</text>
+        <text id="ship1">Mit der Technologie der [color=770000][tile=escort_fighter.ico] Drachen Raumjäger[/color] und der mächtigen Evolutionsmagie die benutzt wird um [color=770000][tile=dragon_ship.ico] Drachen Schiffe[/color] zu erschaffen,  sollten wir in der Lage sein, eine völlig neue klasse von Schiffen zu schaffen!</text>
+        <text id="ship2">Indem wir die Magie der [color=770000]Drachenschiff Fabrik[/color] auf einen [item=mecha_dragon] anwenden, können wir ein [color=770000]Mecha-Drachenschiff[/color] entwickeln!</text>
+        <text id="holo_projector">Hologramm erstellen</text>
+        <text id="prebomb">Schild Status . . . Betriebsbereit \nPlanet . . . Geschützt \nFeinde . . . Nicht erkannt</text>
+        <text id="bombardment">Schild Status . . . In Betrieb \nPlanet . . . Geschützt \nFeinde . . . Vorhanden \nBombardement . . . Im Gang</text>
+        <text id="defeated">Schild Status . . . Betriebsbereit \nPlanet . . . Geschützt \nFeinde . . . Nicht erkannt \nBombardement . . . Besiegt</text>
+        <text id="shield_active">Bombardement Schild aktiviert!</text>
+        <text id="hq_structures">Jetzt , wo du in der Lage bist die Sprache von ihnen zu übersetzen und Zugang zu ihrem Hauptquartier erhalten hast solltest du dich dort umschauen und versuchen ob du dort mit einem Drachen sprechen kannst!</text>
+        <text id="ally6">Wie du weißt wurde ich mit einem [item=evo_gem] entwickelt. Was ist ein [item=evo_gem]? Es ist ein unglaublicher kristall ähnlicher Stein, der Kraft direkt aus dem Geisterreich kanalisieren kann.</text>
+        <text id="ally10">Die [item=power_core]e die mich antreiben, sind erstaunlich!  Ich kann endlose Kraft erzeugen, ohne endlos [item=steak] zu verbrauchen!</text>
+        <text id="dragon_weps1">Die Verschmelzung von Technologie und Magie, die mich geschaffen hat, bedeutet, dass ich keine normalen Waffen benutzen kann.</text>
+        <text id="dragon_weps2">Durch die Verschmelzung menschlichen Waffen mit magischen Materialien solltest du in der Lage sein, etwas zu erschaffen, das meiner Größe würdig ist.</text>
+        <text id="dragon_weps3">Anleitungen für [item=mecha_dragon_ship.gun] und [item=mecha_dragon_ship.cannon] zur [color=770000]Schmiede[/color] hinzugefügt.</text>
+        <text id="hunter_return">Die [object=mirrows] haben ein Schild gebaut? Nun wenn das so ist, dann werde ich wieder an die Oberfläche zurückkehren!</text>
+        <text id="fisherman_return">Wir sind vor ihren Angriffen sicher?! Dann geht es für mich zurück an den offenen Himmel und die offene See! Man sieht sich oben!</text>
+        <text id="builder_return">Wir sind vor ihren Angriffen sicher?! Dann lass uns aus dieser Höhle verschwinden! Ich kann es kaum erwarten, die Sonne wiederzusehen!</text>
+        <text id="mechanic_return">Dieser Planet ist sicher, aber wenn die Menschheit überleben soll, müssen wir alle Überlebenden zusammenbringen und hoffen, dass es noch genug von uns gibt, damit wir nicht aussterben!</text>
+        <text id="no_quest_dragon">Was ist das? Ein [item=mecha_dragon]?! All unsere Forschung, und du erschaffst einfach etwas, das all unsere fortschritte bei weitem übertrifft! OK, wir werden uns an die Arbeit machen, um weitere Verwendungsmöglichkeiten für diese erstaunliche Kreatur zu finden!</text>
+        <text id="hybrid_research1.1">So, du bist also derjenige, der das Geheimnis dieser [item=dragon_armor] entdeckt hat!</text>
+        <text id="hybrid_research1.2">So, ihr seid also diejenigen die die[item=steel_wyrm]er entwickelt habt!</text>
+        <text id="hybrid_research2">Ich schlage vor, dass wir zusammenarbeiten, damit wir unser Wissen und unsere Forschungsfusion von Magie und Wissenschaft zusammenführen können!</text>
+        <text id="hybrid_research3">Das klingt nach einer guten Idee. Kommt in unser Labor und wir können mit unserer Forschung beginnen!</text>
+        <text id="alien_hq">Wenn es nur einen Weg gäbe, das [color=770000]Alien HQ[/color] zu erreichen - ich bin sicher, wir könnten dort einige nützliche Forschungsmaterialien finden!</text>
+        <text id="translation">Wir brauchen einen Weg, um mit den Kreaturen im [color=770000]Alien HQ[/color] zu kommunizieren.  Ich frage mich, ob es irgendein magisches Mittel gibt, mit dem sie kommunizieren können?</text>
+        <text id="pirates_no_inn">Fantastische Arbeit - die Meere sind endlich wieder sicher! Wenn nur das Gasthaus noch stehen würde, könnte ich Sie zur Feier des Tages auf einen Drink einladen. Er war ein schrecklicher Kerl, aber Mortimer wird mir fehlen.</text>
+    </section>
+    <section id="professor">
+        <text id="hidden_world1">Ich habe das [color=770000]Mecha-Drachenschiff[/color] untersucht und dabei etwas Faszinierendes entdeckt. Drachen scheinen Wissen in ihrer DNA kodiert zu haben!</text>
+        <text id="hidden_world2">Dieser Drache glaubt, dass der Gasriese Unoiks 428d tatsächlich ein erdähnlicher Planet ist! Ich glaube, dass das [color=770000]Mecha-Drachenschiff[/color] einige besondere Fähigkeiten besitzt, mit denen es herausfinden kann, was wirklich da ist.</text>
+        <text id="hidden_world3">Faszinierend! Eine ganze Welt, verborgen vor äußeren Augen? Was auch immer dort versteckt sein könnte? Du solltest den Planeten weiter untersuchen!</text>
+        <text id="exotic_gas1">Ich habe weitere Fusionen von Magie und Wissenschaft erforscht. Mein aktuelles Projekt ist ein Gerät, das die Schilde der fremden Schiffe lahm legt. Um es zu vollenden, brauche ich ein Material, das mächtiger ist als das, zu dem wir derzeit Zugang haben.</text>
+        <text id="exotic_gas2">Ich habe Grund zu der Annahme, dass es irgendein Material, irgendeine Form von magischer [item=exotic_matter]gibt, das meinen Spezifikationen entspricht. Kannst du in die [color=770000]Verborgene Welt[/color] reisen und nachforschen?  Der [object=draconian_teacher] weiß vielleicht mehr darüber.</text>
+        <text id="exotic_gas3">Bemerkenswert! Dieses [item=exotic_gas], das du entdeckt hast, ist sogar noch mächtiger als [item=exotic_matter]! Ich werde mit dem [object=draconian_teacher] zusammenarbeiten, um sein volles Potenzial freizusetzen!</text>
+        <text id="shieldbreaker1">Damit ist die Waffe vollständig! Aufgrund ihrer natur kann sie nur auf dem [color=770000]Mecha-Drachenschiff[/color] installiert werden.</text>
+        <text id="shieldbreaker2">Entwickle es im Ausrüstungsmenü, und verwenden [key=hotkey8], um zu schießen!</text>
+        <text id="dragon">Jetzt, da der Krieg gegen sie gewonnen ist, bin ich daran interessiert, ihre Magie zu studieren - und was wir tun können, indem wir diese Magie mit menschlicher Technologie verschmelzen!</text>
+        <text id="ship">Mit Hilfe der Evolutionsmagie, mit der [color=770000][tile=dragon_ship.ico] Drachenschiffe[/color] entwickelt werden, können wir zusammen mit der Technologie aus diesem Labor ein neues Schiff erschaffen!</text>
+        <text id="holo_projector">Der [object=draconian_teacher] und ich haben hart daran gearbeitet, einen Weg zu finden, diesen Krieg friedlich zu beenden, und wir haben gerade einen Durchbruch erzielt! Mach dich sofort auf den weg zur Verborgenen Welt !</text>
+    </section>
+    <section id="colony">
+        <text id="projector1">KI-Kanzler hier! Wir müssen sofort einen Angriff starten! Wenn der Feind noch stärker wird, werden wir ihn nie besiegen können!</text>
+        <text id="projector2">Das wird nicht nötig sein! Ich habe eine Lösung gefunden.</text>
+        <text id="projector3">Wir haben keine Zeit für leeres Gerede! Wir müssen unseren Angriff jetzt vorbereiten!</text>
+        <text id="projector4">Was Sie gerade gesehen haben, war nur ein Bruchteil ihrer Armee! Gegen ihre volle Stärke können wir niemals gewinnen. Aber es gibt noch eine andere Möglichkeit: Einen Waffenstillstand.</text>
+        <text id="projector5">Einen Waffenstillstand!? Das ist Hochverrat! Das ist Unsinn! Sie haben die Menschheit vernichtet!</text>
+        <text id="projector6">Ein Krieg gegen sie ist sinnlos. Wir werden verlieren. Die einzige Chance der Menschheit ist dieser Waffenstillstand. Ich habe ihren Führer bereits überzeugt, einen Vertrag in Erwägung zu ziehen.</text>
+        <text id="projector7">Haben Sie das? Nun, das ändert die Dinge. Im Namen der übrigen Überlebenden der Menschheit werde ich die Bedingungen für einen Friedensvertrag aushandeln. Ich bin jedoch nach wie vor der Meinung, dass sie für ihre Taten vor Gericht gestellt werden müssen!</text>
+    </section>
+    <section id="alien">
+        <text id="projector1">Dennoch haben Sie irgendwie weitergelebt - einschließlich dieses schrecklichen vermummten Mannes, der unsere Heimatwelt und unsere Geheimnisse ausgrub. Aber ich hätte nie gedacht, dass Sie nicht nur überleben würden, sondern auch eine Armee aufstellen würden, die in der Lage ist, uns zu vernichten!</text>
+        <text id="projector2">Zu denken... dass bloße Menschen die angesammelte Macht und das Wissen von Jahrhunderten besiegen könnten. Was wird aus meiner Rasse werden, jetzt, da wir überholt sind?</text>
+        <text id="projector3">Es gibt noch eine andere Option, eine, die für unsere beiden Rassen ein gutes Ende nehmen könnte. Die Menschheit hat sich bereit erklärt, einen Friedensvertrag auszuhandeln.</text>
+        <text id="projector4">Ihr sind ein Idealist. Realistisch betrachtet gibt es wenig Hoffnung auf eine Koexistenz unserer beiden Zivilisationen. Ich werde jedoch die Möglichkeit in Betracht ziehen und an diesen Verhandlungen teilnehmen.</text>
+        <text id="hybrid_win1">Ihr haben Glück, dass ich Ihre Illusionen erst nach der Unterzeichnung des Vertrags durchschaut habe. Keine Sorge - ich werde den Vertrag nicht brechen, aber es ist mir peinlich, dass ich ihn nicht durchschaut habe, bis es zu spät war.</text>
+        <text id="hybrid_win2">Aber klopfen dir nicht zu viel auf die eigene Schulter, denn ich fürchte, dieser Waffenstillstand wird nicht von langer Dauer sein. Aber bis er endet, sind ihr hier willkommen.</text>
+    </section>
+    <section id="draconian">
+        <text id="intro1">Du musst über große magische Fähigkeiten verfügen, um mich erweckt zu haben. Was auch immer Ihr getan habt, hat das Siegel gebrochen, das ich auf diesen Planeten gelegt hatte, so dass nun jeder nach Belieben ein- und ausgehen kann.</text>
+        <text id="intro2">Ich bin ein Lehrer, einer der letzten meiner Art. Ich habe mich hier vor langer Zeit in Stasis versiegelt. Aber das ist eine Geschichte für eine andere Zeit.</text>
+        <text id="intro3">Deine magischen Fähigkeiten - sie müssen dich in einen Konflikt geführt haben. Hast du von ihnen gehört, die Nachkommen der Alten ?</text>
+        <text id="intro4.1">Oje. Ein ganzer Planet zerstört? Unvorstellbar. Wir Lehrer hätten wissen müssen, dass es so weit kommen würde.</text>
+        <text id="intro4.2">Oje. Was für eine Geschichte. Welten zerstört. Was für eine unvorstellbare Tragödie. Ich frage mich, ob eine eurer beiden Rassen je in der Lage sein wird, sich wieder aufzubauen.</text>
+        <text id="intro5">Als Lehrer ist es meine Pflicht, Frieden und Wissen zu fördern. Ich werde dir helfen, aber du musst mir eines versprechen: Du wirst alles tun, was du kannst, um weitere Konflikte mit ihnen zu vermeiden. Frieden kann immer noch eine Option sein.</text>
+        <text id="no_help">Im Moment gibt es nichts, wobei ich dir helfen kann. Lass mich wieder etwas Kraft gewinnen. Kehre hierher zurück, wenn du etwas entdeckt hast, das in diesem Konflikt von Nutzen sein könnte.</text>
+        <text id="exotic_gas_hint">Du bist auf der Suche nach einem neuen Material? Nun, es wäre vielleicht klug, diesen Planeten zu erforschen. Die Kreaturen hier sind von der magischen Kraft des Planeten durchdrungen!</text>
+        <text id="exo_magic1">[item=exotic_gas]! Incredible! Unglaublich! Dieses Material scheint ein großes Potential dafür zu haben etwas mit magie zu Durchdringen.</text>
+        <text id="exo_magic2">Versuchen mal, ein [item=exo_sword] an einer [color=770000]Schmiede[/color] zu verzaubern!</text>
+        <text id="info">Was möchtest du wissen?</text>
+        <text id="teachers">Frage nach den Lehrern</text>
+        <text id="aliens">Frage nach Ihnen</text>
+        <text id="dishonored_one">Frage nach dem Entehrten</text>
+        <text id="exotic_gas">Fragen zu exotischem Gas</text>
+        <text id="teachers1">Wir haben die Monolithen geschaffen, die du gesehen hast - wie der, mit dem du mich geweckt hast.</text>
+        <text id="teachers2">Unsere Hauptaufgabe war es zu lehren - wir verbreiteten magisches Wissen an jeden, der dafür empfänglich ist, zum Wohle aller.</text>
+        <text id="teachers3">Es gab jedoch einige, wie der Entehrte, die sich gegen das lehren von magischem Wissen stellten.</text>
+        <text id="aliens1">Die Außerirdischen, die deine Heimatwelt zerstörten... Das ist eine Geschichte.</text>
+        <text id="aliens2">Sie waren immer begierig darauf, aus unseren Lehren zu lernen. Zuerst hielten wir das für ein gutes Zeichen. Doch mit der Zeit entfernte sich ihre Zivilisation immer mehr von dem offenen Austausch.</text>
+        <text id="aliens3">Ich glaube, dass sie im Grunde genommen Angst haben. Alleine können sie nur geringe Mengen an Magie ausüben. Nur durch andere können sie große Macht erlangen. Deshalb haben sie die Drachen versklavt.</text>
+        <text id="aliens4">Das muss auch der Grund sein, warum sie die Menschheit angegriffen haben. Sie spürten in Ihnen die Möglichkeit, mehr magische Kraft auszuüben, als sie es konnten. Diese Furcht ist ihre geheime Schwäche und der Schlüssel zu ihrem Untergang.</text>
+        <text id="dishonored_one1">Der Entehrte war einer von uns - ein Lehrer.</text>
+        <text id="dishonored_one2">Immer tolerant, dauerte es lange, bis wir handeln konnten. Aber schließlich warfen wir ihn aus unseren Reihen und brannten ihn den Entehrten.</text>
+        <text id="dishonored_one3">Er verhöhnte uns, nannte uns Narren und versicherte uns, dass er das letzte Mal lachen würde. Danach verschwand er.</text>
+        <text id="dishonored_one4">Nach vielen Jahren des Friedens erwartete niemand die Flut. Das Wasser stieg und stieg, ertränkte Dörfer und tötete wahllos. Wir taten alles in unserer Macht Stehende, um die Flut aufzuhalten, aber wir konnten es nicht.</text>
+        <text id="dishonored_one5">Wir wussten, dass wir den Entehrten, aufhalten mussten. Wir schlossen uns zusammen und bekämpften ihn auf dem Gipfel des höchsten Berges, wo das Wasser noch nicht angekommen war.</text>
+        <text id="dishonored_one6">Die Schlacht wütete wochenlang und entzog unserem Planeten die gewaltige Menge an Magie. Da der Vorrat an Magie zur Neige ging, wurde das Überleben zu einer Herausforderung.</text>
+        <text id="dishonored_one7">Der Entehrte überlebte, indem er in einen tiefen Schlaf fiel, und ich tat dasselbe, in der Hoffnung, von jemandem geweckt zu werden, der mir helfen könnte, das Verlorene wiederherzustellen.</text>
+        <text id="exotic_gas1">Dieser Planet besitzt eine ungeheure magische Kraft, fast so viel wie meine Heimatwelt. Alles hier ist davon durchdrungen, auch die [item=exotic_matter] die man normalerweise auf anderen Planeten findet!</text>
+        <text id="exotic_gas2">Auch die Geschöpfe hier sind von der Magischen Energie des Planeten durchdrungen. Sie sind gefährlich und unbezähmbar!</text>
+        <text id="exotic_gas3">Indem wir [item=exotic_gas] als Leitung für magische Energie verwenden, können wir menschliche Technologie und alte Magie miteinander verschmelzen!</text>
+        <text id="projector1">Der [object=professor] und ich haben an einem Plan gearbeitet, um weitere Konflikte zwischen der Menschheit und den Nachkommen der Alten - der Rasse, die Sie "sie" nennen - zu vermeiden. Nach vielen Nachforschungen haben wir einen Plan: Ein[color=770000]Hologram Projector[/color]!</text>
+        <text id="projector2">Mit diesem leistungsstarken Gerät können wir Illusionen erzeugen, die real genug sind, um beide Seiten davon zu überzeugen, dass es kein mögliches Ergebnis gibt, sondern eine gegenseitige Zerstörung.</text>
+        <text id="projector3">Dies wird nicht leicht zu bauen sein. Wir werden die technologie mithilfe von [item=exotic_gas] an einen  [item=hq_factory_seed]binden. Diese Welt verfügt über genügend magische Energie, um den Projektor aufrechtzuerhalten, aber wir müssen dem Prozess mit [item=exotic_gas] eine Starthilfe geben.</text>
+        <text id="projector4">Du hast die Materialien? Dann ist es an der Zeit, diesen Krieg zu beenden, ein für alle Mal!</text>
+        <text id="projector5">Der [color=770000]Hologram Projector[/color] ist fertig! Damit er realistische Illusionen erzeugen kann, müssen Sie einen [color=770000][tile=dragon_cruiser.ico] Drachenkreuzer[/color] und einen [item=exo_fighter] zu diesem planeten bringen.</text>
+        <text id="projector6">Wenn du bereit bist, lade und aktiviere den Projektor.</text>
+        <text id="win">Herzlichen Glückwunsch! Wir haben noch einen langen Weg vor uns, um einen dauerhaften Frieden zu sichern, aber der schwierige Teil ist vorbei. Endlich wird es wieder Harmonie unter den Sternen geben!</text>
+        <text id="win2">Es ist fantastisch zu sehen, wie die Drachen nach so vielen Jahrtausenden der Knechtschaft aufblüht!</text>
+        <text id="no_sister">Es ist eine Schande, dass keine anderen Lehrer überlebt haben. Ich bin mir nicht sicher, was ich mit dem Rest meiner Tage anfangen soll...</text>
+        <text id="sister">Es ist wunderbar zu wissen, dass ein anderer Lehrer am Leben bleibt! Mit der Zeit sollten wir in der Lage sein, etwas von dem Schaden rückgängig zu machen, den Sie über die Vielzahl von Zivilisationen gebracht haben, denen wir früher geholfen haben!</text>
+        <text id="sanctuary1">Jetzt, da die Drachen frei sind, dachten wir, es wäre eine gute Idee, hier eine art Naturschutz gebiet für sie zu schaffen!</text>
+        <text id="sanctuary2">Dar du sie befreit hast, ist es deine entscheidung. Möchtest du, dass die Drachen hier leben und neu anfangen können oder sollen die Drachen unter Ihrer Kontrolle  bleiben?</text>
+        <text id="sanctuary_choice1">Drachen Schutzgebiet erschaffen</text>
+        <text id="sanctuary_choice2">Die drachen mit Ihnen bleiben lassen</text>
+        <text id="sanctuary3">Möge dies der erste Schritt zur Behebung der Schäden sein, die sie angerichtet haben!</text>
+        <text id="professor_dead">Es ist tragisch, dass das [object=research] zerstört wurde. Ohne den [object=professor] ist meine gesamte Forschung ins Stocken geraten.</text>
+        <text id="battery_staff">Ein [item=staff]  der es dir erlaubt, Zauber mit  [tile=stamina] [color=006600]Ausdauer[/color] zu wirken? Mit [item=exotic_gas],solltest du in der Lage sein, einen Stab herzustellen, der stattdessen [tile=power] [color=444400]Power[/color] verwendet!</text>
+        <text id="battery_staff_recipe">Anleitung für [item=battery_staff] wurde zur [color=770000]HQ Library[/color] hinzugefügt.</text>
+    </section>
+    <section id="dragon">
+        <text id="hybrid_win1">Ein Naturschutzgebiet für Drachen? Ich werde mich sofort dorthin begeben!</text>
+        <text id="hybrid_win2">Das ist besser, als ich es mir seit Jahrtausenden erträumt habe! Eine ganze Welt, die der Erneuerung der Drachen gewidmet ist! Großartig!</text>
+    </section>
+    <section id="multiplayer_help">
+        <text id="help_prompt">Tippe "/help" (ohne anführungs zeichen) für eine Liste von Befehlen.</text>
+    </section>
+  </lang>
+</data>

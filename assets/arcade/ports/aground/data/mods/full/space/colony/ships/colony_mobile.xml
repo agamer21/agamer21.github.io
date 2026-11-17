@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="colony_ship" sheet="colony.1" x="4" />
+	<tile id="colony_ship.bg" sheet="colony.1" x="10" />
+	<tile id="colony_ship.engine" sheet="colony.10" />
+	<structure id="colony_ship.engine" tile="colony_ship.engine" extends="fighter.engine" room="false" fullHeight="true" />
+	<structure id="colony_ship.engine2" tile="empty" width="32" height="32" fullHeight="true">
+		<over><action>area.getStructureById("colony_ship.engine").onOver(player);</action></over>
+		<out><action>area.getStructureById("colony_ship.engine").onOut(player);</action></out>
+	</structure>
+	<structure id="colony_ship.bg" tile="colony_ship.bg" priority="-2" back="true" remove="false" />
+	<structure id="colony_ship.weaps" extends="fighter.weaps" animation="fighter.weaps" room="false" />
+	<structure id="colony_ship.o2" extends="fighter.o2" room="false" />
+	<structure id="colony_ship.subsystems" extends="fighter.subsystems" room="false" />
+	<structure id="colony_ship.cargo" extends="fighter.cargo" room="false" />
+	<animation id="colony_ship.command.idle"><frame visible="false" /></animation>
+	<animation id="colony_ship.command.over" equals="item6" />
+	<structure id="colony_ship.command" tile="colony.command" powered="true" name="operate">
+		<tile id="fighter.command_chair" animation="item6" x="1" y="1" />
+		<over><action>this.loopAnimation("over")</action></over>
+		<out><action>this.loopAnimation("idle")</action></out>
+		<operate>
+			<set id="ct" value="getPowerCores(area)" />
+			<section if="ct >= 8"><section if="area.vehicle.canMount(player)">
+				<set id="sprite" value="player.createSimpleSprite('idle')" />
+				<action>sprite.x = 36; sprite.y= 24; sprite.alpha = 0; this.addBefore(sprite, 'fighter.command_chair');</action>
+				<lerp object="player" alpha="0" seconds="0.25" modal="false" />
+				<lerp object="sprite" alpha="1" seconds="0.25" animate="player" modal="true" />
+				<action with="ellipse_fast">sprite.parent.removeChild(sprite); var v = area.vehicle; if(v.canMount(player)){v.doExit(player); setGameScale(2); v.doMount(player, true);}</action>
+				</section><stop />
+			</section><dialogue eval="'vehicle.not_enough_cores{count:'+ct+'}{total:8}'" />
+		</operate>
+	</structure>
+	<structure id="colony_ship.exit" extends="earth.door" animation="earth.door" type="none">
+		<tooltip section="actions" id="exit_ship" />
+		<operate>
+			<window type="prompt" message="warning.spaceship_exit" if="var flight = player.getFlight(); return area.vehicle.exitFlying() && (flight == null || area.vehicle.tile_y <= -flight.flight.height)" on="no"><stop /></window>
+			<action>area.vehicle.exit(player)</action>
+		</operate>
+	</structure>
+	<area id="colony_ship.interior" name="colony_ship" shouldLight="false" powered="getPowerCores(this) > 0">
+		<structure id="colony_ship.bg" x="0" y="0" />
+		<structure id="colony_ship.command" x="4" y="-24" />
+		<object id="ship.doorh" x="13" y="-24" />
+		<object id="ship.doorv" x="7" y="-23" /><object id="ship.doorv" x="10" y="-23" />
+		<structure id="colony.shields" x="10" y="-26" />
+		<object id="ship.doorh" x="13" y="-26" />
+		<object id="ship.doorh" x="23" y="-17" /><object id="ship.doorh" x="38" y="-17" />
+		<object id="ship.doorv" x="25" y="-24" /><object id="ship.doorv" x="36" y="-24" />
+		<object id="ship.doorv" x="26" y="-14" /><object id="ship.doorv" x="35" y="-14" />
+
+		<structure id="colony_ship.engine" x="44" y="-11" /><structure id="colony_ship.engine2" x="42" y="-11" />
+		<structure id="colony.quarters" x="24" y="-15" /><structure id="colony_ship.exit" x="36" y="-15" />
+		<structure id="colony.mineral_market" x="28" y="-15" /><structure id="colony.weaps_market" x="31" y="-15" />
+		<structure id="colony.cafeteria2" x="26" y="-22" />
+		<structure id="colony.factory" x="7" y="-11" />
+		<structure id="colony.drone_factory" x="14" y="-11" />
+		<structure id="colony_ship.weaps" x="12" y="-29" />
+		<structure id="colony_ship.cargo" x="37" y="-4" />
+		<structure id="colony_ship.o2" x="3" y="-10" />
+		<structure id="colony_ship.subsystems" x="3" y="-11" />
+		<object id="ship.exit3" x="6" y="-1" />
+		<object id="ship.exit3" x="2" y="-16" />
+		
+		<object id="power_core.slot" x="45" y="-18" /><object id="power_core.slot" x="45" y="-17" /><object id="power_core.slot" x="45" y="-16" /><object id="power_core.slot" x="45" y="-15" />
+		<object id="power_core.slot" x="45" y="-14" /><object id="power_core.slot" x="45" y="-13" /><object id="power_core.slot" x="45" y="-12" /><object id="power_core.slot" x="45" y="-11" />
+		<tiles from="colony_mobile.png" x="1" y="-30"><tile id="empty" color="000000" /><tile id="empty" layer="back" color="ffffff" /><tile id="no_place" color="ff0000" layer="back" /></tiles>
+		<init><runAreaLoad /></init>
+		<onLoad><music id="technically" seconds="1" /></onLoad>
+	</area>
+	<animation id="colony_ship.antigrav1" x="7" count="10" glow="true" />
+	<animation id="colony_ship.antigrav2" x="17" count="10" glow="true" />
+	<animation id="colony_ship.idle" x="0" count="1" length="10">
+		<append tile="colony_ship" animation="colony_ship.antigrav1" />
+		<append tile="colony_ship" animation="colony_ship.antigrav2" />
+	</animation>
+	<animation id="colony_ship.hover" equals="colony_ship.idle" />
+	<animation id="colony_ship.fly" equals="colony_ship.idle" />
+	<tilesheet id="colony_shields.png" width="486" height="480" />
+	<tile id="colony_shields" sheet="colony_shields.png" offsetX="-128" offsetY="-32" />
+	<animation id="colony_shields" scale="2">
+		<frame x="0" offsetX="119" glow="true" />
+		<frame x="1" offsetX="118" glow="true" />
+		<frame x="2" offsetX="121" glow="true" />
+		<frame x="3" offsetX="120" glow="true" />
+		<frame x="4" offsetX="121" glow="true" />
+		<frame x="5" offsetX="120" glow="true" />
+		<frame x="6" offsetX="119" glow="true" />
+		<frame x="7" offsetX="121" glow="true" />
+	</animation>
+	<animation id="colony_ship.ftl"  x="0" count="1" length="10">
+		<append tile="colony_ship" animation="colony_ship.antigrav1" />
+		<append tile="colony_ship" animation="colony_ship.antigrav2" />
+		<append tile="colony_shields" animation="colony_shields" offsetX="-0.09375" offsetY="-0.25" />
+	</animation>
+	<animation id="colony_ship.fire2" x="27" count="6"><frame visible="false" length="4" /></animation>
+	<animation id="colony_ship.fire" x="33" count="5"><append tile="colony_ship" animation="colony_ship.hover" behind="true" /><append tile="colony_ship" animation="colony_ship.fire2" /><frame visible="false" length="5" /></animation>
+	<tile id="colony_ship.bolt1" sheet="colony.11" />
+	<tile id="colony_ship.bolt2" sheet="colony.12" />
+	<animation id="colony_ship.bolt" x="4" count="4" />
+	<vehicle id="colony_ship" tile="colony_ship" health="8000" fuel="2000" useBatteries="false" efficiency="0" fuelName="power" defense="9" fps="12" speed="6" type="spaceship" blood="science.explosion.lg" title="itemName('world.colony_ship', this.name)" showInterior="false" attack_move="true"underground="false" flight_height="999" death_sfx="explosion" block_icon="fighter.shields.ico" block_behind="true" block_move="true" cameraY="144" attack_icon="exo_mech.gun.ico" allowRename="true">
+		<interior area="colony_ship.interior" offsetX="0" offsetY="-464" enterX="36" enterY="-15" exitX="7" operateX="6" operateY="-24" />
+		<repair id="titanium" value="250" /><operateHitbox x="80" y="48" width="576" height="368" />
+		<dismount><action>if(this.renderer != null) this.renderer.scaleX = 1;</action></dismount>
+		<onDeath><run procedure="launch.lifepod" /></onDeath>
+        <init><set id="partial" value="0" /><set id="cores" value="0" /></init>
+		<onFrame>
+			var of = Math.floor(frames); partial += frames-of; if(partial >= 1){of++; partial -= 1;}
+			var p = of*cores; if(this.blocking) p -= of*10; if(p > 0) this.addFuel(p); else if(p &lt; 0) this.useFuel(-p);
+		</onFrame>
+		<mount><set id="cores" value="getPowerCores(this.interior)" /></mount>
+		<exitInterior><run object="colony_ship" event="mount" /></exitInterior>
+		<shield tile="colony_shields" animation="colony_shields" hit_sfx="ship_shield" />
+		<attack type="projectile" damage="150" range="30" animation="fire" cost="600" scaleCost="false" sfx="plasma_cannon" fireAll="true">
+			<projectile tile="colony_ship.bolt1" animation="colony_ship.bolt" speed="16" offsetX="-412" offsetY="-36" delay="6" overlap="0.25">
+				<hitEffect tile="colony_ship.bolt1" animation="item4" color="9944ff" />
+			</projectile>
+			<projectile tile="colony_ship.bolt2" animation="colony_ship.bolt" speed="16" offsetX="-315" offsetY="-255" delay="3" overlap="0.25">
+				<hitEffect tile="colony_ship.bolt2" animation="item4" color="9944ff" />
+			</projectile>
+		</attack>
+	</vehicle>
+		
+	<quest id="colony_ship" exp="4000" giver="mechanic">
+		<item id="ai_core" count="8" />
+        <item id="ship_parts" count="50" />
+		<item id="titanium" count="250" />
+		<item id="magnegem" count="50" />
+	</quest>
+	<procedure id="repair_colony_ship">
+		<window type="build" title="structure.repair_colony_ship" includeStorehouse="true" requirementsXml="getQuest('colony_ship').xml" build="actions.repair">
+			<complete quest="colony_ship" useResources="false" /><sound id="build" /><section with="fade">
+				<remove structure="this" /><move object="player" x="player.xPos/Tile.SIZE" />
+				<object id="colony_ship" x="this.xPos/Tile.SIZE-8" />
+				<set id="s" value="area.getStructureById('crashed_ship.door')" /><remove structure="s" if="s != null" />
+				<set id="s" value="area.getStructureById('crashed_ship.door.locked')" /><remove structure="s" if="s != null" />
+				<set id="s" value="area.getStructureById('crashed_ship.crack1')" /><remove structure="s" if="s != null" />
+				<set id="s" value="area.getStructureById('crashed_ship.crack2')" /><remove structure="s" if="s != null" />
+				<action if="area.id == 'science1'">
+					if(player.areas.exists("mirrows_lab")){
+						var a = player.areas.get("mirrows_lab"); var dx = 20*Tile.SIZE; var dy = -7*Tile.SIZE;
+						var ar = []; for(s in a.getStructures()) ar.push(s); for(s in ar) if(s.info.xml.get("tile") != "ship_door"){a.removeStructure(s, null); s.renderer = null; s.xPos += dx; s.yPos += dy; s._updateInfo(); area.addStructure(s, player);}
+						var ar = []; for(o in a.getAllObjects()) ar.push(o); for(o in ar) if(o.getLayer() != ENEMY_LAYER){a.removeObject(o); o.renderer = null; o.xPos += dx; o.yTile += dy; area.addObject(o);}
+					} if(player.areas.exists("crashed_ship.cave1")){
+						var a = player.areas.get("crashed_ship.cave1"); var dx = 18*Tile.SIZE; var dy = -7*Tile.SIZE;
+						var ar = []; for(s in a.getStructures()) ar.push(s); for(s in ar) if(s.info.id != "crashed_ship.crack1.ret"){a.removeStructure(s, null); s.renderer = null; s.xPos += dx; s.yPos += dy; s._updateInfo(); area.addStructure(s, player);}
+						var ar = []; for(o in a.getAllObjects()) ar.push(o); for(o in ar) if(o.getLayer() != ENEMY_LAYER){a.removeObject(o); o.renderer = null; o.xPos += dx; o.yTile += dy; area.addObject(o);}
+						dx = 18; dy = -7; for(y in 10...24) for(x in 10...56){
+							var s = a.getTileString(x, y, ORE_LAYER); var old = area.getTileString(x+dx, y+dy, ORE_LAYER);
+							if(old == "cable_rail") continue; if(s == "rail"){
+								mine(x+dx, y+dy); setOre(x+dx, y+dy, old == "cable"?"cable_rail":"rail");
+							} else if(s == "cable"){
+								mine(x+dx, y+dy); setOre(x+dx, y+dy, old == "rail"?"cable_rail":"cable");
+							} else if(s == "cable_rail"){
+								mine(x+dx, y+dy); setOre(x+dx, y+dy, "cable_rail");
+							}
+						} area.dispatchEvent(new Event("update_cables"));
+					} player.areas.remove("mirrows_lab"); player.areas.remove("crashed_ship.cave1"); player.areas.remove("crashed_ship.cave2");
+				</action>
+			</section>
+		</window>
+	</procedure>
+</data>

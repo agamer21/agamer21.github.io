@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <tilesheet id="icons.png" width="16" height="10" />
+  <tile id="exotic_gas.ico" sheet="icons.png" x="0" />
+  <tile id="mecha_dragon.ico" sheet="icons.png" x="9" />
+  <tile id="exo_sword.greyscale.ico" sheet="icons.png" x="10"/>
+  <tile id="battery_staff.ico" sheet="icons.png" x="14"/>
+  <tile id="mecha_dragon_ship.ico" sheet="icons.png" x="15"/>
+  <tile id="mecha_dragon_ship.cannon.ico" sheet="icons.png" x="16"/>
+  <tile id="mecha_dragon_ship.gun.ico" sheet="icons.png" x="17"/>
+  <tile id="mecha_dragon_ship.shieldbreaker.ico" sheet="icons.png" x="18"/>
+  <tile id="steel_wyrm_helm.ico" sheet="icons.png" x="19"/>
+  <tile id="mecha_dragon_backpack.ico" sheet="icons.png" x="20"/>
+
+  <item id="exotic_gas" type="potion" cost="2500" weight="3" icon="exotic_gas.ico" animation="item9" />
+
+  <include id="sheet.xml" />
+
+  <tile id="steel_wyrm_helm" sheet="sheet.1" />
+  <animation id="equipment.steel_wyrm_helm.idle" equals="single" />
+  <animation id="equipment.steel_wyrm_helm.walk" x="0" count="10" />
+  <animation id="equipment.steel_wyrm_helm.hit" x="10" count="6" />
+  <animation id="steel_wyrm_helm.fire" x="0" count="1" length="4" />
+  <animation id="steel_wyrm_helm.acquire" x="0" count="12" color="bafa66" />
+  <animation id="steel_wyrm_helm.identify" x="12" count="5" color="bafa66" />
+  <item id="steel_wyrm_helm" type="equipment" slot="head" cost="0" weight="5" attack="6" range="6" icon="steel_wyrm_helm.ico" hair="false" enableAttack="true" desc="item.descriptions.auto_fire" underwater="true" power="10">
+    <action id="equip" /><action id="rename" /><action id="transform" into="steel_wyrm" />
+    <equipCost storage="power" cost="1" />
+    <light tile="light.large" color="bafa66"/><identify tile="cyborg.identify" acquire="steel_wyrm_helm.acquire" animation="steel_wyrm_helm.identify" color="bafa66" />
+    <handleSecond><section if="(player.equipment.getStateI('head')&NO_ATTACK) == 0 && getEnemyInRange(player, this.info.range+player.stats.getInt('range'), this.info.attack, this.info.cut, this.info.spirit) != null && player.getPower() >= this.info.storageCost">
+      <action>player.renderer.setItemAnimation("head", "fire", false); player.losePower(this.info.storageCost);</action>
+      <projectile tile="fireball_small" animation="fireball_small.acid" speed="3" dx="player.getDX()" spawner="player" damage="this.info.attack" range="this.info.range+player.stats.getInt('range')" glow="true" fire_sfx="radioactive_bolt" hit_sfx="bolt_hit" knockback="5" underwater="true" offsetY="3">
+        <light tile="light.small" color="00cc00" />
+      </projectile>
+    </section></handleSecond>
+  </item>
+
+  <tile id="mecha_dragon_backpack" sheet="sheet.2" offsetX="8"/>
+  <animation id="equipment.mecha_dragon_backpack.idle" x="0" count="8" />
+  <animation id="equipment.mecha_dragon_backpack.fly.self" x="8" count="8" />
+  <animation id="equipment.mecha_dragon_backpack.hover.self" equals="equipment.mecha_dragon_backpack.fly.self"/>
+  <item id="mecha_dragon_backpack" type="tool" slot="back" cost="0" weight="60" capacity="250" icon="mecha_dragon_backpack.ico">
+    <action id="equip" /><action id="rename" /><action id="transform" into="mecha_dragon" />
+    <flight height="999" cost="0" speed="6" maxWeight="1000"><equipCost storage="power" cost="8" /></flight>
+    <equipCost health="-10" storage="power" cost="5" injured="true"/>
+  </item>
+
+  <item id="alter_gem" extends="alter_gem" extendAppend="true">
+    <action extends="transform_other">
+      <transform from="steel_wyrm" to="steel_wyrm_helm"/>
+      <transform from="mecha_dragon" to="mecha_dragon_backpack" enabled="player.questComplete('mecha_dragon_ship')" />
+    </action>
+	</item>
+  <item id="evo_gem" extends="evo_gem" extendAppend="true">
+    <action extends="transform_other"><transform from="steel_wyrm" to="mecha_dragon" /></action>
+  </item>
+
+  <tile id="battery_staff" sheet="sheet.3" />
+
+  <animation id="equipment.battery_staff.idle" x="0" count="1"><append tile="staff" animation="staff.gem.idle" color="5a1f7c" colorScale="2.4" /></animation>
+  <animation id="equipment.battery_staff" x="1" count="8"><append tile="staff" animation="staff.gem.cast" color="5a1f7c" colorScale="2.4" /><append tile="ice_book.cast" animation="staff.cast.fx" color="5a1f7c" colorScale="2.4" /></animation>
+  <animation id="equipment.fire_battery_staff.idle" x="0" count="1"><append tile="staff" animation="staff.gem.idle" color="ff6611" colorScale="1.4" /></animation>
+  <animation id="equipment.fire_battery_staff" x="1" count="8"><append tile="staff" animation="staff.gem.cast" color="ff6611" colorScale="1.4" /><append tile="fire_book.cast" animation="staff.cast.fx" /></animation>
+  <animation id="equipment.water_battery_staff.idle" x="0" count="1"><append tile="staff" animation="staff.gem.idle" color="1199ff" colorScale="1.4" /></animation>
+  <animation id="equipment.water_battery_staff" x="1" count="8"><append tile="staff" animation="staff.gem.cast" color="1199ff" colorScale="1.4" /><append tile="water_book.cast" animation="staff.cast.fx" /></animation>
+  <animation id="equipment.plant_battery_staff.idle" x="0" count="1"><append tile="staff" animation="staff.gem.idle" color="99ff11" colorScale="1.4" /></animation>
+  <animation id="equipment.plant_battery_staff" x="1" count="8"><append tile="staff" animation="staff.gem.cast" color="99ff11" colorScale="1.4" /><append tile="plant_book.cast" animation="staff.cast.fx" /></animation>
+  <animation id="equipment.earth_battery_staff.idle" x="0" count="1"><append tile="staff" animation="staff.gem.idle" color="ffcc11" colorScale="1.4" /></animation>
+  <animation id="equipment.earth_battery_staff" x="1" count="8"><append tile="staff" animation="staff.gem.cast" color="ffcc11" colorScale="1.4" /><append tile="earth_book.cast" animation="staff.cast.fx" /></animation>
+  <animation id="equipment.ice_battery_staff.idle" x="0" count="1"><append tile="staff" animation="staff.gem.idle" color="99ccff" colorScale="2" /></animation>
+  <animation id="equipment.ice_battery_staff" x="1" count="8"><append tile="staff" animation="staff.gem.cast" color="99ccff" colorScale="2" /><append tile="ice_book.cast" animation="staff.cast.fx" /></animation>
+
+  <item id="battery_staff.fire" type="none"><modifiers equip_anim="equipment.fire_battery_staff" element="fire" animation="battery_staff.fire.ico"><light tile="light.large" color="ff3333" offsetX="-16" /></modifiers></item>
+  <item id="battery_staff.water" type="none"><modifiers equip_anim="equipment.water_battery_staff" element="water" animation="battery_staff.water.ico"><light tile="light.large" color="6666ff" offsetX="-16" /></modifiers></item>
+  <item id="battery_staff.ice" type="none"><modifiers equip_anim="equipment.ice_battery_staff" element="ice" animation="battery_staff.ice.ico"><light tile="light.large" color="33ffff" offsetX="-16" /></modifiers></item>
+  <item id="battery_staff.earth" type="none"><modifiers equip_anim="equipment.earth_battery_staff" element="earth" animation="battery_staff.earth.ico"><light tile="light.large" color="ffcc33" offsetX="-16" /></modifiers></item>
+  <item id="battery_staff.plant" type="none"><modifiers equip_anim="equipment.plant_battery_staff" element="plant" animation="battery_staff.plant.ico"><light tile="light.large" color="33ff33" offsetX="-16" /></modifiers></item>
+
+  <animation id="battery_staff.ico" count="1"><append tile="staff.gem.ico" animation="single" color="5a1f7c" colorScale="2.4" /></animation>
+  <animation id="battery_staff.fire.ico" count="1"><append tile="staff.gem.ico" animation="single" color="ff6611" colorScale="1.4" /></animation>
+  <animation id="battery_staff.water.ico" count="1"><append tile="staff.gem.ico" animation="single" color="1199ff" colorScale="1.4" /></animation>
+  <animation id="battery_staff.plant.ico" count="1"><append tile="staff.gem.ico" animation="single" color="99ff11" colorScale="1.4" /></animation>
+  <animation id="battery_staff.earth.ico" count="1"><append tile="staff.gem.ico" animation="single" color="ffcc11" colorScale="1.4" /></animation>
+  <animation id="battery_staff.ice.ico" count="1"><append tile="staff.gem.ico" animation="single" color="99ccff" colorScale="2" /></animation>
+
+  <item id="battery_staff" type="spellbook" cost="2500" weight="2" slot="weapon" movement_walk="walk_rswing" icon="battery_staff.ico" desc="item.descriptions.staff" animation="battery_staff.ico" attack="10" underwater="true" staminaToStorage="3" storageType="power" sfx="fireball" melee_range="0.75" knockback="5" canModify="false">
+    <action id="equip" /><action id="use" name="actions.bind_spellbook" closeWindow="false">
+      <window type="items" title="actions.bind_spellbook" equipment="true" incNone="true" filter="function(i){return i.xml.get('bindStaff') == 'true';}">
+        <action>
+          setName(item == null?null:Item.setParameter(Item.setParameter(name, "m", item.xml.exists("element")?"battery_staff."+item.xml.get("element"):null), "u", item.id));
+          if(player.vehicle != null){if(player.vehicle.renderer != null) player.vehicle.renderer.equipmentChanged(player);} else if(player.renderer != null) player.renderer.equipmentChanged();
+        </action>
+      </window>
+    </action><light tile="light.large" color="ff33ff" offsetX="-16" />
+  </item>
+
+  <recipe id="make_battery_staff" creates="battery_staff" type="hq_spellbook" available="getFlag('make_battery_staff')">
+    <type id="no_uncraft" /><item id="staff" count="1" /><item id="exotic_gas" count="1" /><item id="power_core" count="1" />
+  </recipe>
+
+  <tile id="exo_sword_base" sheet="sheet.4" offsetX="-11" offsetY="-4" />
+  <animation id="equipment.exo_sword_base.idle" x="8" count="4" />
+  <animation id="equipment.exo_sword_base" count="8" shift="2" />
+  <item id="exo_sword_base" type="none" slot="weapon" cost="7000" weight="10" melee_range="1" attack="16" critical="true" knockback="5" stamina="20" staminaStat="spellcast" durability="250" durabilityName="common.fuel" breakable="false" durabilityWarning="warning.fuel" movement_walk="walk_rswing" underwater="true" sfx="dragonsword" icon="exo_sword.greyscale.ico" animation="item4">
+    <action id="equip" /><action id="feed" alt="feed_all" alt_name="fuel_all" name="common.fuel" full="warning.max_fuel" auto="common.auto_fuel" select="common.add_fuel" sfx="fuel" />
+    <food id="exotic_matter" value="100" />
+  </item>
+
+  <item id="fire_exo_sword" extends="exo_sword_base" type="equipment" hitEffect="fire_lg_dot" element="fire" color="ff6611" colorScale="1.5" underwater="false">
+    <use>
+      <projectile tile="fire" animation="item8" glow="true" offsetY="2" speed="3" scaleTo="3" fire_sfx="fireball" hitEffect="fire_med_dot" hitTrees="true" leftRight="true" color="f9be0b" colorScale="2" damage="10" range="12" spawner="player" dx="player.getDX()" delay="2">
+  			<light tile="light.small" color="cc5500" />
+  		</projectile>
+    </use>
+  </item>
+  <item id="plant_exo_sword" extends="exo_sword_base" type="equipment" color="99ff11" colorScale="1.2" element="plant" hitEffect="vines">
+    <equipCost stamina="-6" daylight="true" /><light tile="light.default" color="bafa66" offsetX="-16" />
+    <use>
+      <projectile tile="vine_projectile" animation="vine_projectile" speed="2" fire_sfx="fireball" hpSteal="1" hit_sfx="attack" hitEffect="vines" damage="10" range="12" spawner="player" dx="player.getDX()" delay="2"/>
+    </use>
+  </item>
+  <item id="water_exo_sword" extends="exo_sword_base" type="equipment" color="1199ff" colorScale="1.4" hitEffect="splash" knockback="15" element="water">
+    <use>
+      <projectile tile="water_elemental" animation="splash" speed="2" fire_sfx="fireball" knockback="15" hitEffect="splash" damage="13" range="4" spawner="player" dx="player.getDX()" delay="2"/>
+    </use>
+  </item>
+  <item id="earth_exo_sword" extends="exo_sword_base" type="equipment" color="ffcc11" colorScale="1.2" element="earth" underwater="false">
+    <use>
+      <projectile tile="rock_projectile" animation="rock_projectile" speed="2" fire_sfx="fireball" knockback="10" hit_sfx="attack" critical="true" damage="10" range="8" spawner="player" dx="player.getDX()" delay="2">
+  			<hitEffect tile="rock_projectile" animation="rock_projectile.impact" color="ffcc11" />
+  		</projectile>
+    </use>
+  </item>
+  <item id="ice_exo_sword" extends="exo_sword_base" type="equipment" color="99ccff" colorScale="1.8" hitEffect="freeze" element="ice">
+    <use>
+      <projectile tile="snowball" animation="snowball" speed="3" fire_sfx="fireball" passTile="true" hitEffect="freeze" damage="10" range="8" spawner="player" dx="player.getDX()" delay="2"/>
+    </use>
+  </item>
+  <item id="drain_exo_sword" extends="exo_sword_base" type="equipment" color="9911ff" colorScale="1.4" hpSteal="2"/>
+
+	<recipe id="make_fire_exo_sword" creates="fire_exo_sword" type="enchantments">
+		<item id="exo_sword" count="1" />
+		<item id="exotic_gas" count="1" />
+    <item id="fire_book" count="1"/>
+    <item id="fire_gem" count="1" />
+	</recipe>
+	<recipe id="make_water_exo_sword" creates="water_exo_sword" type="enchantments">
+		<item id="exo_sword" count="1" />
+    <item id="exotic_gas" count="1" />
+    <item id="water_book" count="1"/>
+    <item id="water_gem" count="1" />
+	</recipe>
+	<recipe id="make_plant_exo_sword" creates="plant_exo_sword" type="enchantments">
+		<item id="exo_sword" count="1" />
+		<item id="exotic_gas" count="1" />
+    <item id="plant_book" count="1"/>
+    <item id="plant_gem" count="1" />
+	</recipe>
+  <recipe id="make_earth_exo_sword" creates="earth_exo_sword" type="enchantments">
+    <item id="exo_sword" count="1" />
+    <item id="exotic_gas" count="1" />
+    <item id="earth_book" count="1"/>
+    <item id="earth_gem" count="1" />
+  </recipe>
+  <recipe id="make_ice_exo_sword" creates="ice_exo_sword" type="enchantments">
+    <item id="exo_sword" count="1" />
+    <item id="exotic_gas" count="1" />
+    <item id="ice_book" count="1"/>
+    <item id="ice_gem" count="1" />
+  </recipe>
+	<recipe id="make_drain_exo_sword" creates="drain_exo_sword" type="enchantments">
+		<item id="exo_sword" count="1" />
+		<item id="exotic_gas" count="1" />
+		<item id="dragonblood" count="4" />
+	</recipe>
+
+  <recipe id="research_focus_gem" creates="focus_gem" type="research" fuel_cost="100" incomplete="blueprint_paper" available="area.getObject('alchemist') != null"/>
+  <recipe id="research_alter_gem" creates="alter_gem" type="research" fuel_cost="250" incomplete="blueprint_paper" available="area.getObject('alchemist') != null"/>
+  <recipe id="research_blood_gem" creates="blood_gem" type="research" fuel_cost="250" incomplete="blueprint_paper" available="area.getObject('alchemist') != null"/>
+		<recipe id="research_evo_shard" creates="evo_shard" type="research" fuel_cost="500" incomplete="blueprint_paper" available="area.getObject('alchemist') != null"/>
+  <recipe id="research_spirit_gem" creates="spirit_gem" type="research" fuel_cost="1000" incomplete="blueprint_paper" available="area.getObject('alchemist') != null"/>
+		
+      <item id="chromium_hammer" extends="steel_hammer" cost="1000" weight="10" attack="4" stamina="1" build="400" durability="" colorScale="2"/>
+      <recipe id="craft_chromium_hammer" creates="chromium_hammer" type="exo_factory">
+        <item id="chromium" count="2" />
+      </recipe>
+</data>

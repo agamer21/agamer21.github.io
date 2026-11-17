@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<area id="colosseum.plant_boss" background="magic2" width="32" height="16" forceTime="12">
+		<tiles id="magic2.grass" y="0" />
+		<tiles id="magic1.stone" start="0" end="1" empty="true" />
+		<shore x="-1" top="sand_top" bottom="sand" flip="true" dock="dock_empty" trans1="magic2.dirt_sand1" trans2="magic2.dirt_sand2" />
+		<shore x="32" top="sand_top" bottom="sand" dock="dock_empty_flip" trans1="magic2.dirt_sand1" trans2="magic2.dirt_sand3" />
+		<action>
+			for(x in -8...40) setTile(x, 15, "blackstone");
+			for(y in -15...16){setTile(-9, y, "empty"); setTile(40, y, "empty");}
+		</action>
+		<objects id="purple_tree" y="-1" startX="-3" endX="28" minDist="8" maxDist="10" array="trees" />
+		<spawner id="crawler2" time="5000" count="7" fromX="0" toX="28" fromY="-1" toY="-1" />
+		<object id="plant_boss" x="24" />
+		<objects id="ice_bush" y="-1" between="trees" pos="0.4" percent="0.5" />
+		<objects id="ice_bush" y="-1" between="trees" pos="0.7" percent="0.5" />
+		<init><action>area.spawner.spawnAll('crawler2');</action></init>
+		<structure id="colosseum_exit" x="0" />
+	</area>
+	<procedure id="colosseum.plant_boss">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 100);
+		var map = new StringMap(); map.set("plant_boss", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("berries"), 10);
+		player.inventory.addItems(getItem("baby_cannon"), 1); player.stats.get("speed").permaBuff(2);</action>
+		<equip id="fire_sword" fromInventory="false" />
+		<equip id="wyrm_drill" fromInventory="false" />
+		<equip id="dragon_armor" fromInventory="false" />
+		<equip id="kite_shield" fromInventory="false" />
+		<teleport area="colosseum.plant_boss" x="2" temporary="true" />
+	</procedure>
+</data>

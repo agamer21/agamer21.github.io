@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="escort.xml" />	
+	
+	<animation id="power_core.slot.idle"><frame visible="false" /></animation>
+	<animation id="power_core.slot.occupied" equals="item4" />
+	<object id="power_core.slot" tile="power_core" animation="this.health == 1?'power_core.slot.occupied':'power_core.slot.idle'" layer="npc">
+		<tooltip section="actions" id="take_power_core" if="this.health == 1" />
+		<tooltip section="actions" id="put_power_core" />
+		<init><displayAction>
+			function change_health(e){
+				this.runAnimation(this.health > 0?"power_core.slot.occupied":"power_core.slot.idle", null);
+			} this.addEventListener("change_health", change_health);
+		</displayAction></init>
+		<addedToArea><action>setTile(this.tile_x, this.tile_y, "empty");</action></addedToArea>
+		<operate><choose>
+			<section if="this.health == 1">
+				<item id="power_core" /><action>this.setHealth(0, false); player.clearOverlap(); player.overlapChanged();</action>
+				<play object="this" animation="power_core.slot.idle" />
+			</section>
+			<section if="player.getItemCountStorehouse('power_core') > 0">
+				<item id="power_core" count="-1" storehouse="true" /><action>this.setHealth(1, false); player.clearOverlap(); player.overlapChanged();</action>
+				<play object="this" animation="power_core.slot.occupied" loop="true" />
+			</section>
+			<dialogue section="warning" id="no_power_core" />
+		</choose></operate>
+	</object>
+	
+	<action>
+		function getPowerCores(area){
+			var ret = 0; if(area != null) for(o in area.getObjectsById('power_core.slot')) ret += o.health; return ret;
+		}
+	</action>
+	
+	<tilesheet id="door.png" width="5" height="16" />
+	<tile id="ship.doorh" sheet="door.png" x="0" />
+	<animation id="ship.door.open" x="0" count="3" />
+	<animation id="ship.door.close" x="0" count="3" reverse="true" />
+	<object id="ship.doorh" tile="ship.doorh" width="16" height="16" behind="true" doorway="horizontal" overlapVehicle="true" overlapNPC="true" colorScale="1.5">
+		<over><sound id="ship_door" object="this" /><play object="this" animation="ship.door.open" /></over>
+		<out><play object="this" animation="ship.door.close" /></out>
+	</object>
+	<object id="ship.doorv" extends="ship.doorh" rotate="true" doorway="vertical" />
+	
+	<tile id="ship.hatch.up" sheet="fighter.2" x="38" />
+	<object id="ship.hatch.up" tile="ship.hatch.up" width="16" height="16" colorScale="1.5" />
+
+	<tile id="ship.hatch.down" sheet="fighter.2" x="18" />
+	<object id="ship.hatch.down" tile="ship.hatch.down" width="16" height="16" colorScale="1.5" />
+	
+	<tile id="ship.bed" sheet="fighter.7" />
+	<animation id="ship.bed.open" x="6" count="1" />
+	<animation id="ship.bed.opening" x="0" count="6" />
+	<animation id="ship.bed.closing" x="0" count="6" reverse="true" />
+	<animation id="ship.bed.idle" x="13" count="6" />
+	<animation id="ship.bed.occupied" x="7" count="6" />
+	<object id="ship.bed" tile="ship.bed" animation="ship.bed.idle" action="rest_bed" layer="item">
+		<tile id="ship.bed" animation="ship.bed.open" fps="10" x="-0.5" y="-0.5" />
+		<operate>
+			<section if="area.vehicle != null && !area.isPowered()"><dialogue section="warning" id="not_powered" /><stop /></section>
+			<set id="sprite" value="player.createSimpleSprite('sleep')" /><set id="glass" value="this.getTileById('ship.bed')" />
+			<play object="this" animation="ship.bed.occupied" loop="true" />
+			<action>sprite.x = -2; sprite.alpha = 0; sprite.rotation = 90; sprite.scaleY = -1; this.renderer.addChildAt(sprite, 0);</action>
+			<action>this.renderer.addChildAt(glass, 0);</action>
+			<lerp object="player" alpha="0" seconds="0.25" modal="false" />
+			<lerp object="sprite" alpha="1" seconds="0.25" animate="player" modal="true" />
+			<wait seconds="0.25" /><action>this.renderer.addChild(glass);</action>
+			<play object="glass" animation="ship.bed.closing" modal="true" />
+			<wait seconds="0.5" /><action>player.fullRestore();</action><save sleep="true" /><wait seconds="0.5" />
+			<play object="glass" animation="ship.bed.opening" modal="true" />
+			<action>this.renderer.addChildAt(glass, 0); glass.playAnimation("ship.bed.open", true);</action>
+			<wait seconds="0.25" /><lerp object="sprite" alpha="0" seconds="0.25" modal="false" />
+			<lerp object="player" alpha="1" seconds="0.25" animate="sprite" modal="true" />
+			<action>this.renderer.removeChild(sprite);</action>
+			<play object="this" animation="ship.bed.idle" loop="true" />
+		</operate>
+	</object>
+	<object id="ship.bed.mirrows" extends="ship.bed">
+		<operate>
+			<menu section="common" showCoins="true" if="area.getNPC('mirrow_n.npc') != null">
+				<dialogue section="mirrows" id="ship_bed" />
+				<choice id="yes">
+					<choose>
+						<section if="player.getCoins() < 50"><dialogue section="mirrows" id="no_money" /><stop/></section>
+						<action>player.addCoins(-50);</action>
+					</choose>
+				</choice>
+				<choice id="no"><stop/></choice>
+			</menu>
+		</operate>
+	</object>
+	
+	<include id="lifepod.xml" />
+	<tile id="lifepod" sheet="lifepod.1" />
+	<tile id="lifepod.ico" sheet="lifepod.2" />
+	<animation id="lifepod.empty" x="23" count="1" />
+	<animation id="lifepod.mount" x="20" count="4" reverse="true" />
+	<animation id="lifepod.dismount" x="20" count="4" />
+	<animation id="lifepod.idle" x="10" count="10" />
+	<animation id="lifepod.fly.thrusters" x="25" count="1" length="3" glow="true"><frame visible="false" length="2" /><frame x="25" length="3" glow="true" /><frame visible="false" length="2" /></animation>
+	<animation id="lifepod.fly" x="10" count="10"><append tile="lifepod" animation="lifepod.fly.thrusters" /></animation>
+	<animation id="lifepod.hover.thrusters" x="24" count="1" length="3" glow="true"><frame visible="false" length="2" /><frame x="24" length="3" glow="true" /><frame visible="false" length="2" /></animation>
+	<animation id="lifepod.hover" x="10" count="10"><append tile="lifepod" animation="lifepod.hover.thrusters" /></animation>
+	<animation id="lifepod.reentry" x="0" count="10" glow="true" />
+	<vehicle id="lifepod" tile="lifepod" health="500" icon="lifepod.ico" defense="4" speed="3" speedY="4" type="flying" title="vehicle.lifepod" underground="false" flight_height="2" fuel="1000" max_weight="1000" death_sfx="explosion" bgm="technically" landOnWater="true" fps="10" reentry="40" hasO2="true" explodeCliff="false" item="lifepod">
+		<repair id="titanium" value="250" /><fuel id="refined_oil" fuel="500" />
+		<hitPlanet><action>this.onDeath()</action></hitPlanet>
+		<listItem title="vehicle.pack_up">
+			<closeWindows /><action>player.vehicle.dismount();</action>
+			<invokeLater><section if="player.vehicle == null">
+				<action>player.inventory.addAll(this.inventory);</action><remove object="this" /><item id="lifepod" value="this.health"><parameter id="f" value="Std.string(this.fuel)" /></item>
+			</section></invokeLater>
+		</listItem>
+	</vehicle>
+	<item id="lifepod" name="vehicle.lifepod" type="object" cost="0" weight="50" icon="lifepod.ico" durability="500" durabilityName="common.health" durabilityIcon="vehicle_health">
+		<action id="plant" name="vehicle.deploy" object="lifepod" onGrass="false" overlapBlueprints="true" overlapStructures="true" removeBushes="false">
+			<action>object.setHealth(this.getFeed()); f = Item.getParameter(this.getNameStr(), "f"); if(f != null) object.setFuel(Std.parseInt(f));</action>
+		</action>
+		<action id="feed" alt="feed_all" alt_name="repair_all" name="repair" full="warning.max_repair" auto="common.auto_repair" select="actions.repair" sfx="workshop" />
+		<food id="titanium" value="250" />
+	</item>
+	
+	<procedure id="launch.lifepod"><section if="player.info.id != 'player.colosseum'">
+		<object id="lifepod" x="this.getCenterX()/Tile.SIZE" y="this.yTile/Tile.SIZE" />
+		<action>
+			this.doDismount(true); lifepod.setFuel(lifepod.getMaxFuel());
+			lifepod.inventory.copyFrom(this.inventory); this.inventory.clear(); lifepod.mount(player);
+			lifepod.inventory.addItems(Item.get("bandage"), 6);
+			lifepod.inventory.addItems(Item.get("jetpack"), 1);
+			lifepod.inventory.addItems(Item.get("battery"), 1);
+			lifepod.inventory.addItems(Item.get("jumpship"), 1);
+		</action>
+	</section></procedure>
+	
+	<object id="ship.exit" width="16" height="16" layer="npc" action="exit_ship">
+		<operate>
+			<window type="prompt" message="warning.spaceship_exit" if="var flight = player.getFlight(); return area.vehicle.exitFlying() && (flight == null || area.vehicle.tile_y <= -flight.flight.height)" on="no"><stop /></window>
+			<action>area.vehicle.exit(player)</action>
+		</operate>
+	</object>
+	
+	<include id="research/ship.xml" />
+	<include id="enemy/ships.xml" />
+</data>

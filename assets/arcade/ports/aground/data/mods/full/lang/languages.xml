@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+	<include id="en_US.xml" includeRoot="true" />
+    <include id="de_DE.xml" includeRoot="true" />
+    <include id="ru_RU.xml" includeRoot="true" />
+    <include id="pt_BR.xml" includeRoot="true" />
+</languages>

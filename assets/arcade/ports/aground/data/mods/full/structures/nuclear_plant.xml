@@ -1,0 +1,12 @@
+<tilesheet id='nuclear_plant.png' width='150' height='96' offsetY="-32">
+	<image frame='0' x='0' y='0' width='122' height='65' offsetX='7' offsetY='57' />
+	<image frame='1' x='0' y='65' width='150' height='82' offsetX='0' offsetY='46' />
+	<image frame='2' x='0' y='147' width='150' height='92' offsetX='0' offsetY='36' />
+	<image frame='3' x='0' y='239' width='150' height='101' offsetX='0' offsetY='27' />
+	<image frame='4' x='150' y='65' width='150' height='105' offsetX='0' offsetY='23' />
+	<image frame='5' x='150' y='170' width='150' height='110' offsetX='0' offsetY='18' />
+	<image frame='6' x='150' y='280' width='150' height='115' offsetX='0' offsetY='13' />
+	<image frame='7' x='300' y='170' width='150' height='126' offsetX='0' offsetY='2' />
+	<image frame='8' x='300' y='296' width='150' height='121' offsetX='0' offsetY='7' />
+	<image frame='9' x='300' y='65' width='150' height='82' offsetX='0' offsetY='46' />
+</tilesheet>

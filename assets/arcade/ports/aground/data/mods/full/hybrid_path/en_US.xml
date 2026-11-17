@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <lang id="en_US">
+    <section id="item.names">
+      <text id="steel_wyrm_helm">Mecha Wyrm Helm</text>
+      <text id="mecha_dragon_backpack">Mecha Dragon Heart</text>
+      <text id="battery_staff">Battery-Powered Staff</text>
+      <text id="mecha_dragon">Mecha Dragon</text>
+      <text id="exotic_gas">Exotic Gas</text>
+      <text id="ice_exo_sword">Ice Exotic Sword</text>
+      <text id="fire_exo_sword">Fire Exotic Sword</text>
+      <text id="plant_exo_sword">Plant Exotic Sword</text>
+      <text id="water_exo_sword">Water Exotic Sword</text>
+      <text id="earth_exo_sword">Earth Exotic Sword</text>
+      <text id="drain_exo_sword">Drain Exotic Sword</text>
+      <text id="mecha_dragon_ship.cannon">Heavy Cannon</text>
+      <text id="mecha_dragon_ship.gun">Homing Blaster</text>
+      <text id="mecha_dragon_ship.shieldbreaker">Shieldbreaker</text>
+		<text id="chromium_hammer">Chromium Hammer</text>
+    </section>
+    <section id="item.descriptions">
+      <text id="exotic_gas">Suffused with vast magical power</text>
+      <text id="ice_exo_sword">Fires an icy projectile</text>
+      <text id="fire_exo_sword">Fires a fiery projectile</text>
+      <text id="plant_exo_sword">Fires a plant projectile</text>
+      <text id="water_exo_sword">Fires a watery projectile</text>
+      <text id="earth_exo_sword">Fires an earthen projectile</text>
+    </section>
+	<section id="achievement.names">
+		<text id="hybrid_dragon">Dragon Sans Steak</text>
+		<text id="hidden_world">Not so Gassy</text>
+		<text id="enchanted_exo">Elemental Science</text>
+		<text id="dragon_sanctuary">Hope for Dragons</text>
+	</section>
+	<section id="achievement.descriptions">
+		<text id="hybrid_dragon">Evolve a [color=ff2222]Mecha Dragon[/color].</text>
+		<text id="hidden_world">Unlock the [color=ff2222]Hidden World[/color].</text>
+		<text id="enchanted_exo">Enchant an [color=ff2222]Exotic Sword[/color] of every element.</text>
+		<text id="dragon_sanctuary">Create the [color=ff2222]Dragon Sanctuary[/color].</text>
+	</section>
+    <section id="equipment">
+      <text id="subsystem">Subsystem:</text>
+    </section>
+    <section id="world">
+      <text id="mecha_dragon_ship">Mecha Dragon Ship</text>
+    </section>
+	<section id="system.planet.desc">
+		<text id="start.gas2">A terrestrial planet disguised as an inhabitable ice giant. Beneath the stormy atmosphere is a magical world.</text>
+	</section>
+    <section id="vehicle">
+      <text id="equip_weapon">Equip Weapon</text>
+    </section>
+    <section id="quests">
+      <text id="mecha_dragon">Mecha Dragon</text>
+      <text id="mecha_dragon_ship">Mecha Dragon Ship</text>
+      <text id="hidden_world">Hidden World</text>
+      <text id="exotic_gas">Exotic Gas</text>
+      <text id="holo_projector">Holographic Projector</text>
+      <text id="holo_ships">Holographic Ships</text>
+      <text id="bombardment_shield">Bombardment Shield</text>
+		<text id="bombardment_shield2">Moon Bombardment</text>
+		<text id="teacher.monolith">Hidden Power</text>
+		<text id="professor_hq_structures">Explore HQ</text>
+    </section>
+    <section id="quest.description">
+      <text id="mecha_dragon">Use an [item=evo_gem] on a [item=steel_wyrm].</text>
+      <text id="mecha_dragon_ship">Evolve a [item=mecha_dragon] into a [color=770000]Mecha Dragon Ship[/color] at the [color=770000]Dragon Factory[/color].</text>
+      <text id="hidden_world">wants you to investigate [color=770000]Unoiks 428d[/color] with the [color=770000]Mecha Dragon Ship[/color].</text>
+      <text id="exotic_gas">wants you to find a powerful material.</text>
+      <text id="holo_projector">needs resources to build a [color=770000]Holographic Projector[/color].</text>
+      <text id="holo_ships">needs ships to create a realistic projection.</text>
+      <text id="bombardment_shield">want to build a [color=770000]Bombardment Shield[/color] to protect this planet.</text>
+		<text id="bombardment_shield2">wants materials to protect Earth from meteors.</text>
+		<text id="teacher.monolith">Re-activate the [color=770000]Monolith[/color] on Unoiks 428d.</text>
+		<text id="professor_hq_structures">wants you to explore the Alien HQ.</text>
+    </section>
+    <section id="structure.tooltip">
+      <text id="evolve_mecha_dragon">Evolve Mecha Dragon</text>
+    </section>
+    <section id="npc">
+      <text id="draconian_teacher">Draconian Teacher</text>
+    </section>
+    <section id="innkeeper">
+      <text id="hybrid_bombardment">It's good to know that we are protected against them. This inn is my life and livelihood, if it went down... well, I would go down with it.</text>
+    </section>
+      <section id="mechanic">
+        <text id="shield1">The meteors from the moon are a hindrance to our efforts to establish civilization here!</text>
+        <text id="shield2">A [color=770000]Bombardment Shield[/color] should be able to protect us!</text>
+        <text id="shield3">Perfect! Now we don't have to worry about meteors!</text>
+      </section>
+    <section id="alchemist">
+      <text id="steel_wyrm_helm">What's this? [item=wyrm]s made of steel? Have you tried using an [item=alter_gem] on one?</text>
+	  <text id="steel_wyrm_helm2">This [item=steel_wyrm_helm] is amazing! Who knew that the magic of [item=alter_gem]s could be used on human technology!</text>
+      <text id="hybrid_research.1">What? You showed a [item=dragon_armor] to some scientists? I must go and confirm that they are using such powerful magic responsibly!</text>
+      <text id="hybrid_research.2">So scientists created these [item=steel_wyrm]s? I must speak with them at once!</text>
+      <text id="hybrid_muttering">Cyborg augmentation… magical infusion… combined strengths… [font=drachenklaue]balderdash[/font]...</text>
+      <text id="research1">This is amazing! I wish I'd had this technology at my disposal earlier!</text>
+      <text id="research2">Of course, I must ask the [object=professor] to make a few modifications.</text>
+    <text id="bombardment1.2">So, they have attacked us at last. Don't worry about the others, there is a cave I prepared in anticipation of this event.</text>
+    <text id="bombardment2.5">With the [color=770000]Bombardment Shield[/color], however, this cave is redundant. I will stay here to continue my research.</text>
+    <text id="bombardment1.3">So, they have attacked us at last. The [color=770000]Bombardment Shield[/color] will protect us, for now.</text>
+      <text id="ship_parts_hint">What are you doing here? The [item=ship_parts] are to the West, and we need them to further our research!</text>
+      <text id="evo_gem_hint">Now that we have [item=ship_parts], we need new magic to investigate! You should head East and explore more!</text>
+	  <text id="build_ships_hint1">I feel like there is more we can do with [item=mecha_dragon]s, but we will need to learn more about science and magic to do so...</text>
+	  <text id="build_ships_hint2">I feel like there is more we can do with [item=mecha_dragon]s, but we will need to repair the [color=770000][tile=escort_fighter.ico] Fighter Escort[/color] to do so...</text>
+	  <text id="build_ships_hint3">I feel like there is more we can do with [item=mecha_dragon]s, but we will need to evolve a [color=770000][tile=dragon_ship.ico] Dragon Ship[/color] to do so...</text>
+    </section>
+    <section id="mirrows">
+      <text id="steel_wyrm_helm1">This new line of research, inspired by the [item=dragon_armor] has incredible potential! Tell us: what magic turned this [item=adult_dragon] into armor?</text>
+      <text id="steel_wyrm_helm2">An [item=alter_gem]? Try combining one with a [item=steel_wyrm] and see what happens!</text>
+	  <text id="steel_wyrm_helm3">This [item=steel_wyrm_helm] is incredible! Tell us: where did you learn this power?</text>
+      <text id="hybrid_research">An [object=alchemist] you say? Imagine what we could do if we worked together!</text>
+      <text id="shield1.1">The signal the [color=770000]Old One[/color] sent when it was defeated does not bode well for us.</text>
+      <text id="shield1.2">We have devised an ingenious way to stop the bombardment from destroying what is left of this planet!</text>
+      <text id="shield1.3">Although we persevered through the first wave of attack, we must prepare for the second!</text>
+      <text id="shield2">By using the abilities of the [item=mecha_dragon], we should be able to create a [color=770000]Bombardment Shield[/color]!</text>
+      <text id="shield3">Bring a [item=mecha_dragon], along with a few other materials, to the highest mountain. Contact us once you have the materials!</text>
+      <text id="shield4">You have the materials for the shield? Then we must construct it at once!</text>
+      <text id="shield5">Marvelous! Now we don't need to worry about them bombarding us!</text>
+      <text id="protected">It's good to see the [color=770000]Bombardment Shield[/color] holding. Without it, we might have had to do something rash, like taking down the bomber ourselves!</text>
+      <text id="mecha_dragon">What better weapons to research than the very ones they used against us: The dragons!</text>
+      <text id="mecha_ship">The [item=mecha_dragon] was just the beginning! The next step is to create cyborg spaceships!</text>
+      <text id="hybrid_weapons">Now that you have evolved the [color=770000]Mecha Dragon Ship[/color], we have added weapons for it to our store. As always, the funds go to more research!</text>
+    </section>
+    <section id="hybrid">
+      <text id="mecha_dragon1.1">It is a shame that the [object=alchemist] was killed. He would have been very useful for helping us with our research! However, we've been examining his notes and the possibilities are promising.</text>
+      <text id="mecha_dragon1.2">Our research into the combination of magic and science has proved fruitful!</text>
+      <text id="mecha_dragon1.3">With the [color=770000]Mobile Research Lab[/color] at our disposal, we have completed some amazing research!</text>
+      <text id="mecha_dragon1.4">The [object=mirrows]' sacrifice was heroic. Despite their absence, I have been able to make some progress!</text>
+      <text id="mecha_dragon2">By using an [item=evo_gem] on a [item=steel_wyrm], you should be able to create a [item=mecha_dragon]! This powerful dragon is fueled by [tile=power] [color=444400]Power[/color] instead of [item=steak]!</text>
+      <text id="mecha_dragon3">This is just the beginning. With more time and resources, think of what we can accomplish by infusing technology with magic!!</text>
+      <text id="ship1">Using technology from the [color=770000][tile=escort_fighter.ico] Fighter Escort[/color] and the powerful evolution magic used to create [color=770000][tile=dragon_ship.ico] Dragon Ships[/color], we should be able to create an entirely new class of ship!</text>
+      <text id="ship2">By using the magic of the [color=770000]Dragon Factory[/color] on a [item=mecha_dragon], we can make a [color=770000]Mecha Dragon Ship[/color]!</text>
+      <text id="holo_projector">Create Hologram</text>
+      <text id="prebomb">Shield Status . . . Operational \nPlanet . . . Protected \nHostiles . . . Not Detected</text>
+      <text id="bombardment">Shield Status . . . Operational \nPlanet . . . Protected \nHostiles . . . Present \nBombardment . . . Triggered</text>
+      <text id="defeated">Shield Status . . . Operational \nPlanet . . . Protected \nHostiles . . . Not Detected \nBombardment . . . Defeated</text>
+      <text id="shield_active">Bombardment Shield Activated!</text>
+      <text id="hq_structures">Now that you are able to translate the alien language and have gained access to their HQ, you should look around and see if you can talk to any of the evolved dragons there!</text>
+      <text id="ally6">As you know, I was created using [item=evo_gem]s. What are [item=evo_gem]s? They are an incredible crystal-like stone that can channel power directly from the spirit realm.</text>
+      <text id="ally10">The [item=power_core]s fueling me are amazing! I can produce endless power without needing to consume endless [item=steak]!</text>
+      <text id="dragon_weps1">The fusion of technology and magic that created me means I cannot use normal weapons.</text>
+      <text id="dragon_weps2">By fusing your human weapons with magical materials, you should be able to create something worthy of my greatness.</text>
+      <text id="dragon_weps3">Recipes for [item=mecha_dragon_ship.gun] and [item=mecha_dragon_ship.cannon] added to the [color=770000]Forge[/color].</text>
+      <text id="hunter_return">The [object=mirrows] built a shield? Well, I'll go back to the surface then!</text>
+      <text id="fisherman_return">We are safe from their attacks?! Then it’s back to the open skies and seas for me! I’ll see you topside!</text>
+      <text id="builder_return">We are safe from their attacks?! Then let’s get out of this cave! I can’t wait to see the sun again!</text>
+      <text id="mechanic_return">This planet is safe, but if humanity is to survive, we need to bring all the survivors together and hope there’s enough of us left that we won’t die out!</text>
+      <text id="no_quest_dragon">What's this? A [item=mecha_dragon]?! All of our research, and you go and create something that far surpasses it! Well, we will get to work on further uses for this amazing creature!</text>
+      <text id="hybrid_research1.1">So, you are the one who discovered the secret of this [item=dragon_armor]!</text>
+      <text id="hybrid_research1.2">So, you are the ones who created these [item=steel_wyrm]s!</text>
+      <text id="hybrid_research2">I propose that we work together, so that we can pool our knowledge and research fusions of magic and science!</text>
+      <text id="hybrid_research3">That sounds like a good idea. Come to our lab and we can begin our research!</text>
+	  <text id="alien_hq">If only there was some way to reach the [color=770000]Alien HQ[/color] - I'm sure we could find some useful research materials there!</text>
+	  <text id="translation">We need some way to communicate with the creatures on the [color=770000]Alien HQ[/color]. I wonder if there's some magical means they use to communicate?</text>
+	  <text id="pirates_no_inn">Awesome job - the seas are finally safe again! If only the inn was still standing, I could take you out for drinks to celebrate. He was an awful guy, but I'll miss Mortimer.</text>
+    </section>
+    <section id="professor">
+      <text id="hidden_world1">I have been examining the [color=770000]Mecha Dragon Ship[/color], and I have discovered something fascinating. Dragons appear to have some knowledge coded into their DNA!</text>
+      <text id="hidden_world2">This dragon believes that the gas giant Unoiks 428d is actually a terrestrial planet! I think that the [color=770000]Mecha Dragon Ship[/color] has some special abilities that will allow it to find out what's really there.</text>
+      <text id="hidden_world3">Intriguing! An entire world, hidden from outside eyes? Whatever could be hiding there? You should investigate the planet further!</text>
+      <text id="exotic_gas1">I have been researching further fusions of magic and science. My current project is a device capable of disabling the alien ships' shields. To complete it, I need a material more powerful than what we currently have access to.</text>
+      <text id="exotic_gas2">I have reason to believe that there is some material, some form of magical [item=exotic_matter], that fits my specifications. Could you go to the [color=770000]Hidden World[/color] and investigate? The [object=draconian_teacher] might know more about it.</text>
+      <text id="exotic_gas3">Remarkable! This [item=exotic_gas] you discovered is even more powerful than [item=exotic_matter]! I will be working with the [object=draconian_teacher] to unlock its full potential!</text>
+      <text id="shieldbreaker1">With it, the weapon is complete! Due to its nature, it can only be installed on the [color=770000]Mecha Dragon Ship[/color].</text>
+      <text id="shieldbreaker2">Evolve it from the equipment menu, and use [key=hotkey8] to fire it!</text>
+      <text id="dragon">Now that the war against them is won, I am interested in studying their magic - and what we can do by fusing that magic with human technology!</text>
+      <text id="ship">Using the evolution magic used to create [color=770000][tile=dragon_ship.ico] Dragon Ships[/color], along with the technology from this lab, we can create a new ship!</text>
+      <text id="holo_projector">The [object=draconian_teacher] and I have been hard at work researching a way to end this war peacefully, and we have just made a breakthrough! You should go to the Hidden World at once!</text>
+    </section>
+    <section id="colony">
+      <text id="projector1">CaptAIn here! We must launch an assault at once! If the enemy grows any stronger, we will never be able to defeat them!</text>
+      <text id="projector2">That won't be neccesary! I have found a solution.</text>
+      <text id="projector3">We don't have time for idle talk! We must prepare our attack now!</text>
+      <text id="projector4">What you just saw was only a fraction of their army! We can never win against their full strength. But there is another option: A truce.</text>
+      <text id="projector5">A truce!? This is treason! Nonsense! They destroyed humanity!</text>
+      <text id="projector6">War against them is futile. We will lose. Humanity's only chance is this truce. I have already convinced their leader to consider a treaty.</text>
+      <text id="projector7">You have? Well, that changes things. On behalf of the remaining survivors of humanity, I will negotiate the terms of a peace treaty. However, I still believe they must be brought to justice for their actions!</text>
+    </section>
+    <section id="alien">
+      <text id="projector1">Yet, somehow you lived on - including that terrible hooded man, digging away at our homeworld and our secrets. But never would I have guessed that not only would you survive, but you would muster an army capable of destroying us!</text>
+      <text id="projector2">To think... that mere humans could defeat the accumulated power and knowledge of centuries. What will become of my race now that we are outdone?</text>
+      <text id="projector3">There is another option, one that could end well for both our races. Humanity has agreed to negotiate a peace treaty.</text>
+      <text id="projector4">You are an idealist. Realistically, there is little hope of our two civilizations coexisting. However, I will consider the possibility and take part in these negotiations.</text>
+	  <text id="hybrid_win1">You are fortunate I did not see through your illusions until after the treaty was signed. Do not worry - I will not break the treaty, but I am embarrassed that I did not see through it until it was too late.</text>
+	  <text id="hybrid_win2">But, do not pat yourself on the back just yet, for I fear this truce will not be long lived. But, until it ends, you are welcome here.</text>
+    </section>
+    <section id="draconian">
+      <text id="intro1">You must have great prowess in magic to have awoken me. Whatever you did broke the seal I had placed on this planet, so now anyone may enter or leave at will.</text>
+      <text id="intro2">I am a Teacher, one of the last of my kind. I sealed myself here, in stasis, long ago. But that is a story for another time.</text>
+      <text id="intro3">Your prowess in magic - it must have led you to conflict. Have you heard of those who are the descendants of the Old Ones?</text>
+      <text id="intro4.1">Oh my. An entire planet destroyed? Unimaginable. We Teachers should have known things would come to this.</text>
+      <text id="intro4.2">Oh my. What a story. Worlds destroyed. Unimaginable tragedy. I wonder if either of your races will ever be able to rebuild.</text>
+      <text id="intro5">As a Teacher, it is my duty to promote peace and knowledge. I will help you, but you must promise me this: You will do all you can to avoid further conflict with them. Peace may yet still be an option.</text>
+      <text id="no_help">For now, there is nothing I can help you with. Let me regain some strength. Return here if you discover anything that might be of use in this conflict.</text>
+      <text id="exotic_gas_hint">You are in search of a new material? Well, it might be prudent to explore this planet. The creatures here have become suffused with its immense magical power!</text>
+      <text id="exo_magic1">[item=exotic_gas]! Incredible! This material appears to have great potential for magical suffusion.</text>
+      <text id="exo_magic2">Try enchanting an [item=exo_sword] at a [color=770000]Forge[/color]!</text>
+      <text id="info">What would you like to know?</text>
+      <text id="teachers">Ask about the Teachers</text>
+      <text id="aliens">Ask about Them</text>
+      <text id="dishonored_one">Ask about the Dishonored One</text>
+      <text id="exotic_gas">Ask about Exotic Gas</text>
+      <text id="teachers1">We created the monoliths you have seen - like the one you used to awaken me.</text>
+      <text id="teachers2">Our main task was to teach - we spread magical knowledge to any who would receive it, in the interest of bettering all.</text>
+      <text id="teachers3">However, there were some, like the Dishonored One, who opposed this.</text>
+      <text id="aliens1">The aliens who destroyed your homeworld... Quite the story.</text>
+      <text id="aliens2">They were always eager to learn from our teachings. At first, we took this as a good sign. However, as time passed, their civilization grew ever more distant from the open sharing we promoted.</text>
+      <text id="aliens3">I believe, at heart, they are afraid. Alone, they can only wield small amounts of magic. It is only through others that they can achieve great power. This is why they enslaved the dragons.</text>
+      <text id="aliens4">This must also be why they attacked humanity. They sensed in you the possibility to wield more magical power than they could. This fear is their secret weakness, and the key to their downfall.</text>
+      <text id="dishonored_one1">The Dishonored One was one of us - a Teacher.</text>
+      <text id="dishonored_one2">Ever tolerant, it took a long time for us to act. But eventually, we cast him out of our ranks and named him the Dishonored One.</text>
+      <text id="dishonored_one3">The Dishonored One sneered at us, calling us fools and assuring us that he would have the last laugh. After this, he disappeared.</text>
+      <text id="dishonored_one4">After many years of peace, none expected the flood. The waters rose and rose, drowning villages and killing indiscriminately. We did everything in our power to stop the flood, but we could not.</text>
+      <text id="dishonored_one5">We knew we had to stop the Dishonored One. We banded together and fought him at the summit of the tallest mountain, where the waters had not yet reached.</text>
+      <text id="dishonored_one6">The battle raged for weeks, and drained our planet’s vast amount of magic. With the supply of magic running thin, survival became a challenge.</text>
+      <text id="dishonored_one7">The Dishonored One survived by going into a deep slumber, and I did the same, in the hopes that I would be awakened by someone who could help restore what was lost.</text>
+      <text id="exotic_gas1">This planet has vast magical power, almost as much as my homeworld. Everything here has become suffused with it, including the [item=exotic_matter] normally found on other planets!</text>
+      <text id="exotic_gas2">The creatures here have also become suffused with its energy. They are dangerous and untameable!</text>
+      <text id="exotic_gas3">By using [item=exotic_gas] as a conduit for magical energy, we can fuse human technology and ancient magic together!</text>
+      <text id="projector1">The [object=professor] and I have been working on a plan to avoid further conflict between Humanity and the descendants of the Old Ones - the race you call 'them.' After much research, we have a plan: A [color=770000]Holographic Projector[/color]!</text>
+      <text id="projector2">With this powerful device, we can create illusions real enough to convince both sides that there is no possible outcome but mutual destruction.</text>
+      <text id="projector3">This will not be easy to build. We will bind technology to a [item=hq_factory_seed] using [item=exotic_gas]. This world has enough magical energy to sustain the projector, but you will need to jumpstart the process with [item=exotic_gas].</text>
+      <text id="projector4">You have the materials? Then it is time to end this war, once and for all!</text>
+      <text id="projector5">The [color=770000]Holographic Projector[/color] is complete! In order for it to create realistic illusions, you will need to bring a [color=770000][tile=dragon_cruiser.ico] Dragon Cruiser[/color] and an [item=exo_fighter] to this world.</text>
+      <text id="projector6">When you are ready, charge and activate the projector.</text>
+      <text id="win">Congratulations! We still have a long road ahead to ensure lasting peace, but the hard part is over. At last, there will once again be harmony among the stars!</text>
+      <text id="win2">It is fantastic to see dragonkind flourishing after so many millenia of servitude!</text>
+      <text id="no_sister">It is a shame that no other Teachers survived. I'm not sure what to do with the rest of my days...</text>
+      <text id="sister">It is wonderful to know another Teacher remains alive! With time, we should be able to undo some of the harm that they brought upon the multitude of civilizations that we used to aid!</text>
+      <text id="sanctuary1">Now that the dragons are free, we thought it would be a good idea to create a sanctuary for them here!</text>
+      <text id="sanctuary2">Since you freed them, it is your choice. Do you want the dragons to live here, and start anew, or stay under the control of them?</text>
+      <text id="sanctuary_choice1">Create Sanctuary</text>
+      <text id="sanctuary_choice2">Leave with Them</text>
+      <text id="sanctuary3">Let this be the first step in repairing the damage they have done!</text>
+      <text id="professor_dead">It is tragic that the [object=research] was destroyed. Without the [object=professor], all of my research has stalled.</text>
+      <text id="battery_staff">A [item=staff] that allows you to cast spells with [tile=stamina] [color=006600]Stamina[/color]? With [item=exotic_gas], you should be able to make a staff that uses [tile=power] [color=444400]Power[/color] instead!</text>
+      <text id="battery_staff_recipe">Recipe for [item=battery_staff] added to the [color=770000]HQ Library[/color].</text>
+    </section>
+    <section id="dragon">
+      <text id="hybrid_win1">A sanctuary for dragons? I will head there immediately!</text>
+      <text id="hybrid_win2">This is better than I have dreamed for millenia! A whole world dedicated to the renewal of dragonkind! Magnificent!</text>
+    </section>
+	<section id="multiplayer_help">
+		<text id="help_prompt">Type "/help" for a list of commands.</text>
+	</section>
+  </lang>
+</data>

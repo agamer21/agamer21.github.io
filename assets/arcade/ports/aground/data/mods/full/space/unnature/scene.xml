@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<scene id="unnature.ranger">
+		<tile id="sheet" sheet="npc.4" />
+		<layer id="bg" tile="sheet" />
+		<animation id="ranger.hand">
+			<frame visible="false" length="8" />
+			<frame x="2" count="16" />
+			<frame x="2" count="16" reverse="true" />
+			<frame visible="false" length="36" />
+		</animation>
+		<animation id="ranger.idle">
+			<frame x="18" y="0" length="4" />
+			<frame x="1" y="0" length="2" />
+			<frame x="18" y="0" length="36" />
+			<frame x="1" y="0" length="2" />
+			<frame x="18" y="0" length="32" />
+			<append tile="scene.unnature.ranger.sheet" animation="scene.unnature.ranger.ranger.hand" />
+		</animation>
+		<animation id="ranger.talk" x="19" count="11" />
+		<layer id="ranger" tile="sheet" animation="ranger.idle" talk="ranger.talk" sfx="talking1" />
+		<show id="intro">
+			<layer id="bg" />
+			<layer id="ranger" />
+			<wait seconds="5" />
+			<dialogue section="unnature" id="ranger_intro1" speaker='ranger' />
+			<dialogue section="unnature" id="ranger_intro2" speaker='ranger' />
+			<dialogue section="unnature" id="ranger_intro3" speaker='ranger' />
+			<dialogue section="unnature" id="ranger_intro4" speaker='ranger' />
+			<dialogue section="unnature" id="ranger_intro5" speaker='ranger' />
+			<dialogue section="unnature" id="ranger_intro6" speaker='ranger' />
+			<wait seconds="2" />
+		</show>
+	</scene>
+</data>

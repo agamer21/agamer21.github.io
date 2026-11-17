@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="blackstone.ore"><tile sheet="{core}/tiles/tiles.png" x="126" /></tile>
+	<area id="colosseum.pirate_ship1" background="sky" forceTime="24">
+		<action>
+		for(y in 0...32) for(x in 0...8){setTile(-x-1, y, "blackstone"); setTile(40+x, y, "blackstone");}
+		for(x in 0...40) setTile(x, 31, "blackstone"); setOre(-1, 0, "blackstone.ore"); setTile(-1, 0, "empty");
+		setOre(40, 0, "blackstone.ore"); setTile(40, 0, "empty");
+		</action>
+		<object id="patrol_boat" x="0">this.fuel = this.getMaxFuel(); this.health = 600;</object>
+		<object id="pirate_ship1" x="36" /><object id="pirate_ship2" x="36" />
+		<structure id="colosseum_exit" x="-8" />
+		<init><equip id="patrol_boat_gun" to="area.getObject('patrol_boat')" fromInventory="false" /></init>
+	</area>
+	<procedure id="colosseum.pirate_ship1">
+		<action>setGlobal("originalPlayer", player); setGlobal("originalArea", player.area); setGlobal("points", 100);
+		var map = new StringMap(); map.set("pirate_ship1", 1); map.set("pirate_ship2", 1); setGlobal("killCounts", map);
+		changePlayer("player.colosseum", false); player.inventory.addItems(getItem("bullet"), 200); setGlobal("achievement", "pirates");
+		player.inventory.addItems(getItem("battery"), 2); player.stats.get("speed").permaBuff(3);</action>
+		<equip id="machine_gun_arm" fromInventory="false" />
+		<equip id="cyborg_eye" fromInventory="false" />
+		<equip id="cyborg_body" fromInventory="false" />
+		<equip id="drill" fromInventory="false" />
+		<equip id="mega_backpack" fromInventory="false" />
+		<teleport area="colosseum.pirate_ship1" x="-3" temporary="true" />
+	</procedure>
+</data>

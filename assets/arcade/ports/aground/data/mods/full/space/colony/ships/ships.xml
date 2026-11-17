@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="science.xml" />
+	<tile id="science_ship" sheet="science.1" />
+	<animation id="science_ship.empty" x="32" count="1" />
+	<animation id="science_ship.idle" x="33" count="8" />
+	<animation id="science_ship.impulse" count="8" glow="true" />
+	<animation id="science_ship.fly" x="33" count="8">
+		<append tile="science_ship" animation="science_ship.impulse" />
+	</animation>
+	<animation id="science_ship.antigrav" x="16" count="8" glow="true" />
+	<animation id="science_ship.hover" x="33" count="8">
+		<append tile="science_ship" animation="science_ship.antigrav" />
+	</animation>
+	<animation id="science_ship.fire" x="8" count="8" glow="true" />
+	<animation id="science_ship.shields" x="24" count="8" glow="true" />
+	<animation id="science_ship.ftl" x="33" count="8">
+		<append tile="science_ship" animation="science_ship.impulse" />
+		<append tile="fighter.shields" animation="fighter.ftl_bubble" />
+	</animation>
+	
+	<tile id="science_ship.mine" sheet="science.2" /><!-- active 8 frames, inactive 8 frames -->
+	<tile id="science_ship.wave" sheet="science.3" /><!-- impact 6 frames, travel 4 frames -->
+	
+	<include id="colony_ship.xml" />
+	<include id="npc.xml" />
+</data>

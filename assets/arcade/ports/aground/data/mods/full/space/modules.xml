@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<action>function selectStructureByTile(ar, x, y){for(s in ar) if(s.tile_x == x &amp;&amp; s.tile_y == y) return s; return null;}</action>
+	<structure id="station.module" tile="empty" name="enter" fullHeight="true" fullOverlap="true" confirmDismantle="warning.dismantle_module" allowSpawn="true">
+		<operate><teleport area="area.id+'.station'" x="player.xPos/Tile.SIZE" y="player.yTile/Tile.SIZE" with="ellipse_fast" /></operate>
+		<addedToArea><structure eval="this.info.id+'.interior'" area="area.id+'.station'" x="this.tile_x" y="this.tile_y" if="built" /><achievement id="space_station" /></addedToArea>
+		<removedFromArea><remove structure="selectStructureByTile(player.areas.get(area.id+'.station').getStructuresById(this.info.id+'.interior'), this.tile_x, this.tile_y)" /></removedFromArea>
+		<hitbox x="Tile.SIZE" y="Tile.SIZE" width="this.width-2*Tile.SIZE" height="this.height-2*Tile.SIZE" />
+	</structure>
+	<object id="station.exit" width="16" height="16" layer="npc" action="exit_station">
+		<operate>
+			<window type="prompt" message="warning.station_exit" if="var flight = player.getFlight(); return flight == null || this.tile_y <= -flight.flight.height" on="no"><stop /></window>
+			<teleport area="area.id.substring(0, area.id.length-8)" x="player.xPos/Tile.SIZE" y="player.yTile/Tile.SIZE" with="ellipse_fast" />
+		</operate>
+	</object>
+	<structure id="station.module.interior" tile="empty" priority="-2" back="true" remove="false">
+		<addedToArea><action if="built">
+			var w = Math.round(this.info.width/Tile.SIZE)-2; var h = Math.round(this.info.height/Tile.SIZE)-2; width = w; height = h;
+			var tx = this.tile_x+1; var ty = this.tile_y-h; var setTiles = this.info.xml.get("setTiles") != "false";
+			for(y in 0...h){if(setTiles) for(x in 0...w) if(area.emptyTile(tx+x, ty+y)) setBack(tx+x, ty+y, "empty"); setTile(tx-1, ty+y, "empty"); setTile(tx+w, ty+y, "empty");}
+			for(x in -1...(w+1)){setTile(tx+x, ty-1, "empty"); setTile(tx+x, ty+h, "empty");}
+			for(e in this.info.xml.elementsNamed("exit")){
+				var x = eval(e.get("x")); var sy = e.exists("y")?eval(e.get("y")):0; h = eval(e.get("height"));
+				for(y in 0...h){
+					var _x = tx+x; var _y = ty+y+sy;
+					area.addObject(ObjectInfo.make("station.exit", _x*Tile.SIZE, _y*Tile.SIZE));
+					area.addObject(ObjectInfo.make("ship.doorh", _x*Tile.SIZE, _y*Tile.SIZE));
+					if(area.hasObjectIdInTile("station.exit", _x-1, _y)){
+						setTile(_x, _y, null); setTile(_x-1, _y, null); setBack(_x, _y, "no_place"); setBack(_x-1, _y, "no_place");
+					} else if(area.hasObjectIdInTile("station.exit", _x+1, _y)){
+						setTile(_x, _y, null); setTile(_x+1, _y, null); setBack(_x, _y, "no_place"); setBack(_x+1, _y, "no_place");
+					}
+				}
+			} for(e in this.info.xml.elementsNamed("vexit")){
+				var sx = eval(e.get("x")); var y = e.exists("y")?eval(e.get("y")):0; w = eval(e.get("width"));
+				for(x in 0...w){
+					var _x = tx+x+sx; var _y = ty+y;
+					area.addObject(ObjectInfo.make("ship.doorv", _x*Tile.SIZE, _y*Tile.SIZE));
+					if(area.hasObjectIdInTile("ship.doorv", _x, _y-1)){
+						setTile(_x, _y, null); setTile(_x, _y-1, null); setBack(_x, _y, "no_place"); setBack(_x, _y-1, "no_place");
+					} else if(area.hasObjectIdInTile("ship.doorv", _x, _y+1)){
+						setTile(_x, _y, null); setTile(_x, _y+1, null); setBack(_x, _y, "no_place"); setBack(_x, _y+1, "no_place");
+					}
+				}
+			}
+		</action></addedToArea>
+		<removedFromArea><action>
+			var w = Math.round(this.info.width/Tile.SIZE)-2; var h = Math.round(this.info.height/Tile.SIZE)-2; width = w; height = h;
+			tx = this.tile_x+1; ty = this.tile_y-h;
+			for(y in -1...(h+1)) for(x in -1...(w+1)){setTile(tx+x, ty+y, null); setBack(tx+x, ty+y, null);}
+			for(e in this.info.xml.elementsNamed("exit")){
+				var x = eval(e.get("x")); var sy = e.exists("y")?eval(e.get("y")):0; h = eval(e.get("height"));
+				for(y in 0...h){
+					var _x = tx+x; var _y = ty+y+sy;
+					if(area.hasObjectIdInTile("station.exit", _x-1, _y)){
+						setTile(_x-1, _y, "empty"); setBack(_x-1, _y, null);
+					} else if(area.hasObjectIdInTile("station.exit", _x+1, _y)){
+						setTile(_x+1, _y, "empty"); setBack(_x+1, _y, null);
+					}
+				}
+			} for(e in this.info.xml.elementsNamed("vexit")){
+				var sx = eval(e.get("x")); var y = e.exists("y")?eval(e.get("y")):0; w = eval(e.get("width"));
+				for(x in 0...w){
+					var _x = tx+x+sx; var _y = ty+y;
+					if(area.hasObjectIdInTile("ship.doorv", _x, _y-1)){
+						setTile(_x, _y-1, "empty"); setBack(_x, _y-1, null);
+					} else if(area.hasObjectIdInTile("ship.doorv", _x, _y+1)){
+						setTile(_x, _y+1, "empty"); setBack(_x, _y+1, null);
+					}
+				}
+			}
+		</action><removeObjects x="tx-1" y="ty-1" width="width+2" height="height+2" /><removeStructures x="tx-1" y="ty-1" width="width+2" height="height+2" />
+		<teleport area="area.id.substring(0, area.id.length-8)" x="player.xPos/Tile.SIZE" y="player.yTile/Tile.SIZE" fireRemote="true" with="ellipse_fast" if="player.inAreaBoundsDismount(area, this.getBounds())" /></removedFromArea>
+	</structure>
+	<include id="station.xml" />
+	<tile id="station.module.small" sheet="station.1" />
+	<tile id="station.module.small.interior" sheet="station.1" x="10" />
+	<animation id="station.module.small.idle" equals="item10" />
+	<animation id="station.module.small.interior.idle" equals="item10" />
+	<structure id="station.module.small" extends="station.module" tile="station.module.small" />
+	<structure id="station.module.small.interior" extends="station.module.interior" tile="station.module.small.interior">
+		<exit x="-1" height="2" /><exit x="width" height="2" />
+	</structure>
+	<item id="small_module_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico" area="player.areas.get(area.planet.orbit.id)">
+		<action id="build" structure="station.module.small" on_air="true" alignTile="true" allowInterior="true">
+			<areaConstraint enabled="area.isOrbit()" fail="warning.build_orbit" />
+			<item id="titanium" count="8" />
+			<item id="ship_parts" count="1" />
+			<item id="silicon" count="2" />
+		</action>
+	</item>
+		
+	<tile id="station.module.large" sheet="station.2" />
+	<tile id="station.module.large.interior" sheet="station.2" x="14" />
+	<animation id="station.module.large.idle" count="14" />
+	<animation id="station.module.large.interior.idle" equals="station.module.large.idle" />
+	<structure id="station.module.large" extends="station.module" tile="station.module.large" />
+	<object id="station.recharge" tile="empty" width="16" height="16" layer="npc" action="common.recharge_batteries">
+		<operate><action>player.restorePower();</action></operate>
+	</object>
+	<structure id="station.module.large.interior" extends="station.module.interior" tile="station.module.large.interior">
+		<exit x="-1" y="2" height="2" /><exit x="width" y="2" height="2" />
+		<addedToArea>
+			<action if="built">var h = Math.round(this.info.height/Tile.SIZE)-2; var tx = this.tile_x+1; var ty = this.tile_y-h; for(x in 0...2){setTile(tx+x, ty, "empty"); setTile(tx+8+x, ty, "empty");}</action>
+			<set id="tx" value="this.tile_x+9" /><set id="ty" value="this.tile_y-Math.round(this.info.height/Tile.SIZE)+2" />
+			<object id="station.recharge" x="tx" y="ty" if="!area.hasObjectIdInTile('station.recharge', tx, ty)" />
+		</addedToArea>
+	</structure>
+	<item id="large_module_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico" area="player.areas.get(area.planet.orbit.id)">
+		<action id="build" structure="station.module.large" on_air="true" alignTile="true" allowInterior="true">
+			<areaConstraint enabled="area.isOrbit()" fail="warning.build_orbit" />
+			<item id="titanium" count="40" />
+			<item id="ship_parts" count="1" />
+			<item id="silicon" count="10" />
+		</action>
+	</item>
+	<tile id="station.module.connector" sheet="station.3" x="6" />
+	<tile id="station.module.connector.interior" sheet="station.3" x="7" />
+	<animation id="station.module.connector.ring" x="-6" count="6" />
+	<animation id="station.module.connector.idle" count="1" length="6">
+		<append tile="station.module.connector" animation="station.module.connector.ring" />
+	</animation>
+	<structure id="station.module.connector" extends="station.module" tile="station.module.connector">
+		<hitbox x="Tile.SIZE" y="Tile.SIZE*2" width="this.width-2*Tile.SIZE" height="this.height-4*Tile.SIZE" />
+	</structure>
+	<structure id="station.module.connector.interior" extends="station.module.interior" tile="station.module.connector.interior">
+		<exit x="-1" y="2" height="2" /><exit x="width" y="2" height="2" /><vexit x="1" y="-1" width="2" /><vexit x="1" y="height" width="2" />
+		<addedToArea><action if="built">
+			var h = Math.round(this.info.height/Tile.SIZE)-2; var tx = this.tile_x+1; var ty = this.tile_y-h;
+			for(y in 0...2){setTile(tx, ty+y, "empty"); setTile(tx+3, ty+y, "empty"); setTile(tx, ty+y+4, "empty"); setTile(tx+3, ty+y+4, "empty");}
+		</action></addedToArea>
+	</structure>
+	<item id="connector_module_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico" area="player.areas.get(area.planet.orbit.id)">
+		<action id="build" structure="station.module.connector" on_air="true" alignTile="true" allowInterior="true">
+			<areaConstraint enabled="area.isOrbit()" fail="warning.build_orbit" />
+			<item id="titanium" count="8" />
+			<item id="ship_parts" count="1" />
+			<item id="silicon" count="2" />
+		</action>
+	</item>
+		
+	<include id="o2.xml" includeRoot="true" />
+	<tile id="o2_generator" sheet="o2.png" />
+	<animation id="o2_generator.on" count="16" x="1" />
+	<animation id="o2_generator.off" equals="single" />
+	<structure id="o2_generator" tile="o2_generator" powered="true" name="oxygen">
+		<operate><choose><dialogue section="warning" id="not_powered" if="!this.isPowered()" />
+			<dialogue section="warning" id="no_effect" if="player.getOxygenPercent() >= 1" /><action>player.restoreOxygen();</action></choose></operate>
+	</structure>
+	<item id="o2_generator_blueprint" type="blueprint" cost="5000" weight="0" icon="blueprint.ico">
+		<action id="build" structure="o2_generator" underground="true" underwater="true">
+			<item id="titanium" count="4" />
+			<item id="ship_parts" count="1" />
+			<item id="silicon" count="1" />
+		</action>
+	</item>
+	<action>
+		function isSpaceship(object, layer){
+			return object.info.xml.get("type") == "spaceship" &amp;&amp; object.info.xml.get("drone") != "true";
+		}
+		function getSpaceshipInDock(dock, player){
+			return player.areas.get(dock.area.id.substring(0, dock.area.id.length-8)).getActionObject(dock.getInnerBounds(true), null, isSpaceship);
+		}
+	</action>
+			
+	<include id="dock.xml" />
+	<tile id="station.dock" sheet="dock.1" />
+	<animation id="station.dock.idle.top" count="1" x="1" />
+	<animation id="station.dock.blueprint" count="1" x="1"><append tile="station.dock" behind="true" /></animation>
+	<animation id="station.dock.interior.off" equals="single" />
+	<animation id="station.dock.interior.on" x="2" count="26" />
+	<animation id="station.dock.build.back" x="28" count="26" />
+	<animation id="station.dock.build.top" x="54" count="26" />
+	<tile id="station.dock.ship" sheet="dock.2" />
+	<animation id="station.dock.fighter" x="0" count="5" offsetX="17" offsetY="21" />
+	<structure id="station.dock" extends="station.module" tile="station.dock">
+		<hitbox x="Tile.SIZE*11" y="Tile.SIZE*5" width="4*Tile.SIZE" height="Tile.SIZE*2" />
+		<tile id="station.dock.ship" name="ship" animation="hidden" fps="0" y="0" behind="true" />
+		<tile id="station.dock" name="back" animation="hidden" fps="9" y="0" behind="true" />
+		<tile id="station.dock" name="top" animation="station.dock.idle.top" fps="9" x="0" y="0" />
+		<rideableExit>
+			<section if="rideable.info.xml.get('type') == 'spaceship'">
+				<action>player.doTeleport(this.area.id+'.station', (this.tile_x+11)*Tile.SIZE, (this.tile_y-Math.round(this.info.height/Tile.SIZE)+7)*Tile.SIZE, false);</action><stop />
+			</section>
+		</rideableExit>
+	</structure>
+	<structure id="station.dock.interior" extends="station.module.interior" tile="station.dock" fps="9" name="operate" title="common>station.dock" type="smelter" collectComplete="false" max_fuel="0" back="" remove="" spawnX="this.tile_x+(this.info.width-width)/(2*Tile.SIZE)" spawnY="this.tile_y-(this.info.height-height-6)/(2*Tile.SIZE)" spawnArea="this.area.id.substring(0, this.area.id.length-8)" setTiles="false" fuelName="time" sfx="none">
+		<listItem title="structure.tooltip.spaceship" enabled="getSpaceshipInDock(this, player) != null" fail="warning.no_spaceship">
+			<action>getSpaceshipInDock(this, player).onOperate(player)</action>
+		</listItem>
+		<listItem title="structure.tooltip.spaceship_inv" enabled="getSpaceshipInDock(this, player) != null" fail="warning.no_spaceship">
+			<set id="v" value="getSpaceshipInDock(this, player)" />
+			<window type="storehouse" inventory="v.inventory" titleMutable="v.getTitle(player)" includeStorehouse="true" />
+		</listItem>
+		<recipe type="station.dock" /><exit x="width" y="5" height="1" /><tile id="station.dock.ship" name="ship" animation="hidden" fps="0" y="0" behind="true" />
+		<tile id="station.dock" name="back" animation="hidden" fps="9" y="0" behind="true" />
+		<tile id="station.dock" name="top" animation="station.dock.idle.top" fps="9" top="true" x="0" y="0" />
+		<addedToArea><action if="built">
+			var w = Math.round(this.info.width/Tile.SIZE)-2; var h = Math.round(this.info.height/Tile.SIZE)-2; var tx = this.tile_x+1; var ty = this.tile_y-h;
+			for(y in 0...h) for(x in 0...w) if(y &lt; 4 || y >= 6 || x &lt; 10 || x >= 14) setTile(tx+x, ty+y, "empty");
+		</action></addedToArea>
+		<init><displayAction>
+			function setAnim(s, id, anim, loop){
+				var t = this.getTileById(id); if(t != null) t.playAnimation(anim, loop);
+				if(s != null &amp;&amp; (t = s.getTileById(id)) != null) t.playAnimation(anim, loop);
+			}
+			function checkProgress(e){
+				var s = player.areas.get(this.area.id.substring(0, this.area.id.length-8)).getStructureInTile(this.tile_x+11, this.tile_y-5);
+				if(s != null &amp;&amp; s.info.id != "station.dock") s = null;
+				if(e.value >= 1 || this.queue.current == null || this.queue.current.recipe.object == null){
+					var t = this.getTileById("ship"); if(t != null) t.setAnimation("hidden");
+					if(s != null &amp;&amp; (t = s.getTileById("ship")) != null) t.setAnimation("hidden");
+					setAnim(s, "back", "hidden", false);
+					setAnim(s, "top", "station.dock.idle.top", false);
+					this.stopSFX(); if(s != null) s.stopSFX(); return;
+				} var anim = "station.dock."+this.queue.current.recipe.object.id;
+				setAnim(s, "back", "station.dock.build.back", true);
+				setAnim(s, "top", "station.dock.build.top", true);
+				if(this.sound == null) this.playSFX("build_spaceship"); if(s != null &amp;&amp; s.sound == null) s.playSFX("build_spaceship");
+				var t = this.getTileById("ship"); if(t != null){
+					t.setAnimation(anim); t.setFrame(e.value*t.getMaxFrame());
+				} if(s != null &amp;&amp; (t = s.getTileById("ship")) != null){
+					t.setAnimation(anim); t.setFrame(e.value*t.getMaxFrame());
+				}
+			}
+			this.queue.addEventListener("progress", checkProgress);
+		</displayAction></init>
+		<addedToArea><invokeLater><displayAction>this.queue.fireProgress();</displayAction></invokeLater></addedToArea>
+	</structure>
+	<item id="station_dock_blueprint" type="blueprint" cost="15000" weight="0" icon="blueprint.ico" area="player.areas.get(area.planet.orbit.id)">
+		<action id="build" structure="station.dock" on_air="true" alignTile="true" allowInterior="true">
+			<areaConstraint enabled="area.isOrbit()" fail="warning.build_orbit" />
+			<item id="titanium" count="50" />
+			<item id="ship_parts" count="2" />
+			<item id="silicon" count="10" />
+		</action>
+	</item>
+		
+	<tile id="station.module.xlarge" sheet="station.4" />
+	<tile id="station.module.xlarge.interior" sheet="station.4" x="12" />
+	<tile id="station.module.xlarge.interior.rooms" sheet="station.4" x="13" animateSub="true">
+		<tile sheet="station.4" x="25" />
+	</tile>
+	<animation id="station.module.xlarge.idle" count="12" />
+	<animation id="station.module.xlarge.interior.idle" count="1" length="12">
+		<append tile="station.module.xlarge.interior.rooms" animation="station.module.xlarge.idle" />
+	</animation>
+	<structure id="station.module.xlarge" extends="station.module" tile="station.module.xlarge" />
+	<structure id="station.module.xlarge.interior" extends="station.module.interior" tile="station.module.xlarge.interior">
+		<exit x="-1" y="4" height="2" /><exit x="width" y="4" height="2" />
+		<vexit x="9" y="-1" width="2" /><vexit x="9" y="height" width="2" />
+		<addedToArea>
+			<action if="built">var h = Math.round(this.info.height/Tile.SIZE)-2; var tx = this.tile_x+1; var ty = this.tile_y-h; for(x in 0...2){setTile(tx+x, ty, "empty"); setTile(tx+18+x, ty, "empty");}</action>
+			<set id="tx" value="this.tile_x+19" /><set id="ty" value="this.tile_y-Math.round(this.info.height/Tile.SIZE)+2" />
+			<object id="station.recharge" x="tx" y="ty" if="!area.hasObjectIdInTile('station.recharge', tx, ty)" />
+		</addedToArea>
+	</structure>
+	<item id="xlarge_module_blueprint" type="blueprint" cost="10000" weight="0" icon="blueprint.ico" area="player.areas.get(area.planet.orbit.id)">
+		<action id="build" structure="station.module.xlarge" on_air="true" alignTile="true" allowInterior="true">
+			<areaConstraint enabled="area.isOrbit()" fail="warning.build_orbit" />
+			<item id="titanium" count="60" />
+			<item id="ship_parts" count="1" />
+			<item id="silicon" count="15" />
+		</action>
+	</item>
+</data>

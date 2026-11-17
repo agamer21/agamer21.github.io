@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<quest id="oldone_form" giver="unnature.splicer" exp="2000">
+		<item id="carapace_armor" count="1" />
+	</quest>
+	<layers id="alien" width="16" height="16" cols="7" rows="4">
+		<layer tile="alien"><frame x="0" count="26" /></layer>
+	</layers>
+	<tile id="player.oldone.arms" equals="empty" />
+	<animation id="player.oldone.idle" equals="alien.idle" />
+	<animation id="player.oldone.sleep" equals="alien.idle" />
+	<animation id="player.oldone.walk" equals="alien.idle" />
+	<animation id="player.oldone.walk.heavy">
+		<frame x="0" />
+		<frame x="1" offsetY="-1" />
+		<frame x="2" offsetY="-1" />
+		<frame x="3" offsetY="-1" />
+		<frame x="4" />
+		<frame x="5" offsetY="-1" />
+		<frame x="6" offsetY="-1" />
+		<frame x="7" offsetY="-1" />
+	</animation>
+	<animation id="player.oldone.swim" equals="alien.idle" />
+	<animation id="player.oldone.mine" equals="alien.idle" />
+	<animation id="player.oldone.mine2" equals="alien.idle" />
+	<animation id="player.oldone.mine3" equals="player.oldone.walk.heavy" />
+	<animation id="player.oldone.hit" equals="alien.hit" />
+	<animation id="player.oldone.death" equals="alien.open" />
+	<animation id="player.oldone.ride" equals="item8" />
+	<animation id="player.oldone.charge" equals="alien.charge" />
+	<animation id="player.oldone.beam" equals="alien.beam" />
+	<player id="player.oldone" layers="alien" health="50" stamina="400" maxLevel="30" speed="15" talk_sfx="talking5" foundItemPopup="true" animation="player.oldone">
+		<skill id="health" maxLevel="20" /><skill id="stamina" maxLevel="20" /><skill id="weight" maxLevel="20" />
+		<skill id="critical" maxLevel="10" /><skill id="evasion" maxLevel="10" />
+		<skill id="mine_speed" maxLevel="5" /><skill id="sight" maxLevel="3" />
+		<skill id="attack" maxLevel="3" /><skill id="defense" maxLevel="3" /><skill id="cut" maxLevel="3" />
+		<skill id="range" maxLevel="5" /><skill id="trap" maxLevel="3" /><skill id="bargaining" maxLevel="5" />
+		<skill id="fishing" maxLevel="3" /><skill id="oxygen" maxLevel="8" /><skill id="spellcast" maxLevel="5" />
+		<stat id="health" /><stat id="stamina" /><stat id="regen_health" flag="never_set" /><stat id="regen_stamina" flag="never_set" />
+		<stat id="weight" /><stat id="critical" /><stat id="evasion" />
+		<stat id="speed" /><stat id="endurance" /><stat id="mine_speed" flag="allow_hotkeys" /><stat id="sight" flag="allow_hotkeys" />
+		<stat id="attack" /><stat id="defense" /><stat id="cut" /><stat id="mine" flag="allow_hotkeys" />
+		<stat id="range" /><stat id="trap" flag="hunter_hut" /><stat id="fishing" flag="fisherman_intro" />
+		<stat id="oxygen" flag="show_oxygen" /><stat id="bargaining" flag="allow_hotkeys" />
+		<stat id="spellcast" flag="spellcast" /><stat id="reset" flag="never_set" /><stat id="timer" flag="never_set" />
+		<stat id="regen_power" flag="never_set" /><stat id="light" flag="never_set" />
+		<slot id="weapon" /><slot id="shield" /><slot id="pickaxe" flag="allow_hotkeys" /><slot id="armor" />
+		<slot id="head" /><slot id="back" /><slot id="familiar" /><light tile="light.small" color="888888" />
+		<addItem><run procedure="player.addItem" /></addItem>
+		<changeEquip><run procedure="player.changeEquip" /></changeEquip>
+		<adjustSkills><achievement id="skills" if="player.getUsedSkillPoints() >= 500" /></adjustSkills>
+		<init><run procedure="player.init" /></init>
+		<handleSecond><run procedure="player.handleSecond" /></handleSecond>
+	</player>
+	<tile id="oldone_cast" equals="staff" />
+	<animation id="equipment.oldone_cast.idle" equals="hidden" />
+	<animation id="equipment.oldone_cast" color="5a1f7c" colorScale="4" x="0" count="6" glow="true"><frame visible="false" length="2" /></animation>
+	<action> var off = Math.PI/4; OLD_ONE_ORB_POS = [0, Math.PI, Math.PI/2, 3*Math.PI/2, off, off+Math.PI, off+Math.PI/2, off+3*Math.PI/2];
+	function addOldOneOrb(orbs, o){
+		if(orbs == null) return 0; for(i in 0...8) if(orbs[i] == null || orbs[i].area == null){
+			orbs[i] = o; for(j in 0...8) if(orbs[j] != null &amp;&amp; orbs[j].area != null &amp;&amp; orbs[j].movement != null){
+				return OLD_ONE_ORB_POS[i]+orbs[j].movement.ct*4/60-OLD_ONE_ORB_POS[j];
+			} return 0;
+		} trace("Warning: somehow spawned > 8 orbs?"); return 0;
+	} function oldOneOrbCount(orbs){
+		if(orbs == null) return 0; var ct = 0; for(i in 0...8) if(orbs[i] != null &amp;&amp; orbs[i].area != null) ct++; return ct;
+	}</action>
+	<hitEffect id="oldone.orb" tile="magic_orb" animation="magic_orb.impact" />
+	<object id="oldone.orb" tile="magic_orb" animation="magic_orb.idle" layer="player" save="false" width="16" height="16" attack_sfx="orb_impact">
+		<addedToArea><action>
+		function canDamage(o){
+			return o != spawner &amp;&amp; spawner.projectileCanHurt(o) &amp;&amp; o.attackPower(1, 0, 0, null, false) > 0;
+		}
+		</action></addedToArea>
+		<onFrame>
+		for(o in this.getOverlappingObjects(canDamage, null, 0.125)){
+			o.hitEffect(ObjectInfo.createHitEffect("oldone.orb", player)); o.damage(damage, 0, spawner); this.area.removeObject(this); return;
+		}
+		</onFrame>
+	</object>
+	<item id="oldone_cast" type="none" slot="weapon" cost="0" weight="0" icon="staff.ico" animation="staff.ico" desc="item.descriptions.staff" behindPlayer="false" underwater="true" attack="16" stamina="40" sfx="orb_spawn" staminaStat="spellcast" delay="5" unequip="false">
+		<description eval="Item.getParameter(name, 'u') == null?'item.descriptions.oldone_orbs':''" />
+		<action id="use" name="actions.bind_spellbook" closeWindow="false">
+			<window type="items" title="actions.bind_spellbook" equipment="true" incNone="true" filter="function(i){return i.xml.get('bindStaff') == 'true';}">
+				<action>setName(item == null?null:Item.setParameter(name, "u", item.id));</action>
+			</window>
+		</action>
+		<canAttack enabled="oldOneOrbCount(player.getAbility(-100)) < 8" fail="unnature.max_orbs" />
+		<doAttack>
+			<action>damage = this.attack+player.stats.getInt("attack"); if(player.abilities == null) player.abilities = new IntMap(); if(!player.abilities.exists(-100)) player.abilities.set(-100, []);</action>
+			<object id="oldone.orb" x="player.tile_x" y="player.tile_y" name="orb" pre="true">this.vars.set("spawner", player); this.vars.set("damage", damage);</object>
+			<action>Movement.circle(orb, player, 1.25, 4, false, 0, 0, addOldOneOrb(player.getAbility(-100), orb));</action>
+		</doAttack>
+	</item>
+	<item id="oldone_shield" name="shield_book" extends="shield_book" type="none" cost="0" weight="0" unequip="false" master_spellcaster="false" />
+	<item id="oldone_mine" extends="shield_book" type="none" cost="0" weight="0" unequip="false" master_spellcaster="false" slot="pickaxe" mine="7" stamina="5" use="" block="" omnidirectional="" blockIgnoreArmor="" />
+	<object id="oldone.blast" tile="magic_blast" animation="magic_blast" fps="15" removeOnComplete="true" save="false" layer="enemy">
+		<addedToArea><action>
+		function canDamage(o){
+			return o != spawner &amp;&amp; spawner.projectileCanHurt(o) &amp;&amp; o.attackPower(1, 0, 0, null, false) > 0;
+		} for(o in this.getOverlappingObjects(canDamage, null, 0.125)){var sx = Utils.sign(player.xPos-o.xPos); o.damage(damage, 0, spawner, null, sx); o.knockback(32*Utils.sign(-sx));}
+		</action></addedToArea>
+	</object>
+	<tile id="oldone_body" equals="empty" />
+	<animation id="equipment.oldone_body.idle" equals="hidden" />
+	<animation id="equipment.oldone_body"><frame visible="false" length="46" /></animation>
+	<item id="oldone_body" type="none" cost="0" weight="0" unequip="false" slot="armor" icon="carapace_armor.ico" oxygen="200" defense="14" capacity="450" max_depth="100" attack="7" stamina="20" staminaStat="spellcast" enableAttack="true" desc="item.descriptions.auto_fire">
+		<flight height="6" cost="2" speed="3" maxWeight="500" />
+		<use slot="head" /><use slot="back" />
+		<light tile="light.large" color="ff77ff" />
+		<identify tile="cyborg.identify" acquire="carapace.acquire" animation="carapace.identify" color="cc66cc" />
+		<handleSecond><section if="(player.equipment.getStateI('armor')&NO_ATTACK) == 0 && getEnemyInRange(player, 2, this.info.attack, this.info.cut, this.info.spirit) != null && player.getStamina() >= this.info.getStamina(player)">
+			<action>player.loseStamina(this.info.getStamina(player)); damage = this.info.attack+player.stats.getInt("attack");</action>
+			<object id="oldone.blast" x="player.xPos/Tile.SIZE-1.5" y="player.yTile/Tile.SIZE+1.5" pre="true">this.vars.set("spawner", player); this.vars.set("damage", damage);</object><sound id="fireball" object="player" />
+		</section></handleSecond>
+		<ability hotkey="8" icon="dragon_ship.cannon.ico" available="player.renderer.equipComplete == null && player.getStamina() >= getItem('oldone_body').getStamina(player)*10">
+			<action>player.loseStamina(this.getStamina(player)*10);</action><section if="player.health > 0">
+				<action>player.renderer.useItem(this); player.hidden.set(null); player.renderer.onComplete = null;</action>
+				<play object="player" animation="charge" />
+				<sound id="oldone_beam" object="player" />
+				<action>
+				var range = 8*Tile.SIZE, ar = []; function canDamage(o, rect){
+					if(o != player &amp;&amp; player.projectileCanHurt(o) &amp;&amp; o.attackPower(1, 0, 0, null, false) > 0 &amp;&amp; ar.indexOf(o) == -1  &amp;&amp; o.getHitbox().intersects(rect)) ar.push(o); return false;
+				} var b = player.getBounds(); if(player.renderer.scaleX &lt; 0) b.right += range; else b.left -= range; player.area.getObjects(b, canDamage, null, 0.125); for(o in ar) o.damage(70, 0, player);
+				</action>
+				<play object="player" animation="beam" />
+				<action>player.stats.get("defense").add(-12)</action><invokeLater frames="136"><action>player.stats.get("defense").add(12)</action></invokeLater>
+				<play object="player" animation="death" />
+			</section>
+		</ability>
+	</item>
+</data>

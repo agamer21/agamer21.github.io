@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="fauna.xml" />
+	<tile id="brutefish" sheet="fauna.1" />
+	<animation id="brutefish.idle" x="9" count="6" />
+	<animation id="brutefish.walk" equals="brutefish.idle" />
+	<animation id="brutefish.attack" x="0" count="8" />
+	<animation id="brutefish.hit" count="1" length="3" x="8" />
+	<enemy id="brutefish" tile="brutefish" health="100" element="water" defense="7" range="16" speed="1" type="underwater" passEnemies="true" vertical="true" death_sfx="brute_fish_death" attack_sfx="none">
+		<loot id="carapace" />
+		<attack type="melee" damage="40" range="2" knockback="5" sfx="brute_fish_attack" />
+	</enemy>
+	
+	<tile id="camoflora" sheet="fauna.2" />
+	<animation id="camoflora.idle" x="9" count="1" length="1000" />
+	<animation id="camoflora.walk" x="10" count="8" />
+	<animation id="camoflora.fire"><append tile="camoflora" animation="camoflora.idle" /><frame visible="false" /><frame x="4" count="4" /><frame visible="false" length="3" /></animation>
+	<animation id="camoflora.hit" count="1" length="3" x="8" />
+	<animation id="camoflora.projectile" x="0" count="4" />
+	<enemy id="camoflora" tile="camoflora" health="50" element="plant" defense="7" range="3" speed="1.5" type="surface" death_sfx="camoflora_death">
+		<loot id="carapace" /><flee id="player" />
+		<attack type="projectile" damage="20" range="7" animation="fire" sfx="camoflora_attack">
+			<projectile tile="camoflora" animation="camoflora.projectile" speed="3" hpSteal="1" offsetX="-16" hit_sfx="camoflora_attack_hit" knockback="5" delay="4">
+				<light tile="light.small" color="2f58ff" />
+			</projectile>
+		</attack>
+	</enemy>
+	
+	<tile id="giantgrub" sheet="fauna.3" />
+	<animation id="giantgrub.idle"><frame x="7" count="8" /><frame x="14" length="6" /><frame x="7" count="8" /><frame x="14" length="6" /><frame x="7" count="8" /><frame x="14" length="6" /></animation>
+	<animation id="giantgrub.walk" x="15" count="8" />
+	<animation id="giantgrub.attack" x="0" count="6" />
+	<animation id="giantgrub.hit" count="1" length="3" x="6" />
+	<enemy id="giantgrub" tile="giantgrub" health="150" element="earth" defense="7" range="6" speed="0.5" type="surface" passEnemies="true" hostileFlag="never_set" attack_sfx="giantgrub_attack" death_sfx="cowterpillar_death">
+		<lootSet><loot id="carapace" /></lootSet>
+		<lootSet><loot id="meat" count="3" /></lootSet>
+		<attack type="melee" damage="40" knockback="10" />
+	</enemy>
+	
+	<tile id="dubex" sheet="fauna.4" />
+	<animation id="dubex.idle" x="1" count="8" />
+	<animation id="dubex.walk" x="9" count="10" />
+	<animation id="dubex.hit" count="1" length="3" x="0" />
+	<enemy id="dubex" tile="dubex" health="50" defense="3" range="24" speed="5" type="surface" overlapVehicle="true" passPlayer="true" passEnemies="true" passFence="true" night="true" death_sfx="dubex_death">
+		<lootSet><loot id="dark_fur" /></lootSet>
+		<lootSet><loot id="meat" count="3" /></lootSet>
+		<over><action>this.run();</action></over>
+		<hitWall><action>this.flip(); this.run();</action><stop /></hitWall>
+	</enemy>
+	
+	<tile id="dragonfly" sheet="fauna.5" />
+	<animation id="dragonfly.idle" x="9" count="8" />
+	<animation id="dragonfly.walk" equals="dragonfly.idle" />
+	<animation id="dragonfly.fire" x="0" count="8" />
+	<animation id="dragonfly.hit" count="1" length="3" x="8" />
+	<tile id="dragonfly.projectile" sheet="fauna.6" />
+	<animation id="dragonfly.projectile" x="4" count="4" />
+	<animation id="dragonfly.projectile.impact" x="0" count="4" />
+	<enemy id="dragonfly" tile="dragonfly" health="200" defense="3" range="12" speed="2" type="surface" vertical="true" flying="true" passEnemies="true" friendlyFire="false" death_sfx="firebug_death">
+		<loot id="carapace" />
+		<attack type="projectile" damage="30" range="12" animation="fire" boundsY="-4" height="2" sfx="firebug_attack">
+			<projectile tile="dragonfly.projectile" animation="dragonfly.projectile" speed="3" hit_sfx="firebug_attack_hit" offsetY="16" element="fire" knockback="5" delay="2" overlap="0.33">
+				<light tile="light.small" color="fae1b5" />
+				<hitEffect tile="dragonfly.projectile" animation="dragonfly.projectile.impact" color="ff9911"><light tile="light.medium" color="fae1b5" flicker="true" /></hitEffect>
+			</projectile>
+		</attack>
+	</enemy>
+	
+	<tile id="jellypod" sheet="fauna.7" />
+	<animation id="jellypod.idle" x="9" count="8" />
+	<animation id="jellypod.walk" equals="jellypod.idle" />
+	<animation id="jellypod.attack" x="0" count="8" />
+	<animation id="jellypod.hit" count="1" length="3" x="8" />
+	<enemy id="jellypod" tile="jellypod" health="40" element="water" defense="2" fps="10" overlapVehicle="true" canFlip="false" canCritical="false" type="floatUpDown" speed="0.5" bottomPad="170" death_sfx="jellypod_death" overlapDamage="false">
+		<over><attack type="omni" damage="20" range="5" sfx="jellypod_attack" /></over>
+		<overSecond><attack type="omni" damage="20" range="5" sfx="jellypod_attack" /></overSecond>
+		<light tile="light.default" color="dcc3e3" />
+	</enemy>
+	
+	<tile id="scrab" sheet="fauna.8" />
+	<animation id="scrab.idle" x="11" count="1" />
+	<animation id="scrab.walk" x="12" count="8" />
+	<animation id="scrab.attack" x="0" count="8" />
+	<animation id="scrab.hit" x="8" count="3" />
+	<enemy id="scrab" tile="scrab" health="40" damage="20" element="water" defense="8" range="7" speed="1" type="surface" night="true" vertical="true" attack_sfx="scrab_attack" death_sfx="scrab_death">
+		<loot id="carapace" />
+	</enemy>
+	
+	<tile id="waterhorse" sheet="fauna.9" />
+	<animation id="waterhorse.idle" x="1" count="8" />
+	<animation id="waterhorse.walk" equals="waterhorse.idle" />
+	<animation id="waterhorse.hit" count="1" length="3" x="0" />
+	<enemy id="waterhorse" tile="waterhorse" health="40" element="water" defense="2" range="16" speed="2" type="underwater" passEnemies="true" vertical="true" death_sfx="jellypod_death">
+		<light tile="light.default" color="90ffd8" />
+	</enemy>
+	
+	<tile id="octermite" sheet="fauna.10" />
+	<animation id="octermite.idle">
+		<frame x="17" length="4" />
+		<frame x="18" length="2" />
+		<frame x="17" length="32" />
+	</animation>
+	<animation id="octermite.attack" x="0" count="8" />
+	<animation id="octermite.dig" equals="octermite.attack" />
+	<animation id="octermite.walk" x="8" count="8" />
+	<animation id="octermite.hit" count="1" length="3" x="16" />
+	<enemy id="octermite" tile="octermite" health="50" defense="7" damage="30" type="wyrm" eatTile="desert.dirt" attack_sfx="wyrm_attack">
+		<loot id="carapace" /><sound id="death" value="wyrm_death" />
+	</enemy>
+	
+	<tile id="razor_bug" sheet="fauna.11" />
+	<animation id="razor_bug.idle" x="15" count="8" />
+	<animation id="razor_bug.roar" x="15" count="2" />
+	<animation id="razor_bug.walk" x="23" count="8" />
+	<animation id="razor_bug.attack" x="7" count="7" />
+	<animation id="razor_bug.hit" count="1" length="3" x="14" />
+	<animation id="razor_bug.projectile" x="4" count="3" />
+	<animation id="razor_bug.projectile.impact" x="0" count="4" />
+	<enemy id="razor_bug" tile="razor_bug" health="30" damage="20" defense="7" type="golem" speed="3" death_sfx="razor_bug_death">
+		<loot id="carapace" />
+		<attack type="projectile" damage="20" range="8" animation="attack" sfx="razor_bug_attack">
+			<projectile tile="razor_bug" animation="razor_bug.projectile" delay="3" speed="3" offsetX="-12" glow="true" hit_sfx="razor_bug_attack_hit" knockback="5" underwater="true">
+				<light tile="light.small" color="00cc00" />
+				<hitEffect tile="razor_bug" animation="razor_bug.projectile.impact" color="99ff99"><light tile="light.medium" color="00cc00" flicker="true" /></hitEffect>
+			</projectile>
+		</attack>
+	</enemy>
+</data>

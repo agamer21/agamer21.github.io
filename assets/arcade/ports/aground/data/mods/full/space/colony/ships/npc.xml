@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<animation id="exo_fighter.walk" equals="exo_fighter.fly" />
+	<enemy id="npc.exo_fighter" tile="exo_fighter" animation="exo_fighter" health="600" defense="12" fps="15" type="surface" range="32" speed="8" friendly="true" friendlyFire="false" passEnemies="true" vertical="true" flying="true" blood="science.explosion.med" death_sfx="explosion" ignoreHit="true" soundScale="2">
+		<tooltip />
+		<attack type="projectile" damage="12" range="14" cost="10" scaleCost="false" fireAll="true">
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="-35" overlap="0.25" delay="1" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="35" overlap="0.25" delay="1" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="-7" overlap="0.25" delay="2" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="7" overlap="0.25" delay="2" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="-35" overlap="0.25" delay="3" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="35" overlap="0.25" delay="3" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="-7" overlap="0.25" delay="4" critical="true" hitEffect="exo_fighter.bolt" />
+			<projectile tile="exo_fighter.bolt" animation="exo_fighter.bolt" speed="5" offsetX="-20" offsetY="7" overlap="0.25" delay="4" critical="true" hitEffect="exo_fighter.bolt" />
+		</attack>
+	</enemy>
+	<enemy id="npc.fighter" tile="fighter" animation="npc.fighter" health="1000" defense="7" fps="10" type="surface" range="32" speed="5" friendly="true" friendlyFire="false" passEnemies="true" vertical="true" flying="true" blood="science.explosion.med" death_sfx="explosion" ignoreHit="true" soundScale="2">
+		<tooltip />
+		<tile id="fighter.launcher" animation="equipment.fighter.launcher.idle" fps="10" y="0" offsetX="-0.5" offsetY="-0.5" />
+		<attack type="projectile" damage="150" range="20" boundsY="-80" height="20" sfx="antimatter_launcher">
+			<projectile tile="antimatter_missile" animation="antimatter_missile" speed="10" offsetX="60" offsetY="-24" knockback="20" hit_sfx="antimatter_missile" extendedRange="5">
+				<hitEffect tile="antimatter_missile" animation="antimatter_missile.impact" color="9999ff" />
+			</projectile>
+			<pre><action>var t = this.getTileById("fighter.launcher"); if(t != null){t.setFrame(0); t.playAnimation("equipment.fighter.launcher", false, null, -0.5, -0.5);}</action></pre>
+		</attack>
+	</enemy>
+</data>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<scenes>
+	<scene id="house">
+		<include id="house.xml" includeRoot="true" />
+		<tile id="builder" sheet="house.png" x="22" />
+		<animation id="builder.idle">
+			<frame x="11" length="15" /><frame x="0" />
+		</animation>
+		<animation id="builder.talk" x="0" count="12" />
+		
+		<tile id="miner" sheet="house.png" x="34" />
+		<animation id="miner.idle" x="0" count="12" />
+		<animation id="miner.talk" x="12" count="12" />
+	
+		<tile id="farmer" sheet="house.png" x="58" />
+		<animation id="farmer.idle" count="12" />
+		<animation id="farmer.talk" x="12" count="15" />
+
+		<tile id="trader" sheet="house.png" x="85" />
+		<animation id="trader.idle" count="12" />
+		<animation id="trader.talk" x="12" count="12" />
+		
+		<tile id="alchemist" sheet="house.png" x="6" />
+		<animation id="alchemist.idle">
+			<frame visible="false" length="30" />
+			<frame x="0" count="6" />
+			<frame x="12" count="4" repeat="3" />
+			<frame x="6" count="6" />
+		</animation>
+		
+		<tile id="fire" sheet="house.png" x="0" />
+		<animation id="fire" count="6" />
+		<layer id="bg" image="house_bg.png" />
+		<layer id="builder" tile="builder" animation="builder.idle" talk="builder.talk" />
+		<layer id="miner" tile="miner" animation="miner.idle" talk="miner.talk" />
+		<layer id="farmer" tile="farmer" animation="farmer.idle" talk="farmer.talk" />
+		<layer id="trader" tile="trader" animation="trader.idle" talk="trader.talk" />
+		<layer id="alchemist" tile="alchemist" animation="alchemist.idle" />
+		<layer id="fire" tile="fire" animation="fire" />
+
+		<show id="first">
+			<layer id="bg" />
+			<layer id="alchemist" if="player.hasQuest('lab')" />
+			<layer id="miner" />
+			<layer id="trader" /><hide id="trader" />
+			<layer id="farmer"  /><hide id="farmer" />
+			<layer id="builder" if="player.hasQuest('storehouse')" />
+			<layer id="fire" />
+			<wait seconds="1" />
+			<dialogue section="scene.house" id="first1" speaker="miner" />
+			<lerp object="miner" alpha="0" seconds="0.5" />
+			<choose if="player.hasQuest('storehouse')">
+				<section if="area.getStructureById('house_kitchen') != null">
+					<dialogue section="scene.house" id="first2" speaker="builder" />
+					<lerp object="builder" deltaX="5" seconds="1" />
+				</section>
+				<dialogue section="scene.house" id="first3" speaker="builder" />
+			</choose>
+			<section if="player.hasQuest('market')">
+				<wait seconds="0.25" />
+				<lerp object="trader" alpha="1" seconds="0.5" />
+				<dialogue section="scene.house" id="first4" speaker="trader" />
+				<lerp object="trader" deltaX="-8" seconds="1" /><wait seconds="0.25" />
+				<lerp object="trader" alpha="0" seconds="0.5" />
+			</section>
+			<section if="player.hasQuest('farm')">
+				<lerp object="farmer" alpha="1" seconds="0.5" />
+				<dialogue section="scene.house" id="first5" speaker="farmer" />
+			</section>
+			<wait seconds="1" />
+		</show>
+	</scene>
+</scenes>

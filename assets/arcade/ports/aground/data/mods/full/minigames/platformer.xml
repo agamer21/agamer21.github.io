@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<tile id="minigame.platformer.tree" sheet="sheet.6" />
+	<animation id="minigame.platformer.tree.vine.idle"><frame visible="false" /></animation>
+	<animation id="minigame.platformer.tree.vine.attack" x="0" count="7">
+		<frame visible="false" length="15" />
+	</animation>
+	<animation id="minigame.platformer.tree.grow" x="7" count="1" length="4" />
+	<tree id="minigame.platformer.tree" width="32" height="16" health="1" loot="wood" collect="2" grown="3" speed="0.002" tile="minigame.platformer.tree">
+		<attacks tile="minigame.platformer.tree" animation="minigame.platformer.tree.vine" behind="true">
+			<attack type="melee" damage="1" range="1" />
+		</attacks>
+		<initRenderer><displayAction>this.renderer.scaleX = this.renderer.scaleY = 2;</displayAction></initRenderer>
+	</tree>
+	
+	<tile id="minigame.platformer.enemy1" sheet="sheet.7" />
+	<animation id="minigame.platformer.enemy1.idle" x="8" count="8" />
+	<animation id="minigame.platformer.enemy1.walk" equals="minigame.platformer.enemy1.idle" />
+	<animation id="minigame.platformer.enemy1.attack" equals="item8" />
+	<enemy id="minigame.platformer.enemy1" width="32" height="32" canCritical="false" tile="minigame.platformer.enemy1" health="5" score="20" overlapVehicle="true" fps="10" type="surface" speed="2" ignoreHit="true" range="5" vrange="3" vertical="true" flying="true" friendlyFire="false" passEnemies="true" death_sfx="snaptopus_death" blood="magic.explosion.sm">
+		<attack type="melee" damage="2" range="0.5" />
+		<over><attack type="omni" damage="2" range="1" /></over>
+		<overSecond><attack type="omni" damage="2" range="1" /></overSecond>
+		<initRenderer><displayAction>this.renderer.scaleX = this.renderer.scaleY = 2;</displayAction></initRenderer>
+		<onDeath><action>player.addTmpVar("platformer_points", Std.parseInt(this.info.xml.get("score")));</action></onDeath>
+	</enemy>
+
+	<tile id="minigame.platformer.enemy2" sheet="sheet.8" offsetY="2" />
+	<animation id="minigame.platformer.enemy2.idle" x="6" count="6" />
+	<animation id="minigame.platformer.enemy2.hit" equals="minigame.platformer.enemy2.idle" />
+	<animation id="minigame.platformer.enemy2.pre_attack" x="18" count="6" />
+	<animation id="minigame.platformer.enemy2.attack" equals="item6" />
+	<animation id="minigame.platformer.enemy2.open" x="12" count="6" repeat="2" />
+	<tile id="minigame.platformer.enemy2.projectile" sheet="sheet.9" />
+	<animation id="minigame.platformer.enemy2.projectile" x="6" count="6" />
+	<enemy id="minigame.platformer.enemy2" width="32" height="32" canCritical="false" tile="minigame.platformer.enemy2" health="3" defense="5" canFlip="false" score="50" fps="10" type="surface" speed="0" friendlyFire="false" death_sfx="alien_death" blood="magic.explosion.sm">
+		<attack type="projectile" damage="3" range="7" sfx="oldone_beam" requireTarget="false" cooldown="240">
+			<pre><play object="this" animation="pre_attack" /></pre>
+			<post>
+				<play object="this" animation="idle" /><sound id="oldone_open" object="this" /><action>this.setVulnerable(0,5);</action>
+				<play object="this" animation="open" /><action>this.endVulnerable();</action>
+				<play object="this" animation="idle" loop="true" /><stop />
+			</post>
+			<projectile tile="minigame.platformer.enemy2.projectile" animation="minigame.platformer.enemy2.projectile" speed="4" delay="2" hit_sfx="bolt_hit" scale="2" offsetY="2" overlap="0.125">
+				<hitEffect tile="minigame.platformer.enemy2.projectile" animation="item6" />
+			</projectile>
+		</attack>
+		<initRenderer><displayAction>this.renderer.scaleX = this.renderer.scaleY = 2;</displayAction></initRenderer>
+		<onDeath><action>player.addTmpVar("platformer_points", Std.parseInt(this.info.xml.get("score")));</action></onDeath>
+	</enemy>
+	
+	<animation id="minigame.platformer.pickup">
+		<frame x="0" /><frame x="0" offsetY="-1" />
+	</animation>
+	<object id="minigame.platformer.pickup" tile="health" width="16" height="16" animation="minigame.platformer.pickup" overlapVehicle="true" fps="4">
+		<over>
+			<action>player.vehicle.heal(4);</action><remove object="this" /><sound id="item" />
+		</over>
+		<initRenderer><displayAction>this.renderer.scaleX = this.renderer.scaleY = 2;</displayAction></initRenderer>
+	</object>
+	<object id="minigame.platformer.pickup2" tile="sticky" width="16" height="16" animation="minigame.platformer.pickup" overlapVehicle="true" fps="4" score="10">
+		<over>
+			<action>player.addTmpVar("platformer_points", Std.parseInt(this.info.xml.get("score")));</action><remove object="this" /><sound id="item" />
+		</over>
+	</object>
+
+	<tile id="minigame.platformer.player" sheet="sheet.4" x="0" />
+	<animation id="minigame.platformer.player.idle" x="5" count="1" />
+	<animation id="minigame.platformer.player.move" x="19" count="5" />
+	<animation id="minigame.platformer.player.attack" x="14" count="4">
+		<append tile="minigame.platformer.player" animation="minigame.platformer.player.idle" behind="true" />
+	</animation>
+	<animation id="minigame.platformer.player.hit" x="18" count="1" length="3" />
+	<animation id="minigame.platformer.player.hover" equals="item5" />
+	<animation id="minigame.platformer.player.fly" equals="item5" />
+	<animation id="minigame.platformer.player.death" x="6" count="8" />
+	<tile id="minigame.platformer.player.projectile" sheet="sheet.5" x="0" />
+	<animation id="minigame.platformer.player.projectile" x="5" count="5" />
+	<vehicle id="minigame.platformer.player" tile="minigame.platformer.player" health="10" canCritical="false" speed="2" speedY="4" jumpXSpeed="1.25" type="jumping" jump="11" jump_sfx="jump" fps="10" icon="wand.ico" attack_move="true" canDismount="false" hitAnim="true" health_icon="health" health_color="990000" cameraY="32" addExp="false" cameraX="50">
+		<gui hideAll="true" options="true" bars="true" equipButtons="true" coins="true" />
+		<attack type="projectile" damage="1" range="7" sfx="magicwand">
+			<projectile tile="minigame.platformer.player.projectile" animation="minigame.platformer.player.projectile" speed="4" delay="2" hit_sfx="bolt_hit" scale="2">
+				<hitEffect tile="minigame.platformer.player.projectile" animation="item5" />
+			</projectile>
+		</attack>
+		<initRenderer><displayAction>this.renderer.scaleX = this.renderer.scaleY = 2;</displayAction></initRenderer>
+		<onDeath>
+			<sound id="player_death" /><play object="this" animation="death" modal="true" /><lerp object="this" alpha="0" seconds="0.1" modal="true" />
+			<run procedure="minigame.platformer.quit" /><stop/>
+		</onDeath>
+		<onCancel>
+			<window type="prompt" message="common.quit_minigame"><run procedure="minigame.platformer.quit" /></window><stop />
+		</onCancel>
+		<mount><action>setGameScale(1)</action></mount>
+	</vehicle>
+	
+	<parallax id="minigame.platformer.bg">
+		<layer p="0" scale="2"><tile sheet="sheet.1" x="3" /></layer>
+		<layer p="0.0625" py="0.25" scale="2"><tile sheet="sheet.1" x="1" dy="-8" /></layer>
+		<layer p="0.125" py="0.5" scroll="0.0625" scale="2"><tile sheet="sheet.1" x="0" dy="-16" /></layer>
+		<layer p="0.5" py="1" scale="2"><tile sheet="sheet.1" x="2" dy="-32" /></layer>
+		<layer type="water" max_depth="80" background="0" /><layer type="back" />
+	</parallax>
+	<object id="minigame.platformer.hotspot" width="4096" height="64" overlapVehicle="true">
+		<over><action if="player.vehicle != null">player.vehicle.loseHealth(100,0,player)</action></over>
+	</object>
+	<tile id="minigame.dirt" sheet="sheet.2" x="1" />
+	<tile id="minigame.grass" sheet="sheet.2" x="1"><tile sheet="sheet.2" x="0" /></tile>
+	<action>
+		minigame_platformer_waves = [
+			[0,0,0,3],
+			[2,1,0,2],
+			[3,3,0,3],
+			[4,4,0,1],
+			[4,5,0,3],
+			[4,5,1,2],
+			[5,6,1,1],
+			[5,7,1,3],
+			[5,7,2,2],
+			[5,7,3,1],
+			[5,7,4,2],
+			[5,7,5,3],
+			[5,7,7,3]
+		];
+		function minigame_platformer_handle_wave(area){
+			var w = getGlobal('minigame_platformer_wave');
+			var wave = minigame_platformer_waves[w];
+			var objects = area.getObjectsById('minigame.platformer.tree'); shuffle(objects);
+            var len = objects.length-wave[0]; for(i in 0...len) area.removeObject(objects[i]);
+            var objects = area.getObjectsById('minigame.platformer.enemy2'); shuffle(objects);
+            var len = objects.length-wave[1]; for(i in 0...len) area.removeObject(objects[i]);
+            var objects = area.getObjectsById('minigame.platformer.pickup'); shuffle(objects);
+            var len = wave[3]; for(i in 0...len){var o = objects[i]; area.removeObject(o); area.addObject(ObjectInfo.make("minigame.platformer.pickup2", o.xPos, o.yTile));}
+            w++; if(w >= minigame_platformer_waves.length) w -= 3; setGlobal('minigame_platformer_wave', w); return wave[2];
+		}
+	</action>
+	<tile id="minigame.platformer.exit" sheet="{core}/magic1/structures/wyrm_tunnel.png" />
+	<animation id="minigame.platformer.exit.idle" count="6" />
+	<structure id="minigame.platformer.exit" width="32" height="32" tile="minigame.platformer.exit" overlapVehicle="true">
+		<over>
+			<sound id="whirlpool_portal" /><section with="ellipse"><teleport area="minigame.platformer" x="2" temporary="true" /><action>clearStaticDisplays();</action></section>
+		</over>
+        <initRenderer><displayAction>this.renderer.x -= 8; this.renderer.scaleX = this.renderer.scaleY = 2;</displayAction></initRenderer>
+	</structure>
+	<area id="minigame.platformer" background="minigame.platformer.bg" shouldLight="false" type="none" clearReturn="false" tile_scale="2">
+		<tiles from="platformer.png" x="-16" y="-7">
+			<tile id="minigame.dirt" color="000000" /><tile id="minigame.grass" color="808080" />
+			<tile color="ff0000">area.addObject(ObjectInfo.make("minigame.platformer.enemy2", x*Tile.SIZE, y*Tile.SIZE))</tile>
+			<tile color="00ff00">area.addObject(ObjectInfo.make("minigame.platformer.tree", x*Tile.SIZE, y*Tile.SIZE))</tile>
+			<tile color="ff00ff">getStructure("minigame.platformer.exit").build(null, area, x*Tile.SIZE, y*Tile.SIZE);</tile>
+			<tile color="ffff00">area.addObject(ObjectInfo.make("minigame.platformer.pickup", x*Tile.SIZE, y*Tile.SIZE))</tile>
+		</tiles>
+		<object id="minigame.platformer.hotspot" x="-64" y="6" />
+        <objects id="minigame.platformer.enemy1" count="minigame_platformer_handle_wave(area)" fromX="0" toX="64" fromY="-8" toY="-1" width="2" height="2" ground="false" />
+		<connection area="stop" dir="left" fromX="-9" toX="-9" />
+		<connection area="stop" dir="right" fromX="72" toX="72" />		
+        <connection area="stop" dir="up" fromY="-10" toY="-10" />
+		<init><runAreaLoad /></init>
+		<onLoad>
+			<action>player.gui.coins.changeCurrency("sticky", "tvar:platformer_points");</action>
+			<music id="minigame_platformer" seconds="1" />
+		</onLoad>
+		<onLeave><action>player.gui.coins.changeCurrency("coins", "coins");</action></onLeave>
+	</area>
+	<procedure id="minigame.platformer.quit">
+		<action>var v = player.getTmpVar("platformer_points"); if(v > player.getVar("platformer_hiscore")){player.setVar("platformer_hiscore", v); setGlobal('has_highscore', true);}</action>
+		<score id="platformer_score" value="player.getVar('platformer_hiscore')" if="getGlobal('has_highscore')" />
+		<section with="fade_fast"><action>this.dismount(true)</action><run procedure="minigame.exit" /><run procedure="minigame.platformer.title" /></section>
+	</procedure>
+	<procedure id="minigame.platformer.title">
+		<action>oldTile = player.gui.coins.tile; oldStorage = player.gui.coins.storage; player.gui.coins.changeCurrency("sticky", "var:platformer_hiscore");</action>
+		<show type="tile" tile="minigame.platformer.title" animation="minigame.platformer.title" renderer="static" id="title" x="0" y="0" fps="8" />
+		<show id="highscore" tooltip="default" text="common.new_highscore" seconds="0.16" x="0.5" y="0" if="getGlobal('has_highscore')" /><action>setGlobal('has_highscore', false)</action>
+		<menu section="common" closeable="true" showCoins="true" autoselect="true" darken="false" yalign="0.9">
+			<choice id="newgame">
+				<section with="fade_fast">
+					<run procedure="minigame.enter" /><action>player.setTmpVar("platformer_points", 0); setGlobal('minigame_platformer_wave', 0);</action>
+					<teleport area="minigame.platformer" x="2" temporary="true" />
+					<object id="minigame.platformer.player" x="2" name="ship" /><facing object="ship" dir="right" />
+					<action>ship.doMount(player, true); clearStaticDisplays();</action>
+				</section><stop />
+			</choice>
+			<choice id="exit" />
+		</menu><section with="fade_fast"><hide id="title" /><hide id="highscore" /><action>player.gui.coins.changeCurrency(oldTile, oldStorage);</action></section>
+	</procedure>
+</data>

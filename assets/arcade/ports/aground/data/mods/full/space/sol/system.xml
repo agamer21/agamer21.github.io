@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<animation id="mercury">
+		<append tile="planet2" animation="single" color="a99f9d" colorScale="2.5" />
+		<append tile="planet2.shadow" animation="single" /><frame visible="false" />
+	</animation>
+	<animation id="venus">
+		<append tile="planet5" animation="single" color="a9a693" colorScale="2" />
+		<append tile="planet5.clouds" animation="single" color="9096a6" colorScale="2" />
+		<append tile="planet5.shadow" animation="single" /><frame visible="false" />
+	</animation>
+	<animation id="earth">
+		<append tile="planet6" animation="single" color="1c4596" colorScale="2" />
+		<append tile="planet6.land1" animation="single" color="a3b065" colorScale="2" />
+		<append tile="planet6.clouds" animation="single" />
+		<append tile="planet6.shadow" animation="single" /><frame visible="false" />
+	</animation>
+	<animation id="mars">
+		<append tile="planet3" animation="single" color="ff8760" colorScale="2" />
+		<append tile="planet3.shadow" animation="single" /><frame visible="false" />
+	</animation>
+    <animation id="jupiter">
+        <append tile="planet9" animation="single" color="d8c4ac" colorScale="1.7" />
+        <append tile="planet9.gas2" animation="single" color="f0f7ff" colorScale="1.1" />
+        <append tile="planet9.shadow" animation="single" /><frame visible="false" />
+    </animation>
+	<include id="earth.xml" />
+	<include id="mars.xml" />
+	<planet id="mercury" height="80">
+		<orbit id="mercury.orbit" width="256" height="64" background="mercury.orbit" name="system.planet.mercury_orbit" type="none" tidallyLocked="true">
+			<area id="mercury" x="0" />
+			<init><runAreaLoad /></init>
+			<onLoad><music id="orbit" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+		</orbit>
+	</planet>
+	<area id="mercury" width="256" height="96" hasO2="false" background="stars.dwarf" planet="mercury" looping="true" name="system.planet.mercury" tidallyLocked="true">
+		<tiles id="basalt.top" y="0" /><mine start="0" end="0.01" backTile="desert.scorched" />
+		<tiles id="basalt" start="0" end="0.45" empty="front|back" />
+		<tiles id="obsidian" start="0.45" end="0.9" />
+		<tiles id="bedrock" start="0.9" end="1" />
+		<tiles id="blackstone" y="95" /><ore id="iron" start="0" end="0.4" percent="0.0375" tile="basalt" />
+		<ore id="quartz" start="0.2" end="0.45" percent="0.0125" tile="basalt" />
+		<ore id="exotic_matter" start="0.8" end="0.9" percent="0.00125" tile="obsidian" />
+		<ore id="exotic_matter" start="0.9" end="1" percent="0.0025" tile="bedrock" />
+		<ore id="magnegem" start="0.45" end="0.7" percent="0.00125" tile="obsidian" />
+		<ore id="uranium" start="0.7" end="0.9" percent="0.0125" tile="obsidian" />
+		<ore id="titanium" start="0.5" end="0.9" percent="0.0375" tile="obsidian" />
+		<ore id="lava" start="0.6" end="0.8" percent="1" tile="obsidian" />
+		<init><runAreaLoad /></init>
+		<onLoad><music id="orbit_nocombat" seconds="1" /></onLoad>
+	</area>
+	<planet id="venus" height="80">
+		<orbit id="venus.orbit" width="512" height="64" background="venus.orbit" name="system.planet.venus_orbit" type="none">
+			<init><runAreaLoad /></init>
+			<onLoad><music id="orbit" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+		</orbit>
+	</planet>
+	<planet id="mars" height="80">
+		<orbit id="mars.orbit" width="256" height="64" background="mars.orbit" name="system.planet.mars_orbit" type="none">
+			<area id="mars" x="0" />
+			<init><runAreaLoad /></init>
+			<onLoad><music id="orbit" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+		</orbit>
+	</planet>
+	<planet id="jupiter" height="80">
+		<orbit id="jupiter.orbit" width="1024" height="96" background="jupiter.orbit" name="system.planet.jupiter_orbit" type="none">
+			<init><runAreaLoad /></init>
+			<onLoad><music id="orbit" seconds="1" /><radar tile="orbit.radar" animation="orbit.radar" padding="2" /></onLoad>
+		</orbit>
+	</planet>
+	<system id="sol" bgm="voyage" x="20" y="40">
+		<planet id="mercury" tile="planet2" animation="mercury" orbit="orbit1" orbitOffX="-6" orbitOffY="-7" offsetX="-54" offsetY="-15" name="system.planet.mercury" />
+		<planet id="venus" tile="planet5" animation="venus" orbit="orbit2" orbitOffX="-8" orbitOffY="-12" offsetX="-23" offsetY="-4" name="system.planet.venus" />
+		<planet id="earth" tile="planet6" animation="earth" orbit="orbit3" orbitOffX="-20" orbitOffY="-23" offsetX="13" offsetY="15" name="system.planet.earth" />
+		<planet id="mars" tile="planet6" animation="mars" orbit="orbit3" offsetX="13" offsetY="15" name="system.planet.mars" />
+		<planet id="jupiter" tile="planet9" animation="jupiter" orbit="orbit5" orbitOffX="-24" offsetX="115" offsetY="20" name="system.planet.jupiter" />
+	</system>
+</data>

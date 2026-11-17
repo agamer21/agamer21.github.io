@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<include id="spirits.xml" />
+	
+	<tile id="spirit_fish" sheet="spirits.1" />
+	<animation id="spirit_fish.idle" x="8" count="7" />
+	<animation id="spirit_fish.walk" equals="spirit_fish.idle" />
+	<animation id="spirit_fish.fly" equals="spirit_fish.idle" />
+	<animation id="spirit_fish.attack" x="0" count="8" />
+	<enemy id="spirit_fish" extends="generic.spirit" tile="spirit_fish" health="24" range="12" vrange="6" element="water" type="surface" flying="true" capture="8" spirit_power="20" trapped="spirit_fish" vertical="true" underwater="true">
+		<attack type="melee" damage="30" ignoreArmor="true" />
+	</enemy>
+	
+	<familiar id="spirit_fish" type="flying" costPerSecond="0.25" bounceHeight="0" underwater="true" alignCenter="true" element="water" canFlyAnywhere="true">
+		<attack type="melee" damage="16" spirit="2" cost="5" />
+	</familiar>
+	<item id="spirit_fish" type="animal" cost="0" durability="2000" weight="0" slot="familiar" icon="spirit_fish.ico" viewHidden="true" needsO2="false" flyOrbit="true" plant_book="false">
+		<action id="equip" /><action id="feed" alt="feed_all" sfx="eat" /><action id="rename" />
+		<familiar id="spirit_fish" tile="spirit_fish" animation="spirit_fish" />
+		<equipCost storage="spirit" cost="1" durability="-25" full="false" />
+		<food id="spirit_orb" value="25" />
+	</item>
+	<animation id="spirit_orb" count="9" offsetX="4" offsetY="1" />
+	<item id="spirit_orb" icon="spirit" animation="spirit_orb" type="potion" cost="0" weight="0" action="eat" eat="common.use_count" eatStorage="spirit" value="1" />
+	<animal id="spirit_fish">
+		<farmable item="spirit_orb" min="1" max="2" time="50" />
+		<tile id="spirit_fish" animation="spirit_fish.idle" x="-0.5" y="-0.875" />
+	</animal>
+	
+	<tile id="spirit_fox" sheet="spirits.2" />
+	<animation id="spirit_fox.idle" count="10" x="12" />
+	<animation id="spirit_fox.walk" count="8" x="22" />
+	<animation id="spirit_fox.attack" count="12" x="0" offsetX="9" offsetY="4" />
+	<enemy id="spirit_fox" extends="generic.spirit" tile="spirit_fox" speed="4" health="24" range="12" element="fire" type="surface" passPlayer="true" trapped="spirit_fox_helm" capture="8" spirit_power="20">
+		<inRange range="7"><action>this.run();</action></inRange>
+		<over><attack target="player" type="melee" damage="20" ignoreArmor="true" overEnemy="true" hitEffect="fire_lg_dmg" if="this.renderer.visible" /></over>
+	</enemy>
+	
+	<tile id="spirit_imp" sheet="spirits.3" />
+	<animation id="spirit_imp.idle" x="10" count="10" />
+	<animation id="spirit_imp.walk" equals="spirit_imp.idle" />
+	<animation id="spirit_imp.attack" x="0" count="10" />
+	<enemy id="spirit_imp" extends="generic.spirit" tile="spirit_imp" health="24" range="12" element="ice" type="surface" capture="8" spirit_power="20" trapped="spirit_robes">
+		<attack type="melee" damage="20" ignoreArmor="true" hitEffect="freeze" />
+	</enemy>
+	
+	<tile id="spirit_ox" sheet="spirits.4" />
+	<animation id="spirit_ox.idle" x="8" count="8" />
+	<animation id="spirit_ox.walk" equals="spirit_ox.idle" />
+	<animation id="spirit_ox.attack" x="0" count="8"><frame x="8" count="4" /></animation>
+	<enemy id="spirit_ox" extends="generic.spirit" tile="spirit_ox" health="24" range="10" speed="1" element="earth" type="surface" trapped="storehouse_seed" capture="8" spirit_power="20">
+		<attack type="melee" damage="30" range="5" ignoreArmor="true" />
+	</enemy>
+	
+	<tile id="venatrix" sheet="spirits.5" />
+	<animation id="venatrix.idle" x="10" count="10" />
+	<animation id="venatrix.walk" x="20" count="10" />
+	<animation id="venatrix.fire" x="0" count="10" />
+	<tile id="spirit_arrow" sheet="spirits.6" />
+	<animation id="spirit_arrow.plant" count="3" glow="true" color="99ff11" colorScale="1" />
+	<enemy id="venatrix" extends="generic.spirit" tile="venatrix" health="24" range="3" speed="3" element="plant" type="surface" capture="8" trapped="venatrix_seed" spirit_power="20">
+		<flee id="player" />
+		<attack type="projectile" damage="20" range="10" animation="fire" sfx="spirit_bow">
+			<projectile tile="spirit_arrow" offsetY="-2" animation="spirit_arrow.plant" speed="3" delay="3" homing="true" pierce="true" passTile="true" hit_sfx="bullet" ignoreArmor="true" knockback="5" />
+		</attack>
+	</enemy>
+</data>

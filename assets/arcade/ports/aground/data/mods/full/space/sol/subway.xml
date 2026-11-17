@@ -1,0 +1,27 @@
+<tilesheet id='subway.png' width='64' height='80'>
+	<image frame='0' x='0' y='100' width='37' height='39' offsetX='15' offsetY='23' />
+	<image frame='1' x='41' y='76' width='45' height='39' offsetX='7' offsetY='23' />
+	<image frame='2' x='64' y='0' width='54' height='35' offsetX='3' offsetY='27' />
+	<image frame='3' x='0' y='139' width='32' height='32' offsetX='16' offsetY='32' />
+	<image frame='4' x='86' y='76' width='32' height='32' offsetX='16' offsetY='32' />
+	<image frame='5' x='41' y='115' width='32' height='32' offsetX='16' offsetY='32' />
+	<image frame='6' x='73' y='153' width='64' height='8' offsetX='0' offsetY='16' />
+	<image frame='7' x='73' y='131' width='64' height='11' offsetX='0' offsetY='16' />
+	<image frame='8' x='73' y='167' width='64' height='4' offsetX='0' offsetY='60' />
+	<image frame='9' x='73' y='142' width='64' height='11' offsetX='0' offsetY='53' />
+	<image frame='10' x='73' y='115' width='64' height='16' offsetX='0' offsetY='48' />
+	<image frame='11' x='0' y='0' width='64' height='48' offsetX='0' offsetY='16' />
+	<image frame='12' x='0' y='48' width='41' height='52' offsetX='0' offsetY='14' />
+	<image frame='13' x='64' y='35' width='16' height='10' offsetX='48' offsetY='54' />
+	<image frame='14' x='0' y='171' width='16' height='16' offsetX='16' offsetY='32' />
+	<image frame='15' x='41' y='48' width='64' height='28' offsetX='0' offsetY='25' />
+	<image frame='16' x='73' y='161' width='64' height='6' offsetX='0' offsetY='25' />
+	<image frame='17' x='48' y='147' width='7' height='43' offsetX='24' offsetY='21' />
+	<image frame='18' x='32' y='139' width='5' height='16' offsetX='25' offsetY='21' />
+	<image frame='19' x='125' y='76' width='7' height='33' offsetX='25' offsetY='20' />
+	<image frame='20' x='41' y='147' width='7' height='44' offsetX='25' offsetY='20' />
+	<image frame='21' x='118' y='0' width='8' height='44' offsetX='24' offsetY='20' />
+	<image frame='22' x='126' y='0' width='8' height='44' offsetX='24' offsetY='20' />
+	<image frame='23' x='118' y='76' width='7' height='38' offsetX='25' offsetY='20' />
+	<image frame='24' x='55' y='147' width='7' height='43' offsetX='24' offsetY='21' />
+</tilesheet>
