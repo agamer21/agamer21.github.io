@@ -25,7 +25,7 @@ globalThis.MCSMFiles = {
 
     const promise = (async () => {
       const name = `game.data.part${String(index).padStart(3, "0")}`;
-      const response = await fetch(`https://raw.githubusercontent.com/linkawaken1979-alt/mcsm-web-port/92ea4bab239286af747c00626cf3d31bf360c65f/game-files/${name}`, { cache: "force-cache" });
+      const response = await fetch(`https://cdn.jsdelivr.net/gh/linkawaken1979-alt/mcsm-web-port@92ea4bab239286af747c00626cf3d31bf360c65f/game-files/${name}`, { cache: "force-cache" });
 
       if (!response.ok) throw new Error(`${name} failed: HTTP ${response.status}`);
 
@@ -520,7 +520,7 @@ globalThis.MCSMFiles = {
           const index = Math.floor((offset + lengths.slice(0, next).reduce((a, b) => a + b, 0)) / 20971520);
           const absolute = offset + lengths.slice(0, next).reduce((a, b) => a + b, 0);
           const partOffset = absolute - index * 20971520;
-          const response = await fetch(`https://raw.githubusercontent.com/linkawaken1979-alt/mcsm-web-port/92ea4bab239286af747c00626cf3d31bf360c65f/game-files/game.data.part${String(index).padStart(3, "0")}`);
+          const response = await fetch(`https://cdn.jsdelivr.net/gh/linkawaken1979-alt/mcsm-web-port@92ea4bab239286af747c00626cf3d31bf360c65f/game-files/game.data.part${String(index).padStart(3, "0")}`);
 
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
@@ -871,7 +871,7 @@ globalThis.MCSMFiles = {
         // Synchronous XHR is retained for the original readSync interface.
         // Read the full containing part, then extract the requested block.
         const request = new XMLHttpRequest();
-        request.open("GET", `https://raw.githubusercontent.com/linkawaken1979-alt/mcsm-web-port/92ea4bab239286af747c00626cf3d31bf360c65f/game-files/game.data.part${String(partIndex).padStart(3, "0")}`, false);
+        request.open("GET", `https://cdn.jsdelivr.net/gh/linkawaken1979-alt/mcsm-web-port@92ea4bab239286af747c00626cf3d31bf360c65f/game-files/game.data.part${String(partIndex).padStart(3, "0")}`, false);
         request.send();
 
         if (request.status !== 200) throw new Error(`Split data read failed: ${request.status}`);

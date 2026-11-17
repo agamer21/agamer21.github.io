@@ -5,7 +5,9 @@ const startStatus = document.getElementById("status");
 function fail(error) {
   const text = error && (error.stack || error.message) || String(error);
   console.error(text);
-  startStatus.textContent = error && error.message || text;
+  startStatus.textContent = /failed to fetch|networkerror|load failed/i.test(text)
+    ? 'Game data could not download from cdn.jsdelivr.net. This network may block that host; try another connection.'
+    : error && error.message || text;
 }
 
 /* Split game.data loader: fetch only requested byte ranges. */
@@ -33,7 +35,7 @@ function fail(error) {
 
     if (!partCache.has(index)) {
       const name = `game.data.part${String(index).padStart(3, "0")}`;
-      const url = new URL(`https://raw.githubusercontent.com/linkawaken1979-alt/mcsm-web-port/92ea4bab239286af747c00626cf3d31bf360c65f/game-files/${name}`, location.href);
+      const url = new URL(`https://cdn.jsdelivr.net/gh/linkawaken1979-alt/mcsm-web-port@92ea4bab239286af747c00626cf3d31bf360c65f/game-files/${name}`, location.href);
 
       const promise = originalFetch(url.href).then(async response => {
         if (!response.ok) {
