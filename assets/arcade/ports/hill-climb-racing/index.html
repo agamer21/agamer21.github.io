@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hill Climb Racing</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { color-scheme: dark; --bg: #07080a; --panel: rgba(12, 14, 18, 0.86); --ink: #e8ecf1; --dim: #8b95a3; --accent: #f2c14e; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
+  #stage { position: fixed; inset: 0; display: grid; place-items: center; }
+  canvas { display: block; touch-action: none; background: #000; width: 100vw; height: 100vh; object-fit: contain; outline: none; }   /* letterboxed: aspect ratio preserved, black bars fill the rest */
+  #overlay { position: fixed; inset: 0; display: grid; place-items: center; background: #000; transition: opacity .4s; }
+  #overlay.hidden { opacity: 0; pointer-events: none; }
+  .loader { width: min(360px, calc(100vw - 48px)); text-align: center; }
+  .loader h1 { margin: 0 0 18px; font-size: 20px; font-weight: 600; }
+  .loading-track { height: 8px; overflow: hidden; background: #1c1c1c; border-radius: 4px; }
+  .loading-fill { height: 100%; width: 0; background: var(--accent); border-radius: inherit; transition: width .15s linear; }
+  #status { margin-top: 14px; min-height: 1.4em; color: var(--dim); font: 13px ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  /* bottom centre, between the game's gauges (its own buttons sit in the top corners); shown while hovered */
+  #hud { position: fixed; bottom: 6px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; align-items: center; opacity: 0; transition: opacity .3s; padding: 6px; }
+  #hud:hover { opacity: 1; }
+  #hud button { font: inherit; font-size: 12px; color: var(--ink); background: var(--panel); border: 1px solid rgba(255,255,255,.1); border-radius: 7px; padding: 4px 10px; cursor: pointer; }
+  #fps { font: 12px ui-monospace, monospace; color: var(--dim); background: var(--panel); padding: 4px 8px; border-radius: 7px; display: none; }
+  #hint { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 12px; color: var(--dim); background: var(--panel); padding: 5px 12px; border-radius: 8px; opacity: 0; transition: opacity .4s; pointer-events: none; }
+  #hint.show { opacity: 1; }
+  @media (hover: none) { #hud { opacity: 1; } }
+</style></head>
+<body>
+<div id="stage"><canvas id="canvas" width="800" height="600" tabindex="0"></canvas></div>
+<div id="hud"><span id="fps"></span><button id="bsound">Sound: on</button><button id="bfps" title="F8">FPS</button><button id="bcap" title="Frame rate cap">Cap: 60</button><button id="bvsync">Vsync: off</button><button id="bfull" title="F11">Fullscreen</button></div>
+<div id="overlay"><div class="loader">
+  <h1>Hill Climb Racing</h1>
+  <div class="loading-track"><div class="loading-fill" id="loading-fill"></div></div>
+  <div id="status" aria-live="polite">Loading…</div>
+</div></div>
+<script src="hill-asyncify.js"></script>
+<script src="hill-input.js"></script>
+<script src="hcr.js"></script>
+<script>
+window.__hcrMain = () => {
+(() => {
+  const $ = id => document.getElementById(id);
+  const canvas = $('canvas'), status = s => { $('status').textContent = s; };
+  const q = new URLSearchParams(location.search);
+  // where hcr.data is served from: '' = next to this page, or a CDN folder URL ending in '/'
+  // (`python build.py pack hcr` writes the game files into one hcr.data)
+  const GAME_BASE = '';
+  // settings saved before the port's rename (saVsync, saProgs) carry over once
+  try { for (const k of ['Vsync', 'Progs']) { const v = localStorage.getItem('sa' + k); if (v !== null) { if (localStorage.getItem('hcr' + k) === null) localStorage.setItem('hcr' + k, v); localStorage.removeItem('sa' + k); } } } catch (e) {}
+  const supported = true;
+  if (!supported) status('This browser lacks WebAssembly JavaScript Promise Integration: use Chrome or Edge 137 or newer.');
+  let GAME_W = 1280, GAME_H = 720;              // the game's back buffer (mouse coordinates are in it; follows its video mode)
+
+  // physical key (KeyboardEvent.code) -> [virtual key, scan code, extended]
+  const K = {};
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach((ch, i) => { K['Key' + ch] = [65 + i, [0x1E,0x30,0x2E,0x20,0x12,0x21,0x22,0x23,0x17,0x24,0x25,0x26,0x32,0x31,0x18,0x19,0x10,0x13,0x1F,0x14,0x16,0x2F,0x11,0x2D,0x15,0x2C][i], 0]; });
+  for (let d = 0; d <= 9; d++) K['Digit' + d] = [48 + d, d === 0 ? 0x0B : d + 1, 0];
+  Object.assign(K, { Escape: [0x1B, 0x01, 0], Minus: [0xBD, 0x0C, 0], Equal: [0xBB, 0x0D, 0], Backspace: [0x08, 0x0E, 0], Tab: [0x09, 0x0F, 0], BracketLeft: [0xDB, 0x1A, 0], BracketRight: [0xDD, 0x1B, 0],
+    Enter: [0x0D, 0x1C, 0], ControlLeft: [0x11, 0x1D, 0], Semicolon: [0xBA, 0x27, 0], Quote: [0xDE, 0x28, 0], Backquote: [0xC0, 0x29, 0], ShiftLeft: [0x10, 0x2A, 0], Backslash: [0xDC, 0x2B, 0],
+    Comma: [0xBC, 0x33, 0], Period: [0xBE, 0x34, 0], Slash: [0xBF, 0x35, 0], ShiftRight: [0x10, 0x36, 0], NumpadMultiply: [0x6A, 0x37, 0], AltLeft: [0x12, 0x38, 0], Space: [0x20, 0x39, 0],
+    CapsLock: [0x14, 0x3A, 0], F1: [0x70, 0x3B, 0], F2: [0x71, 0x3C, 0], F3: [0x72, 0x3D, 0], F4: [0x73, 0x3E, 0], F5: [0x74, 0x3F, 0], F6: [0x75, 0x40, 0], F7: [0x76, 0x41, 0], F10: [0x79, 0x44, 0],
+    F12: [0x7B, 0x58, 0], Numpad7: [0x67, 0x47, 0], Numpad8: [0x68, 0x48, 0], Numpad9: [0x69, 0x49, 0], NumpadSubtract: [0x6D, 0x4A, 0], Numpad4: [0x64, 0x4B, 0], Numpad5: [0x65, 0x4C, 0],
+    Numpad6: [0x66, 0x4D, 0], NumpadAdd: [0x6B, 0x4E, 0], Numpad1: [0x61, 0x4F, 0], Numpad2: [0x62, 0x50, 0], Numpad3: [0x63, 0x51, 0], Numpad0: [0x60, 0x52, 0], NumpadDecimal: [0x6E, 0x53, 0],
+    NumpadEnter: [0x0D, 0x1C, 1], ControlRight: [0x11, 0x1D, 1], AltRight: [0x12, 0x38, 1], ArrowUp: [0x26, 0x48, 1], ArrowLeft: [0x25, 0x4B, 1], ArrowRight: [0x27, 0x4D, 1], ArrowDown: [0x28, 0x50, 1],
+    Insert: [0x2D, 0x52, 1], Delete: [0x2E, 0x53, 1], Home: [0x24, 0x47, 1], End: [0x23, 0x4F, 1], PageUp: [0x21, 0x49, 1], PageDown: [0x22, 0x51, 1] });
+
+  let M = null, started = false;
+  // the canvas holds exactly the game's frame (it draws with a GAME_W x GAME_H viewport into the default framebuffer);
+  // CSS stretches it over the whole window, and pointer positions are scaled back (pos)
+  let transferred = false;
+  const fit = () => { const w = GAME_W, h = GAME_H;
+    if (M) { M.canvasW = w; M.canvasH = h; } if (!transferred && (canvas.width !== w || canvas.height !== h)) { canvas.width = w; canvas.height = h; } };
+  addEventListener('resize', fit); fit();
+  $('bfps').onclick = () => { const f = $('fps'); f.style.display = f.style.display === 'inline' ? 'none' : 'inline'; };
+  $('bfull').onclick = () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); };
+  const setVsync = on => { if (M) M.vsync = on; localStorage.setItem('hcrVsync', on ? '1' : '0'); $('bvsync').textContent = 'Vsync: ' + (on ? 'on' : 'off'); };
+  $('bvsync').onclick = () => { setVsync(localStorage.getItem('hcrVsync') !== '1'); alert('Reload the page to apply.'); };
+  setVsync(localStorage.getItem('hcrVsync') === '1');
+  // frame-rate cap (the game renders as fast as it is let; its animation follows the frame time)
+  const CAPS = [60, 120, 0, 30], capName = c => c ? String(c) : 'max';
+  let cap = +(q.get('HCR_FPS') ?? localStorage.getItem('hcrCap') ?? 60); if (!CAPS.includes(cap)) cap = 60;
+  const showCap = () => { $('bcap').textContent = 'Cap: ' + capName(cap); };
+  $('bcap').onclick = () => { cap = CAPS[(CAPS.indexOf(cap) + 1) % CAPS.length]; localStorage.setItem('hcrCap', String(cap)); showCap(); if (M && M._hcr_ev_fps) M._hcr_ev_fps(cap); };
+  showCap();
+  for (const b of document.querySelectorAll('#hud button')) { b.tabIndex = -1; b.addEventListener('mousedown', e => e.preventDefault()); b.addEventListener('click', () => { b.blur(); canvas.focus(); }); }
+
+  // ---- input -> guest window messages / DirectInput state
+  const ev = (name, ...a) => { if (M && M['_' + name]) M['_' + name](...a); };
+  // with object-fit:contain the rendered area is smaller than the element; compute the actual content rect
+  const pos = e => { const r = canvas.getBoundingClientRect();
+    const scale = Math.min(r.width / GAME_W, r.height / GAME_H);
+    const cw = GAME_W * scale, ch = GAME_H * scale;
+    const ox = r.left + (r.width - cw) / 2, oy = r.top + (r.height - ch) / 2;
+    return [Math.round((e.clientX - ox) / scale), Math.round((e.clientY - oy) / scale)]; };
+  addEventListener('keydown', e => {
+    if (!started) return;
+    if (e.code === 'F8') { $('bfps').onclick(); e.preventDefault(); return; }
+    if (e.code === 'F11') { $('bfull').onclick(); e.preventDefault(); return; }
+    const k = K[e.code]; if (!k) return;
+    ev('hcr_ev_key', 1, k[0], k[1], (e.repeat ? 1 : 0) | (k[2] ? 2 : 0));
+    if (e.key.length === 1 && !e.ctrlKey && !e.altKey) ev('hcr_ev_char', e.key.charCodeAt(0));
+    else if (e.code === 'Enter' || e.code === 'Backspace' || e.code === 'Escape') ev('hcr_ev_char', k[0]);
+    e.preventDefault();
+  });
+  addEventListener('keyup', e => { if (!started) return; const k = K[e.code]; if (!k) return; ev('hcr_ev_key', 0, k[0], k[1], k[2] ? 2 : 0); e.preventDefault(); });
+  globalThis.KkeepHcrInput.attach(canvas, {position: pos, emit: ev, ready: () => !!(M && M._hcr_ev_touch)});
+  canvas.addEventListener('webglcontextlost', () => { status('The graphics context was lost (GPU reset). Reload the page to continue.'); $('overlay').classList.remove('hidden'); });
+
+  // ---- audio: AudioWorklet (or ScriptProcessor) with a resampling adaptive jitter buffer
+  class HcrAudioQueue {
+    constructor(outputRate) {
+      this.outputRate = outputRate;
+      this.sourceRate = 48000;
+      this.capacity = 1 << 18;
+      this.mask = this.capacity - 1;
+      this.ring = new Float32Array(this.capacity * 2);
+      this.writeFrame = 0;
+      this.readFrame = 0;
+      this.started = false;
+      this.gotAudio = false;
+      this.fade = 0;
+      this.targetMs = 80;
+      this.safeMs = 60;
+      this.minMs = 60;
+      this.maxMs = 220;
+      this.stableFrames = 0;
+    }
+    setRate(rate) {
+      if (rate > 0 && isFinite(rate)) this.sourceRate = rate;
+    }
+    available() {
+      return this.writeFrame - this.readFrame;
+    }
+    prebuffer() {
+      return Math.max(1, this.targetMs * this.sourceRate / 1000);
+    }
+    push(data) {
+      let frames = data.length >> 1;
+      if (!frames) return;
+      if (!this.gotAudio) {
+        this.gotAudio = true;
+        this.safeMs = Math.min(this.maxMs, Math.max(this.minMs, frames / this.sourceRate * 1000 + 15));
+        this.targetMs = Math.max(this.targetMs, this.safeMs);
+      }
+      if (frames > this.capacity - 2) {
+        data = data.subarray((frames - (this.capacity - 2)) * 2);
+        frames = this.capacity - 2;
+      }
+      const maxQueued = Math.max(200, this.targetMs + 80) * this.sourceRate / 1000;
+      if (this.available() > maxQueued) {
+        this.readFrame = this.writeFrame - maxQueued;
+        this.fade = 0;
+      }
+      if (this.available() + frames > this.capacity - 2) {
+        this.readFrame = Math.max(this.readFrame, this.writeFrame + frames - (this.capacity - 2));
+      }
+      let w = this.writeFrame & this.mask;
+      for (let i = 0; i < frames; i++) {
+        const s = i * 2;
+        this.ring[w * 2] = data[s];
+        this.ring[w * 2 + 1] = data[s + 1];
+        w = (w + 1) & this.mask;
+      }
+      this.writeFrame += frames;
+    }
+    read(L, R, count) {
+      const step = this.sourceRate / this.outputRate;
+      const fadeStep = 1 / Math.max(1, this.outputRate * 0.008);
+      let i = 0;
+      if (!this.started) {
+        if (this.available() < this.prebuffer()) {
+          for (; i < count; i++) { L[i] = 0; if (R) R[i] = 0; }
+          return;
+        }
+        this.started = true;
+        this.fade = 0;
+      }
+      for (; i < count; i++) {
+        if (this.available() < step + 1) {
+          if (this.available() < 1) this.readFrame = this.writeFrame;
+          this.started = false;
+          this.fade = 0;
+          this.targetMs = Math.min(this.maxMs, this.targetMs + 20);
+          this.stableFrames = 0;
+          break;
+        }
+        const base = this.readFrame;
+        const idx = Math.floor(base);
+        const frac = base - idx;
+        const p = (idx & this.mask) * 2;
+        const q = ((idx + 1) & this.mask) * 2;
+        const g = this.fade;
+        L[i] = (this.ring[p] + (this.ring[q] - this.ring[p]) * frac) * g;
+        if (R) R[i] = (this.ring[p + 1] + (this.ring[q + 1] - this.ring[p + 1]) * frac) * g;
+        this.readFrame += step;
+        if (this.fade < 1) this.fade = Math.min(1, this.fade + fadeStep);
+      }
+      for (; i < count; i++) { L[i] = 0; if (R) R[i] = 0; }
+      if (this.started) {
+        this.stableFrames += count;
+        if (this.stableFrames > this.outputRate * 4) {
+          this.stableFrames = 0;
+          if (this.targetMs > this.safeMs) this.targetMs = Math.max(this.safeMs, this.targetMs - 8);
+        }
+      }
+    }
+  }
+
+  const WORKLET = `
+    const HcrAudioQueue = (${HcrAudioQueue.toString()});
+    class HCROut extends AudioWorkletProcessor {
+      constructor() {
+        super();
+        this.q = new HcrAudioQueue(sampleRate);
+        this.port.onmessage = e => {
+          const d = e.data;
+          if (d && d.hcrRate) this.q.setRate(d.hcrRate);
+          else if (d && d.samples) this.q.push(d.samples);
+          else if (d instanceof Float32Array) this.q.push(d);
+        };
+      }
+      process(inputs, outputs) {
+        const out = outputs[0], L = out[0], R = out[1] || null;
+        this.q.read(L, R, L.length);
+        return true;
+      }
+    }
+    registerProcessor('hcr-out', HCROut);`;
+
+  async function startAudio(M) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    let ctx;
+    try {
+      ctx = window.__hcrEarlyAudio || window.__hcrAudioContext || new AC({ latencyHint: 'interactive' });
+      window.__hcrAudioContext = ctx;
+    } catch (e) {
+      try { ctx = new AC(); window.__hcrAudioContext = ctx; } catch (e2) { console.warn('[audio] unavailable:', e2); $('bsound').textContent = 'Sound: n/a'; return; }
+    }
+    let soundOn = true;
+    const resumeAudio = () => { if (soundOn && ctx.state !== 'running') ctx.resume().catch(() => {}); };
+    const updateSound = () => {
+      $('bsound').textContent = ctx.state === 'running' ? 'Sound: on' : soundOn ? 'Sound: tap' : 'Sound: off';
+    };
+    ctx.onstatechange = updateSound;
+    addEventListener('pointerdown', resumeAudio, true);
+    addEventListener('keydown', resumeAudio, true);
+    addEventListener('touchstart', resumeAudio, { capture: true, passive: true });
+    $('bsound').onclick = () => {
+      soundOn = ctx.state !== 'running';
+      if (soundOn) ctx.resume().then(updateSound).catch(() => {});
+      else ctx.suspend().then(updateSound).catch(() => {});
+    };
+    resumeAudio();
+    try {
+      let node = null;
+      if (ctx.audioWorklet && typeof AudioWorkletNode !== 'undefined') {
+        try {
+          const moduleUrl = URL.createObjectURL(new Blob([WORKLET], { type: 'application/javascript' }));
+          await Promise.race([
+            ctx.audioWorklet.addModule(moduleUrl),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('AudioWorklet timeout')), 2000))
+          ]);
+          node = new AudioWorkletNode(ctx, 'hcr-out', { numberOfInputs: 0, outputChannelCount: [2] });
+          node.connect(ctx.destination);
+        } catch (e) {
+          console.warn('[audio] AudioWorklet failed, falling back to ScriptProcessor:', e);
+          node = null;
+        }
+      }
+      if (!node) {
+        const makeScriptProcessor = ctx.createScriptProcessor || ctx.createJavaScriptNode;
+        if (!makeScriptProcessor) throw new Error('No usable audio output node');
+        const sink = new HcrAudioQueue(ctx.sampleRate);
+        const sp = makeScriptProcessor.call(ctx, 2048, 2, 2);
+        sp.onaudioprocess = e => {
+          const out = e.outputBuffer;
+          sink.read(out.getChannelData(0), out.getChannelData(1) || null, out.length);
+        };
+        sp.connect(ctx.destination);
+        node = {
+          processor: sp,
+          port: {
+            postMessage: d => {
+              if (d && d.hcrRate) sink.setRate(d.hcrRate);
+              else sink.push(d);
+            }
+          }
+        };
+      }
+      M.audioContext = ctx;
+      M.audioNode = node;
+      updateSound();
+    } catch (e) {
+      console.warn('[audio] unavailable:', e);
+      $('bsound').textContent = 'Sound: n/a';
+    }
+  }
+
+  async function startGame() {
+    if (started) return; started = true;
+    status('Loading…');
+    M = {
+      canvas, vsync: true,
+      preRun: [m => { m.ENV.HCR_FPS = String(cap); for (const [k, v] of q) if (k.startsWith('HCR_')) m.ENV[k] = v; }],   // debug switches, e.g. ?HCR_INPUT=...
+      print: s => console.log(s), printErr: s => console.error(s),
+      onStatus: s => status(s),
+      onFps: f => { $('fps').textContent = f.toFixed(0) + ' fps'; },
+      onGameSize: (w, h) => { GAME_W = w; GAME_H = h; fit(); },
+      onFirstFrame: () => { $('overlay').classList.add('hidden'); canvas.focus(); },
+    };
+    window.hcr = M; fit(); if (q.has('glahead')) M.glAhead = +q.get('glahead');
+    // saves and settings live in IndexedDB: ask for persistent storage so the browser doesn't evict them when disk runs low
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().then(ok => console.log('[web] persistent storage: ' + ok)); } catch (e) {}
+    // graphics on a worker thread: probe the GPU's WebGL2 extensions here, then hand the canvas to rt/web/gl_worker.js
+    const GL_WORKER = false;   // build.py --gl direct flips this
+    if (GL_WORKER) try {
+      const probe = document.createElement('canvas').getContext('webgl2');
+      if (probe) { M.glExtensions = probe.getSupportedExtensions().join(' '); const ax = probe.getExtension('EXT_texture_filter_anisotropic'); M.glMaxAniso = ax ? probe.getParameter(ax.MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 1; const le = probe.getExtension('WEBGL_lose_context'); if (le) le.loseContext(); }
+      const off = canvas.transferControlToOffscreen(); transferred = true;
+      M.glWorker = new Worker('gl_worker.js');
+      M.glWorker.postMessage({ init: true, canvas: off, preserve: q.has('preserve') }, [off]);
+    } catch (e) { status('This browser cannot run WebGL in a worker: ' + e); console.error(e); return; }
+    // shader programs to compile during loading (recorded play sessions + ones this browser met before)
+    M.gameBase = GAME_BASE;
+    M.programList = localStorage.getItem('hcrProgs') || '';
+    await startAudio(M);                    // audio resumes on the first user gesture
+    HCRWasm(M).catch(e => { status('Failed to start: ' + e); console.error(e); });
+    canvas.focus();
+  }
+  if (supported) startGame();
+})();
+};
+</script>
+<script src="loader.js"></script>
+</body></html>

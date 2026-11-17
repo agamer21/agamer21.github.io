@@ -11,12 +11,9 @@
   <header class="player-header">
     <a href="/#games" aria-label="Back to AG Arcade">← AG Arcade</a>
     <h1>Hill Climb Racing</h1>
+    <button id="fullscreen" type="button">Fullscreen</button>
   </header>
-  <main class="port-launcher">
-    <img src="/assets/arcade/icons/hill-climb-racing.webp" width="144" height="144" alt="">
-    <p>Climb rough hills and collect fuel.</p>
-    <p role="status">Hill Climb Racing is temporarily unavailable: its game files are missing from the upstream host.</p>
-    <p class="port-return">Please try another game while a working source is restored.</p>
-  </main>
+  <iframe id="game" class="player-frame" src="/assets/arcade/ports/hill-climb-racing/" title="Hill Climb Racing" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+  <script src="/assets/arcade/embedded-player.js" defer></script>
 </body>
 </html>
