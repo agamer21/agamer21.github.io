@@ -89,7 +89,7 @@ const metaByName = new Map([
 
 const cards = [...grid.querySelectorAll(".game-card")].map((card, index) => {
   const url = new URL(card.href, location.href);
-  const id = url.pathname + (url.pathname.includes("pokemon-3ds") ? url.search : "");
+  const id = card.dataset.libraryId ?? (url.pathname + (url.pathname.includes("pokemon-3ds") ? url.search : ""));
   const name = card.querySelector("h3").textContent.replace(/[↗?]/g, "").trim();
   const category = card.querySelector(".genre").textContent.trim();
   const shell = document.createElement("div");
@@ -193,6 +193,8 @@ function sortedCards() {
   });
 }
 
+let renderedOrder = cards;
+
 function render() {
   const query = search.value.trim().toLowerCase();
   let count = 0;
@@ -202,7 +204,14 @@ function render() {
       c.metaEl.textContent = pc ? `${pc} ${pc === 1 ? "play" : "plays"}` : "New to you";
     }
   }
-  for (const c of sortedCards()) {
+  const ordered = sortedCards();
+  if (ordered.some((card, index) => card !== renderedOrder[index])) {
+    const fragment = document.createDocumentFragment();
+    for (const card of ordered) fragment.appendChild(card.shell);
+    grid.appendChild(fragment);
+    renderedOrder = ordered;
+  }
+  for (const c of ordered) {
     c.star.textContent = favorites.has(c.id) ? "★" : "☆";
     c.star.setAttribute("aria-pressed", String(favorites.has(c.id)));
     c.star.setAttribute(
@@ -218,7 +227,6 @@ function render() {
       (view !== "recent" || recent.some((x) => x.id === c.id)) &&
       (c.experimental === (view === "experimental"))
     );
-    grid.appendChild(c.shell);
     if (!c.shell.hidden) count++;
   }
   let msg = "";
@@ -229,7 +237,7 @@ function render() {
     else if (view === "experimental") msg += " experimental — most need your own game files and none are finished";
   } else {
     if (view === "favorites") msg = "No favorites yet. Tap the ☆ on any game to save it here.";
-    else if (view === "recent") msg = "No recently played games yet. Open a game and it’ll show up here and in Continue playing.";
+    else if (view === "recent") msg = "No recently played games yet. Open a game and it’ll show up here.";
     else if (view === "experimental") msg = "No experimental games match. Try clearing search or check back later.";
     else msg = "No matching games. Try a different search, genre, or sort.";
   }
