@@ -18585,7 +18585,7 @@ window['Runtime'] = (function Runtime(__can, __path){
 
 		var sound = new Audio();
 		var canPlay = new Array(4);
-		canPlay[0] = sound.canPlayType('audio/ogg');
+		canPlay[0] = sound.canPlayType('audio/mpeg');
 		canPlay[1] = sound.canPlayType('audio/x-m4a');
 		canPlay[2] = sound.canPlayType('audio/mpeg');
 		canPlay[3] = sound.canPlayType('audio/wav');
@@ -19261,7 +19261,7 @@ window['Runtime'] = (function Runtime(__can, __path){
 		{
 			that.isLoaded = true;
 		}
-		this.image.src = this.app.resources + "Preloader.png";
+		this.image.src = this.app.resources + "Preloader.webp";
 	}
 	CPreloaderImage.prototype =
 	{
@@ -25182,7 +25182,7 @@ window['Runtime'] = (function Runtime(__can, __path){
 	{
 		doLoad: function ()
 		{
-			var name = this.app.resources + "M" + CServices.formatDiscName(this.handle, "png");
+			var name = this.app.resources + "M" + CServices.formatDiscName(this.handle, "webp");
 			var image = new Image();
 			image.crossOrigin = "anonymous";
 			this.imageBank.mosaics[this.handle] = image;
@@ -25813,7 +25813,7 @@ window['Runtime'] = (function Runtime(__can, __path){
 		}
 		application.imagesToLoad++;
 		application.loading = true;
-		image.img.src = application.resources + fileName;
+		image.img.src = application.resources + fileName.replace(/\.png$/i, ".webp");
 		return image;
 	}
 	CImage.prototype =
@@ -25837,7 +25837,7 @@ window['Runtime'] = (function Runtime(__can, __path){
 			{
 				that.app.dataHasLoaded(that);
 			}
-			var name = this.app.resources + CServices.formatDiscName(this.handle, "png");
+			var name = this.app.resources + CServices.formatDiscName(this.handle, "webp");
 			this.img.src = name;
 		},
 		load:          function (a)
@@ -25887,7 +25887,7 @@ window['Runtime'] = (function Runtime(__can, __path){
 			else
 			{
 				e.style.backgroundPosition = '-' + this.mosaicX + 'px -' + this.mosaicY + 'px';
-				e.style.backgroundImage = "url('" + this.app.resources + "M" + CServices.formatDiscName(this.mosaic, "png") + "')";
+				e.style.backgroundImage = "url('" + this.app.resources + "M" + CServices.formatDiscName(this.mosaic, "webp") + "')";
 			}
 
 			return e;
@@ -26567,7 +26567,7 @@ window['Runtime'] = (function Runtime(__can, __path){
 				switch (format)
 				{
 					case 0:
-						ext = "ogg";
+						ext = "mp3";
 						break;
 					case 1:
 						ext = "m4a";
