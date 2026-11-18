@@ -152,3 +152,7 @@ The final browser check reached “Click to Begin” at 720p with a 30 fps targe
 ## Arcade cover artwork
 
 The arcade uses game screenshots, existing artwork from the distributed builds, and original box art where a build has no cover. The Pokémon Emerald and Plants vs. Zombies covers come from the [Libretro thumbnail collection](https://github.com/libretro-thumbnails). Plants vs. Zombies uses the Nintendo DS box art for the same title, while the arcade player runs the Flash edition.
+
+## Slime Rancher browser port
+
+The player uses the Slime Rancher 1.4.3 web build from [Reeyuki/SlimeRanch](https://github.com/Reeyuki/SlimeRanch/tree/eb5348fe5a0f17956daaea873fb161c7142ed0a7). A worker scoped to the game serves the build's split data as streams. The game files remain at the pinned upstream host, with two available download endpoints. The title screen cover comes from the running build. Slime Rancher belongs to Monomi Park.

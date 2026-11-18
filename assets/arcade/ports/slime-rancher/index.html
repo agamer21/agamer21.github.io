@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Slime Rancher</title>
+  <style>
+    html,body,#unity{width:100%;height:100%;margin:0;overflow:hidden;background:#101824;color:#ecf1e5;font-family:system-ui,sans-serif}
+    #loadingScreen{position:absolute;inset:0;z-index:1;display:grid;place-content:center;background:#101824;text-align:center;padding:24px}
+    #loadingScreen[hidden]{display:none}
+    #loadingText{max-width:52ch}
+    #start{justify-self:center;padding:8px 14px;font:inherit}
+  </style>
+  <script src="Build/UnityLoader.js" defer></script>
+  <script src="launcher.js" defer></script>
+</head>
+<body>
+  <div id="unity"></div>
+  <main id="loadingScreen">
+    <h1>Slime Rancher</h1>
+    <p id="loadingText" role="status">Downloads about 700 MB. A desktop browser is recommended.</p>
+    <button id="start" type="button">Start game</button>
+  </main>
+</body>
+</html>
