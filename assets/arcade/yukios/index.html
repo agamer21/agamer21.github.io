@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en" style="background: #1e1e1e">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="./" />
+
+    <title>YukiOS | AG Arcade</title>
+    <meta
+      name="description"
+      content="AG Arcade edition of the open source YukiOS browser desktop. Launch local arcade games, manage windows and use browser storage. Optional external apps require their own services."
+    />
+
+    <meta
+      property="og:title"
+      content="YukiOS | AG Arcade"
+    />
+
+    <meta
+      property="og:description"
+      content="AG Arcade edition of the open source YukiOS browser desktop. Launch local arcade games, manage windows and use browser storage. Optional external apps require their own services."
+    />
+
+    <meta
+      name="twitter:title"
+      content="YukiOS | AG Arcade"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://agamer21.github.io/assets/arcade/icon.svg"
+    />
+    <meta property="og:image:width" content="1920" />
+    <meta property="og:image:height" content="1080" />
+    <meta
+      property="og:image:alt"
+      content="YukiOS browser-based desktop environment showing windowed multitasking with apps, taskbar, and start menu"
+    />
+    <meta property="og:site_name" content="YukiOS" />
+    <meta property="og:url" content="https://agamer21.github.io/assets/arcade/yukios/" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:description"
+      content="AG Arcade edition of the open source YukiOS browser desktop. Launch local arcade games, manage windows and use browser storage. Optional external apps require their own services."
+    />
+    <meta
+      name="twitter:image"
+      content="https://agamer21.github.io/assets/arcade/icon.svg"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="YukiOS browser-based desktop environment showing windowed multitasking with apps, taskbar, and start menu"
+    />
+
+    <meta name="application-name" content="YukiOS" />
+    <meta name="theme-color" content="#1e1e1e" />
+    <link rel="canonical" href="https://agamer21.github.io/assets/arcade/yukios/" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="preload" as="image" href="/assets/arcade/yukios/assets/logo.BTp81O8a.png" />
+    <script>
+      (function () {
+        try {
+          var href = new URL(
+            "manifest.webmanifest",
+            window.location.href,
+          ).toString();
+          var link = document.createElement("link");
+          link.rel = "manifest";
+          link.href = href;
+          document.head.appendChild(link);
+        } catch (e) {}
+      })();
+    </script>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "YukiOS | AG Arcade",
+  "applicationCategory": "WebApplication",
+  "applicationSubCategory": "DesktopEnvironment",
+  "operatingSystem": "Web Browser (Chrome, Firefox, Edge, Safari)",
+  "url": "https://agamer21.github.io/assets/arcade/yukios/",
+  "description": "AG Arcade edition of the MIT licensed YukiOS desktop with a local arcade catalog and browser storage.",
+  "featureList": [
+    "Windowed browser desktop",
+    "Local AG Arcade game catalog",
+    "Browser storage",
+    "Themes and desktop modes"
+  ],
+  "image": "https://agamer21.github.io/assets/arcade/icon.svg",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "applicationSuite": "YukiOS",
+  "genre": [
+    "Desktop Environment",
+    "Web Application",
+    "Productivity"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "YukiOS",
+    "url": "https://github.com/Reeyuki/YukiOS"
+  }
+}
+    </script>
+    <script type="module" crossorigin src="/assets/arcade/yukios/assets/index.D0iKM1f3.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/arcade/yukios/assets/index.CR9Gce7c.css">
+  </head>
+
+  <body>
+    <h1
+      style="
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      "
+    >
+      YukiOS - Free Browser-Based Desktop Environment
+    </h1>
+    <div id="selection-box"></div>
+
+    <div id="desktop" class="desktop" role="presentation">
+      <div id="start-menu" class="start-menu">
+        <div class="start-sidebar">
+          <div class="start-user">
+            <img src="/assets/arcade/yukios/static/icons/guest.webp" alt="User avatar" />
+            <span></span>
+          </div>
+
+          <div class="start-cat-list"></div>
+
+          <div class="start-cat" data-cat="settingsApp">Settings</div>
+
+          <div class="start-footer-actions">
+            <button class="start-sleep-btn" id="start-sleep-btn" title="Sleep">
+              <img
+                src="/assets/arcade/icon.svg"
+                class="papirus-icon papirus-icon--32"
+                alt=""
+              />
+            </button>
+            <button
+              class="start-lock-btn"
+              id="start-lock-btn"
+              title="Lock System"
+            >
+              <img
+                src="/assets/arcade/icon.svg"
+                class="papirus-icon papirus-icon--32"
+                alt=""
+              />
+            </button>
+            <button
+              class="start-signout-btn"
+              id="start-signout-btn"
+              title="Sign Out"
+            >
+              <img
+                src="/assets/arcade/icon.svg"
+                class="papirus-icon papirus-icon--32"
+                alt=""
+              />
+            </button>
+            <button
+              class="start-shutdown-btn"
+              id="start-shutdown-btn"
+              title="Shutdown"
+            >
+              <img
+                src="/assets/arcade/icon.svg"
+                class="papirus-icon papirus-icon--32"
+                alt=""
+              />
+            </button>
+          </div>
+        </div>
+
+        <div class="start-content">
+          <div class="search-input-wrapper">
+            <img
+              src="/assets/arcade/icon.svg"
+              class="papirus-icon papirus-icon--22 search-icon"
+              alt=""
+            />
+            <input
+              id="start-menu-search"
+              placeholder="Search..."
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="start-page active" data-page="all">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="favorites"></div>
+
+          <div class="start-page" data-page="recent">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="development">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="games">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="graphics">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="help">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="internet">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="media">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="office">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="system">
+            <div class="app-grid"></div>
+          </div>
+
+          <div class="start-page" data-page="places">
+            <div class="places-section"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="taskbar">
+      <div id="mac-menu-bar">
+        <span class="mac-menu-item mac-menu-apple" data-start="true"
+          ><img
+            src="/assets/arcade/icon.svg"
+            class="papirus-icon papirus-icon--22"
+            alt=""
+        /></span>
+        <span class="mac-menu-item" data-menu="Finder">Finder</span>
+        <span class="mac-menu-item" data-menu="File">File</span>
+        <span class="mac-menu-item" data-menu="Edit">Edit</span>
+        <span class="mac-menu-item" data-menu="View">View</span>
+        <span class="mac-menu-item" data-menu="Go">Go</span>
+        <span class="mac-menu-item" data-menu="Window">Window</span>
+        <span class="mac-menu-item" data-menu="Help">Help</span>
+      </div>
+      <div id="start-button"></div>
+      <div id="taskbar-windows" style="display: flex"></div>
+      <div id="system-tray">
+        <div id="time-container">
+          <div id="clock">12:00 PM</div>
+          <div id="date">01/01/2026</div>
+        </div>
+        <div id="social-bar-container"></div>
+      </div>
+    </div>
+    <div id="context-menu"></div>
+  </body>
+</html>
