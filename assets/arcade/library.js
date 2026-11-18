@@ -154,6 +154,9 @@ function makeFeaturedCard(c) {
   const img = c.card.querySelector(".game-cover img");
   const thumb = document.createElement("img");
   thumb.className = "featured-thumb";
+  if (img?.closest(".game-cover-full-art")) {
+    thumb.classList.add("featured-thumb-full-art");
+  }
   thumb.src = img ? img.getAttribute("src") : "";
   thumb.alt = "";
   thumb.loading = "lazy";

@@ -2,7 +2,11 @@
 
 .arcade-home [data-game="openfront"] .game-cover img{padding:0;background:transparent;object-fit:cover}.arcade-home #library-results{white-space:nowrap}.arcade-home .library-view-row{gap:4px}
 
-.arcade-home .game-cover-full-art img{object-fit:contain;background:#171a21}
+.arcade-home .game-cover-full-art img,
+.arcade-home .featured-thumb-full-art {
+  object-fit: contain;
+  background: #171a21;
+}
 
 /* recommendations additions */
 .home-section{margin:8px 0 22px}
