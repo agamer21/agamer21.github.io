@@ -4,6 +4,24 @@ import { firebaseConfig } from './firebase-config.js';
 
 let badge;
 let peakBadge;
+const peakStorageKey = 'ag-arcade-presence-peak';
+const validPeak = value => Number.isSafeInteger(value) && value > 0;
+
+function readCachedPeak() {
+  try {
+    const value = Number(localStorage.getItem(peakStorageKey));
+    return validPeak(value) ? value : 0;
+  } catch { return 0; }
+}
+
+let allTimePeak = readCachedPeak();
+let sharedPeak = null;
+
+function rememberPeak(value) {
+  allTimePeak = Math.max(allTimePeak, value, readCachedPeak());
+  try { localStorage.setItem(peakStorageKey, String(allTimePeak)); } catch {}
+}
+
 function ensureBadges() {
   if (badge) return;
   const style = document.createElement('link');
@@ -20,7 +38,6 @@ function ensureBadges() {
   peakBadge = document.createElement('span');
   peakBadge.className = 'arcade-online arcade-online-peak';
   peakBadge.setAttribute('aria-live', 'polite');
-  peakBadge.title = 'Record high number of people online at the same time (shared when available, with a local fallback).';
   peakBadge.hidden = true;
 
   const actions = document.querySelector('.header-actions, .player-header, .bar, body > header');
@@ -34,17 +51,17 @@ function ensureBadges() {
   }
 }
 
-function render(text, connected, peakText = '') {
+function render(text, connected) {
   ensureBadges();
   badge.textContent = text;
   badge.dataset.connected = String(connected);
-  if (peakText) {
-    peakBadge.textContent = peakText;
-    peakBadge.hidden = false;
-    peakBadge.dataset.connected = String(connected);
-  } else {
-    peakBadge.hidden = true;
-  }
+  const confirmed = connected && sharedPeak === allTimePeak;
+  peakBadge.hidden = allTimePeak === 0;
+  peakBadge.textContent = allTimePeak ? `All-time peak ${allTimePeak}` : '';
+  peakBadge.dataset.connected = String(confirmed);
+  peakBadge.title = confirmed
+    ? 'Highest number of visitors online at the same time across AG Arcade.'
+    : 'Highest recorded count saved in this browser. The shared record is not confirmed right now.';
 }
 
 async function start() {
@@ -62,71 +79,69 @@ async function start() {
   const db = getDatabase(app);
   const session = ref(db, `arcadePresence/${auth.currentUser.uid}/${crypto.randomUUID()}`);
   const peakRef = ref(db, 'arcadePresencePeak');
-  const localPeakKey = 'ag-arcade-presence-peak';
-  const readLocalPeak = () => {
-    try {
-      const value = Number(localStorage.getItem(localPeakKey));
-      return Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
-    } catch { return 0; }
-  };
-  const writeLocalPeak = (value) => {
-    try { localStorage.setItem(localPeakKey, String(value)); } catch {}
-  };
   let connected = false, pageActive = true, ready = false;
-  const fail = () => { ready = false; render('Online unavailable', false); };
+  const fail = () => {
+    clearTimeout(waiting);
+    ready = false;
+    render('Online unavailable', false);
+  };
   const announce = async () => {
     if (!connected || !pageActive) return;
     await onDisconnect(session).remove();
     if (connected && pageActive) await set(session, true);
   };
   let count = 0;
-  let peak = readLocalPeak();
-  const tryUpdatePeak = () => {
-    if (!ready) return;
-    if (count > peak) {
-      peak = count;
-      writeLocalPeak(peak);
-    }
-    runTransaction(peakRef, current => {
-      const currentPeak = Math.max(
-        typeof current === 'number' ? current : 0,
-        count,
-        peak
-      );
-      return currentPeak;
-    }).then(result => {
-      const committed = result?.snapshot?.val();
-      if (typeof committed === 'number') {
-        peak = Math.max(peak, committed);
-        writeLocalPeak(peak);
-        update();
-      }
-    }).catch(() => {});
-  };
   const update = () => {
     if (connected && ready) clearTimeout(waiting);
     const onlineText = connected && ready ? `${count} online` : 'Connecting…';
-    const peakText = connected && ready ? `Peak ${Math.max(peak, count, 0)}` : '';
-    render(onlineText, connected && ready, peakText);
+    render(onlineText, connected && ready);
+  };
+  let savingPeak = false;
+  const tryUpdatePeak = async () => {
+    if (!connected || !ready || sharedPeak === null || savingPeak || allTimePeak <= sharedPeak) return;
+    const observedPeak = allTimePeak;
+    savingPeak = true;
+    try {
+      const result = await runTransaction(
+        peakRef,
+        current => Math.max(validPeak(current) ? current : 0, observedPeak),
+        { applyLocally: false }
+      );
+      const value = result.snapshot.val();
+      if (!result.committed || !validPeak(value)) return;
+      sharedPeak = Math.max(sharedPeak ?? 0, value);
+      rememberPeak(value);
+      update();
+    } catch {
+      return;
+    } finally {
+      savingPeak = false;
+    }
+    if (allTimePeak > observedPeak) void tryUpdatePeak();
   };
   onValue(ref(db, 'arcadePresence'), snapshot => {
     count = Object.values(snapshot.val() ?? {}).filter(tabs =>
       tabs && typeof tabs === 'object' && Object.values(tabs).some(value => value === true)).length;
     ready = true;
-    tryUpdatePeak();
+    if (connected && count > allTimePeak) rememberPeak(count);
+    void tryUpdatePeak();
     update();
   }, fail);
   onValue(peakRef, snapshot => {
     const value = snapshot.val();
-    if (typeof value === 'number' && value > peak) {
-      peak = value;
-      writeLocalPeak(peak);
-    }
+    sharedPeak = validPeak(value) ? value : 0;
+    if (sharedPeak > allTimePeak) rememberPeak(sharedPeak);
+    void tryUpdatePeak();
     update();
-  }, () => { update(); });
+  }, () => {
+    sharedPeak = null;
+    update();
+  });
   onValue(ref(db, '.info/connected'), snapshot => {
     connected = snapshot.val() === true;
     if (!connected) { render('Online unavailable', false); return; }
+    if (ready && count > allTimePeak) rememberPeak(count);
+    void tryUpdatePeak();
     update();
     announce().catch(fail);
   }, fail);
