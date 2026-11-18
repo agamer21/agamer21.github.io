@@ -39,14 +39,12 @@ const search = document.querySelector("#game-search"),
   result = document.querySelector("#library-results"),
   featuredGrid = document.querySelector("#featured-grid");
 
-const featuredIds = new Set([
-  "/bloons-td6.html",
-  "/geometry-dash/",
-  "/openfront-friends/",
-  "/retro-bowl.html",
-  "/2048.html",
-  "/wordle.html",
-]);
+const featuredGames = [
+  "geometry-dash",
+  "subway-surfers",
+  "retro-bowl",
+  "angry-birds-star-wars-2",
+];
 const metaByName = new Map([
   ["Bloons TD 6", { input: "Mouse/Touch", save: "Saves locally" }],
   ["Granny", { input: "Keyboard/Mouse", save: "Session progress" }],
@@ -72,11 +70,8 @@ const metaByName = new Map([
   ["Five Nights at Epstein's", { input: "Mouse", save: "Session play" }],
   ["Basket Bros", { input: "Keyboard", save: "Session play" }],
   ["Agar Arcade", { input: "Mouse/Touch", save: "Session play" }],
-  ["Snake", { input: "Keyboard/Touch", save: "Best score" }],
   ["Minesweeper", { input: "Mouse/Touch", save: "Session play" }],
   ["Tetris", { input: "Keyboard/Touch", save: "Best score" }],
-  ["Breakout", { input: "Mouse/Touch", save: "Best score" }],
-  ["Pong 2P", { input: "Keyboard/Touch", save: "Local match" }],
   ["Slope", { input: "Keyboard", save: "Progress varies" }],
   ["Run 3", { input: "Keyboard", save: "Progress saves" }],
   ["Cookie Clicker", { input: "Mouse/Touch", save: "Saves locally" }],
@@ -129,7 +124,6 @@ const cards = [...grid.querySelectorAll(".game-card")].map((card, index) => {
     name,
     category,
     experimental: category === "Experimental",
-    featured: featuredIds.has(new URL(card.href, location.href).pathname),
     index,
     shell,
     card,
@@ -177,7 +171,9 @@ function makeFeaturedCard(c) {
 }
 function renderHighlights() {
   if (featuredGrid && featuredGrid.childElementCount === 0) {
-    const featured = cards.filter(c => c.featured && !c.experimental).slice(0, 6);
+    const featured = featuredGames
+      .map(id => cards.find(c => c.card.dataset.game === id && !c.experimental))
+      .filter(Boolean);
     featuredGrid.replaceChildren(...featured.map(makeFeaturedCard));
   }
 }

@@ -46,11 +46,8 @@ jobs:
             /tiny-fishing.html
             /retro-bowl-college.html
             /super-mario-64.html
-            /snake.html
             /minesweeper.html
             /tetris.html
-            /breakout.html
-            /pong.html
             /idle-breakout.html
             /slope.html
             /run-3.html
@@ -99,7 +96,7 @@ jobs:
           cp index.html move-saves.html library.html 404.html LICENSE manifest.webmanifest \
              bloons-td6.html drive-mad.html agar.html fnae.html angry-birds-2.html half-life.html basket-bros.html \
              2048.html wordle.html hexgl.html hextris.html tank-arena.html retro-bowl.html moto-x3m.html tiny-fishing.html \
-             retro-bowl-college.html super-mario-64.html snake.html minesweeper.html tetris.html breakout.html pong.html \
+             retro-bowl-college.html super-mario-64.html minesweeper.html tetris.html \
              idle-breakout.html slope.html run-3.html cookie-clicker.html flappy-bird.html pvz.html pokemon-emerald.html site/
           cp -R moon-sweepers geometry-dash granny pokemon-emerald site/
           cp -R assets/arcade site/assets/
