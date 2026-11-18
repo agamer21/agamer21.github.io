@@ -1,4 +1,4 @@
-import { E as Buffer } from './index.D0iKM1f3.js';
+import { E as Buffer } from './index.CQE4M1p6.js';
 import { c as commonjsGlobal, g as getDefaultExportFromCjs, p as process$1 } from './_commonjsHelpers.BoH3JbLf.js';
 
 var inherits_browser$1 = {exports: {}};

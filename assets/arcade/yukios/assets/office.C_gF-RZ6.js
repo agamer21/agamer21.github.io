@@ -1,4 +1,4 @@
-import { c as createElement, g as getLibraryUrl, a as getExt, s as setStyle, b as bindEvent, $ as $$, e as escapeHtml, o as os, B as BaseApp, S as ServiceKeys, d as $, f as setHTML, h as speak, C as ClippyAnimation, i as addClass, r as removeClass, K as KeybindManager, j as showAboutDialog, t as toggleClass, p as playSfx, k as SystemSfx, F as FileKind, l as audioMixer } from './index.D0iKM1f3.js';
+import { c as createElement, g as getLibraryUrl, a as getExt, s as setStyle, b as bindEvent, $ as $$, e as escapeHtml, o as os, B as BaseApp, S as ServiceKeys, d as $, f as setHTML, h as speak, C as ClippyAnimation, i as addClass, r as removeClass, K as KeybindManager, j as showAboutDialog, t as toggleClass, p as playSfx, k as SystemSfx, F as FileKind, l as audioMixer } from './index.CQE4M1p6.js';
 
 class OfficeModuleLoader {
   constructor() {

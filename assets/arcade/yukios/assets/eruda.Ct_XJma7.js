@@ -1,5 +1,5 @@
 import { p as process$1, g as getDefaultExportFromCjs } from './_commonjsHelpers.BoH3JbLf.js';
-import { E as Buffer } from './index.D0iKM1f3.js';
+import { E as Buffer } from './index.CQE4M1p6.js';
 
 function _mergeNamespaces(n, m) {
 	for (var i = 0; i < m.length; i++) {

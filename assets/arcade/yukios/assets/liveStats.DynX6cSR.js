@@ -1,4 +1,4 @@
-import { m as isFunction, n as appMap, q as resolveAppIcon, u as resolveIconUrl, e as escapeHtml, v as resolveAppName, $ as $$, b as bindEvent } from './index.D0iKM1f3.js';
+import { m as isFunction, n as appMap, q as resolveAppIcon, u as resolveIconUrl, e as escapeHtml, v as resolveAppName, $ as $$, b as bindEvent } from './index.CQE4M1p6.js';
 
 function renderLiveStats(stats, target, options = {}) {
   if (!target) return;
