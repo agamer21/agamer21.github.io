@@ -1,4 +1,4 @@
-import { o as os, w as StorageKeys, H as BusEvents, c as createElement, $ as $$ } from './index.CQE4M1p6.js';
+import { o as os, w as StorageKeys, H as BusEvents, c as createElement, $ as $$ } from './index.37URuV7-.js';
 
 function getUserHistory() {
   return os.storage.get(StorageKeys.userHistory) || [];

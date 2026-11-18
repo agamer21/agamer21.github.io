@@ -1,5 +1,5 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/index.CR9Gce7c.css"])))=>i.map(i=>d[i]);
-import { c as createElement, x as createAdaptiveInterval, u as resolveIconUrl, y as CDN_BASES, n as appMap, _ as __vitePreload, w as StorageKeys, o as os, A as Achievements, B as BaseApp, z as SystemUtilities, d as $, D as performanceManager } from './index.CQE4M1p6.js';
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/index.CATk_i9E.css"])))=>i.map(i=>d[i]);
+import { c as createElement, x as createAdaptiveInterval, u as resolveIconUrl, y as CDN_BASES, n as appMap, _ as __vitePreload, w as StorageKeys, o as os, A as Achievements, B as BaseApp, z as SystemUtilities, d as $, D as performanceManager } from './index.37URuV7-.js';
 
 class GameBridge {
   constructor() {
@@ -80294,7 +80294,7 @@ class EditorManager {
     if (this.audio) this.audio.playEditorEnter();
     if (!this.transformControls) {
       const { TransformControls } =
-        await __vitePreload(async () => { const { TransformControls } = await import('./TransformControls.C9KM8Dp_.js');return { TransformControls }},true              ?__vite__mapDeps([0]):void 0);
+        await __vitePreload(async () => { const { TransformControls } = await import('./TransformControls.B1Ca9hOE.js');return { TransformControls }},true              ?__vite__mapDeps([0]):void 0);
       this.transformControls = new TransformControls(
         this.camera,
         this.rendererDomElement,

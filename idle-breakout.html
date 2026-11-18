@@ -1,1 +1,50 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Idle Breakout - AG Arcade</title><link rel="icon" href="/assets/arcade/icon.svg"><link rel="stylesheet" href="/assets/arcade/arcade.css"></head><body class="player-page"><header class="player-header"><a href="/#games">&larr; AG Arcade</a><h1>Idle Breakout</h1><button id="fullscreen">Fullscreen</button></header><iframe id="game" class="player-frame" src="/files/games/idle-breakout/index.html" title="Idle Breakout" allow="fullscreen; autoplay" allowfullscreen></iframe><script>document.getElementById('fullscreen').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();};</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Idle Breakout | AG Arcade</title>
+  <link rel="icon" href="/assets/arcade/icon.svg">
+  <link rel="stylesheet" href="/assets/arcade/arcade.css">
+  <style>
+    .player-page { height: 100dvh; }
+    .player-header { flex-shrink: 0; }
+    #stage { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #000; }
+    #game {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border: 0;
+      transform: translate(-50%, -50%) scale(var(--game-scale, 1));
+    }
+  </style>
+</head>
+<body class="player-page">
+  <header class="player-header">
+    <a href="/#games">← AG Arcade</a>
+    <h1>Idle Breakout</h1>
+    <button id="fullscreen" type="button">Fullscreen</button>
+  </header>
+  <main id="stage">
+    <iframe id="game" width="1000" height="768" src="/files/games/idle-breakout/index.html" title="Idle Breakout" allow="fullscreen; autoplay" allowfullscreen></iframe>
+  </main>
+  <script>
+    const stage = document.getElementById('stage');
+    const game = document.getElementById('game');
+
+    function fitGame() {
+      const scale = Math.min(stage.clientWidth / game.width, stage.clientHeight / game.height);
+      game.style.setProperty('--game-scale', scale);
+    }
+
+    new ResizeObserver(fitGame).observe(stage);
+    fitGame();
+
+    document.getElementById('fullscreen').addEventListener('click', async () => {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await stage.requestFullscreen();
+      game.focus();
+    });
+  </script>
+</body>
+</html>

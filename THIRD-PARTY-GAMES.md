@@ -148,3 +148,7 @@ Auto quality is capped at 720p (540p for the weakest detected devices), with sha
 Validation: Node streaming tests cover retries, truncated bodies, deduplication, concurrency limits, disk reuse after memory eviction and recovery after exhausted retries. Browser validation checks the lighter Auto settings and startup with the old blocked hosts unavailable. The full dataset still streams from cdn.jsdelivr.net, so unstable networks and limited client hardware can still cause pauses.
 
 The final browser check reached “Click to Begin” at 720p with a 30 fps target, shadows off and anti-aliasing off; all requested CDN parts returned 200 with no page errors. This was a startup check, not an extended gameplay benchmark on the user’s hardware.
+
+## Arcade cover artwork
+
+The arcade uses game screenshots, existing artwork from the distributed builds, and original box art where a build has no cover. The Pokémon Emerald and Plants vs. Zombies covers come from the [Libretro thumbnail collection](https://github.com/libretro-thumbnails). Plants vs. Zombies uses the Nintendo DS box art for the same title, while the arcade player runs the Flash edition.

@@ -10200,7 +10200,7 @@ html[data-icon-pack="papirus"] .start-cat {
 .store-hero-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   display: block;
   max-width: 100%;
@@ -10288,7 +10288,7 @@ html[data-icon-pack="papirus"] .start-cat {
 .store-hero-thumb img {
   width: 100%;
   height: 54px;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
@@ -10331,7 +10331,7 @@ html[data-icon-pack="papirus"] .start-cat {
 .store-game-card-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 

@@ -81,7 +81,6 @@ const metaByName = new Map([
   ["Run 3", { input: "Keyboard", save: "Progress saves" }],
   ["Cookie Clicker", { input: "Mouse/Touch", save: "Saves locally" }],
   ["Flappy Bird", { input: "Tap/Keyboard", save: "Best score" }],
-  ["Crossy Hop", { input: "Keyboard/Touch", save: "Best score" }],
   ["Idle Breakout", { input: "Mouse/Touch", save: "Saves progress" }],
   ["Pokémon Emerald", { input: "Keyboard/Gamepad", save: "Browser (EmulatorJS)" }],
   ["Plants vs. Zombies", { input: "Mouse", save: "In-game (Flash/Ruffle)" }],
