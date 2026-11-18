@@ -9,16 +9,24 @@
     #loadingScreen{position:absolute;inset:0;z-index:1;display:grid;place-content:center;background:#101824;text-align:center;padding:24px}
     #loadingScreen[hidden]{display:none}
     #loadingText{max-width:52ch}
-    #start{justify-self:center;padding:8px 14px;font:inherit}
+    #start,#graphics{justify-self:center;padding:8px 14px;font:inherit}
+    #graphics{margin:6px 0 16px;max-width:100%}
+    #graphicsHint{max-width:52ch;margin:0 0 16px}
   </style>
   <script src="Build/UnityLoader.js" defer></script>
-  <script src="launcher.js" defer></script>
+  <script src="launcher.js?v=graphics-1" defer></script>
 </head>
 <body>
   <div id="unity"></div>
   <main id="loadingScreen">
     <h1>Slime Rancher</h1>
     <p id="loadingText" role="status">This web preview downloads about 700 MB. The game may stop at the title screen.</p>
+    <label for="graphics">Graphics mode</label>
+    <select id="graphics" aria-describedby="graphicsHint">
+      <option value="standard">Standard</option>
+      <option value="compatibility">Compatibility (WebGL 1)</option>
+    </select>
+    <p id="graphicsHint">Try Compatibility if slimes show black patches or textures flicker.</p>
     <button id="start" type="button">Start game</button>
   </main>
 </body>
