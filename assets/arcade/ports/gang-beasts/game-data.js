@@ -80,18 +80,16 @@
     // undici fetch (and some workers) requires absolute URLs. Resolve
     // everything against the document base so both work.
     try {
-      if (/part-\d+\.bin$/i.test(String(url))) return "https://raw.githubusercontent.com/Reeyuki/GangBeast-WebPort/7016e4b49e435425173434233c6ceae6d8e34e41/" + String(url);
+      if (/^Build\/(?:data|wasm)-[a-f0-9]+\/part-\d+\.bin$/i.test(String(url))) {
+        return new URL("/arcade-assets/gang-beasts/" + String(url), window.location.origin).href;
+      }
       return new URL(String(url), document.baseURI || window.location.href).href;
     } catch (e) {
       return String(url);
     }
   }
 
-  // ---- Resilient data plane ----
-  // jsDelivr intermittently answers 403 ("package size exceeded") for
-  // individual part files depending on POP/cache state. A 406MB download
-  // across 24 parts therefore needs retries + alternate hosts; a single
-  // transient failure must not abort the whole assembly.
+  // Retry temporary errors while downloading same-site parts.
   var retryOptions = window.__UNITY_CHUNK_RETRY || {};
   var MAX_ATTEMPTS = retryOptions.attempts || 5; // full rounds over all hosts
   var BASE_DELAY_MS = retryOptions.baseDelayMs || 600;
@@ -100,10 +98,6 @@
     return new Promise(function (resolve) { setTimeout(resolve, ms); });
   }
 
-  // Build the ordered list of URLs to try for one resource. The primary URL
-  // (jsDelivr via <base>, or local server) comes first; jsDelivr mirror POPs
-  // and raw.githubusercontent.com follow. raw serves the same GitHub bytes
-  // with `Access-Control-Allow-Origin: *`, verified 200 on .bin + .json.
   function candidateUrls(absoluteUrl) { return [absoluteUrl]; }
 
   function retryDelay(round) {
@@ -143,7 +137,6 @@
         return originalFetch(u).then(function (res) {
           if (res.ok) return res;
           lastError = new Error(u + ': HTTP ' + res.status);
-          // Try the next mirror immediately; CDN 403s are per-POP.
           return tryNext();
         }, function (err) {
           lastError = err instanceof Error ? err : new Error(String(err));
