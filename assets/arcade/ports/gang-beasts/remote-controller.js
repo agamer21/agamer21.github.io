@@ -7,6 +7,7 @@
   let held = new Set();
   let activationTimer;
   let releaseTimer;
+  let joinTimer;
   let spacePulse = false;
 
   function applyState() {
@@ -15,7 +16,7 @@
     controller.axes[0] = Number(held.has('KeyD')) - Number(held.has('KeyA'));
     controller.axes[1] = Number(held.has('KeyS')) - Number(held.has('KeyW'));
     for (const [key, index] of Object.entries(bindings)) {
-      const pressed = held.has(key) || (key === 'Space' && spacePulse);
+      const pressed = key === 'Space' ? !joinTimer && (held.has(key) || spacePulse) : held.has(key);
       Object.assign(controller.buttons[index], { pressed, touched: pressed, value: Number(pressed) });
     }
     controller.timestamp = performance.now();
@@ -40,7 +41,15 @@
 
   function tapJoin() {
     enable();
-    pulseSpace(850);
+    clearTimeout(joinTimer);
+    clearTimeout(releaseTimer);
+    spacePulse = false;
+    // Give Unity a fresh button-down edge even if the guest tries to join again.
+    joinTimer = setTimeout(() => {
+      joinTimer = undefined;
+      pulseSpace(850);
+      applyState();
+    }, 300);
     applyState();
   }
 
@@ -68,7 +77,9 @@
     if (!controller) return;
     clearTimeout(activationTimer);
     clearTimeout(releaseTimer);
+    clearTimeout(joinTimer);
     activationTimer = undefined;
+    joinTimer = undefined;
     spacePulse = false;
     update([]);
     controller.connected = false;

@@ -2,6 +2,7 @@ const byId = id => document.getElementById(id);
 const game = byId('game');
 const screen = byId('screen');
 const controls = byId('controls');
+const joinFighter = byId('join-fighter');
 const status = byId('status');
 const allowedKeys = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'Space', 'Comma', 'Period', 'ShiftLeft', 'ControlLeft', 'KeyM']);
 const held = new Set();
@@ -16,6 +17,7 @@ function reset(message = '') {
   clearTimeout(current?.timeout);
   clearTimeout(current?.inputTimeout);
   clearTimeout(current?.streamTimeout);
+  clearTimeout(current?.joinTimer);
   current?.wake?.abort();
   current?.controller?.disable();
   current?.stream?.getTracks().forEach(track => track.stop());
@@ -27,7 +29,8 @@ function reset(message = '') {
   game.hidden = true;
   controls.hidden = true;
   byId('start').hidden = true;
-  byId('join-fighter').hidden = true;
+  joinFighter.hidden = true;
+  joinFighter.disabled = false;
   byId('room-code').hidden = true;
   byId('code').textContent = '';
   byId('lobby').hidden = true;
@@ -95,12 +98,28 @@ async function connect(code, hosting) {
     connection.on('data', keys => {
       if (session !== current) return;
       if (!hosting) {
-        if (keys === 'movement-received') status.textContent = 'Host received your movement controls.';
+        if (keys === 'join-received') {
+          clearTimeout(current.joinTimer);
+          status.textContent = 'The host received your join input. Look for a second fighter before readying up.';
+          current.joinTimer = setTimeout(() => { joinFighter.disabled = false; }, 1250);
+        } else if (keys === 'join-unavailable') {
+          clearTimeout(current.joinTimer);
+          joinFighter.disabled = false;
+          status.textContent = 'The host could not start the guest controller. Try again once Local is open.';
+        } else if (keys === 'movement-received') {
+          status.textContent = 'Host received your movement controls.';
+        }
         return;
       }
       if (!current.controller) return;
       if (keys === 'join-fighter') {
-        current.controller.tapJoin();
+        try {
+          current.controller.tapJoin();
+          connection.send('join-received');
+        } catch (error) {
+          status.textContent = error.message;
+          connection.send('join-unavailable');
+        }
         return;
       }
       if (!Array.isArray(keys) || keys.length > allowedKeys.size) return;
@@ -161,9 +180,9 @@ async function connect(code, hosting) {
       screen.srcObject = stream;
       screen.hidden = false;
       controls.hidden = false;
-      byId('join-fighter').hidden = false;
+      joinFighter.hidden = false;
       screen.focus({ preventScroll: true });
-      status.textContent = 'Once the host is ready in Local, click Join as player 2.';
+      status.textContent = 'When the host is on the fighter screen in Local, click Join as player 2 before either fighter readies up.';
     });
     call.on('close', () => end('The host ended the stream.'));
     call.on('error', () => end('The video connection failed.'));
@@ -177,9 +196,16 @@ byId('join').onsubmit = event => {
   connect(new FormData(event.currentTarget).get('code').toLowerCase(), false);
 };
 byId('leave').onclick = () => reset();
-byId('join-fighter').onclick = () => {
+joinFighter.onclick = () => {
   if (!session || session.hosting || !session.connection?.open) return;
+  joinFighter.disabled = true;
+  releaseKeys();
   session.connection.send('join-fighter');
+  status.textContent = 'Sending your join input to the host…';
+  session.joinTimer = setTimeout(() => {
+    joinFighter.disabled = false;
+    status.textContent = 'The host did not confirm the join input. Check that the host is still in Local, then retry.';
+  }, 4000);
   screen.focus({ preventScroll: true });
 };
 byId('copy').onclick = async () => {
@@ -207,14 +233,14 @@ byId('start').onclick = () => {
       const call = current.peer.call(current.connection.peer, current.stream);
       if (!call) throw new Error('Could not start sharing the game.');
       call.on('error', () => { if (session === current) reset('The video connection failed.'); });
-      status.textContent = 'Open Local and press Space to ready up. Then the guest can click Join as player 2.';
+      status.textContent = 'Open Local. Wait for the guest’s fighter to appear before pressing Space to ready up.';
       game.focus();
       doc.querySelector('canvas').focus();
     } catch (error) {
       reset(error.message);
     }
   }, { once: true });
-  game.src = '/assets/arcade/ports/gang-beasts/?remote-play=1&v=join-1';
+  game.src = '/assets/arcade/ports/gang-beasts/?remote-play=1&v=join-confirm-3';
 };
 
 function sendKeys() {
