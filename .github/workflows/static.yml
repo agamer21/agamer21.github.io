@@ -24,6 +24,7 @@ jobs:
           sparse-checkout: |
             /.github/scripts/
             /index.html
+            /horizon-x/
             /move-saves.html
             /library.html
             /404.html
@@ -112,6 +113,8 @@ jobs:
         run: python3 .github/scripts/prepare-angry-birds.py site/files/games/angry-birds-2/Build
       - name: Include shared online counter
         run: python3 .github/scripts/add-presence.py site
+      - name: Include Horizon X launcher
+        run: cp -R horizon-x site/
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -129,3 +132,11 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-${{ github.run_attempt }}
+      - name: Verify Horizon X on Pages
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          curl -fsS --retry 6 --retry-all-errors --retry-delay 3 --max-time 12 "${PAGES_URL%/}/horizon-x/?commit=$GITHUB_SHA" -o "$RUNNER_TEMP/horizon-x.html"
+          grep -Fq '<title>Horizon X' "$RUNNER_TEMP/horizon-x.html"
+          curl -fsS --retry 6 --retry-all-errors --retry-delay 3 --max-time 12 "${PAGES_URL%/}/?commit=$GITHUB_SHA" -o "$RUNNER_TEMP/arcade-home.html"
+          grep -Fq 'data-game="horizon-x"' "$RUNNER_TEMP/arcade-home.html"
