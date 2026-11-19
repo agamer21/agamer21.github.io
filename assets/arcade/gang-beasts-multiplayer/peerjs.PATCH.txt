@@ -1,0 +1,1 @@
+PeerJS 1.5.5 browser bundle. The room page injects a WebSocket-shaped HTTPS signaling transport at the single socket constructor. The PeerJS protocol and WebRTC code are unchanged.

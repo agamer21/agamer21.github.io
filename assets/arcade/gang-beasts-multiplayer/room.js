@@ -114,9 +114,10 @@ async function connect(code, hosting) {
       case 'peer-unavailable':
         end('Room not found. Check the code and make sure the host is still in the lobby.');
         break;
+      case 'network':
       case 'socket-error':
       case 'socket-closed':
-        end('The room server responded over HTTPS. Its WebSocket connection failed. Try again in a minute.');
+        end('The room server responded, then the connection ended. Try again in a minute.');
         break;
       case 'unavailable-id':
         end('This room code is already in use. Click Host room to get a new code.');
