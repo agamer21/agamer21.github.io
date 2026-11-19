@@ -5,6 +5,7 @@ const controls = byId('controls');
 const status = byId('status');
 const allowedKeys = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'Space', 'Comma', 'Period', 'ShiftLeft', 'ControlLeft', 'KeyM']);
 const held = new Set();
+const movementKeys = { ArrowUp: 'KeyW', ArrowLeft: 'KeyA', ArrowDown: 'KeyS', ArrowRight: 'KeyD' };
 const signalingHost = 'gang-beasts-multiplayer.onrender.com';
 const root = 'ag-arcade-gang-beasts-';
 let session;
@@ -92,7 +93,12 @@ async function connect(code, hosting) {
     connection.on('close', () => end('The other player left the room.'));
     connection.on('error', () => end('The connection was interrupted.'));
     connection.on('data', keys => {
-      if (session !== current || !hosting || !current.controller) return;
+      if (session !== current) return;
+      if (!hosting) {
+        if (keys === 'movement-received') status.textContent = 'Host received your movement controls.';
+        return;
+      }
+      if (!current.controller) return;
       if (keys === 'join-fighter') {
         current.controller.tapJoin();
         return;
@@ -100,7 +106,11 @@ async function connect(code, hosting) {
       if (!Array.isArray(keys) || keys.length > allowedKeys.size) return;
       current.controller.update(keys);
       clearTimeout(current.inputTimeout);
-      current.inputTimeout = setTimeout(() => current.controller?.update([]), 500);
+      current.inputTimeout = setTimeout(() => current.controller?.update([]), 1000);
+      if (!current.movementConfirmed && keys.some(key => ['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(key))) {
+        current.movementConfirmed = true;
+        connection.send('movement-received');
+      }
     });
   }
 
@@ -153,7 +163,7 @@ async function connect(code, hosting) {
       controls.hidden = false;
       byId('join-fighter').hidden = false;
       screen.focus({ preventScroll: true });
-      status.textContent = 'When the host opens Local, click Join as player 2.';
+      status.textContent = 'Once the host is ready in Local, click Join as player 2.';
     });
     call.on('close', () => end('The host ended the stream.'));
     call.on('error', () => end('The video connection failed.'));
@@ -197,7 +207,7 @@ byId('start').onclick = () => {
       const call = current.peer.call(current.connection.peer, current.stream);
       if (!call) throw new Error('Could not start sharing the game.');
       call.on('error', () => { if (session === current) reset('The video connection failed.'); });
-      status.textContent = 'Open Local in the game. Ask the guest to click Join as player 2.';
+      status.textContent = 'Open Local and press Space to ready up. Then the guest can click Join as player 2.';
       game.focus();
       doc.querySelector('canvas').focus();
     } catch (error) {
@@ -208,18 +218,40 @@ byId('start').onclick = () => {
 };
 
 function sendKeys() {
-  if (session && !session.hosting && session.connection?.open) session.connection.send([...held]);
+  if (session && !session.hosting && session.connection?.open) {
+    session.connection.send([...new Set([...held].map(code => movementKeys[code] ?? code))]);
+  }
 }
+
 function changeKey(event) {
-  if (document.activeElement !== screen || !allowedKeys.has(event.code)) return;
-  event.preventDefault();
-  if (event.repeat) return;
-  if (event.type === 'keydown') held.add(event.code);
-  else held.delete(event.code);
+  if (!session || session.hosting || screen.hidden || !session.connection?.open) return;
+  const { code, target } = event;
+  if (!allowedKeys.has(movementKeys[code] ?? code)) return;
+
+  if (event.type === 'keydown') {
+    if (event.metaKey || event.altKey || event.isComposing) return;
+    if (target instanceof HTMLElement && (target.isContentEditable || target.closest('input, textarea, select'))) return;
+    if (code === 'Space' && target instanceof Element && target.closest('a, button')) return;
+    event.preventDefault();
+    if (held.has(code)) return;
+    held.add(code);
+  } else if (!held.delete(code)) {
+    return;
+  } else {
+    event.preventDefault();
+  }
   sendKeys();
 }
-screen.addEventListener('keydown', changeKey);
-screen.addEventListener('keyup', changeKey);
-screen.addEventListener('blur', () => { held.clear(); sendKeys(); });
+
+function releaseKeys() {
+  if (!held.size) return;
+  held.clear();
+  sendKeys();
+}
+
+document.addEventListener('keydown', changeKey);
+document.addEventListener('keyup', changeKey);
+window.addEventListener('blur', releaseKeys);
+document.addEventListener('visibilitychange', () => { if (document.hidden) releaseKeys(); });
 setInterval(() => { if (held.size) sendKeys(); }, 150);
 window.addEventListener('pagehide', () => reset());
