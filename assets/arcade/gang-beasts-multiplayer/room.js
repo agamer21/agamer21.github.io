@@ -26,6 +26,7 @@ function reset(message = '') {
   game.hidden = true;
   controls.hidden = true;
   byId('start').hidden = true;
+  byId('join-fighter').hidden = true;
   byId('room-code').hidden = true;
   byId('code').textContent = '';
   byId('lobby').hidden = true;
@@ -91,8 +92,13 @@ async function connect(code, hosting) {
     connection.on('close', () => end('The other player left the room.'));
     connection.on('error', () => end('The connection was interrupted.'));
     connection.on('data', keys => {
-      if (session !== current || !hosting || !Array.isArray(keys) || keys.length > allowedKeys.size) return;
-      current.controller?.update(keys);
+      if (session !== current || !hosting || !current.controller) return;
+      if (keys === 'join-fighter') {
+        current.controller.tapJoin();
+        return;
+      }
+      if (!Array.isArray(keys) || keys.length > allowedKeys.size) return;
+      current.controller.update(keys);
       clearTimeout(current.inputTimeout);
       current.inputTimeout = setTimeout(() => current.controller?.update([]), 500);
     });
@@ -145,7 +151,9 @@ async function connect(code, hosting) {
       screen.srcObject = stream;
       screen.hidden = false;
       controls.hidden = false;
-      status.textContent = 'Click the video, then press Space to join when the host opens Local.';
+      byId('join-fighter').hidden = false;
+      screen.focus({ preventScroll: true });
+      status.textContent = 'When the host opens Local, click Join as player 2.';
     });
     call.on('close', () => end('The host ended the stream.'));
     call.on('error', () => end('The video connection failed.'));
@@ -159,6 +167,11 @@ byId('join').onsubmit = event => {
   connect(new FormData(event.currentTarget).get('code').toLowerCase(), false);
 };
 byId('leave').onclick = () => reset();
+byId('join-fighter').onclick = () => {
+  if (!session || session.hosting || !session.connection?.open) return;
+  session.connection.send('join-fighter');
+  screen.focus({ preventScroll: true });
+};
 byId('copy').onclick = async () => {
   try {
     await navigator.clipboard.writeText(byId('code').textContent);
@@ -179,19 +192,19 @@ byId('start').onclick = () => {
     try {
       const doc = game.contentDocument;
       current.controller = game.contentWindow.arcadeRemoteController;
-      current.controller.enable();
+      if (!current.controller) throw new Error('Could not initialize the guest controller.');
       current.stream = doc.querySelector('canvas').captureStream(30);
       const call = current.peer.call(current.connection.peer, current.stream);
       if (!call) throw new Error('Could not start sharing the game.');
       call.on('error', () => { if (session === current) reset('The video connection failed.'); });
-      status.textContent = 'Open Local in the game. Ask the guest to press Space to join as player two.';
+      status.textContent = 'Open Local in the game. Ask the guest to click Join as player 2.';
       game.focus();
       doc.querySelector('canvas').focus();
     } catch (error) {
       reset(error.message);
     }
   }, { once: true });
-  game.src = '/assets/arcade/ports/gang-beasts/?remote-play=1';
+  game.src = '/assets/arcade/ports/gang-beasts/?remote-play=1&v=join-1';
 };
 
 function sendKeys() {
