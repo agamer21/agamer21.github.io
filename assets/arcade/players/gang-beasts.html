@@ -10,7 +10,8 @@
     .player-page { height: 100dvh; }
     .player-header { flex-shrink: 0; }
     .player-frame { height: auto; min-height: 0; }
-    .player-actions { display: flex; gap: 8px; }
+    .player-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .player-actions a { padding: 8px 12px; border: 1px solid #bdcba744; border-radius: 6px; background: #26362b; }
     .keyboard-strip {
       display: flex;
       flex: 0 0 auto;
@@ -48,6 +49,7 @@
     <a href="/#games">← AG Arcade</a>
     <h1>Gang Beasts</h1>
     <div class="player-actions">
+      <a href="/assets/arcade/gang-beasts-multiplayer/">Multiplayer</a>
       <button id="show-controls" type="button" aria-haspopup="dialog">Controls</button>
       <button id="fullscreen" type="button">Fullscreen</button>
     </div>

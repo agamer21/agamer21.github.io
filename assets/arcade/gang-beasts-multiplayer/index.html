@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gang Beasts Multiplayer | AG Arcade</title>
+<style>
+  :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+  body { max-width: 1080px; padding: 16px; margin: auto; background: #101824; color: #f1f5f9; }
+  h1 { font-size: 1.4rem; }
+  a { color: #bfdbfe; }
+  #lobby p { margin-bottom: 8px; }
+  button, input { font: inherit; padding: .45rem .65rem; }
+  form { display: inline-block; }
+  iframe, video { width: 100%; aspect-ratio: 16 / 9; border: 0; background: #030712; }
+  kbd { white-space: nowrap; }
+</style>
+<a href="/assets/arcade/players/gang-beasts.html">← Gang Beasts</a>
+<h1>Gang Beasts Multiplayer <small>(beta)</small></h1>
+<p>Host a private room or enter a friend’s room code. The host runs the game and shares video with the guest.</p>
+<section id="entry" aria-label="Room options">
+  <button id="host" type="button">Host room</button>
+  <form id="join">
+    <input name="code" aria-label="Room code" placeholder="Room code" autocomplete="off" required pattern="[a-fA-F0-9]{8}" maxlength="8">
+    <button>Join room</button>
+  </form>
+</section>
+<section id="lobby" aria-label="Lobby" hidden>
+  <p>Room code <strong id="code"></strong></p>
+  <button id="copy" type="button">Copy code</button>
+  <button id="start" type="button" hidden>Start match</button>
+  <button id="leave" type="button">Leave room</button>
+</section>
+<p id="status" role="status"></p>
+<p id="controls" hidden><kbd>W A S D</kbd> Move · <kbd>Space</kbd> Jump · <kbd>, .</kbd> Hands · <kbd>Left Shift</kbd> Lift · <kbd>Left Control</kbd> Duck · <kbd>M</kbd> Kick</p>
+<iframe id="game" title="Gang Beasts" allow="autoplay; fullscreen; gamepad" hidden></iframe>
+<video id="screen" aria-label="Host’s game" autoplay playsinline muted tabindex="0" hidden></video>
+<script src="peerjs.min.js"></script>
+<script src="room.js"></script>
+</html>

@@ -25,6 +25,13 @@
         <div id="unity-build-title">Gang Beasts</div>
       </div>
     </div>
+    <script>
+      if (new URLSearchParams(location.search).has('remote-play')) {
+        const controller = document.createElement('script');
+        controller.src = 'remote-controller.js';
+        document.head.appendChild(controller);
+      }
+    </script>
     <script src="game-data.js?v=same-site-1"></script>
     <script>
       var buildUrl = "Build";
