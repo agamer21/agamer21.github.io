@@ -25,8 +25,10 @@
   </form>
 </section>
 <section id="lobby" aria-label="Lobby" hidden>
-  <p>Room code <strong id="code"></strong></p>
-  <button id="copy" type="button">Copy code</button>
+  <div id="room-code" hidden>
+    <p>Room code <strong id="code"></strong></p>
+    <button id="copy" type="button">Copy code</button>
+  </div>
   <button id="start" type="button" hidden>Start match</button>
   <button id="leave" type="button">Leave room</button>
 </section>
@@ -35,5 +37,5 @@
 <iframe id="game" title="Gang Beasts" allow="autoplay; fullscreen; gamepad" hidden></iframe>
 <video id="screen" aria-label="Host’s game" autoplay playsinline muted tabindex="0" hidden></video>
 <script src="peerjs.min.js"></script>
-<script src="room.js"></script>
+<script src="room.js?v=room-connect-2"></script>
 </html>

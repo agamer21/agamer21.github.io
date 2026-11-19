@@ -26,6 +26,8 @@ function reset(message = '') {
   game.hidden = true;
   controls.hidden = true;
   byId('start').hidden = true;
+  byId('room-code').hidden = true;
+  byId('code').textContent = '';
   byId('lobby').hidden = true;
   byId('entry').hidden = false;
   status.textContent = message;
@@ -43,18 +45,31 @@ async function connect(code, hosting) {
   session = current;
   byId('entry').hidden = true;
   byId('lobby').hidden = false;
-  byId('code').textContent = code;
   status.textContent = 'Connecting to the room server. It may take a minute to wake up.';
   const end = message => { if (session === current) reset(message); };
   current.timeout = setTimeout(() => end('Could not reach the room server. Try again.'), 75000);
+  let guestId;
   try {
-    await fetch('https://' + signalingHost + '/health', { mode: 'no-cors', cache: 'no-store', signal: current.wake.signal });
+    const response = await fetch('https://' + signalingHost + '/signal/peerjs/id', {
+      cache: 'no-store',
+      signal: current.wake.signal
+    });
+    if (!response.ok) {
+      end('The room server returned HTTP ' + response.status + '. Try again in a minute.');
+      return;
+    }
+    guestId = (await response.text()).trim();
+    if (!/^[a-f0-9-]{36}$/i.test(guestId)) {
+      end('The room server returned an unexpected response. Try again in a minute.');
+      return;
+    }
   } catch {
-    end('Could not reach the room server. Try again.');
+    end('Could not reach the room server over HTTPS. Check your connection and try again.');
     return;
   }
   if (session !== current) return;
-  const peer = hosting ? new Peer(root + code, options) : new Peer(options);
+  status.textContent = 'Opening a connection to the room server…';
+  const peer = new Peer(hosting ? root + code : guestId, options);
   current.peer = peer;
 
   function accept(connection) {
@@ -85,6 +100,8 @@ async function connect(code, hosting) {
 
   peer.on('open', () => {
     if (session !== current) return;
+    byId('code').textContent = code;
+    byId('room-code').hidden = false;
     if (hosting) {
       clearTimeout(current.timeout);
       status.textContent = 'Share the room code with your guest.';
@@ -92,7 +109,22 @@ async function connect(code, hosting) {
       accept(peer.connect(root + code, { serialization: 'json', reliable: true }));
     }
   });
-  peer.on('error', error => end(error.type === 'peer-unavailable' ? 'Room not found. Check the code.' : 'Could not connect to the room.'));
+  peer.on('error', error => {
+    switch (error.type) {
+      case 'peer-unavailable':
+        end('Room not found. Check the code and make sure the host is still in the lobby.');
+        break;
+      case 'socket-error':
+      case 'socket-closed':
+        end('The room server responded over HTTPS. Its WebSocket connection failed. Try again in a minute.');
+        break;
+      case 'unavailable-id':
+        end('This room code is already in use. Click Host room to get a new code.');
+        break;
+      default:
+        end('Could not connect to the room (' + (error.type || 'unknown error') + ').');
+    }
+  });
   peer.on('disconnected', () => end('Lost contact with the room server.'));
   peer.on('connection', connection => hosting ? accept(connection) : connection.close());
   peer.on('call', call => {
