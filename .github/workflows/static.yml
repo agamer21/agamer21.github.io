@@ -139,4 +139,4 @@ jobs:
           curl -fsS --retry 6 --retry-all-errors --retry-delay 3 --max-time 12 "${PAGES_URL%/}/horizon-x/?commit=$GITHUB_SHA" -o "$RUNNER_TEMP/horizon-x.html"
           grep -Fq '<title>Horizon X' "$RUNNER_TEMP/horizon-x.html"
           curl -fsS --retry 6 --retry-all-errors --retry-delay 3 --max-time 12 "${PAGES_URL%/}/?commit=$GITHUB_SHA" -o "$RUNNER_TEMP/arcade-home.html"
-          grep -Fq 'data-game="horizon-x"' "$RUNNER_TEMP/arcade-home.html"
+          grep -Fq 'data-game="horizon-x" data-library-id="/horizon-x/" href="https://classic.minecraft.net/"' "$RUNNER_TEMP/arcade-home.html"
