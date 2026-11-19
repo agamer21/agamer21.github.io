@@ -11,6 +11,28 @@
     .player-header { flex-shrink: 0; }
     .player-frame { height: auto; min-height: 0; }
     .player-actions { display: flex; gap: 8px; }
+    .keyboard-strip {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 16px;
+      list-style: none;
+      margin: 0;
+      padding: 8px 12px;
+      border-bottom: 1px solid #526076;
+      background: #151d2b;
+      font: 12px/1.5 system-ui, sans-serif;
+    }
+    .keyboard-strip li { display: flex; align-items: center; gap: 5px; }
+    .keyboard-strip kbd {
+      padding: 0 4px;
+      border: 1px solid #526076;
+      border-radius: 4px;
+      background: #101824;
+      font: 600 11px/1.5 system-ui, sans-serif;
+      white-space: nowrap;
+    }
     #controls { width: min(420px, 90vw); color: inherit; background: #151d2b; border: 1px solid #526076; border-radius: 12px; padding: 20px; }
     #controls::backdrop { background: #000a; }
     #controls h2 { margin-top: 0; }
@@ -30,6 +52,15 @@
       <button id="fullscreen" type="button">Fullscreen</button>
     </div>
   </header>
+  <ul class="keyboard-strip" aria-label="Quick keyboard controls">
+    <li><kbd>W A S D</kbd> Move</li>
+    <li><kbd>Space</kbd> Jump</li>
+    <li><kbd>,</kbd> Left hand</li>
+    <li><kbd>.</kbd> Right hand</li>
+    <li><kbd>Left Shift</kbd> Lift</li>
+    <li><kbd>Left Control</kbd> Duck</li>
+    <li><kbd>M</kbd> Kick</li>
+  </ul>
   <iframe id="game" class="player-frame" src="/assets/arcade/ports/gang-beasts/?v=keyboard-1" title="Gang Beasts" allow="autoplay; fullscreen; gamepad"></iframe>
   <dialog id="controls" aria-labelledby="controls-title">
     <h2 id="controls-title">Keyboard controls</h2>
