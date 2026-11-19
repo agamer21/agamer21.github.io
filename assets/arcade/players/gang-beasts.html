@@ -1,1 +1,60 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gang Beasts | AG Arcade</title><link rel="stylesheet" href="/assets/arcade/arcade.css"><link rel="icon" href="/assets/arcade/icons/gang-beasts.svg"></head><body class="player-page"><header class="player-header"><a href="/#games">← AG Arcade</a><h1>Gang Beasts</h1><button id="fullscreen" type="button">Fullscreen</button></header><iframe id="game" class="player-frame" src="/assets/arcade/ports/gang-beasts/?v=same-site-1" title="Gang Beasts" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe><script src="/assets/arcade/embedded-player.js" defer></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gang Beasts | AG Arcade</title>
+  <link rel="stylesheet" href="/assets/arcade/arcade.css">
+  <link rel="icon" href="/assets/arcade/icons/gang-beasts.svg">
+  <style>
+    .player-page { height: 100dvh; }
+    .player-header { flex-shrink: 0; }
+    .player-frame { height: auto; min-height: 0; }
+    .player-actions { display: flex; gap: 8px; }
+    #controls { width: min(420px, 90vw); color: inherit; background: #151d2b; border: 1px solid #526076; border-radius: 12px; padding: 20px; }
+    #controls::backdrop { background: #000a; }
+    #controls h2 { margin-top: 0; }
+    #controls p { line-height: 1.45; }
+    #controls dl { display: grid; grid-template-columns: 1fr auto; gap: 9px; }
+    #controls dd { margin: 0; text-align: right; }
+    #controls kbd { white-space: nowrap; }
+    #controls button { background: #26362b; color: inherit; border: 1px solid #718568; border-radius: 6px; padding: 8px 12px; cursor: pointer; }
+  </style>
+</head>
+<body class="player-page">
+  <header class="player-header">
+    <a href="/#games">← AG Arcade</a>
+    <h1>Gang Beasts</h1>
+    <div class="player-actions">
+      <button id="show-controls" type="button" aria-haspopup="dialog">Controls</button>
+      <button id="fullscreen" type="button">Fullscreen</button>
+    </div>
+  </header>
+  <iframe id="game" class="player-frame" src="/assets/arcade/ports/gang-beasts/?v=keyboard-1" title="Gang Beasts" allow="autoplay; fullscreen; gamepad"></iframe>
+  <dialog id="controls" aria-labelledby="controls-title">
+    <h2 id="controls-title">Keyboard controls</h2>
+    <p>Comma and period control your hands on the keyboard.</p>
+    <dl>
+      <dt>Move</dt><dd><kbd>W A S D</kbd></dd>
+      <dt>Jump</dt><dd><kbd>Space</kbd></dd>
+      <dt>Left hand</dt><dd><kbd>,</kbd> Comma</dd>
+      <dt>Right hand</dt><dd><kbd>.</kbd> Period</dd>
+      <dt>Lift</dt><dd><kbd>Left Shift</kbd></dd>
+      <dt>Duck</dt><dd><kbd>Left Control</kbd></dd>
+      <dt>Kick</dt><dd><kbd>M</kbd></dd>
+    </dl>
+    <p>Use arrow keys and Space in menus. To lift someone, hold both hand keys and Left Shift.</p>
+    <form method="dialog"><button type="submit">Focus game</button></form>
+  </dialog>
+  <script src="/assets/arcade/embedded-player.js" defer></script>
+  <script>
+    const controls = document.getElementById('controls');
+    document.getElementById('show-controls').addEventListener('click', () => controls.showModal());
+    controls.addEventListener('close', () => {
+      const game = document.getElementById('game');
+      game.focus();
+      game.contentDocument?.getElementById('unity-canvas')?.focus();
+    });
+  </script>
+</body>
+</html>
